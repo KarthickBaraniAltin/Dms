@@ -1,0 +1,275 @@
+html,
+body {
+  /* padding: 0;
+  margin: 0; */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* background-image: url("../Images/background.png");
+  background-color: #cccccc;
+  background-repeat: no-repeat, repeat;
+  background-size: cover; */
+  background-image: url("../images/bg2.png");
+  background-attachment: fixed;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+.noicon .p-datatable .p-sortable-column-icon::before {
+  content: "" !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.col-custom {
+  height: 30px;
+  background: #d6d6d6;
+  border: 1px solid white;
+}
+
+.form-horizontal{
+  display:block;
+  width:25%;
+  margin:0 auto;
+}
+
+.footer-bs {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.label-with-asteriks > label {
+  padding-right: 10px;
+  padding-right: 1ch;
+  position: relative;
+}
+
+.label-with-asteriks.required > label::before {
+  color: red;
+  content: "*";
+  position: absolute;
+  right: -3px;
+}
+
+.alert {
+  height:51%;    
+}
+
+.rmsc  {
+  --rmsc-border: rgb(0, 0, 0) !important;
+}
+
+.btn {
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.2s ease-in-out;
+  border: 2px solid #F7D117;
+  border-radius: 30px;
+  min-width: 100px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.btn.btn-primary {
+  background-color: #034692;
+  border: 2px solid #F7D117;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #F7D117 !important;
+  border: 2px solid #F7D117 !important;
+  color: #034692 !important;
+}
+.btn:focus {
+  border-color: 0 !important;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #F7D117, 0 1px 2px 0 #000;
+  outline: none;
+}
+.btn.btn-teritery {
+  border: 2px solid #361c51;
+  color: #333;
+}
+.btn.btn-teritery:hover {
+  background-color: #361c51;
+  border: 2px solid #361c51;
+  color: #fff;
+}
+
+.center-align {
+  margin: auto;
+  width: 50%;
+}
+
+/* .p-button {
+  display: inline-block !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  color: #333 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  vertical-align: middle !important;
+  cursor: pointer !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  background-color: #F7D117 !important;
+  border: 2px solid transparent !important;
+  padding: 0.375rem 0.75rem !important;
+  font-size: 14px !important;
+  border-radius: 30px !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+.p-button.p-confirm-dialog-reject {
+  border: 2px solid #F7D117 !important;
+  background-color: transparent !important;
+}
+.p-button:hover {
+  background-color: #034692 !important;
+  border: 2px solid #034692 !important;
+  color: #fff !important;
+}
+.p-button:hover .pi.pi-times:before {
+  color: #fff;
+}
+.p-button:hover .pi.pi-check::before {
+  color: #fff;
+}
+.p-button:focus {
+  border-color: 0 !important;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #F7D117, 0 1px 2px 0 black;
+  outline: none;
+}
+ */
+
+
+
+.myTable [class~="p-datatable"] .p-datatable-header {
+  color: #333;
+  background: #fff;
+  border-width: 0 0 0 0;
+}
+
+.myTable .table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.myTable [class~="p-datatable"] .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 0.4rem 0 0.5rem 0;
+  border: 1px solid #004990;
+  border-width: 0 0 3px 0;
+  color: #333;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.myTable [class~="p-datatable"] .p-datatable-tbody > tr > td {
+  padding: 0.9rem 0 1rem 0;
+  font-size: 0.9375rem;
+  color: #4F4F4F;
+  border: 1px solid #004990;
+  border-width: 0 0 0 0;
+  vertical-align: top;
+  background: #fff;
+  word-break: break-word;
+}
+
+.dashboardTitle {
+  padding: 1.625rem 1rem 1.625rem 0;
+  color: #4F4F4F;
+  background: #fff;
+  color: #4F4F4F;
+  font-weight: 600;
+  /* cursor: pointer; */
+}
+
+.myTable [class~="p-datatable"] .p-sortable-column:not(.p-highlight):hover {
+  background-color: transparent;
+}
+.myTable [class~="p-datatable"] .p-sortable-column .p-sortable-column-icon {
+  margin-left: 2px;
+  color: #004990;
+}
+.myTable [class~="p-datatable"] .p-sortable-column.p-highlight {
+  background: transparent;
+  color: #034692;
+}
+.myTable [class~="p-datatable"] .p-sortable-column.p-highlight:hover {
+  background: transparent;
+  color: #034692;
+}
+.myTable [class~="p-datatable"] .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
+  color: #034692;
+}
+.myTable [class~="p-datatable"] .p-sortable-column.p-highlight .p-sortable-column-icon {
+  color: #034692;
+}
+.myTable [class~="p-datatable"] .p-sortable-column:focus {
+  border-color: #004990;
+  box-shadow: #004990 0px 0px 0px 1px inset;
+  outline: none;
+}
+.myTable [class~="p-datatable"] .p-paginator {
+  justify-content: end;
+  padding-right: 0;
+  font-size: 13px;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-first {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-first, .myTable [class~="p-datatable"] .p-paginator .p-paginator-last, .myTable [class~="p-datatable"] .p-paginator .p-paginator-next, .myTable [class~="p-datatable"] .p-paginator .p-paginator-prev {
+  background-color: #E2ECFB;
+  color: #333;
+  height: 1.8rem;
+  min-width: 2.5rem;
+  font-size: 1rem;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-first:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-last:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-next:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-prev:focus {
+  border-color: #004990 !important;
+  box-shadow: #004990 0px 0px 0px 1px inset !important;
+  outline: none;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page {
+  height: 1.8rem;
+  min-width: 2rem;
+  font-size: 1rem;
+  background-color: #E2ECFB;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #004990;
+  border-color: #004990;
+  color: #fff;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page.p-highlight:hover {
+  background-color: #F7D117;
+  color: #333;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page:focus {
+  border-color: #004990 !important;
+  box-shadow: #004990 0px 0px 0px 1px inset !important;
+  outline: none;
+}
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-current {
+  color: #333;
+}
+.myTable [class~="p-datatable"] .p-paginator-bottom {
+  border-width: 0;
+}
+
+
