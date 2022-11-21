@@ -23,8 +23,6 @@ export default function Home({cities}) {
   const callApiTest = async () => {
     const accessToken = await getAccessToken(loginRequest)
 
-    console.log("Access Token = ", accessToken)
-
     const params = {
         method: 'GET',
         url: 'https://connect2.csn.edu/snap/api/department',
