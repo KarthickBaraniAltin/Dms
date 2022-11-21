@@ -15,7 +15,7 @@ import { loginRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
 
 export default function Home({cities}) {
-
+//test comment - GR 
   const { response, error, loading, callApi } = useApi()
   const { getAccessToken } = useAccessToken()
   const { handleInputChange, inputs } = useInputs()
