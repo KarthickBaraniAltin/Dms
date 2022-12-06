@@ -2,11 +2,9 @@ import 'primereact/resources/themes/saga-blue/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
-import 'bootstrap/dist/css/bootstrap.css'
 import '../scss/customs.scss'
 import '../styles/globals.css'
 import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 import { useEffect } from 'react'
 import { PublicClientApplication, EventType } from '@azure/msal-browser'
 import { msalConfig } from '../src/msalConfig'
@@ -28,10 +26,6 @@ msalInstance.addEventCallback((event) => {
 })
 
 function MyApp({ Component, pageProps, ...appProps }) {
-
-  useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
-  }, []);
 
   const getContent = () => {
 

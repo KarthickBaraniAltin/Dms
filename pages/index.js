@@ -1,4 +1,4 @@
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
 import Head from 'next/head'
 import Link from "next/link"
 import { Button } from "primereact/button"
@@ -10,25 +10,26 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import Input from "../components/Input/Input"
 import { useApi } from "../hooks/useApi"
-import { useAccessToken } from "../hooks/useAccessToken"
 import { loginRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
+import { InteractionType } from "@azure/msal-browser"
 
-export default function Home({cities}) {
-//test comment - GR 
+export default function Home({ cities }) {
+
   const { response, error, loading, callApi } = useApi()
-  const { getAccessToken } = useAccessToken()
+  const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
 
   const callApiTest = async () => {
-    const accessToken = await getAccessToken(loginRequest)
+    const accessToken = await acquireToken()
 
     const params = {
         method: 'GET',
         url: 'https://connect2.csn.edu/snap/api/department',
         headers: { // no need to stringify
-            accept: '*/*'
-        },
+            accept: '*/*',
+            authorization: `Bearer ${accessToken}`
+        }
     }
 
     await callApi(params)
@@ -37,8 +38,8 @@ export default function Home({cities}) {
   return (
     <>
       <Head>
-        <title>SNAP Component Library</title>
-        <link rel='icon' sizes='32x32' href='/logo.png' />
+        <title>Component Library</title>
+        <link rel='icon' sizes='32x32' href='/component-library/logo.png' />
       </Head>
       <div>
         <AuthenticatedTemplate>
@@ -55,7 +56,7 @@ export default function Home({cities}) {
                     value: inputs.text ? inputs.text : '',
                   }}
                   label='Label'
-                  subtitleComponent={<Link href='http://localhost:3000' className='block'>localhost</Link>} 
+                  // subtitleComponent={<Link href='http://localhost:3000' className='block'>localhost</Link>} 
                 />
               </div>  
 

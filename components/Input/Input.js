@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createElement } from 'react'
 import cn from 'clsx'
 import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
@@ -9,9 +9,28 @@ import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox'
 
-export default function Input({header, defaultValue, subtitleComponent, subtitle, errorMessages, value, disabled, type, name, label, placeholder, autocomplate,md, onChange, size, required, onInput, min, max, step, errorMessage, inputProps}) {
+export default function Input({ subtitleComponent, subtitle, errorMessages, value, type, label, inputProps}) {
     
     const rootClassName = ''
+
+    // const componentMapper = {
+    //     'text': InputText,
+    //     'calendar': Calendar,
+    //     'number': InputNumber,
+    //     'textArea': InputTextarea,
+    //     'mask': InputMask,
+    //     'dropdown': Dropdown,
+    //     'multiselect': MultiSelect
+    // }
+
+    // const renderInputComponentV2 = () => {
+    //     return createElement(
+    //         componentMapper[type],
+    //         {...inputProps, className: cn()}
+    //     )
+    // }
+
+    console.log('Input Props = ', inputProps)
 
     const renderInputComponent = () => {
         if (type === 'text') {

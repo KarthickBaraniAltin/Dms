@@ -11,7 +11,7 @@ export const msalConfig = {
 
 export const loginRequest = {
     scopes: ['Group.Read.All', 'User.Read.All','User.Read', 'profile', 'openid', 'email']
-};
+}
 
 export const apiRequest = {
     scopes: ['api://b8d6006d-0e78-4712-ba03-081458acbb8e/Write', 'api://b8d6006d-0e78-4712-ba03-081458acbb8e/read']
@@ -23,6 +23,6 @@ export const studentApiRequest = {
 
 export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
-};
+}
 
 
