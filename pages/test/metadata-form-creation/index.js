@@ -25,6 +25,7 @@ export default function Home({ cities }) {
     const { addMetadata, renderComponents } = useFormCreator()
     const [curIndex, setCurIndex] = useState(0)
 
+    // Text comment
     const addTextInput = () => {
         addMetadata({
             type: 'text',
