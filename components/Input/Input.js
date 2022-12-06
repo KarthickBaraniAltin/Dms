@@ -9,7 +9,7 @@ import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox'
 
-export default function Input({ subtitleComponent, subtitle, errorMessages, value, type, label, inputProps}) {
+export default function Input({ subtitleComponent, subtitle, errorMessages, value, type, label, inputProps }) {
     
     const rootClassName = ''
 
@@ -30,7 +30,7 @@ export default function Input({ subtitleComponent, subtitle, errorMessages, valu
     //     )
     // }
 
-    console.log('Input Props = ', inputProps)
+    console.log('Input Props = ', { subtitleComponent, subtitle, errorMessages, value, type, label, inputProps})
 
     const renderInputComponent = () => {
         if (type === 'text') {

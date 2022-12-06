@@ -48,7 +48,7 @@ export default function Home({ cities }) {
                 onChange: handleInputChange,
                 value: inputs['number' + curIndex] ? inputs['number' + curIndex] : ''
             },
-            label: 'Label ' + curIndex,
+            label: 'Number ' + curIndex,
             subtitle: 'Some Subtitle'
         })
 
@@ -80,23 +80,8 @@ export default function Home({ cities }) {
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <div className='grid p-fluid form-grid'>
                             { renderComponents() }
-                            {/* {
-                                <>
-                                    {metadatas && metadatas.map(({ type, inputProps, label, subtitleComponent, subtitle }, index) => (
-                                        <div key={index} className='field col-12 md:col-12'>
-                                            <Input 
-                                                type={type}
-                                                inputProps={inputProps}
-                                                label={label}
-                                                subtitleComponent={subtitleComponent}
-                                                subtitle={subtitle}
-                                            />
-                                        </div>  
-                                    ))}
-                                </>
-                            } */}
                             <div className='field col-3 md:col-3'>
-                            <Button label='Add Text Input' loading={loading} onClick={() => addTextInput()} />
+                                <Button label='Add Text Input' loading={loading} onClick={() => addTextInput()} />
                             </div>
                             <div className='field col-3 md:col-3'>
                                 <Button label='Add Number Input' loading={loading} onClick={() => addNumberInput()} />

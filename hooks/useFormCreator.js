@@ -10,10 +10,10 @@ import Input from "../components/Input/Input"
 
 export const useFormCreator = () => {
 
-    const [metadatas, setMetadatas] = useState([])
+    const [metadata, setMetadata] = useState([])
 
     const addMetadata = (metadata) => {
-        setMetadatas((prevList) => [...prevList, metadata])
+        setMetadata((prevList) => [...prevList, metadata])
     }
 
     // We can implement the additions in here?
@@ -43,12 +43,12 @@ export const useFormCreator = () => {
     //     })
     // }
 
-    console.log('Metadatas = ', metadatas)
+    console.log('Metadatas = ', metadata)
 
     const renderComponents = () => {
         return (
             <>
-                {metadatas.map(({ type, inputProps, label, subtitleComponent, subtitle }, index) => (
+                {metadata.map(({ type, inputProps, label, subtitleComponent, subtitle, value }, index) => (
                     <div key={index} className='field col-12 md:col-12'>
                         <Input 
                             type={type}
@@ -56,6 +56,7 @@ export const useFormCreator = () => {
                             label={label}
                             subtitleComponent={subtitleComponent}
                             subtitle={subtitle}
+                            value={value}
                         />
                     </div>  
                 ))}
@@ -63,5 +64,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, addMetadata }
+    return { renderComponents, addMetadata, metadata }
 }

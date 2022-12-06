@@ -17,7 +17,7 @@ import { InteractionType } from "@azure/msal-browser"
 export default function Home({ cities }) {
 
   const { response, error, loading, callApi } = useApi()
-  const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
+  // const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
 
   const callApiTest = async () => {
@@ -178,65 +178,7 @@ export default function Home({ cities }) {
                   label='Label'
                 />
               </div> 
- 
-
-
-
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Disabled</h5>
-                <Input subtitle='subtitle' label='Label' disabled />
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <Input header='Invalid' label='Label' errorMessages={['error message 1', 'error message 2']}/>
-              </div>  
-
-              <div className='field col-3 md:col-12'>
-                <Input header='Test' label='Input Field' />
-              </div> */}
-
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Phone</h5>
-                <InputMask mask="(999) 999-9999" placeholder="(999) 999-9999" label='label' />
-              </div>   */}
-
-              {/* <div className='field col-12 md:col-12'>
-                <h5>Text Area</h5>
-                <InputTextarea rows={5} cols={30} />
-              </div>   */}
-
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Dropdown</h5>
-                <Dropdown options={cities} optionLabel="name" placeholder="Select a City" />
-              </div> 
-              <div className='field col-4 md:col-12'>
-                <h5>Disabled</h5>
-                <Dropdown options={cities} disabled optionLabel="name" placeholder="Select a City" />
-                <small className='block'>subtitle</small>
-              </div> 
-              <div className='field col-4 md:col-12'>
-                <h5>Invalid</h5>
-                <Dropdown className='p-invalid' disabled options={cities} optionLabel="name" placeholder="Select a City" />
-                <small className='p-error block'>error message</small> 
-              </div>  
-
-              <div className='field col-4 md:col-12'>
-                <h5>Number</h5>
-                <InputNumber />
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <h5>(0 - 100)</h5>
-                <InputNumber min={0} max={100} />
-                <small className='block'>Please give a number between 0 and 100 included</small>
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <h5>Number</h5>
-                <InputNumber className='p-invalid' />
-                <small className='p-error block'>Invalid input</small> 
-              </div>   */}
             </div> 
-            
-
-
             <div className='field'>
               <Button label='Text Hook' loading={loading} onClick={async () => callApiTest()} />
             </div>
@@ -244,11 +186,7 @@ export default function Home({ cities }) {
           </Card>
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
-          <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
-            <div className='card-body'>
-              <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
-            </div>
-          </div>
+          
         </UnauthenticatedTemplate>
       </div>
     </>
