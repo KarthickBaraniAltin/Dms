@@ -13,12 +13,14 @@ import { useApi } from "../hooks/useApi"
 import { loginRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
 import { InteractionType } from "@azure/msal-browser"
+import { useState } from "react"
 
 export default function Home({ cities }) {
 
   const { response, error, loading, callApi } = useApi()
   // const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
+  const [filteredCities, setFilteredCities] = useState()
 
   const callApiTest = async () => {
     const accessToken = await acquireToken()
@@ -33,6 +35,19 @@ export default function Home({ cities }) {
     }
 
     await callApi(params)
+  }
+
+  const filterCities = function(e) { // For autocomplete component
+    let results = cities.filter(city => {
+      let string = city.label.toLowerCase()
+      if (string.startsWith(e.query.toLowerCase())) {
+        return string
+      }
+    })
+
+    results = results.map(result => result.label)
+    
+    setFilteredCities(results)
   }
 
   return (
@@ -177,7 +192,23 @@ export default function Home({ cities }) {
                   }}
                   label='Label'
                 />
-              </div> 
+              </div>
+
+              <div className='field col-4 md:col-4'>
+                  <h5>AutoComplete</h5>
+                  <Input
+                    type='autocomplete'
+                    inputProps={{
+                      name: 'autocomplete',
+                      suggestions: filteredCities,
+                      completeMethod: filterCities,
+                      onChange: handleInputChange,
+                      value: inputs.autocomplete ? inputs.autocomplete : '',
+                      display: 'chip'
+                    }}
+                    label='Label'
+                  />
+              </div>
             </div> 
             <div className='field'>
               <Button label='Text Hook' loading={loading} onClick={async () => callApiTest()} />
