@@ -22,18 +22,20 @@ export default function Home({ cities }) {
 
     const { response, error, loading, callApi } = useApi()
     const { handleInputChange, inputs } = useInputs()
-    const { addMetadata, renderComponents } = useFormCreator()
-    const [curIndex, setCurIndex] = useState(0)
+    const { metadata, addMetadata, renderComponents } = useFormCreator()
+    const [ componentMetadata, setComponentMetadata] = useState('')
+    const [ curIndex, setCurIndex ] = useState(0)
 
     // Text comment
     const addTextInput = () => {
         addMetadata({
             type: 'text',
             inputProps: {
-                name: 'text' + curIndex, 
+                name: 'text' + curIndex,
                 onChange: handleInputChange, 
-                value: inputs['text' + curIndex] ? inputs['text' + curIndex] : ''
+                // value: inputs.text ? inputs.text : ''
             },
+            value: inputs['text' + curIndex] ? inputs['text' + curIndex] : '',
             label: 'Label ' + curIndex,
             subtitle: 'Some Subtitle'
         })
@@ -44,11 +46,11 @@ export default function Home({ cities }) {
     const addNumberInput = () => {
         addMetadata({
             type: 'number',
-            inputProps: {
-                name: 'number' + curIndex,
-                onChange: handleInputChange,
-                value: inputs['number' + curIndex] ? inputs['number' + curIndex] : ''
-            },
+            // inputProps: {
+            //     name: 'number' + curIndex,
+            //     onChange: handleInputChange,
+            //     value: inputs['number' + curIndex] ? inputs['number' + curIndex] : ''
+            // },
             label: 'Number ' + curIndex,
             subtitle: 'Some Subtitle'
         })
@@ -68,7 +70,9 @@ export default function Home({ cities }) {
         await callApi(params)
     }
 
-    console.log('Inputs = ', inputs)
+    // console.log('Inputs = ', inputs)
+    // console.log('Inputs.text = ', inputs.text)
+    // console.log('Component Metadata = ', componentMetadata)
 
     return (
         <>
@@ -78,17 +82,27 @@ export default function Home({ cities }) {
             </Head>
             <div>
                 <AuthenticatedTemplate>
-                    <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <div className='grid p-fluid form-grid'>
-                            { renderComponents() }
-                            <div className='field col-3 md:col-3'>
-                                <Button label='Add Text Input' loading={loading} onClick={() => addTextInput()} />
+                    <div className='grid p-fluid form-grid'>
+                        <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>
+                            <div className='field col-12'>
+                                <InputTextarea name='' value={componentMetadata} onChange={(e) => setComponentMetadata(e.target.value)} autoResize />
                             </div>
-                            <div className='field col-3 md:col-3'>
-                                <Button label='Add Number Input' loading={loading} onClick={() => addNumberInput()} />
+                            <div className='field col-6 col-offset-3'>
+                                <Button label='Add' loading={loading} onClick={() => addNumberInput()} />
                             </div>
-                        </div> 
-                    </Card>
+                        </Card>
+                        <Card className='card form-horizontal mt-5' style={{'width': '60%'}}>
+                            <div className='grid p-fluid form-grid'>
+                                { renderComponents() }
+                                <div className='field col-3 md:col-3'>
+                                    <Button label='Add Text Input' loading={loading} onClick={() => addTextInput()} />
+                                </div>
+                                <div className='field col-3 md:col-3'>
+                                    <Button label='Add Number Input' loading={loading} onClick={() => addNumberInput()} />
+                                </div>
+                            </div> 
+                        </Card>
+                    </div>
                 </AuthenticatedTemplate>
                 <UnauthenticatedTemplate>
                     <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>

@@ -4,7 +4,9 @@ export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
     const handleInputChange = (event) => {
+        
         if (event.target) {
+            console.log('Event = ', event)
             const { name, value } = event.target
             setInputs(inputs => ({...inputs, [name]: value}))
         } else if (event.originalEvent) {

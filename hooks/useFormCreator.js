@@ -12,16 +12,9 @@ export const useFormCreator = () => {
 
     const [metadata, setMetadata] = useState([])
 
-    const addMetadata = (metadata) => {
-        setMetadata((prevList) => [...prevList, metadata])
+    const addMetadata = (data) => {
+        setMetadata((prevList) => [...prevList, data])
     }
-
-    // We can implement the additions in here?
-    // const addTextInput = () => {
-    //     const metadata = () => {
-
-    //     }
-    // }
     
     const componentMapper = {
         'text': InputText,
@@ -33,36 +26,44 @@ export const useFormCreator = () => {
         'multiselect': MultiSelect
     }
 
-    // const renderComponents = () => {
-    //     metadatas.forEach((metadata) => {
-    //         const { type, ...rest } = metadata
-    //         return createElement(
-    //             componentMapper[type],
-    //             ...rest
-    //         )
-    //     })
-    // }
-
-    console.log('Metadatas = ', metadata)
-
     const renderComponents = () => {
+        metadata.map(({ type, ...rest } ,index) => (
+            console.log('Rest = ', rest)
+        ))
         return (
             <>
-                {metadata.map(({ type, inputProps, label, subtitleComponent, subtitle, value }, index) => (
-                    <div key={index} className='field col-12 md:col-12'>
-                        <Input 
-                            type={type}
-                            inputProps={inputProps}
-                            label={label}
-                            subtitleComponent={subtitleComponent}
-                            subtitle={subtitle}
-                            value={value}
-                        />
-                    </div>  
+                {metadata.map(({ type, ...rest } ,index) => (
+                    <div key={index} className='field col-12'>
+                        {createElement(
+                            componentMapper[type],
+                            {label: 'Test'}
+                        )}
+                    </div>
                 ))}
             </>
         )
     }
+
+    console.log('Metadatas = ', metadata)
+
+    // const renderComponents = () => {
+    //     return (
+    //         <>
+    //             {metadata.map(({ type, inputProps, label, subtitleComponent, subtitle, value }, index) => (
+    //                 <div key={index} className='field col-12 md:col-12'>
+    //                     <Input 
+    //                         type={type}
+    //                         inputProps={inputProps}
+    //                         label={label}
+    //                         subtitleComponent={subtitleComponent}
+    //                         subtitle={subtitle}
+    //                         // value={value}
+    //                     />
+    //                 </div>  
+    //             ))}
+    //         </>
+    //     )
+    // }
 
     return { renderComponents, addMetadata, metadata }
 }
