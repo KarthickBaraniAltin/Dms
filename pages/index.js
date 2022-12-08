@@ -10,7 +10,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import Input from "../components/Input/Input"
 import { useApi } from "../hooks/useApi"
-import { loginRequest } from '../src/msalConfig';
+import { activeDirectoryApiRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
 import { InteractionType } from "@azure/msal-browser"
 import { useState } from "react"
@@ -18,19 +18,19 @@ import { useState } from "react"
 export default function Home({ cities }) {
 
   const { response, error, loading, callApi } = useApi()
-  // const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
+  const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
-  const [filteredCities, setFilteredCities] = useState()
+  const [ filteredCities, setFilteredCities ] = useState()
 
   const callApiTest = async () => {
     const accessToken = await acquireToken()
 
     const params = {
         method: 'GET',
-        url: 'https://connect2.csn.edu/snap/api/department',
+        url: '/component-library/api/active-directory',
         headers: { // no need to stringify
-            accept: '*/*',
-            authorization: `Bearer ${accessToken}`
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`
         }
     }
 
@@ -49,6 +49,8 @@ export default function Home({ cities }) {
     
     setFilteredCities(results)
   }
+
+  console.log('Inputs = ', inputs)
 
   return (
     <>
