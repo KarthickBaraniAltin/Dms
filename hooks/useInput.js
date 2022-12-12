@@ -1,12 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 export const useInputs = (options) => {
-    const [inputs, setInputs] = useState(options?.initialValues || {})
+    const [inputs, setInputs] = useState(options?.defaultValues || {})
 
-    const handleInputChange = (event) => {
-        
+    const handleInputChange = (event) => {        
         if (event.target) {
-            console.log('Event = ', event)
             const { name, value } = event.target
             setInputs(inputs => ({...inputs, [name]: value}))
         } else if (event.originalEvent) {
@@ -17,5 +15,5 @@ export const useInputs = (options) => {
         }
     }
 
-    return {handleInputChange, inputs, setInputs}
+    return { handleInputChange, inputs, setInputs }
 }

@@ -5,39 +5,65 @@ import { InputNumber } from "primereact/inputnumber"
 import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
-import { createElement, useState, useEffect } from "react"
-import Input from "../components/Input/Input"
+import { createElement, useEffect, useState } from "react"
+import { useInputs } from "./useInput"
+
+// Giving default value to time date component with Date.Now ...
 
 export const useFormCreator = () => {
 
     const [metadata, setMetadata] = useState([])
+    const { handleInputChange, inputs, setInputs } = useInputs({})
 
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
     }
     
+    useEffect(() => {
+        metadata.forEach(element => {
+            if (element.defaultValue) {
+                setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
+            }
+        });    
+    
+    // Try to remove this warning 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [metadata])
+    
+
     const componentMapper = {
         'text': InputText,
         'calendar': Calendar,
         'number': InputNumber,
-        'textArea': InputTextarea,
+        'textarea': InputTextarea,
         'mask': InputMask,
         'dropdown': Dropdown,
         'multiselect': MultiSelect
     }
 
+    console.log('Inputs = ', inputs)
+
     const renderComponents = () => {
-        metadata.map(({ type, ...rest } ,index) => (
-            console.log('Rest = ', rest)
-        ))
         return (
             <>
-                {metadata.map(({ type, ...rest } ,index) => (
+                {metadata.map(({ type, subtitle, label, errorMessages, subtitleComponent, name, defaultValue, ...rest }, index) => (
                     <div key={index} className='field col-12'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>{label}</label> 
                         {createElement(
                             componentMapper[type],
-                            {label: 'Test'}
+                            {...rest, name, value: inputs[name], onChange: handleInputChange}
                         )}
+                        { subtitleComponent }
+                        { subtitle && 
+                            <small className='block'>{subtitle}</small>
+                        }
+                        { errorMessages && 
+                            errorMessages.map(element => {
+                                return (
+                                    <small key={element} className='p-error block'>{element}</small> 
+                                )
+                            })
+                        }
                     </div>
                 ))}
             </>
@@ -65,5 +91,5 @@ export const useFormCreator = () => {
     //     )
     // }
 
-    return { renderComponents, addMetadata, metadata }
+    return { renderComponents, addMetadata, metadata, setMetadata }
 }
