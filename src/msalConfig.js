@@ -2,7 +2,7 @@ import * as msal from '@azure/msal-browser';
 
 export const msalConfig = {
     auth: {
-        clientId: 'ebdc5772-1367-452a-bebd-a4ab62fc9748',
+        clientId: 'd238bbfd-7db0-4d14-bfe0-c7e47aa3c2c9',
         authority: 'https://login.microsoftonline.com/df35d574-9fba-48ce-a073-737868d77a48',
         redirectUri: "/component-library/blank", 
         postLogoutRedirectUri: "/" //'http://localhost:3000' 

@@ -20,7 +20,8 @@ export default function Home({ cities }) {
   const { response, error, loading, callApi } = useApi()
   const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
-  const [ filteredCities, setFilteredCities ] = useState()
+  const [filteredUsers, setFilteredUsers] = useState()
+  // const [ filteredCities, setFilteredCities ] = useState()
 
   const callApiTest = async () => {
     const accessToken = await acquireToken()
@@ -37,20 +38,57 @@ export default function Home({ cities }) {
     await callApi(params)
   }
 
-  const filterCities = function(e) { // For autocomplete component
-    let results = cities.filter(city => {
-      let string = city.label.toLowerCase()
-      if (string.startsWith(e.query.toLowerCase())) {
-        return string
-      }
-    })
+  // const filterCities = function(e) {
+  //   let results = cities.filter(city => {
+  //     let string = city.label.toLowerCase()
+  //     if (string.startsWith(e.query.toLowerCase())) {
+  //       return string
+  //     }
+  //   })
 
-    results = results.map(result => result.label)
+  //   results = results.map(result => result.label)
     
-    setFilteredCities(results)
-  }
+  //   setFilteredCities(results)
+  // }
 
-  console.log('Inputs = ', inputs)
+  const filterUsers = function(e) {
+    if (e.query === undefined) return
+
+    const getData = async() => {
+      const accessToken = await acquireToken()
+      const inputData =  e.query
+      console.log(accessToken)
+      const params = {
+        method: 'POST',
+       data: {
+          filterString: inputData
+       },
+        url: '/component-library/api/active-directory',
+        headers: { // no need to stringify
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`
+        }
+      }
+
+    const result = await callApi(params)
+
+      // const response = await fetch('/api/active-directory', {
+      //   method: 'POST',
+      //   body: JSON.stringify(data),
+      //   headers: {
+      //     'Authorization': `Bearer ${accessToken}`
+      //   }
+      // })
+
+      // const result = await response.JSON()
+
+
+      return result
+    }
+
+
+    setFilteredUsers(getData())
+  }
 
   return (
     <>
@@ -202,8 +240,8 @@ export default function Home({ cities }) {
                     type='autocomplete'
                     inputProps={{
                       name: 'autocomplete',
-                      suggestions: filteredCities,
-                      completeMethod: filterCities,
+                      suggestions: filteredUsers,
+                      completeMethod: filterUsers,
                       onChange: handleInputChange,
                       value: inputs.autocomplete ? inputs.autocomplete : '',
                       display: 'chip'
