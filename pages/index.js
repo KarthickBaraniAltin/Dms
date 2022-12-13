@@ -13,7 +13,7 @@ import { useApi } from "../hooks/useApi"
 import { activeDirectoryApiRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
 import { InteractionType } from "@azure/msal-browser"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function Home({ cities }) {
 
@@ -57,7 +57,7 @@ export default function Home({ cities }) {
     const getData = async() => {
       const { accessToken } = await acquireToken()
       const inputData =  e.query
-      console.log(accessToken)
+      // console.log(accessToken)
       const params = {
         method: 'POST',
         data: {
@@ -72,13 +72,15 @@ export default function Home({ cities }) {
 
       // instead of setting the result in here we can use useEffect with response dependency
       const result = await callApi(params)
-      console.log("Result = ", result)
+      // console.log("Result = ", result)
       return result
     }
 
     const res = await getData()
+    const filteredRes = res.data.map(person => person.displayName)
+    console.log(filteredRes)
     
-    // setFilteredUsers(getData())
+    setFilteredUsers(filteredRes)
   }
 
   return (
