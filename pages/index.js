@@ -51,18 +51,18 @@ export default function Home({ cities }) {
   //   setFilteredCities(results)
   // }
 
-  const filterUsers = function(e) {
+  const filterUsers = async (e) => {
     if (e.query === undefined) return
 
     const getData = async() => {
-      const accessToken = await acquireToken()
+      const { accessToken } = await acquireToken()
       const inputData =  e.query
       console.log(accessToken)
       const params = {
         method: 'POST',
-       data: {
-          filterString: inputData
-       },
+        data: {
+            filterString: inputData
+        },
         url: '/component-library/api/active-directory',
         headers: { // no need to stringify
             Accept: '*/*',
@@ -70,24 +70,15 @@ export default function Home({ cities }) {
         }
       }
 
-    const result = await callApi(params)
-
-      // const response = await fetch('/api/active-directory', {
-      //   method: 'POST',
-      //   body: JSON.stringify(data),
-      //   headers: {
-      //     'Authorization': `Bearer ${accessToken}`
-      //   }
-      // })
-
-      // const result = await response.JSON()
-
-
+      // instead of setting the result in here we can use useEffect with response dependency
+      const result = await callApi(params)
+      console.log("Result = ", result)
       return result
     }
 
-
-    setFilteredUsers(getData())
+    const res = await getData()
+    
+    // setFilteredUsers(getData())
   }
 
   return (
