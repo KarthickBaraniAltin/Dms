@@ -138,18 +138,19 @@ export default function Home({ cities }) {
               </div>
 
               <div className='field col-4 md:col-4'>
-                <h5>Mask</h5>
-                <Input
-                  type='mask'
-                  inputProps={{
-                    name: 'mask',
-                    onChange: handleInputChange,
-                    value: inputs.mask ? inputs.mask: '',
-                    mask: '(999) 999-9999'
-                  }}
-                  label='Label'
-                  subtitle='subtitle'
-                />
+                  <h5>AutoComplete</h5>
+                  <Input
+                    type='autocomplete'
+                    inputProps={{
+                      name: 'autocomplete',
+                      suggestions: filteredUsers,
+                      completeMethod: filterUsers,
+                      onChange: handleInputChange,
+                      value: inputs.autocomplete ? inputs.autocomplete : '',
+                      display: 'chip'
+                    }}
+                    label='Label'
+                  />
               </div>
 
               <div className='field col-4 md:col-4'>
@@ -228,20 +229,20 @@ export default function Home({ cities }) {
               </div>
 
               <div className='field col-4 md:col-4'>
-                  <h5>AutoComplete</h5>
-                  <Input
-                    type='autocomplete'
-                    inputProps={{
-                      name: 'autocomplete',
-                      suggestions: filteredUsers,
-                      completeMethod: filterUsers,
-                      onChange: handleInputChange,
-                      value: inputs.autocomplete ? inputs.autocomplete : '',
-                      display: 'chip'
-                    }}
-                    label='Label'
-                  />
+                <h5>Mask</h5>
+                <Input
+                  type='mask'
+                  inputProps={{
+                    name: 'mask',
+                    onChange: handleInputChange,
+                    value: inputs.mask ? inputs.mask: '',
+                    mask: '(999) 999-9999'
+                  }}
+                  label='Label'
+                  subtitle='subtitle'
+                />
               </div>
+
             </div> 
             <div className='field'>
               <Button label='Text Hook' loading={loading} onClick={async () => callApiTest()} />
