@@ -6,17 +6,37 @@ import { Draggable } from '../../components/DndComponents/Draggable'
 import { useState } from 'react'
 
 export default function DndTestPage() {
-    const [isDropped, setIsDropped] = useState(false);
-    const draggableMarkup = (
-      <Draggable>Drag me</Draggable>
-    )
+    const [parent, setParent] = useState(null)
+    const dragColors = [
+        {
+            id: 1,
+            color: 'Black'
+        },
+        {
+            id: 2,
+            color: 'Red'
+        },
+        {
+            id: 3,
+            color: 'Blue'
+        }
+    ]
+
+    const draggableItems = dragColors.map(item => {
+        return <Draggable id={item.id} color={item.color}>{item.color}</Draggable>
+    })
+
+    const droppableItems = dragColors.map(item => {
+        return <Droppable id={item.id} color={item.color}>Drop {item.color} here</Droppable>
+    })
 
     function handleDragEnd(event) {
-        if (event.over && event.over.id === 'droppable') {
-          setIsDropped(true)
-        }
-      }
+        const { active, over } = event
+        console.log(active.data.current.color)
 
+        setParent(over.id === active.id ? active.id : over.id)
+    }
+    
     return (
         <>
             <Head>
@@ -26,12 +46,14 @@ export default function DndTestPage() {
             <DndContext onDragEnd={handleDragEnd}>
                 <div className='flex space-around'>
                     <Card className='card form-horizontal mt-5' style={{'width': '25%'}}>
-                        {!isDropped ? draggableMarkup : null}
+                        {parent !== draggableItems[0].props.id ? draggableItems[0] : null}
+                        {parent !== draggableItems[1].props.id ? draggableItems[1] : null}
+                        {parent !== draggableItems[2].props.id ? draggableItems[2] : null}
                     </Card>
                     <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
-                        <Droppable>
-                            {isDropped ? draggableMarkup : 'Drop here'}
-                        </Droppable>
+                        {parent === droppableItems[0].props.id ? draggableItems[0] : droppableItems[0]}
+                        {parent === droppableItems[1].props.id ? draggableItems[1] : droppableItems[1]}
+                        {parent === droppableItems[2].props.id ? draggableItems[2] : droppableItems[2]}
                     </Card>
                 </div>
             </DndContext>
