@@ -15,7 +15,6 @@ export default function Home({ cities }) {
 
     const { response, error, loading, callApi } = useApi()
     const { metadata, addMetadata, renderComponents, setMetadata } = useFormCreator()
-    const { validate, errors } = useValidation({ metadata })
 
     const [ componentMetadata, setComponentMetadata] = useState('')
 
@@ -41,7 +40,7 @@ export default function Home({ cities }) {
             <div>
                 <AuthenticatedTemplate>
                     <div className='grid'>
-                        <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>
+                        <Card className='card form-horizontal mt-5' style={{'width': '40%'}}>
                             <div className='grid formgrid'>
                                 <div className='field col-12'>
                                     <InputTextarea name='' style={{'width': '100%'}} value={componentMetadata} onChange={(e) => setComponentMetadata(e.target.value)} autoResize />
@@ -50,12 +49,9 @@ export default function Home({ cities }) {
                                 <div className='field col-offset-1 col-4'>
                                     <Button label='Update' onClick={updateMetadata} />
                                 </div>
-                                <div className='field col-offset-1 col-4'>
-                                    <Button label='Validate' onClick={validate} />                            
-                                </div>
                             </div>
                         </Card>
-                        <Card className='card form-horizontal mt-5' style={{'width': '60%'}}>
+                        <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
                             <div className='grid p-fluid form-grid'>
                                 { renderComponents() }
                             </div> 
