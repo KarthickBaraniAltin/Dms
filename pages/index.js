@@ -77,7 +77,7 @@ export default function Home({ cities }) {
     }
 
     const res = await getData()
-    const filteredRes = res.data.map(person => person.displayName)
+    const filteredRes = res?.data.map(person => person.displayName)
     console.log(filteredRes)
     
     setFilteredUsers(filteredRes)
