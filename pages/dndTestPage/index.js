@@ -4,9 +4,11 @@ import { DndContext } from '@dnd-kit/core'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { Draggable } from '../../components/DndComponents/Draggable'
 import { useState } from 'react'
+import { InputText } from 'primereact/inputtext'
+import { InputNumber } from 'primereact/inputnumber'
+import { InputTextarea } from 'primereact/inputtextarea'
 
 export default function DndTestPage() {
-    const [parent, setParent] = useState(null)
     const dragColors = [
         {
             id: 1,
@@ -21,22 +23,47 @@ export default function DndTestPage() {
             color: 'Blue'
         }
     ]
+    const [parent, setParent] = useState([])
 
     const draggableItems = dragColors.map(item => {
+        for (const element of parent) {
+            if (element.id === item.id) {
+                return null
+            }
+        }
+
         return <Draggable id={item.id} color={item.color}>{item.color}</Draggable>
     })
 
     const droppableItems = dragColors.map(item => {
+        for (const element of parent) {
+            if (element.id === item.id) {
+                return <Draggable id={item.id} color={item.color}>{item.color}</Draggable>
+            }
+        }
+
         return <Droppable id={item.id} color={item.color}>Drop {item.color} here</Droppable>
     })
 
     function handleDragEnd(event) {
         const { active, over } = event
-        console.log(active.data.current.color)
+        const id = active.id
+        // setParent(over ? over.id : null)
+        setParent(prevState => {
+            if (over === null) { // Removes draggable from droppable when user drags away a draggable from a droppable
+                const result = prevState.filter(component => component.id !== id)
+                return result
+            }
 
-        setParent(over.id === active.id ? active.id : over.id)
+            return [
+                ...prevState,
+                {
+                    id: id
+                }
+            ]
+        })
     }
-    
+
     return (
         <>
             <Head>
@@ -46,14 +73,10 @@ export default function DndTestPage() {
             <DndContext onDragEnd={handleDragEnd}>
                 <div className='flex space-around'>
                     <Card className='card form-horizontal mt-5' style={{'width': '25%'}}>
-                        {parent !== draggableItems[0].props.id ? draggableItems[0] : null}
-                        {parent !== draggableItems[1].props.id ? draggableItems[1] : null}
-                        {parent !== draggableItems[2].props.id ? draggableItems[2] : null}
+                        {draggableItems}
                     </Card>
                     <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
-                        {parent === droppableItems[0].props.id ? draggableItems[0] : droppableItems[0]}
-                        {parent === droppableItems[1].props.id ? draggableItems[1] : droppableItems[1]}
-                        {parent === droppableItems[2].props.id ? draggableItems[2] : droppableItems[2]}
+                        {droppableItems}
                     </Card>
                 </div>
             </DndContext>
