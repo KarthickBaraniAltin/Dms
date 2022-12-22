@@ -7,6 +7,8 @@ import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 import { createElement, useEffect, useState } from "react"
+import TextDialog from '../components/Settings/TextDialog/TextDialog'
+import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
 
@@ -14,9 +16,20 @@ import { useValidation } from "./useValidation"
 
 export const useFormCreator = () => {
 
-    const [metadata, setMetadata] = useState([])
+    const [ metadata, setMetadata ] = useState([])
     const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
+    const { renderDialog, openDialog, hideDialog } = useDialogs({ metadata, setMetadata })
+
+    const componentMapper = {
+        'text': InputText,
+        'calendar': Calendar,
+        'number': InputNumber,
+        'textarea': InputTextarea,
+        'mask': InputMask,
+        'dropdown': Dropdown,
+        'multiselect': MultiSelect
+    }
 
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
@@ -33,40 +46,40 @@ export const useFormCreator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
     
-
-    const componentMapper = {
-        'text': InputText,
-        'calendar': Calendar,
-        'number': InputNumber,
-        'textarea': InputTextarea,
-        'mask': InputMask,
-        'dropdown': Dropdown,
-        'multiselect': MultiSelect
-    }
+    console.log("Metadata = ", metadata)
 
     const renderComponents = () => {
         return (
             <>
-                {metadata.map(({ type, subtitle, label, subtitleComponent, name, defaultValue, ...rest }, index) => (
-                    <div key={index} className='field col-12'>
-                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>{label}</label> 
-                        {createElement(
-                            componentMapper[type],
-                            {...rest, name, className: cn(errors[name] && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                        )}
-                        { subtitleComponent }
-                        { subtitle && 
-                            <small className='block'>{subtitle}</small>
-                        }
-                        { errors[name] && 
-                            errors[name].map(element => {
-                                return (
-                                    <small key={element} className='p-error block'>{element}</small> 
-                                )
-                            })
-                        }
-                    </div>
-                ))}
+                {metadata.map((data, index) => {
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                    return (
+                        <div key={index} className='field col-12'>
+                            {renderDialog()}
+                            <div className="flex justify-content-between">
+                                <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                    {label}
+                                </label> 
+                                <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
+                            </div>
+                            {createElement(
+                                componentMapper[type],
+                                {...rest, name, className: cn(errors[name] && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                            )}
+                            { subtitleComponent }
+                            { subtitle && 
+                                <small className='block'>{subtitle}</small>
+                            }
+                            { errors[name] && 
+                                errors[name].map(element => {
+                                    return (
+                                        <small key={element} className='p-error block'>{element}</small> 
+                                    )
+                                })
+                            }
+                        </div>
+                    )
+                })}
             </>
         )
     }
