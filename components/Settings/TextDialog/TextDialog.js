@@ -3,6 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import DialogFooter from '../DialogFooter.js/DialogFooter';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { InputNumber } from 'primereact/inputnumber';
 
 export default function TextDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -32,6 +33,23 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <h4 className='field col-12 md:col-12'>Validations</h4>
+          <div className='field col-6 md:col-6'>
+            <label>Min Length</label>
+            <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Min Length Message</label>
+            <InputText name='validations.minLength.message' value={inputs?.validations?.minLength?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Length</label>
+            <InputNumber name='validations.maxLength.length' value={inputs?.validations?.maxLength?.length ?? 255} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Length Message</label>
+            <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

@@ -5,7 +5,7 @@ import { useInputs } from "./useInput"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
-    const [ dialoagData, setDialogData ] = useState(undefined)
+    const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, setInputs } = useInputs()
 
     // console.log("Show Dialog = ", showDialog)
@@ -13,11 +13,11 @@ const useDialogs = ({ metadata, setMetadata }) => {
 
     const dialogMapper = {
         'text': TextDialog,
-        'number': NumberDialog
+        'number': NumberDialog,
+        'calendar': undefined
     } 
 
     const hideDialog = () => {
-        console.log("Hiding")
         setDialogData(undefined)
         setShowDialog(false)
     }
@@ -33,24 +33,23 @@ const useDialogs = ({ metadata, setMetadata }) => {
         setInputs(data)
     }
 
-    
-
     const handleUpdate = () => {
-        if (!dialoagData) {
+        if (!dialogData) {
             return
         }
 
-        const index = metadata.findIndex(element => element.name === dialoagData.name)
+        const index = metadata.findIndex(element => element.name === dialogData.name)
         metadata[index] = {...metadata[index], ...inputs}
         setMetadata(metadata)
+        setShowDialog(false)
     }
 
     const renderDialog = () => {
         return (
             <>
-                { showDialog && dialogMapper[dialoagData.type] &&
+                { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
-                        dialogMapper[dialoagData.type],
+                        dialogMapper[dialogData.type],
                         {inputs: inputs, handleInputChange: handleInputChange, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }

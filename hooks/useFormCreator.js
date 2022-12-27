@@ -42,11 +42,11 @@ export const useFormCreator = () => {
             }
         });    
     
-    // Try to remove this warning 
+    // Try to remove this warning later
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
     
-    console.log("Metadata = ", metadata)
+    // console.log("Metadata = ", metadata)
 
     const renderComponents = () => {
         return (
@@ -64,7 +64,7 @@ export const useFormCreator = () => {
                             </div>
                             {createElement(
                                 componentMapper[type],
-                                {...rest, name, className: cn(errors[name] && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
                             )}
                             { subtitleComponent }
                             { subtitle && 

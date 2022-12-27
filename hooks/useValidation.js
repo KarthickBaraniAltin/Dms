@@ -45,6 +45,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             break
                         }
                         case 'minLength': {
+                            console.log("Min Length")
                             const { message, length } = value
                             if (!validationMapper.minLength(length, inputValue?.length)) {
                                 currentErrors.push(message ?? `This field must have more than ${length} characters`)
@@ -63,8 +64,6 @@ export const useValidation = ({ metadata, inputs }) => {
                     }
                 }
 
-                console.log("Current errors = ", currentErrors)
-
                 if (currentErrors) {
                     errorMessages[name] = currentErrors
                 }
@@ -79,5 +78,7 @@ export const useValidation = ({ metadata, inputs }) => {
         validate()
     }, [metadata, validate])
     
+    console.log("Validation Errors = ", errors)
+
     return { errors }
 }

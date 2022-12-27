@@ -7,10 +7,10 @@ import { useApi } from "../../../hooks/useApi"
 import { useEffect, useState  } from "react"
 import { useFormCreator } from "../../../hooks/useFormCreator"
 import TextDialog from "../../../components/Settings/TextDialog/TextDialog";
+import { useValidation } from "../../../hooks/useValidation";
 
-export default function Home({ cities }) {
+export default function Home({  }) {
 
-    const { response, error, loading, callApi } = useApi()
     const { metadata, addMetadata, renderComponents, setMetadata } = useFormCreator()
     const [ componentMetadata, setComponentMetadata] = useState('')
 
@@ -33,7 +33,15 @@ export default function Home({ cities }) {
                 name: 'text',
                 label: 'Text Label',
                 subtitle: 'Text Subtitle',
-                defaultValue: 'text default value'
+                defaultValue: 'text default value',
+                validations: {
+                    minLength: {
+                      length: "0"
+                    },
+                    maxLength: {
+                      length: "255"
+                    }
+                }
             },
             {
                 type: 'number',
