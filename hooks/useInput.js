@@ -17,7 +17,6 @@ export const useInputs = (options) => {
         }
     }
 
-<<<<<<< HEAD
     // We can give values nested objects will be created and assigned accordingly
     const assignValuesNested = (path, value) => {
         const pathArr = path.split('.')
@@ -36,7 +35,4 @@ export const useInputs = (options) => {
     }
 
     return { handleInputChange, inputs, setInputs }
-=======
-    return {handleInputChange, inputs, setInputs}
->>>>>>> d2eddfe8317870415af56ff08e841ffe8914214d
 }
