@@ -6,12 +6,10 @@ import { Card } from 'primereact/card'
 import { AuthenticatedTemplate } from '@azure/msal-react'
 import Input from '../../components/Input/Input'
 import { useInputs } from '../../hooks/useInput'
-import { useAccessToken } from '../../hooks/useAccessToken'
 
 export default function Home({cities}) {
 
   const { response, error, loading, validationErrors, callApi } = useApi()
-  const { getAccessToken } = useAccessToken()
   const { handleInputChange, inputs } = useInputs()
 
   const callApiTest = async () => {

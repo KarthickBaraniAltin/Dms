@@ -1,9 +1,9 @@
 import { useState } from "react"
 
 export const useInputs = (options) => {
-    const [inputs, setInputs] = useState(options?.defaultValues || {})
+    const [inputs, setInputs] = useState(options?.initialValues || {})
 
-    const handleInputChange = (event) => {        
+    const handleInputChange = (event) => {
         if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
@@ -17,6 +17,7 @@ export const useInputs = (options) => {
         }
     }
 
+<<<<<<< HEAD
     // We can give values nested objects will be created and assigned accordingly
     const assignValuesNested = (path, value) => {
         const pathArr = path.split('.')
@@ -35,4 +36,7 @@ export const useInputs = (options) => {
     }
 
     return { handleInputChange, inputs, setInputs }
+=======
+    return {handleInputChange, inputs, setInputs}
+>>>>>>> d2eddfe8317870415af56ff08e841ffe8914214d
 }

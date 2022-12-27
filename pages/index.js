@@ -10,29 +10,77 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
 import Input from "../components/Input/Input"
 import { useApi } from "../hooks/useApi"
-import { loginRequest } from '../src/msalConfig';
+import { activeDirectoryApiRequest } from '../src/msalConfig';
 import { useInputs } from "../hooks/useInput"
 import { InteractionType } from "@azure/msal-browser"
+import { useEffect, useState } from "react"
 
 export default function Home({ cities }) {
 
   const { response, error, loading, callApi } = useApi()
-  // const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
+  const { acquireToken } = useMsalAuthentication(InteractionType.Silent, activeDirectoryApiRequest)
   const { handleInputChange, inputs } = useInputs()
+  const [filteredUsers, setFilteredUsers] = useState()
+  // const [ filteredCities, setFilteredCities ] = useState()
 
   const callApiTest = async () => {
     const accessToken = await acquireToken()
 
     const params = {
         method: 'GET',
-        url: 'https://connect2.csn.edu/snap/api/department',
+        url: '/component-library/api/active-directory',
         headers: { // no need to stringify
-            accept: '*/*',
-            authorization: `Bearer ${accessToken}`
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`
         }
     }
 
     await callApi(params)
+  }
+
+  // const filterCities = function(e) {
+  //   let results = cities.filter(city => {
+  //     let string = city.label.toLowerCase()
+  //     if (string.startsWith(e.query.toLowerCase())) {
+  //       return string
+  //     }
+  //   })
+
+  //   results = results.map(result => result.label)
+    
+  //   setFilteredCities(results)
+  // }
+
+  const filterUsers = async (e) => {
+    if (e.query === undefined) return
+
+    const getData = async() => {
+      const { accessToken } = await acquireToken()
+      const inputData =  e.query
+      // console.log(accessToken)
+      const params = {
+        method: 'POST',
+        data: {
+            filterString: inputData
+        },
+        url: '/component-library/api/active-directory',
+        headers: { // no need to stringify
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`
+        }
+      }
+
+      // instead of setting the result in here we can use useEffect with response dependency
+      const result = await callApi(params)
+      // console.log("Result = ", result)
+      return result
+    }
+
+    const res = await getData()
+    const filteredRes = res?.data.map(person => person.displayName)
+    console.log(filteredRes)
+    
+    setFilteredUsers(filteredRes)
   }
 
   return (
@@ -90,18 +138,19 @@ export default function Home({ cities }) {
               </div>
 
               <div className='field col-4 md:col-4'>
-                <h5>Mask</h5>
-                <Input
-                  type='mask'
-                  inputProps={{
-                    name: 'mask',
-                    onChange: handleInputChange,
-                    value: inputs.mask ? inputs.mask: '',
-                    mask: '(999) 999-9999'
-                  }}
-                  label='Label'
-                  subtitle='subtitle'
-                />
+                  <h5>AutoComplete</h5>
+                  <Input
+                    type='autocomplete'
+                    inputProps={{
+                      name: 'autocomplete',
+                      suggestions: filteredUsers,
+                      completeMethod: filterUsers,
+                      onChange: handleInputChange,
+                      value: inputs.autocomplete ? inputs.autocomplete : '',
+                      display: 'chip'
+                    }}
+                    label='Label'
+                  />
               </div>
 
               <div className='field col-4 md:col-4'>
@@ -177,7 +226,23 @@ export default function Home({ cities }) {
                   }}
                   label='Label'
                 />
-              </div> 
+              </div>
+
+              <div className='field col-4 md:col-4'>
+                <h5>Mask</h5>
+                <Input
+                  type='mask'
+                  inputProps={{
+                    name: 'mask',
+                    onChange: handleInputChange,
+                    value: inputs.mask ? inputs.mask: '',
+                    mask: '(999) 999-9999'
+                  }}
+                  label='Label'
+                  subtitle='subtitle'
+                />
+              </div>
+
             </div> 
             <div className='field'>
               <Button label='Text Hook' loading={loading} onClick={async () => callApiTest()} />

@@ -28,6 +28,7 @@ export const useApi = () => {
             } else {
                 setValidationErros({})
                 setResponse(result.data)
+                return result
             }
         } catch (error) {
             setResponse({})

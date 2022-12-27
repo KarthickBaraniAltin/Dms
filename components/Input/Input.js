@@ -8,6 +8,9 @@ import { InputMask } from 'primereact/inputmask'
 import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox'
+import { AutoComplete } from 'primereact/autocomplete';
+import { render } from 'react-dom'
+ 
 
 export default function Input({ subtitleComponent, subtitle, errorMessages, value, type, label, inputProps }) {
     
@@ -30,7 +33,7 @@ export default function Input({ subtitleComponent, subtitle, errorMessages, valu
     //     )
     // }
 
-    console.log('Input Props = ', { subtitleComponent, subtitle, errorMessages, value, type, label, inputProps})
+    // console.log('Input Props = ', { subtitleComponent, subtitle, errorMessages, value, type, label, inputProps})
 
     const renderInputComponent = () => {
         if (type === 'text') {
@@ -60,6 +63,10 @@ export default function Input({ subtitleComponent, subtitle, errorMessages, valu
         } else if (type === 'multiselect') {
             return ( 
                 <MultiSelect className={cn(errorMessages && 'p-invalid', rootClassName)} {...inputProps} />
+            )
+        } else if (type === 'autocomplete') {
+            return (
+                <AutoComplete className={cn(errorMessages && 'p-invalid', rootClassName)} {...inputProps} />
             )
         } else if (type === 'file') {
             // return (
