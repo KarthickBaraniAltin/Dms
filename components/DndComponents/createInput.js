@@ -4,7 +4,6 @@ import { InputText } from 'primereact/inputtext'
 import { InputNumber } from 'primereact/inputnumber'
 import { Calendar } from 'primereact/calendar'
 import { useState } from 'react'
-import Input from '../Input/Input'
 
 export default function createInput(type, id, dndComponent) {
     const [textValue, setTextValue] = useState()

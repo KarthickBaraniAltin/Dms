@@ -1,74 +1,35 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
 import Head from 'next/head'
-import Link from "next/link"
-import { InputText } from 'primereact/inputtext'
 import { Button } from "primereact/button"
 import { Card } from 'primereact/card'
-import { Calendar } from 'primereact/calendar'
-import { InputMask } from 'primereact/inputmask'
-import { InputNumber } from 'primereact/inputnumber'
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
 import Input from "../../../components/Input/Input"
 import { useApi } from "../../../hooks/useApi"
 import { loginRequest } from '../../../src/msalConfig';
 import { useInputs } from "../../../hooks/useInput"
 import { useState, createElement, useEffect } from "react"
-import { InteractionType } from "@azure/msal-browser"
-import { MultiSelect } from "primereact/multiselect"
 import { useFormCreator } from "../../../hooks/useFormCreator"
+import { useValidation } from "../../../hooks/useValidation"
 
 export default function Home({ cities }) {
 
     const { response, error, loading, callApi } = useApi()
-    const { handleInputChange, inputs } = useInputs()
-    const { addMetadata, renderComponents } = useFormCreator()
-    const [curIndex, setCurIndex] = useState(0)
+    const { metadata, addMetadata, renderComponents, setMetadata } = useFormCreator()
 
-    // Text comment
-    const addTextInput = () => {
-        addMetadata({
-            type: 'text',
-            inputProps: {
-                name: 'text' + curIndex, 
-                onChange: handleInputChange, 
-                value: inputs['text' + curIndex] ? inputs['text' + curIndex] : ''
-            },
-            label: 'Label ' + curIndex,
-            subtitle: 'Some Subtitle'
-        })
+    const [ componentMetadata, setComponentMetadata] = useState('')
 
-        setCurIndex(curIndex + 1)
-    }
-
-    const addNumberInput = () => {
-        addMetadata({
-            type: 'number',
-            inputProps: {
-                name: 'number' + curIndex,
-                onChange: handleInputChange,
-                value: inputs['number' + curIndex] ? inputs['number' + curIndex] : ''
-            },
-            label: 'Number ' + curIndex,
-            subtitle: 'Some Subtitle'
-        })
-
-        setCurIndex(curIndex + 1)
-    }
-
-    const callApiTest = async () => {
-        const params = {
-            method: 'GET',
-            url: 'https://connect2.csn.edu/snap/api/department',
-            headers: { // no need to stringify
-                accept: '*/*'
-            },
+    const updateMetadata = () => {        
+        try {
+            const data = JSON.parse(componentMetadata)
+            setMetadata(data)
+        } catch (error) {
+            console.error("Error Can't parse to JSON = ", error)
         }
-
-        await callApi(params)
     }
 
-    console.log('Inputs = ', inputs)
+    // console.log('Inputs = ', inputs)
+    // console.log('Inputs.text = ', inputs.text)
+    // console.log('Component Metadata = ', componentMetadata)
 
     return (
         <>
@@ -78,17 +39,24 @@ export default function Home({ cities }) {
             </Head>
             <div>
                 <AuthenticatedTemplate>
-                    <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <div className='grid p-fluid form-grid'>
-                            { renderComponents() }
-                            <div className='field col-3 md:col-3'>
-                                <Button label='Add Text Input' loading={loading} onClick={() => addTextInput()} />
+                    <div className='grid'>
+                        <Card className='card form-horizontal mt-5' style={{'width': '40%'}}>
+                            <div className='grid formgrid'>
+                                <div className='field col-12'>
+                                    <InputTextarea name='' style={{'width': '100%'}} value={componentMetadata} onChange={(e) => setComponentMetadata(e.target.value)} autoResize />
+                                </div>
+                                <div className='col-1'></div>
+                                <div className='field col-offset-1 col-4'>
+                                    <Button label='Update' onClick={updateMetadata} />
+                                </div>
                             </div>
-                            <div className='field col-3 md:col-3'>
-                                <Button label='Add Number Input' loading={loading} onClick={() => addNumberInput()} />
-                            </div>
-                        </div> 
-                    </Card>
+                        </Card>
+                        <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
+                            <div className='grid p-fluid form-grid'>
+                                { renderComponents() }
+                            </div> 
+                        </Card>
+                    </div>
                 </AuthenticatedTemplate>
                 <UnauthenticatedTemplate>
                     <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>

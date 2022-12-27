@@ -1,9 +1,6 @@
 import Head from 'next/head'
 import { Card } from 'primereact/card'
 import { DndContext } from '@dnd-kit/core'
-import { Droppable } from '../../components/DndComponents/Droppable'
-import { Draggable } from '../../components/DndComponents/Draggable'
-import Input from '../../components/Input/Input'
 import { useInputs } from '../../hooks/useInput'
 import createInput from '../../components/DndComponents/createInput'
 import { useState } from 'react'
@@ -68,7 +65,6 @@ export default function DndTestPage() {
     })
 
     function handleDragEnd(event) {
-        console.log(event)
         const { active, over } = event
         const id = active.id
         // setParent(over ? over.id : null)
@@ -78,6 +74,8 @@ export default function DndTestPage() {
                 const result = prevState.filter(component => component.id !== id)
                 return result
             }
+
+            console.log(event)
 
             return [
                 ...prevState,
@@ -91,7 +89,7 @@ export default function DndTestPage() {
     return (
         <>
             <Head>
-                <title>DnD Test Page</title>
+                <title>DnD Test Page v1</title>
                 <link rel='icon' sizes='32x32' href='/component-library/logo.png' />
             </Head>
             <DndContext onDragEnd={handleDragEnd}>

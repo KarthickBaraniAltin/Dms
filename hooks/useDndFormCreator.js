@@ -9,10 +9,11 @@ import { MultiSelect } from "primereact/multiselect"
 import { createElement, useEffect, useState } from "react"
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
+import { SortableComponent } from "../components/DndComponents/SortableComponent"
 
 // Giving default value to time date component with Date.Now() ? 
 
-export const useFormCreator = () => {
+export const useDndFormCreator = () => {
 
     const [metadata, setMetadata] = useState([])
     const { handleInputChange, inputs, setInputs } = useInputs({})
@@ -47,8 +48,10 @@ export const useFormCreator = () => {
     const renderComponents = () => {
         return (
             <>
-                {metadata.map(({ type, subtitle, label, subtitleComponent, name, defaultValue, ...rest }, index) => (
-                    <div key={index} className='field col-12'>
+                {metadata.map(({ type, subtitle, label, subtitleComponent, name, defaultValue, id, ...rest }, index) => {
+                    
+                    return (
+                    <SortableComponent key={index} id={index + 1} className='field col-12'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>{label}</label> 
                         {createElement(
                             componentMapper[type],
@@ -65,8 +68,8 @@ export const useFormCreator = () => {
                                 )
                             })
                         }
-                    </div>
-                ))}
+                    </SortableComponent>
+                )})}
             </>
         )
     }
