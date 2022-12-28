@@ -13,13 +13,11 @@ export const loginRequest = {
     scopes: ['Group.Read.All', 'User.Read.All','User.Read', 'profile', 'openid', 'email']
 }
 
-<<<<<<< HEAD
-=======
+
 export const activeDirectoryApiRequest = {
     scopes: ['api://0d786c0c-60fb-4996-8c20-bca3a0b4533f/All']
 }
 
->>>>>>> d2eddfe8317870415af56ff08e841ffe8914214d
 export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
 }

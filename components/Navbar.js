@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Logo from './Logo'
-import Link from 'next/link'
 import axios from 'axios'
-import { getAllStudentGroupMembers, setAuthorizationHeader } from '../api/apiCalls'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useAccount, useMsal } from "@azure/msal-react"
 import { loginRequest } from '../src/msalConfig'
 import { Menubar } from 'primereact/menubar'
