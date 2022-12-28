@@ -5,7 +5,7 @@ import {CSS} from '@dnd-kit/utilities'
 export function Draggable(props) {
   const {attributes, listeners, setNodeRef, transform} = useDraggable({
     id: props.id,
-    data: {
+    data: { // This optional property is how the metadata of the component is transferred to the main form panel.
         type: props.type,
         name: props.name,
         label: props.label,

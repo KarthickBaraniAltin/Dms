@@ -6,10 +6,7 @@ export function Droppable(props) {
     id: props.id,
   })
   const style = {
-    // color: isOver ? 'green' : undefined,
     border: '2px solid black',
-    // padding: '0.5rem',
-    // marginBottom: '1rem'
     backgroundColor: isOver ? '#004990' : 'white',
     color: isOver ? 'white' : undefined,
     padding: '3rem 6rem',
