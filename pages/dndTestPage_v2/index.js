@@ -66,7 +66,7 @@ export default function DndTestPage() {
                                 items={mainFormIds}
                                 strategy={verticalListSortingStrategy}
                             >
-                            {/* The items attribute must equal an array that represents the sortable items. */}
+                            {/* The items attribute must be an array that represents the sortable items. */}
                                 {metadata.length === 0 ? <h5>Drop field here</h5> : renderComponents()}
                             </SortableContext>
                         </Droppable>
