@@ -18,9 +18,17 @@ export function SortableComponent({ id, children }) {
         marginBottom: '0.2rem'
     }
 
+    const dragHandleStyle = {
+        backgroundColor: '#004990',
+        border: '0',
+        padding: '0.2rem',
+        width: '100%'
+    }
+
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={style} {...attributes}>
             {children}
+            <button style={dragHandleStyle} {...listeners}></button>
         </div>
     )
 }

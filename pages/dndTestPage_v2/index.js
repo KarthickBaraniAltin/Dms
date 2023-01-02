@@ -15,6 +15,9 @@ export default function DndTestPage() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useDndFormCreator()
     const [mainFormIds, setMainFormIds] = useState([])
     const mainFormComponentsObject = renderComponents()
+    const mainFormComponentsArray = mainFormComponentsObject.props.children
+
+    const updatedMainFormComponentsArray = mainFormComponentsArray.map(component => <div>{component}</div>)
 
     function handleDragEnd(event) {
         const { active, over } = event
@@ -47,9 +50,14 @@ export default function DndTestPage() {
         }
     }
 
+
     useEffect(() => {
         setMainFormIds(mainFormComponentsObject.props.children.map(component => component.props.id))
     }, [metadata])
+
+    console.log('mainFormComponentsArray:', mainFormComponentsArray)
+    console.log('isArray:', Array.isArray(mainFormComponentsArray))
+    console.log('updatedMainFormComponentsArray:', updatedMainFormComponentsArray)
 
     return (
         <>
@@ -60,7 +68,7 @@ export default function DndTestPage() {
             <DndContext onDragEnd={handleDragEnd}> {/* All draggable, droppable, and sortable components need to be within this component. */}
                 <div className='flex space-around'>
                     <DndLeftPanel />  {/* Statically generates the available input field components on the left hand side of the screen so the user can drag them onto the main form panel. */}
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '70%'}}>
+                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                         <Droppable id={'droppable-container-form'}> {/* This droppable component is used to 'catch' the draggable components from the left hand side panel. */}
                         <SortableContext
                                 items={mainFormIds}

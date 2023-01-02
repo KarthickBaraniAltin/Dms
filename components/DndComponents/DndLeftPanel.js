@@ -232,7 +232,7 @@ export default function DndLeftPanel() {
     })
 
     return (
-        <Card className='card form-horizontal mt-5' style={{'width': '20%'}}>
+        <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>
             {draggableItems}
         </Card>
     )
