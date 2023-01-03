@@ -1,16 +1,16 @@
-import { DndContext } from '@dnd-kit/core'
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import Head from 'next/head'
-import { Card } from 'primereact/card'
-import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
-import { Droppable } from '../../components/DndComponents/Droppable'
-import { useFormCreator } from '../../hooks/useFormCreator'
 import { useState, useEffect } from 'react'
+import { DndContext } from '@dnd-kit/core'
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
 import LeftComponentPanel from '../../components/LeftComponentPanel'
+import { Droppable } from '../../components/DndComponents/Droppable'
 import { SortableComponent } from '../../components/DndComponents/SortableComponent'
+import { useFormCreator } from '../../hooks/useFormCreator'
+import { Card } from 'primereact/card'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 
 export default function DndWithClientSideValidations() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useFormCreator()
@@ -54,7 +54,6 @@ export default function DndWithClientSideValidations() {
 
     function handleNewForm() {
         setNewForm(true)
-
     }
 
     useEffect(() => {
@@ -73,17 +72,17 @@ export default function DndWithClientSideValidations() {
                     <div className='grid'>
                         <DndLeftPanel />
                         {/* <LeftComponentPanel /> */}
-                        <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                            <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
-                            <Droppable id={'droppable-container-form'}>
-                                <SortableContext
-                                    items={mainFormIds}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {metadata.length === 0 ? <h5>Drop field here</h5> : mainFormComponentsArray}
-                                </SortableContext>
-                            </Droppable>
-                        </Card>
+                            <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                                <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
+                                <Droppable id={'droppable-container-form'}>
+                                    <SortableContext
+                                        items={mainFormIds}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        {metadata.length === 0 ? <h5>Drop field here</h5> : mainFormComponentsArray}
+                                    </SortableContext>
+                                </Droppable>
+                            </Card>
                     </div>
                     </DndContext>
                     :

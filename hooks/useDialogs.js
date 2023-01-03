@@ -1,5 +1,6 @@
 import { createElement, useState } from "react"
 import TextDialog from "../components/Settings/TextDialog/TextDialog"
+import TextareaDialog from "../components/Settings/TextareaDialog/TextareaDialog"
 import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
 import { useInputs } from "./useInput"
 
@@ -14,7 +15,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
     const dialogMapper = {
         'text': TextDialog,
         'number': NumberDialog,
-        'calendar': undefined
+        'calendar': undefined,
+        'textarea': TextareaDialog
     } 
 
     const hideDialog = () => {
