@@ -21,7 +21,7 @@ export function SortableComponent({ id, children }) {
     const dragHandleStyle = {
         backgroundColor: '#004990',
         border: '0',
-        padding: '0.2rem',
+        padding: '0.3rem',
         width: '100%'
     }
 

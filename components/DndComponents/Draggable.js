@@ -23,7 +23,7 @@ export function Draggable(props) {
     background: 'white',
     padding: '0.5rem',
     marginBottom: '1rem',
-    border: '1px solid black'
+    border: '2px solid black'
   }
   
   return (

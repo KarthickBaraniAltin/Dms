@@ -73,7 +73,9 @@ export default function DndWithClientSideValidations() {
                         <DndLeftPanel />
                         {/* <LeftComponentPanel /> */}
                             <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                                <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
                                 <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
+                                </Card>
                                 <Droppable id={'droppable-container-form'}>
                                     <SortableContext
                                         items={mainFormIds}
@@ -83,6 +85,11 @@ export default function DndWithClientSideValidations() {
                                     </SortableContext>
                                 </Droppable>
                             </Card>
+                        <Card className='card form-horizontal mt-5'>
+                            <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
+                            <h1 style={{'text-align': 'center'}}>Preview</h1>
+                            </Card>
+                        </Card>
                     </div>
                     </DndContext>
                     :
