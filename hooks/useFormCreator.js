@@ -48,7 +48,7 @@ export const useFormCreator = () => {
     
     // console.log("Metadata = ", metadata)
 
-    const renderComponents = () => {
+    const renderComponents = (preview) => {
         return (
             <>
                 {metadata.map((data, index) => {
@@ -56,12 +56,17 @@ export const useFormCreator = () => {
                     return (
                         <div key={index} className='field col-12'>
                             {renderDialog()}
+                            {preview ? 
+                            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                {label}
+                            </label> 
+                            : 
                             <div className="flex justify-content-between">
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                                     {label}
                                 </label> 
                                 <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                            </div>
+                            </div>}
                             {createElement(
                                 componentMapper[type],
                                 {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}

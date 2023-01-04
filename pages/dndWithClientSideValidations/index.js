@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
@@ -11,15 +11,18 @@ import { Card } from 'primereact/card'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
+import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 
 export default function DndWithClientSideValidations() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useFormCreator()
     const [mainFormIds, setMainFormIds] = useState([])
     const [newForm, setNewForm] = useState(false)
     const [newFormValue, setNewFormValue] = useState('')
+    const [showForm, setShowForm] = useState(false)
     const newFormTitle = newFormValue
-    const mainFormComponentsObject = renderComponents()
+    const mainFormComponentsObject = renderComponents(false)
     const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <SortableComponent key={index} id={index + 1} >{component}</SortableComponent>)
+    const previewForm = renderComponents(true)
 
     function handleDragEnd(event) {
         const { active, over } = event
@@ -56,6 +59,10 @@ export default function DndWithClientSideValidations() {
         setNewForm(true)
     }
 
+    function handlePreview() {
+        setShowForm(prevState => !prevState)
+    }
+
     useEffect(() => {
         setMainFormIds(mainFormComponentsArray.map(component => component.props.id))
     }, [metadata])
@@ -69,13 +76,17 @@ export default function DndWithClientSideValidations() {
             <AuthenticatedTemplate>
                 {newForm ? 
                     <DndContext onDragEnd={handleDragEnd}>
+                    {showForm ? <PreviewDialog showForm={showForm} handlePreview={handlePreview} metadata={previewForm} /> : null}
                     <div className='grid'>
                         <DndLeftPanel />
                         {/* <LeftComponentPanel /> */}
                             <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                                <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
-                                <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
-                                </Card>
+                                <div className='flex flex-column justify-content-center'>
+                                    <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
+                                        <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
+                                    </Card>
+                                    <Button label='Test' className='flex align-self-center mb-2' onClick={handlePreview} />
+                                </div>
                                 <Droppable id={'droppable-container-form'}>
                                     <SortableContext
                                         items={mainFormIds}
@@ -85,11 +96,6 @@ export default function DndWithClientSideValidations() {
                                     </SortableContext>
                                 </Droppable>
                             </Card>
-                        <Card className='card form-horizontal mt-5'>
-                            <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
-                            <h1 style={{'text-align': 'center'}}>Preview</h1>
-                            </Card>
-                        </Card>
                     </div>
                     </DndContext>
                     :
