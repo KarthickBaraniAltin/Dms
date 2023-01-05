@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
@@ -23,12 +23,26 @@ export default function DndWithClientSideValidations() {
     const mainFormComponentsObject = renderComponents(false)
     const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <SortableComponent key={index} id={index + 1} >{component}</SortableComponent>)
     const previewForm = renderComponents(true)
+    const textCount = useRef(0)
+    const textareaCount = useRef(0)
+    
 
     function handleDragEnd(event) {
         const { active, over } = event
 
         if (over !== null && !active.data.current.sortable) {
-            addMetadata(active.data.current)
+            const updatedData = JSON.parse(JSON.stringify(active.data.current))
+
+            if (updatedData.name === 'text') {
+                textCount.current = textCount.current + 1
+                updatedData.name = `text${textCount.current}`
+            }
+            if (updatedData.name === 'textarea') {
+                textareaCount.current = textareaCount.current + 1
+                updatedData.name = `textarea${textareaCount.current}`
+            }
+
+            addMetadata(updatedData)
         }
 
         if (active.data.current.sortable) {
@@ -85,7 +99,7 @@ export default function DndWithClientSideValidations() {
                                     <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
                                         <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
                                     </Card>
-                                    <Button label='Test' className='flex align-self-center mb-2' onClick={handlePreview} />
+                                    <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                                 </div>
                                 <Droppable id={'droppable-container-form'}>
                                     <SortableContext

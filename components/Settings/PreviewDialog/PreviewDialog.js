@@ -2,7 +2,6 @@ import { Dialog } from "primereact/dialog"
 import { useFormCreator } from "../../../hooks/useFormCreator"
 
 export default function PreviewDialog({ showForm, handlePreview, metadata }) {
-    console.log('Metadata:', metadata)
 
     return (
         <>
