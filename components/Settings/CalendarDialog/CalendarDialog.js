@@ -2,8 +2,9 @@ import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { InputNumber } from 'primereact/inputnumber';
 
-export default function NumberDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
+export default function CalendarDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -32,7 +33,6 @@ export default function NumberDialog({ visible, hideDialog, name, inputs, handle
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
           </div>
-
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
             <label>Min Length</label>
@@ -50,7 +50,6 @@ export default function NumberDialog({ visible, hideDialog, name, inputs, handle
             <label>Max Length Message</label>
             <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
           </div>
-
         </div>
       </Dialog>
     </div>
