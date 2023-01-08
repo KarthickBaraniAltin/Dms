@@ -12,6 +12,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
+import { Guid } from 'js-guid'
 
 export default function DndWithClientSideValidations() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useFormCreator()
@@ -23,24 +24,14 @@ export default function DndWithClientSideValidations() {
     const mainFormComponentsObject = renderComponents(false)
     const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <SortableComponent key={index} id={index + 1} >{component}</SortableComponent>)
     const previewForm = renderComponents(true)
-    const textCount = useRef(0)
-    const textareaCount = useRef(0)
     
-
     function handleDragEnd(event) {
         const { active, over } = event
 
         if (over !== null && !active.data.current.sortable) {
             const updatedData = JSON.parse(JSON.stringify(active.data.current))
 
-            if (updatedData.name === 'text') {
-                textCount.current = textCount.current + 1
-                updatedData.name = `text${textCount.current}`
-            }
-            if (updatedData.name === 'textarea') {
-                textareaCount.current = textareaCount.current + 1
-                updatedData.name = `textarea${textareaCount.current}`
-            }
+            updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
 
             addMetadata(updatedData)
         }
