@@ -1,9 +1,15 @@
 import React from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { useDroppable } from '@dnd-kit/core'
-import { useSortable, arrayMove } from "@dnd-kit/sortable"
+import { useSortable, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { DndContext } from '@dnd-kit/core'
+import { SortableContext } from '@dnd-kit/sortable'
+import DndLeftPanel from '../components/DndComponents/DndLeftPanel'
+import PreviewDialog from '../components/Settings/PreviewDialog/PreviewDialog'
 import { CSS } from '@dnd-kit/utilities'
 import { Guid } from 'js-guid'
+import { Card } from 'primereact/card'
+import { Button } from 'primereact/button'
 
 const useDnd = () => {
 
@@ -88,7 +94,7 @@ const useDnd = () => {
         )
     }
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event, addMetadata, setMainFormIds, setMetadata) => {
         const { active, over } = event
 
         if (over !== null && !active.data.current.sortable) {
@@ -123,7 +129,38 @@ const useDnd = () => {
         }
     }
 
-    return { Draggable, Droppable, Sortable, handleDragEnd }
+    const DndContainer = ({showForm, setShowForm, newFormTitle, mainFormIds, setMainFormIds, metadata, addMetadata, setMetadata, mainFormComponentsArray}) => {
+        function handlePreview() {
+            setShowForm(prevState => !prevState)
+        }
+
+        return (
+            <DndContext onDragEnd={(event) => handleDragEnd(event, addMetadata, setMainFormIds, setMetadata)}>
+                {showForm ? <PreviewDialog showForm={showForm} handlePreview={handlePreview} metadata={previewForm} /> : null}
+                <div className='grid'>
+                    <DndLeftPanel />
+                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                        <div className='flex flex-column justify-content-center'>
+                            <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
+                                <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
+                            </Card>
+                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                        </div>
+                        <Droppable id={'droppable-container-form'}>
+                            <SortableContext
+                                items={mainFormIds}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                {metadata.length === 0 ? <h5>Drop field here</h5> : mainFormComponentsArray}
+                            </SortableContext>
+                        </Droppable>
+                    </Card>
+                </div>
+            </DndContext>
+        )
+    }
+
+    return { Draggable, Droppable, Sortable, handleDragEnd, DndContainer }
 }
 
 export default useDnd

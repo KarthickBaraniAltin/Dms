@@ -12,12 +12,12 @@ import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { Guid } from 'js-guid'
+import useDnd from '../../hooks/useDnd'
 
 export default function DndWithClientSideValidations() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useFormCreator()
-
     const [mainFormIds, setMainFormIds] = useState([])
-
+    const { DndContainer } = useDnd()
     const [newForm, setNewForm] = useState(false)
     const [newFormValue, setNewFormValue] = useState('')
     const [showForm, setShowForm] = useState(false)
@@ -66,9 +66,9 @@ export default function DndWithClientSideValidations() {
         setNewForm(true)
     }
 
-    function handlePreview() {
-        setShowForm(prevState => !prevState)
-    }
+    // function handlePreview() {
+    //     setShowForm(prevState => !prevState)
+    // }
 
     useEffect(() => {
         setMainFormIds(mainFormComponentsArray.map(component => component.props.id))
@@ -82,28 +82,39 @@ export default function DndWithClientSideValidations() {
             </Head>
             <AuthenticatedTemplate>
                 {newForm ? 
-                    <DndContext onDragEnd={handleDragEnd}>
-                    {showForm ? <PreviewDialog showForm={showForm} handlePreview={handlePreview} metadata={previewForm} /> : null}
-                    <div className='grid'>
-                        <DndLeftPanel />
-                        <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                            <div className='flex flex-column justify-content-center'>
-                                <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
-                                    <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
-                                </Card>
-                                <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
-                            </div>
-                            <Droppable id={'droppable-container-form'}>
-                                <SortableContext
-                                    items={mainFormIds}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {metadata.length === 0 ? <h5>Drop field here</h5> : mainFormComponentsArray}
-                                </SortableContext>
-                            </Droppable>
-                        </Card>
-                    </div>
-                    </DndContext>
+                    // <DndContext onDragEnd={handleDragEnd}>
+                    // {showForm ? <PreviewDialog showForm={showForm} handlePreview={handlePreview} metadata={previewForm} /> : null}
+                    // <div className='grid'>
+                    //     <DndLeftPanel />
+                    //     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                    //         <div className='flex flex-column justify-content-center'>
+                    //             <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
+                    //                 <h1 style={{'text-align': 'center'}}>{newFormTitle}</h1>
+                    //             </Card>
+                    //             <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                    //         </div>
+                    //         <Droppable id={'droppable-container-form'}>
+                    //             <SortableContext
+                    //                 items={mainFormIds}
+                    //                 strategy={verticalListSortingStrategy}
+                    //             >
+                    //                 {metadata.length === 0 ? <h5>Drop field here</h5> : mainFormComponentsArray}
+                    //             </SortableContext>
+                    //         </Droppable>
+                    //     </Card>
+                    // </div>
+                    // </DndContext>
+                    <DndContainer
+                        showForm={showForm}
+                        setShowForm={setShowForm}
+                        newFormTitle={newFormTitle}
+                        mainFormIds={mainFormIds}
+                        setMainFormIds={setMainFormIds}
+                        metadata={metadata}
+                        addMetadata={addMetadata}
+                        setMetadata={setMetadata}
+                        mainFormComponentsArray={mainFormComponentsArray}
+                    />
                     :
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                         <h5 style={{'margin-bottom': '0.25rem', 'font-size': '1rem'}}>Create new form</h5>
