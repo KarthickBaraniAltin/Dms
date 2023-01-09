@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '/component-library'
+  basePath: '/form-builder-studio'
 }
 
 module.exports = nextConfig
