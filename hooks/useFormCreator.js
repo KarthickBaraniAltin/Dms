@@ -7,7 +7,6 @@ import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 import { createElement, useEffect, useState } from "react"
-import TextDialog from '../components/Settings/TextDialog/TextDialog'
 import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
