@@ -17,7 +17,7 @@ import useDnd from '../../hooks/useDnd'
 export default function DndWithClientSideValidations() {
     const {metadata, addMetadata, setMetadata, renderComponents} = useFormCreator()
     const [mainFormIds, setMainFormIds] = useState([])
-    const { DndContainer } = useDnd()
+    const { handleDragEnd } = useDnd()
     const [newForm, setNewForm] = useState(false)
     const [newFormValue, setNewFormValue] = useState('')
     const [showForm, setShowForm] = useState(false)
@@ -27,40 +27,40 @@ export default function DndWithClientSideValidations() {
     const mainFormComponentsObject = renderComponents(false)
     const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <SortableComponent key={index} id={index + 1} >{component}</SortableComponent>)
 
-    function handleDragEnd(event) {
-        const { active, over } = event
+    // function handleDragEnd(event) {
+    //     const { active, over } = event
 
-        if (over !== null && !active.data.current.sortable) {
-            const updatedData = JSON.parse(JSON.stringify(active.data.current))
+    //     if (over !== null && !active.data.current.sortable) {
+    //         const updatedData = JSON.parse(JSON.stringify(active.data.current))
 
-            updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
+    //         updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
 
-            addMetadata(updatedData)
-        }
+    //         addMetadata(updatedData)
+    //     }
 
-        if (active.data.current.sortable) {
-            if (active.id !== over.id) {
-                setMainFormIds(ids => {
-                    const activeIndex = ids.indexOf(active.id)
-                    const overIndex = ids.indexOf(over.id)
+    //     if (active.data.current.sortable) {
+    //         if (active.id !== over.id) {
+    //             setMainFormIds(ids => {
+    //                 const activeIndex = ids.indexOf(active.id)
+    //                 const overIndex = ids.indexOf(over.id)
 
-                    return arrayMove(ids, activeIndex, overIndex)
-                })
+    //                 return arrayMove(ids, activeIndex, overIndex)
+    //             })
 
-                setMetadata(prevState => {
-                    const movingComponentId = active.id - 1
-                    const newPositionId = over.id - 1
-                    let tempMetadata = prevState.slice(0)
+    //             setMetadata(prevState => {
+    //                 const movingComponentId = active.id - 1
+    //                 const newPositionId = over.id - 1
+    //                 let tempMetadata = prevState.slice(0)
 
-                    const movingComponent = tempMetadata.slice(movingComponentId, movingComponentId + 1 ? movingComponentId + 1 : null)
-                    tempMetadata.splice(movingComponentId, 1)
-                    tempMetadata.splice(newPositionId, 0, ...movingComponent)
+    //                 const movingComponent = tempMetadata.slice(movingComponentId, movingComponentId + 1 ? movingComponentId + 1 : null)
+    //                 tempMetadata.splice(movingComponentId, 1)
+    //                 tempMetadata.splice(newPositionId, 0, ...movingComponent)
 
-                    return tempMetadata
-                })
-            }
-        }
-    }
+    //                 return tempMetadata
+    //             })
+    //         }
+    //     }
+    // }
 
     function handleNewForm() {
         setNewForm(true)
@@ -82,7 +82,7 @@ export default function DndWithClientSideValidations() {
             </Head>
             <AuthenticatedTemplate>
                 {newForm ? 
-                    <DndContext onDragEnd={handleDragEnd}>
+                    <DndContext onDragEnd={(event) => handleDragEnd(event, addMetadata, setMainFormIds, setMetadata)}>
                     {showForm ? <PreviewDialog showForm={showForm} handlePreview={handlePreview} metadata={previewForm} /> : null}
                     <div className='grid'>
                         <DndLeftPanel />
