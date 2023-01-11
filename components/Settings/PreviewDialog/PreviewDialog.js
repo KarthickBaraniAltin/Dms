@@ -7,7 +7,6 @@ export default function PreviewDialog({ showForm, handlePreview, metadata }) {
     let subtitleList = []
     let componentList = []
     const components = metadata?.props?.children
-    console.log('metadata.props.children:', metadata.props.children)
 
     if (metadata.props.children) {
         labelList = components.map(component => {
@@ -44,11 +43,8 @@ export default function PreviewDialog({ showForm, handlePreview, metadata }) {
             <Dialog header='Preview Form Page' visible={showForm} onHide={() => handlePreview()} style={{width: '50vw'}}>
                 <div className='flex justify-content-center'>
                     <div>
-                        {/* {metadata?.props?.children} */}
                         {metadata.props.children ?
                             <div className='flex flex-column'>
-                                {/* {labelList}
-                                {inputFieldList} */}
                                 {componentList}
                             </div>
                             :
