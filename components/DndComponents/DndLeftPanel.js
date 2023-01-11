@@ -1,12 +1,11 @@
 import { Card } from 'primereact/card'
 import { useInputs } from '../../hooks/useInput'
 import Input from '../Input/Input'
-// import { Draggable } from './Draggable'
+import { Draggable } from './Draggable'
 import useDnd  from '../../hooks/useDnd'
 
 export default function DndLeftPanel() {
     const { handleInputChange, inputs } = useInputs()
-    const { Draggable } = useDnd()
     const componentTypes = [
         'text',
         'calendar',
