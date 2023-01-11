@@ -24,8 +24,9 @@ const useDnd = () => {
                     const activeIndex = ids.indexOf(active.id)
                     const overIndex = ids.indexOf(over.id)
 
-                    console.log('activeIndex:', activeIndex)
-                    console.log('overIndex:', overIndex)
+                    console.log('active.id:', active.id)
+                    console.log('over.id:', over.id)
+                    console.log(arrayMove(ids, activeIndex, overIndex))
 
                     return arrayMove(ids, activeIndex, overIndex)
                 })
