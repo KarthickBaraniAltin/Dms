@@ -2,10 +2,10 @@ import { Card } from 'primereact/card'
 import { useInputs } from '../../hooks/useInput'
 import Input from '../Input/Input'
 import { Draggable } from './Draggable'
-import useDnd  from '../../hooks/useDnd'
 
-export default function DndLeftPanel() {
+export default function ComponentPanel() {
     const { handleInputChange, inputs } = useInputs()
+
     const componentTypes = [
         'text',
         'calendar',
@@ -24,6 +24,17 @@ export default function DndLeftPanel() {
         { label: 'Istanbul', value: 'IST' },
         { label: 'Paris', value: 'PRS' }
       ]
+
+    const sectionPanel = (
+        <div>
+            <div className='flex justify-content-between'>
+            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                Section Panel
+            </label> 
+            <i className='pi pi-cog' style={{fontSize: '1em'}}></i>
+            </div>
+        </div>
+    )
 
     const draggableItems = componentTypes.map((component, index) => {
         if (component === 'text') {

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
+import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
 import useDnd from '../../hooks/useDnd'
@@ -34,7 +34,7 @@ export default function DndWithClientSideValidations() {
                     <DndContext onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}>
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
                     <div className='grid'>
-                        <DndLeftPanel />
+                        <ComponentPanel />
                         <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                             <div className='flex flex-column justify-content-center'>
                                 <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
