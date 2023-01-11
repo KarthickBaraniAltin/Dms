@@ -4,7 +4,7 @@ import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
-import { SortableComponent } from '../../components/DndComponents/SortableComponent'
+import { Sortable } from '../../components/DndComponents/Sortable'
 import { useFormCreator } from '../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { InputText } from 'primereact/inputtext'
@@ -24,42 +24,7 @@ export default function DndWithClientSideValidations() {
     const previewForm = renderComponents(true)
 
     const mainFormComponentsObject = renderComponents(false)
-    const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <SortableComponent key={index} id={index + 1} >{component}</SortableComponent>)
-
-    // function handleDragEnd(event) {
-    //     const { active, over } = event
-
-    //     if (over !== null && !active.data.current.sortable) {
-    //         const updatedData = JSON.parse(JSON.stringify(active.data.current))
-
-    //         updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
-
-    //         addMetadata(updatedData)
-    //     }
-
-    //     if (active.data.current.sortable) {
-    //         if (active.id !== over.id) {
-    //             setMainFormIds(ids => {
-    //                 const activeIndex = ids.indexOf(active.id)
-    //                 const overIndex = ids.indexOf(over.id)
-
-    //                 return arrayMove(ids, activeIndex, overIndex)
-    //             })
-
-    //             setMetadata(prevState => {
-    //                 const movingComponentId = active.id - 1
-    //                 const newPositionId = over.id - 1
-    //                 let tempMetadata = prevState.slice(0)
-
-    //                 const movingComponent = tempMetadata.slice(movingComponentId, movingComponentId + 1 ? movingComponentId + 1 : null)
-    //                 tempMetadata.splice(movingComponentId, 1)
-    //                 tempMetadata.splice(newPositionId, 0, ...movingComponent)
-
-    //                 return tempMetadata
-    //             })
-    //         }
-    //     }
-    // }
+    const mainFormComponentsArray = mainFormComponentsObject.props.children.map((component, index) => <Sortable key={index} id={index + 1} >{component}</Sortable>)
 
     function handleNewForm() {
         setNewForm(true)
