@@ -20,11 +20,10 @@ export default function DndWithClientSideValidations() {
     const { handleDragEnd, handleDragOver } = useDnd()
 
     useEffect(() => {
-        setMainFormIds(renderComponents().props.children.map(component => {
-            // console.log(component.props.id)
-            return component.props.id
-        }))
+        setMainFormIds(renderComponents().props.children.map(component => component.props.id))
     }, [metadata])
+
+    console.log('mainFormIds:', mainFormIds)
 
     return (
         <>

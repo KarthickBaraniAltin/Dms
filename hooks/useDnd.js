@@ -7,7 +7,7 @@ const useDnd = () => {
         console.log(event)
     }
 
-    const handleDragEnd = (event, addMetadata, setMainFormIds, setMetadata) => {
+    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds) => {
         const { active, over } = event
 
         if (over !== null && !active.data.current.sortable) {
@@ -23,11 +23,6 @@ const useDnd = () => {
                 setMainFormIds(ids => {
                     const activeIndex = ids.indexOf(active.id)
                     const overIndex = ids.indexOf(over.id)
-
-                    console.log('ids:', ids)
-                    console.log('active.id:', active.id)
-                    console.log('over.id:', over.id)
-                    console.log('arrayMove:', arrayMove(ids, activeIndex, overIndex))
 
                     return arrayMove(ids, activeIndex, overIndex)
                 })
