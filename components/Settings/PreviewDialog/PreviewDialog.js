@@ -8,8 +8,6 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
     let componentList = []
     const components = metadata?.props?.children
 
-    console.log('components:', components)
-
     if (metadata.props.children) {
         labelList = components.map(component => {
             return <div>{component.props.children.props.children[1]}</div>
@@ -24,6 +22,16 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
         })
 
         for (let i = 0; i < components.length; i++) {
+            if (components[i].props.children.type === 'label') {
+                componentList.push(
+                    <div>
+                        {components[i].props.children.props.children}
+                    </div>
+                )
+
+                continue
+            }
+
             componentList.push(
             <div key={i} style={{'display': 'flex', 'justifyContent': 'space-between', 'gap': '2rem', 'margin-bottom': '1rem'}}>
                 <div>

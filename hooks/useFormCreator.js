@@ -126,6 +126,7 @@ export const useFormCreator = () => {
                     return (
                         <div key={index}>
                             <div  className='field col-12'>
+                                {renderDialog()}
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                                     {label}
                                 </label> 
