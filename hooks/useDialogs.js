@@ -1,4 +1,5 @@
 import { createElement, useState } from "react"
+import SectionPanelDialog from '../components/Settings/SectionPanelDialog/SectionPanelDialog'
 import TextDialog from "../components/Settings/TextDialog/TextDialog"
 import TextareaDialog from "../components/Settings/TextareaDialog/TextareaDialog"
 import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
@@ -14,6 +15,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
     // console.log("Dialog Data = ", dialoagData)
 
     const dialogMapper = {
+        'section-panel': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
         'calendar': CalendarDialog,
