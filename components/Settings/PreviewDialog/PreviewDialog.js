@@ -1,6 +1,6 @@
 import { Dialog } from "primereact/dialog"
 
-export default function PreviewDialog({ showForm, handlePreview, metadata }) {
+export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
 
     let labelList = []
     let inputFieldList = []
@@ -10,15 +10,15 @@ export default function PreviewDialog({ showForm, handlePreview, metadata }) {
 
     if (metadata.props.children) {
         labelList = components.map(component => {
-            return <div>{component.props.children[1]}</div>
+            return <div>{component.props.children.props.children[1]}</div>
         })
 
         inputFieldList = components.map(component => {
-            return <div>{component.props.children[2]}</div>
+            return <div>{component.props.children.props.children[2]}</div>
         })
 
         subtitleList = components.map(component => {
-            return <div>{component.props.children[4]}</div>
+            return <div>{component.props.children.props.children[4]}</div>
         })
 
         for (let i = 0; i < components.length; i++) {
@@ -40,7 +40,7 @@ export default function PreviewDialog({ showForm, handlePreview, metadata }) {
 
     return (
         <>
-            <Dialog header='Preview Form Page' visible={showForm} onHide={() => handlePreview()} style={{width: '50vw'}}>
+            <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '50vw'}}>
                 <div className='flex justify-content-center'>
                     <div>
                         {metadata.props.children ?
