@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core'
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import DndLeftPanel from '../../components/DndComponents/DndLeftPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { SortableComponent } from '../../components/DndComponents/SortableComponent'
@@ -11,7 +11,6 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
-import { Guid } from 'js-guid'
 import useDnd from '../../hooks/useDnd'
 
 export default function DndWithClientSideValidations() {
