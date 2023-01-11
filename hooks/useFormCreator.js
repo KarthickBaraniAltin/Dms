@@ -7,11 +7,10 @@ import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 import { createElement, useEffect, useState } from "react"
+import { Sortable } from '../components/DndComponents/Sortable'
 import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
-
-// Giving default value to time date component with Date.Now() ? 
 
 export const useFormCreator = () => {
 
@@ -19,6 +18,10 @@ export const useFormCreator = () => {
     const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog, hideDialog } = useDialogs({ metadata, setMetadata })
+
+    // These variables are for DND
+    const [mainFormIds, setMainFormIds] = useState([])
+
 
     const componentMapper = {
         'text': InputText,
@@ -40,47 +43,80 @@ export const useFormCreator = () => {
                 setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
             }
         });    
-    
+
+        
     // Try to remove this warning later
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
     
     // console.log("Metadata = ", metadata)
 
-    const renderComponents = (preview) => {
+    const renderComponents = () => {
         return (
             <>
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     return (
-                        <div key={index} className='field col-12'>
-                            {renderDialog()}
-                            {preview ? 
-                            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                {label}
-                            </label> 
-                            : 
-                            <div className="flex justify-content-between">
+                        <Sortable key={index} id={index + 1}>
+                            <div  className='field col-12'>
+                                {renderDialog()}
+                                <div className="flex justify-content-between">
+                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                        {label}
+                                    </label> 
+                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
+                                </div>
+                                {createElement(
+                                    componentMapper[type],
+                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                                )}
+                                { subtitleComponent }
+                                { subtitle && 
+                                    <small className='block'>{subtitle}</small>
+                                }
+                                { errors[name] && 
+                                    errors[name].map(element => {
+                                        return (
+                                            <small key={element} className='p-error block'>{element}</small> 
+                                        )
+                                    })
+                                }
+                            </div>
+                        </Sortable>
+                    )
+                })}
+            </>
+        )
+    }
+
+    const renderPreview = () => {
+        return (
+            <>
+                {metadata.map((data, index) => {
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                    return (
+                        <div key={index}>
+                            <div  className='field col-12'>
+                                {renderDialog()}
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                                     {label}
                                 </label> 
-                                <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                            </div>}
-                            {createElement(
-                                componentMapper[type],
-                                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                            )}
-                            { subtitleComponent }
-                            { subtitle && 
-                                <small className='block'>{subtitle}</small>
-                            }
-                            { errors[name] && 
-                                errors[name].map(element => {
-                                    return (
-                                        <small key={element} className='p-error block'>{element}</small> 
-                                    )
-                                })
-                            }
+                                {createElement(
+                                    componentMapper[type],
+                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                                )}
+                                { subtitleComponent }
+                                { subtitle && 
+                                    <small className='block'>{subtitle}</small>
+                                }
+                                { errors[name] && 
+                                    errors[name].map(element => {
+                                        return (
+                                            <small key={element} className='p-error block'>{element}</small> 
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                     )
                 })}
@@ -88,5 +124,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, addMetadata, metadata, setMetadata }
+    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds }
 }
