@@ -17,10 +17,13 @@ export default function DndWithClientSideValidations() {
     const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds } = useFormCreator()
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
-    const { handleDragEnd } = useDnd()
+    const { handleDragEnd, handleDragOver } = useDnd()
 
     useEffect(() => {
-        setMainFormIds(renderComponents().props.children.map(component => component.props.id))
+        setMainFormIds(renderComponents().props.children.map(component => {
+            // console.log(component.props.id)
+            return component.props.id
+        }))
     }, [metadata])
 
     return (
@@ -31,7 +34,10 @@ export default function DndWithClientSideValidations() {
             </Head>
             <AuthenticatedTemplate>
                 {newForm ? 
-                    <DndContext onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}>
+                    <DndContext
+                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}
+                        // onDragOver={handleDragOver}
+                    >
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
                     <div className='grid'>
                         <ComponentPanel />

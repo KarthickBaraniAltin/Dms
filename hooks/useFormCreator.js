@@ -12,6 +12,7 @@ import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import { Droppable } from '../components/DndComponents/Droppable'
 
 export const useFormCreator = () => {
 
@@ -59,7 +60,8 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     if (type === 'section-panel') {
                         return (
-                            <div className='field col-12' key={index} id={index + 1}>
+                            <Sortable key={index} id={index + 1}>
+                                <div className='field col-12'>
                                 {renderDialog()}
                                 <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
                                     <label className='block' style={{fontWeight: '700', color: '#000000'}}>
@@ -67,10 +69,13 @@ export const useFormCreator = () => {
                                     </label> 
                                     <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
                                 </div>
-                                {/* <SortableContext>
+                                <Droppable id={`panel-${index + 1}`}>
+                                    {/* <SortableContext>
 
-                                </SortableContext> */}
+                                    </SortableContext> */}
+                                </Droppable>
                             </div>
+                            </Sortable>
                         )
                     }
 

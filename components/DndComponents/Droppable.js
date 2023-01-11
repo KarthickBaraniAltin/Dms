@@ -10,9 +10,6 @@ export function Droppable(props) {
     backgroundColor: isOver ? '#004990' : 'white',
     color: isOver ? 'white' : undefined,
     padding: '3rem 6rem',
-    // margin: 'auto 0',
-    // textAlign: 'center',
-    // width: '800px'
   }
 
   return (

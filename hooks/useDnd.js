@@ -3,6 +3,10 @@ import { Guid } from 'js-guid'
 
 const useDnd = () => {
 
+    const handleDragOver = (event) => {
+        console.log(event)
+    }
+
     const handleDragEnd = (event, addMetadata, setMainFormIds, setMetadata) => {
         const { active, over } = event
 
@@ -19,6 +23,9 @@ const useDnd = () => {
                 setMainFormIds(ids => {
                     const activeIndex = ids.indexOf(active.id)
                     const overIndex = ids.indexOf(over.id)
+
+                    console.log('activeIndex:', activeIndex)
+                    console.log('overIndex:', overIndex)
 
                     return arrayMove(ids, activeIndex, overIndex)
                 })
@@ -38,7 +45,7 @@ const useDnd = () => {
         }
     }
 
-    return { handleDragEnd }
+    return { handleDragEnd, handleDragOver }
 }
 
 export default useDnd
