@@ -23,8 +23,6 @@ export default function DndWithClientSideValidations() {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
     }, [metadata])
 
-    console.log('mainFormIds:', mainFormIds)
-
     return (
         <>
             <Head>
