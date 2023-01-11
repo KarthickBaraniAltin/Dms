@@ -113,7 +113,6 @@ export const useFormCreator = () => {
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     if (type === 'section-panel') {
-                        console.log('data label:', data.label)
                         return (
                             <div className='field col-12' key={index}>
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
