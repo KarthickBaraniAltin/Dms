@@ -15,7 +15,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
     // console.log("Dialog Data = ", dialoagData)
 
     const dialogMapper = {
-        'section-panel': SectionPanelDialog,
+        'section': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
         'calendar': CalendarDialog,

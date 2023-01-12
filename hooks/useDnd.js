@@ -3,8 +3,27 @@ import { Guid } from 'js-guid'
 
 const useDnd = () => {
 
-    const handleDragOver = (event) => {
-        console.log(event)
+    const handleDragOver = (event, setSectionMetadata) => {
+        const { active } = event
+
+        if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
+        if (active.data.current.sortable) return // Prevents error being thrown when sorting components on main form panel.
+
+        if (event.collisions) {
+            const id = event.collisions[event.collisions.length - 1].id 
+            console.log('collisions:', event.collisions)
+            if (id.includes('section')) { // Checks if the last element in the collisions array is a section.
+                setSectionMetadata(prevState => {
+                    const draggedItemMetadata = active.data.current
+                    draggedItemMetadata.id = prevState.length + 1
+
+                    return [
+                        ...prevState,
+                        {componentData: draggedItemMetadata}
+                    ]
+                })
+            }
+        }
     }
 
     const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds) => {
