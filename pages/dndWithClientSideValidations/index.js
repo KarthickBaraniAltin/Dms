@@ -66,7 +66,7 @@ export default function DndWithClientSideValidations() {
                             <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
                         </div>
                     </div>
-                </UnauthenticatedTemplate>
+            </UnauthenticatedTemplate>
         </>
     )
 }

@@ -7,7 +7,7 @@ export default function ComponentPanel() {
     const { handleInputChange, inputs } = useInputs()
 
     const componentTypes = [
-        'section-panel',
+        'section',
         'text',
         'calendar',
         'number',
@@ -27,19 +27,19 @@ export default function ComponentPanel() {
       ]
 
     const draggableItems = componentTypes.map((component, index) => {
-        if (component === 'section-panel') {
+        if (component === 'section') {
             return (
                 <Draggable
                     key={index}
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    label='Section Panel'
+                    label='Section'
                 >
                     <div>
                         <div className='flex justify-content-between'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Section Panel
+                            Section
                         </label> 
                         <i className='pi pi-cog' style={{fontSize: '1em'}}></i>
                         </div>

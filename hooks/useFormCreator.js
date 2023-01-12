@@ -58,7 +58,7 @@ export const useFormCreator = () => {
             <>
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-                    if (type === 'section-panel') {
+                    if (type === 'section') {
                         return (
                             <Sortable key={index} id={index + 1}>
                                 <div className='field col-12'>
@@ -69,7 +69,7 @@ export const useFormCreator = () => {
                                     </label> 
                                     <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
                                 </div>
-                                <Droppable id={`panel-${index + 1}`}>
+                                <Droppable id={`section-${index + 1}`}>
                                     {/* <SortableContext>
 
                                     </SortableContext> */}
