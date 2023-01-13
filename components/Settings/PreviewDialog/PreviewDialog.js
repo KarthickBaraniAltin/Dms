@@ -33,13 +33,10 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
             }
 
             componentList.push(
-            <div key={i} style={{'display': 'flex', 'justifyContent': 'space-between', 'gap': '2rem', 'margin-bottom': '1rem'}}>
-                <div>
+            <div key={i} style={{'display': 'flex', 'gap': '2rem', 'margin-bottom': '1rem'}}>
+                <div style={{'width': '100px'}}>
                     {labelList[i]}
                     {subtitleList[i]}
-                </div>
-                <div>
-                    
                 </div>
                 {inputFieldList[i]}
             </div>
