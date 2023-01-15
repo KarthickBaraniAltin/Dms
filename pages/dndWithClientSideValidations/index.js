@@ -14,7 +14,7 @@ import { useShowForm } from '../../hooks/useShowForm'
 import { usePreviewDialog } from '../../hooks/usePreviewDialog'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, renderSectionComponents } = useFormCreator()
+    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, dragOverCapture } = useFormCreator()
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
@@ -32,8 +32,8 @@ export default function DndWithClientSideValidations() {
             <AuthenticatedTemplate>
                 {newForm ? 
                     <DndContext
-                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}
-                        onDragOver={(event) => handleDragOver(event, setSectionMetadata)}
+                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
+                        onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                     >
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
                     <div className='grid'>

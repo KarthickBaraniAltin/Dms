@@ -3,7 +3,7 @@ import { Guid } from 'js-guid'
 
 const useDnd = () => {
 
-    const handleDragOver = (event, setSectionMetadata) => {
+    const handleDragOver = (event, dragOverCapture) => {
         const { active } = event
 
         if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
@@ -11,24 +11,27 @@ const useDnd = () => {
 
         if (event.collisions) {
             const id = event.collisions[event.collisions.length - 1].id 
-            // console.log('collisions:', event.collisions)
+            console.log('id:', id)
             if (id.includes('section')) { // Checks if the last element in the collisions array is a section.
-                setSectionMetadata(prevState => {
-                    const draggedItemMetadata = active.data.current
-                    draggedItemMetadata.id = prevState.length + 1
+                // setSectionMetadata(prevState => {
+                //     const draggedItemMetadata = active.data.current
+                //     draggedItemMetadata.id = prevState.length + 1
 
-                    return [
-                        ...prevState,
-                        {componentData: draggedItemMetadata}
-                    ]
-                })
+                //     return [
+                //         ...prevState,
+                //         {componentData: draggedItemMetadata}
+                //     ]
+                // })
+
+                dragOverCapture.current = active.data.current
             }
         }
     }
 
-    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds) => {
+    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds, dragOverCapture) => {
         const { active, over } = event
-
+        console.log('dragOverCapture:', dragOverCapture.current)
+        dragOverCapture.current = null
         if (over !== null && !active.data.current.sortable) {
             const updatedData = JSON.parse(JSON.stringify(active.data.current))
 

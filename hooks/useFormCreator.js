@@ -6,7 +6,7 @@ import { InputNumber } from "primereact/inputnumber"
 import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
-import { createElement, useEffect, useState } from "react"
+import { createElement, useEffect, useState, useRef } from "react"
 import { Sortable } from '../components/DndComponents/Sortable'
 import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
@@ -24,6 +24,7 @@ export const useFormCreator = () => {
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
     const [sectionMetadata, setSectionMetadata] = useState([])
+    const dragOverCapture = useRef()
 
 
     const componentMapper = {
@@ -59,31 +60,31 @@ export const useFormCreator = () => {
         return (
             <>
                 {metadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-                    if (type === 'section') {
-                        return (
-                            <Sortable key={index} id={index + 1}>
-                                <div className='field col-12'>
-                                {renderDialog()}
-                                <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
-                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                        {label}
-                                    </label> 
-                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                                </div>
-                                <Droppable id={`section-${index + 1}`}>
-                                    {/* <SortableContext
-                                        items={sectionIds}
-                                        strategy={horizontalListSortingStrategy}
-                                    >
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
+                    // if (type === 'section') {
+                    //     return (
+                    //         <Sortable key={index} id={index + 1}>
+                    //             <div className='field col-12'>
+                    //             {renderDialog()}
+                    //             <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
+                    //                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                    //                     {label}
+                    //                 </label> 
+                    //                 <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
+                    //             </div>
+                    //             <Droppable id={`section-${index + 1}`}>
+                    //                 {/* <SortableContext
+                    //                     items={sectionIds}
+                    //                     strategy={horizontalListSortingStrategy}
+                    //                 >
 
-                                    </SortableContext> */}
-                                    {renderSectionComponents()}
-                                </Droppable>
-                            </div>
-                            </Sortable>
-                        )
-                    }
+                    //                 </SortableContext> */}
+                    //                 {createComponents(data, index)}
+                    //             </Droppable>
+                    //         </div>
+                    //         </Sortable>
+                    //     )
+                    // }
 
                     return createComponents(data, index)
                 })}
@@ -168,44 +169,5 @@ export const useFormCreator = () => {
         )
     }
 
-    const renderSectionComponents = () => {
-        return (
-            <>
-                {sectionMetadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data.componentData
-                    console.log('data.componentData:', data.componentData)
-                    return (
-                        <div key={index} id={index + 1}>
-                            <div  className='field col-12'>
-                                {renderDialog()}
-                                <div className="flex justify-content-between">
-                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                        {label}
-                                    </label> 
-                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data.componentData)}></i>
-                                </div>
-                                {createElement(
-                                    componentMapper[type],
-                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                                )}
-                                { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
-                                { errors[name] && 
-                                    errors[name].map(element => {
-                                        return (
-                                            <small key={element} className='p-error block'>{element}</small> 
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                    )
-                })}
-            </>
-        )
-    }
-
-    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, renderSectionComponents }
+    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, dragOverCapture }
 }
