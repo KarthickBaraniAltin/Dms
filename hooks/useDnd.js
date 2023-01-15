@@ -4,34 +4,40 @@ import { Guid } from 'js-guid'
 const useDnd = () => {
 
     const handleDragOver = (event, dragOverCapture) => {
-        const { active } = event
+        const { active, over } = event
 
         if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
         if (active.data.current.sortable) return // Prevents error being thrown when sorting components on main form panel.
 
         if (event.collisions) {
             const id = event.collisions[event.collisions.length - 1].id 
-            console.log('id:', id)
             if (id.includes('section')) { // Checks if the last element in the collisions array is a section.
-                // setSectionMetadata(prevState => {
-                //     const draggedItemMetadata = active.data.current
-                //     draggedItemMetadata.id = prevState.length + 1
-
-                //     return [
-                //         ...prevState,
-                //         {componentData: draggedItemMetadata}
-                //     ]
-                // })
-
-                dragOverCapture.current = active.data.current
+                dragOverCapture.current = {
+                    id: over.id,
+                    componentData: active.data.current
+                }
             }
         }
     }
 
-    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds, dragOverCapture) => {
+    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture) => {
         const { active, over } = event
-        console.log('dragOverCapture:', dragOverCapture.current)
-        dragOverCapture.current = null
+
+        if (dragOverCapture.current) {
+            setMetadata(prevState => {
+                const indexOfSection = mainFormIds.findIndex(element => element == dragOverCapture.current.id)
+                const tempMetadata = JSON.parse(JSON.stringify(prevState))
+
+                tempMetadata[indexOfSection].sectionMetadata.push(dragOverCapture.current.componentData)
+
+                return tempMetadata
+            })
+
+            dragOverCapture.current = null
+
+            return
+        }
+
         if (over !== null && !active.data.current.sortable) {
             const updatedData = JSON.parse(JSON.stringify(active.data.current))
 

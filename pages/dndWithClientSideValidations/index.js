@@ -32,7 +32,7 @@ export default function DndWithClientSideValidations() {
             <AuthenticatedTemplate>
                 {newForm ? 
                     <DndContext
-                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
+                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture)}
                         onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                     >
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}

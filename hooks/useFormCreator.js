@@ -56,35 +56,36 @@ export const useFormCreator = () => {
     // console.log("Metadata = ", metadata)
 
     const renderComponents = () => {
-        console.log('metadata:', metadata)
+        // console.log('metadata:', metadata)
         return (
             <>
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
-                    // if (type === 'section') {
-                    //     return (
-                    //         <Sortable key={index} id={index + 1}>
-                    //             <div className='field col-12'>
-                    //             {renderDialog()}
-                    //             <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
-                    //                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                    //                     {label}
-                    //                 </label> 
-                    //                 <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                    //             </div>
-                    //             <Droppable id={`section-${index + 1}`}>
-                    //                 {/* <SortableContext
-                    //                     items={sectionIds}
-                    //                     strategy={horizontalListSortingStrategy}
-                    //                 >
+                    if (type === 'section') {
+                        // console.log('sectionMetadata:', sectionMetadata)
+                        return (
+                            <Sortable key={index} id={index + 1}>
+                                <div className='field col-12'>
+                                {renderDialog()}
+                                <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
+                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                        {label}
+                                    </label> 
+                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
+                                </div>
+                                <Droppable id={`section-${index + 1}`}>
+                                    {/* <SortableContext
+                                        items={sectionIds}
+                                        strategy={horizontalListSortingStrategy}
+                                    >
 
-                    //                 </SortableContext> */}
-                    //                 {createComponents(data, index)}
-                    //             </Droppable>
-                    //         </div>
-                    //         </Sortable>
-                    //     )
-                    // }
+                                    </SortableContext> */}
+                                    {createSectionComponents(sectionMetadata)}
+                                </Droppable>
+                            </div>
+                            </Sortable>
+                        )
+                    }
 
                     return createComponents(data, index)
                 })}
@@ -137,6 +138,45 @@ export const useFormCreator = () => {
                                 </label> 
                             </div>
                         )
+                    }
+
+                    return (
+                        <div key={index}>
+                            <div  className='field col-12'>
+                                {renderDialog()}
+                                <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                    {label}
+                                </label> 
+                                {createElement(
+                                    componentMapper[type],
+                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                                )}
+                                { subtitleComponent }
+                                { subtitle && 
+                                    <small className='block'>{subtitle}</small>
+                                }
+                                { errors[name] && 
+                                    errors[name].map(element => {
+                                        return (
+                                            <small key={element} className='p-error block'>{element}</small> 
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }
+
+    const createSectionComponents = (metadata) => {
+        return (
+            <>
+                {metadata.map((data, index) => {
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                    if (type === 'section') {
+                        return alert('Error: Cannot place section component within another section component.')
                     }
 
                     return (
