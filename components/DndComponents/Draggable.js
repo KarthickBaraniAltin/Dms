@@ -14,6 +14,7 @@ export function Draggable(props) {
         options: props?.options,
         mask: props?.mask,
         display: props?.display,
+        sectionMetadata: props?.sectionMetadata,
         id: props.id
     }
   })

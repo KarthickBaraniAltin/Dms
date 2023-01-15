@@ -11,7 +11,7 @@ const useDnd = () => {
 
         if (event.collisions) {
             const id = event.collisions[event.collisions.length - 1].id 
-            console.log('collisions:', event.collisions)
+            // console.log('collisions:', event.collisions)
             if (id.includes('section')) { // Checks if the last element in the collisions array is a section.
                 setSectionMetadata(prevState => {
                     const draggedItemMetadata = active.data.current
