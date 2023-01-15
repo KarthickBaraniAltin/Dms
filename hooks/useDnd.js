@@ -11,6 +11,9 @@ const useDnd = () => {
 
         if (event.collisions) {
             const id = event.collisions[event.collisions.length - 1].id 
+
+            if (typeof id !== 'string') return // Prevents error being thrown when id is not a string.
+
             if (id.includes('section')) { // Checks if the last element in the collisions array is a section.
                 dragOverCapture.current = {
                     id: over.id,

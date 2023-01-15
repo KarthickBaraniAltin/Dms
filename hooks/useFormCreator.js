@@ -13,6 +13,7 @@ import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
+import { DndContext } from '@dnd-kit/core'
 
 export const useFormCreator = () => {
 
@@ -63,6 +64,7 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         // console.log('sectionMetadata:', sectionMetadata)
+                        const sectionNumber = `section-${index + 1}_`
                         return (
                             <Sortable key={index} id={index + 1}>
                                 <div className='field col-12'>
@@ -74,13 +76,13 @@ export const useFormCreator = () => {
                                     <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
                                 </div>
                                 <Droppable id={`section-${index + 1}`}>
-                                    {/* <SortableContext
-                                        items={sectionIds}
-                                        strategy={horizontalListSortingStrategy}
-                                    >
+                                        {/* <SortableContext
+                                            items={sectionIds}
+                                            strategy={horizontalListSortingStrategy}
+                                        >
 
-                                    </SortableContext> */}
-                                    {createSectionComponents(sectionMetadata)}
+                                        </SortableContext> */}
+                                        {createSectionComponents(sectionMetadata, sectionNumber)}
                                 </Droppable>
                             </div>
                             </Sortable>
@@ -170,7 +172,7 @@ export const useFormCreator = () => {
         )
     }
 
-    const createSectionComponents = (metadata) => {
+    const createSectionComponents = (metadata, sectionNumber) => {
         return (
             <>
                 {metadata.map((data, index) => {
@@ -180,7 +182,7 @@ export const useFormCreator = () => {
                     }
 
                     return (
-                        <div key={index}>
+                        <div key={index} id={`${sectionNumber}${index + 1}`}>
                             <div  className='field col-12'>
                                 {renderDialog()}
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
