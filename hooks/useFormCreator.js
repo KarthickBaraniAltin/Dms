@@ -57,13 +57,11 @@ export const useFormCreator = () => {
     // console.log("Metadata = ", metadata)
 
     const renderComponents = () => {
-        // console.log('metadata:', metadata)
         return (
             <>
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
-                        // console.log('sectionMetadata:', sectionMetadata)
                         const sectionNumber = `section-${index + 1}_`
                         return (
                             <Sortable key={index} id={index + 1}>
