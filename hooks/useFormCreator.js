@@ -133,13 +133,13 @@ export const useFormCreator = () => {
                         const {label, sectionMetadata } = data
                         return (
                             <>
-                                <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: 'center'}}>
                                     {label}
                                 </label>
-                                {sectionMetadata.map(section => {
+                                {sectionMetadata.map((section, sectionIndex) => {
                                     const { type, name, label, subtitle, ...rest } = section
                                     return (
-                                        <div className='field col-12' key={index}>
+                                        <div className='field col-12' key={sectionIndex}>
                                             <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                                                 {label}
                                             </label> 
