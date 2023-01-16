@@ -201,9 +201,12 @@ export const useFormCreator = () => {
                         <div key={index} id={`${sectionNumber}${index + 1}`}>
                             <div  className='field col-12'>
                                 {renderDialog()}
-                                <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                    {label}
-                                </label> 
+                                <div className='flex justify-content-between'>
+                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                        {label}
+                                    </label>
+                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
+                                </div>
                                 {createElement(
                                     componentMapper[type],
                                     {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}

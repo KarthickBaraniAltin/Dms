@@ -43,6 +43,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
             return
         }
 
+        console.log('dialogData:', dialogData)
+
         const index = metadata.findIndex(element => element.name === dialogData.name)
         metadata[index] = {...metadata[index], ...inputs}
         setMetadata(metadata)
