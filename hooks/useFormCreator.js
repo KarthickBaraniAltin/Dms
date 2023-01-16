@@ -129,19 +129,37 @@ export const useFormCreator = () => {
         return (
             <>
                 {metadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-                    if (type === 'section') {
+                    if (data.type === 'section') {
+                        const {label, sectionMetadata } = data
                         return (
-                            <div className='field col-12' key={index}>
+                            <>
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                                     {label}
-                                </label> 
-                            </div>
+                                </label>
+                                {sectionMetadata.map(section => {
+                                    const { type, name, label, subtitle, ...rest } = section
+                                    return (
+                                        <div className='field col-12' key={index}>
+                                            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                                                {label}
+                                            </label> 
+                                            {createElement(
+                                                componentMapper[type],
+                                                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                                            )}
+                                            { subtitle && 
+                                            <small className='block'>{subtitle}</small>
+                                            }
+                                        </div>
+                                    )
+                                })}
+                            </>
                         )
                     }
 
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     return (
-                        <div key={index}>
+                        <div key={index} style={{marginTop: '1rem'}}>
                             <div  className='field col-12'>
                                 {renderDialog()}
                                 <label className='block' style={{fontWeight: '700', color: '#000000'}}>
