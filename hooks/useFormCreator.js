@@ -11,7 +11,7 @@ import { Sortable } from '../components/DndComponents/Sortable'
 import useDialogs from './useDialogs'
 import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { DndContext } from '@dnd-kit/core'
 
@@ -24,7 +24,7 @@ export const useFormCreator = () => {
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
-    const [sectionMetadata, setSectionMetadata] = useState([])
+    const [sectionIds, setSectionIds] = useState([])
     const dragOverCapture = useRef()
 
 
@@ -62,7 +62,8 @@ export const useFormCreator = () => {
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
-                        const sectionNumber = `section-${index + 1}_`
+                        const sectionNumber = `section-${index + 1}`
+                        console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))
                         return (
                             <Sortable key={index} id={index + 1}>
                                 <div className='field col-12'>
@@ -73,15 +74,18 @@ export const useFormCreator = () => {
                                     </label> 
                                     <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
                                 </div>
-                                <Droppable id={`section-${index + 1}`}>
-                                        {/* <SortableContext
-                                            items={sectionIds}
-                                            strategy={horizontalListSortingStrategy}
-                                        >
+                                <div>
+                                {/* style={{'maxHeight': '175px', 'overflowY': 'scroll'}} */}
+                                    <Droppable id={`section-${index + 1}`}>
+                                            {/* <SortableContext
+                                                items={sectionIds}
+                                                strategy={verticalListSortingStrategy}
+                                            >
 
-                                        </SortableContext> */}
-                                        {createSectionComponents(sectionMetadata, sectionNumber)}
-                                </Droppable>
+                                            </SortableContext> */}
+                                            {createSectionComponents(sectionMetadata, sectionNumber)}
+                                    </Droppable>
+                                </div>
                             </div>
                             </Sortable>
                         )
@@ -197,7 +201,7 @@ export const useFormCreator = () => {
                         return alert('Error: Cannot place section component within another section component.')
                     }
                     return (
-                        <div key={index} id={`${sectionNumber}${index + 1}`}>
+                        <div key={index} id={`${sectionNumber}_${index + 1}`}>
                             <div  className='field col-12'>
                                 {renderDialog()}
                                 <div className='flex justify-content-between'>
@@ -229,5 +233,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, dragOverCapture }
+    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture }
 }

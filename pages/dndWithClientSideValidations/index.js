@@ -14,7 +14,7 @@ import { useShowForm } from '../../hooks/useShowForm'
 import { usePreviewDialog } from '../../hooks/usePreviewDialog'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, sectionMetadata, setSectionMetadata, dragOverCapture } = useFormCreator()
+    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
