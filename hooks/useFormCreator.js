@@ -196,7 +196,6 @@ export const useFormCreator = () => {
                     if (type === 'section') {
                         return alert('Error: Cannot place section component within another section component.')
                     }
-
                     return (
                         <div key={index} id={`${sectionNumber}${index + 1}`}>
                             <div  className='field col-12'>

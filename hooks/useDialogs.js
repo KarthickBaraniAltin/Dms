@@ -11,9 +11,6 @@ const useDialogs = ({ metadata, setMetadata }) => {
     const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, setInputs } = useInputs()
 
-    // console.log("Show Dialog = ", showDialog)
-    // console.log("Dialog Data = ", dialoagData)
-
     const dialogMapper = {
         'section': SectionPanelDialog,
         'text': TextDialog,
@@ -43,7 +40,20 @@ const useDialogs = ({ metadata, setMetadata }) => {
             return
         }
 
-        console.log('dialogData:', dialogData)
+        for (let i = 0; i < metadata.length; i++) {
+            if (metadata[i].name.includes('section')) {
+                let sectionIndex = metadata[i].sectionMetadata.findIndex(sectionElement => sectionElement.name === dialogData.name)
+
+                if (sectionIndex === -1) {
+                    continue
+                }
+
+                metadata[i].sectionMetadata[sectionIndex] = {...metadata[i].sectionMetadata[sectionIndex], ...inputs}
+                setMetadata(metadata)
+                setShowDialog(false)
+                return
+            }
+        }
 
         const index = metadata.findIndex(element => element.name === dialogData.name)
         metadata[index] = {...metadata[index], ...inputs}

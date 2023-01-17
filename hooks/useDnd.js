@@ -30,6 +30,7 @@ const useDnd = () => {
             setMetadata(prevState => {
                 const indexOfSection = mainFormIds.findIndex(element => element == dragOverCapture.current.id)
                 const tempMetadata = JSON.parse(JSON.stringify(prevState))
+                dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}_${Guid.newGuid()}`
 
                 tempMetadata[indexOfSection].sectionMetadata.push(dragOverCapture.current.componentData)
 
