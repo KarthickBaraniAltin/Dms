@@ -27,6 +27,10 @@ export const useFormCreator = () => {
     const [sectionIds, setSectionIds] = useState([])
     const dragOverCapture = useRef()
 
+    useEffect(() => {
+        setMainFormIds(renderComponents().props.children.map(component => component.props.id))
+    }, [metadata])
+
 
     const componentMapper = {
         'text': InputText,
