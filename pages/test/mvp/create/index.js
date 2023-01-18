@@ -2,16 +2,16 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import ComponentPanel from '../../components/DndComponents/ComponentPanel'
-import { Droppable } from '../../components/DndComponents/Droppable'
-import { useFormCreator } from '../../hooks/useFormCreator'
-import useDnd from '../../hooks/useDnd'
+import ComponentPanel from '../../../../components/DndComponents/ComponentPanel'
+import { Droppable } from '../../../../components/DndComponents/Droppable'
+import { useFormCreator } from '../../../../hooks/useFormCreator'
+import useDnd from '../../../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
-import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
-import { useShowForm } from '../../hooks/useShowForm'
-import { usePreviewDialog } from '../../hooks/usePreviewDialog'
+import PreviewDialog from '../../../../components/Settings/PreviewDialog/PreviewDialog'
+import { useShowForm } from '../../../../hooks/useShowForm'
+import { usePreviewDialog } from '../../../../hooks/usePreviewDialog'
 
 export default function DndWithClientSideValidations() {
     const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
@@ -19,15 +19,11 @@ export default function DndWithClientSideValidations() {
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
 
-    // useEffect(() => {
-    //     setMainFormIds(renderComponents().props.children.map(component => component.props.id))
-    // }, [metadata])
-
     return (
         <>
             <Head>
                 <title>DnD With Client Side Validations</title>
-                <link rel='icon' sizes='32x32' href='/component-library/logo.png' />
+                <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
                 {newForm ? 

@@ -20,11 +20,13 @@ export const useApi = () => {
 
             if (data.statusCode == 400) {
                 // set validation errors
-                const errors = []
-                data.value.errors.forEach(element => {
-                    errors[element.propertyName] = [element.errorMessage]
-                })
-                setValidationErros(errors)
+                if (data.value.errors) {
+                    const errors = []
+                    data.value.errors.forEach(element => {
+                        errors[element.propertyName] = [element.errorMessage]
+                    })
+                    setValidationErros(errors)
+                }
             } else {
                 setValidationErros({})
                 setResponse(result.data)

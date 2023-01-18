@@ -55,16 +55,3 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
     </div>
   )
 }
-
-metadata:
-[
-  {
-    
-  } 
-  validations: {
-    minLength: {
-      length: ''
-      message: ''
-    }
-  }
-]

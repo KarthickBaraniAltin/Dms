@@ -14,6 +14,10 @@ import { useValidation } from "./useValidation"
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { DndContext } from '@dnd-kit/core'
+import { useApi } from './useApi'
+import { useMsalAuthentication } from '@azure/msal-react'
+import { InteractionType } from '@azure/msal-browser'
+import { formBuilderApiRequest } from '../src/msalConfig'
 
 export const useFormCreator = () => {
 
@@ -21,6 +25,10 @@ export const useFormCreator = () => {
     const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog, hideDialog } = useDialogs({ metadata, setMetadata })
+    
+    // Api call variables
+    const { response, error, loading, callApi } = useApi()
+    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
@@ -30,7 +38,6 @@ export const useFormCreator = () => {
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
     }, [metadata])
-
 
     const componentMapper = {
         'text': InputText,
@@ -45,6 +52,21 @@ export const useFormCreator = () => {
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
     }
+
+    const postFormApiCall = async () => {
+        const { accessToken } = await acquireToken()
+
+        const params = {
+            method: 'POST',
+            url: `/form-builder-studio/api/form-definition`,
+            headers: {
+                Accept: '*/*',
+                Authorization: `Bearer ${accessToken}`
+            }
+        }
+
+        await callApi(params)
+    }
     
     useEffect(() => {
         metadata.forEach(element => {
@@ -58,7 +80,8 @@ export const useFormCreator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
     
-    // console.log("Metadata = ", metadata)
+    console.log("Response = ", response)
+    console.log("Metadata = ", metadata)
 
     const renderComponents = () => {
         return (
@@ -237,5 +260,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture }
+    return { renderComponents, postFormApiCall, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture }
 }

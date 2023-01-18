@@ -16,7 +16,7 @@ export const useShowForm = () => {
         return (
             <>
                 <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                    <h5 style={{'margin-bottom': '0.25rem', 'font-size': '1rem'}}>Create new form</h5>
+                    <h5 style={{marginBottom: '0.25rem', fontSize: '1rem'}}>Create new form</h5>
                     <InputText
                         value={formTitle}
                         onChange={(e) => setFormTitle(e.target.value)}

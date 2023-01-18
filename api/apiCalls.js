@@ -1,16 +1,25 @@
 import axios from 'axios'
 import https from 'https'
 
-const api = "https://connect2.csn.edu/snap/api"
-const studentApi = "https://connect2.csn.edu/snap-student/api"
 const graphApi = "https://graph.microsoft.com/v1.0"
 const activeDirectoryApi = process.env.ACTIVE_DIRECTORY_API
-
+const formBuilderStudioApi = process.env.FORM_BUILDER_API
 
 axios.defaults.httpsAgent = new https.Agent({
     rejectUnauthorized: false });
     
-    
 export const getUsersFiltered = (filterString) => {
     return axios.get(`${activeDirectoryApi}/User/filter?FilterString=${filterString}`)
+}
+
+export const postFormDefinition = (formDefinition) => {
+    return axios.post(`${formBuilderStudioApi}/Form/Definition`, formDefinition)
+}
+
+export const getFormDefinition = (id) => {
+    return axios.get(`${formBuilderStudioApi}/Form/Definition/${id}`)
+}
+
+export const getFormDefinitions = () => {
+    return axios.get(`${formBuilderStudioApi}/Form/Definition`)
 }
