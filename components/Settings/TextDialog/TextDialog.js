@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
-import DialogFooter from '../DialogFooter.js/DialogFooter';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
@@ -56,3 +55,16 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
     </div>
   )
 }
+
+metadata:
+[
+  {
+    
+  } 
+  validations: {
+    minLength: {
+      length: ''
+      message: ''
+    }
+  }
+]
