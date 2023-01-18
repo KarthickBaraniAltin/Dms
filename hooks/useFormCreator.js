@@ -23,13 +23,13 @@ export const useFormCreator = () => {
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
-    // const sectionIds = useRef()
+    const sectionIds = useRef()
+    sectionIds.current = []
     const dragOverCapture = useRef()
 
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
     }, [metadata])
-
 
     const componentMapper = {
         'text': InputText,
@@ -57,7 +57,7 @@ export const useFormCreator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
 
-    const renderLabel = (label, type, isPreview = false) => {
+    const renderLabel = (componentData, label, type, isPreview = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
         const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
         return (
@@ -121,23 +121,26 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
-                        const sectionNumberIds = `${sectionNumber}_Ids`
+
+                        if (sectionIds.current.length === 0 || sectionIds.current.every(element => element.id !== sectionNumber)) {
+                             sectionIds.current.push({id: sectionNumber, sectionComponents: createSectionComponents(sectionMetadata, sectionNumber).props?.children.map(component => component.props.id)})
+                        }
 
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
                                 {renderDialog()}
-                                {renderLabel(label, type)}
+                                {renderLabel(data, label, type)}
                                 <div>
                                 {/* style={{'maxHeight': '175px', 'overflowY': 'scroll'}} */}
-                                    <Droppable id={`section-${index + 1}`}>
+                                    <Droppable id={sectionNumber}>
                                             {/* <SortableContext
                                                 items={sectionIds}
                                                 strategy={verticalListSortingStrategy}
                                             >
 
                                             </SortableContext> */}
-                                            {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))}
+                                            {/* {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))} */}
                                             {createSectionComponents(sectionMetadata, sectionNumber)}
                                     </Droppable>
                                 </div>
@@ -158,55 +161,12 @@ export const useFormCreator = () => {
             <Sortable key={index} id={index + 1}>
                 <div  className='field col-12'>
                     {renderDialog()}
-                    {renderLabel(label, type)}
+                    {renderLabel(data, label, type)}
                     {renderCreateElements(type, name, rest)}
                     {renderSubtitle(subtitle, subtitleComponent)}
                     {renderErrors(name)}
                 </div>
             </Sortable>
-        )
-    }
-
-    const renderPreview = () => {
-        return (
-            <>
-                {metadata.map((data, index) => {
-                    if (data.type === 'section') {
-                        const {label, type, sectionMetadata } = data
-                        return (
-                            <>
-                                {renderLabel(label, type, true)}
-                                {sectionMetadata.map((section, sectionIndex) => {
-                                    const { type, name, label, subtitle, ...rest } = section
-                                    return (
-                                        <div className='field col-12' key={sectionIndex}>
-                                            {renderLabel(label, type, true)}
-                                            {renderCreateElements(type, name, rest)}
-                                            {renderSubtitle(subtitle, null)}
-                                        </div>
-                                    )
-                                })}
-                            </>
-                        )
-                    }
-
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-                    return (
-                        <div key={index} style={{marginTop: '1rem'}}>
-                            <div  className='field col-12'>
-                                {renderDialog()}
-                                {renderLabel(label, type, true)}
-                                {renderCreateElements(type, name, rest)}
-                                { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
-                                {renderErrors(name)}
-                            </div>
-                        </div>
-                    )
-                })}
-            </>
         )
     }
 
@@ -222,9 +182,52 @@ export const useFormCreator = () => {
                         <div key={index} id={`${sectionNumber}_${index + 1}`}>
                             <div  className='field col-12'>
                                 {renderDialog()}
-                                {renderLabel(label, type)}
+                                {renderLabel(data, label, type)}
                                 {renderCreateElements(type, name, rest)}
                                 {renderSubtitle(subtitle, subtitleComponent)}
+                                {renderErrors(name)}
+                            </div>
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }
+
+    const renderPreview = () => {
+        return (
+            <>
+                {metadata.map((data, index) => {
+                    if (data.type === 'section') {
+                        const {label, type, sectionMetadata } = data
+                        return (
+                            <>
+                                {renderLabel(null, label, type, true)}
+                                {sectionMetadata.map((section, sectionIndex) => {
+                                    const { type, name, label, subtitle, ...rest } = section
+                                    return (
+                                        <div className='field col-12' key={sectionIndex}>
+                                            {renderLabel(null, label, type, true)}
+                                            {renderCreateElements(type, name, rest)}
+                                            {renderSubtitle(subtitle, null)}
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        )
+                    }
+
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                    return (
+                        <div key={index} style={{marginTop: '1rem'}}>
+                            <div  className='field col-12'>
+                                {renderDialog()}
+                                {renderLabel(null, label, type, true)}
+                                {renderCreateElements(type, name, rest)}
+                                { subtitleComponent }
+                                { subtitle && 
+                                    <small className='block'>{subtitle}</small>
+                                }
                                 {renderErrors(name)}
                             </div>
                         </div>
