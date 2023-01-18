@@ -19,10 +19,6 @@ export default function DndWithClientSideValidations() {
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
 
-    // useEffect(() => {
-    //     setMainFormIds(renderComponents().props.children.map(component => component.props.id))
-    // }, [metadata])
-
     return (
         <>
             <Head>

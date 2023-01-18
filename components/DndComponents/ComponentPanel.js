@@ -36,6 +36,7 @@ export default function ComponentPanel() {
                     name={component}
                     label='Section'
                     sectionMetadata={[]}
+                    sectionIds={[]}
                 >
                     <div>
                         <div className='flex justify-content-between'>

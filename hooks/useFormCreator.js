@@ -13,7 +13,6 @@ import { useInputs } from "./useInput"
 import { useValidation } from "./useValidation"
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
-import { DndContext } from '@dnd-kit/core'
 
 export const useFormCreator = () => {
 
@@ -24,11 +23,12 @@ export const useFormCreator = () => {
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
-    const [sectionIds, setSectionIds] = useState([])
+    // const sectionIds = useRef()
     const dragOverCapture = useRef()
 
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
+        // console.log('renderComponents:', renderComponents())
     }, [metadata])
 
 
@@ -57,27 +57,78 @@ export const useFormCreator = () => {
     // Try to remove this warning later
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
-    
-    // console.log("Metadata = ", metadata)
+
+    const renderLabel = (label, type, isPreview = false) => {
+        const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
+        const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
+        return (
+            <>
+                {isPreview ?
+                <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
+                    {label}
+                </label>
+                :
+                <>
+                    <div className="flex justify-content-between" style={type === 'section' ? sectionLabelStyle : null}>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            {label}
+                        </label> 
+                        <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(componentData)}></i>
+                    </div>
+                </>
+                }
+            </>
+        )
+    }
+
+    const renderCreateElements = (type, name, rest) => {
+        return (
+            <>
+            {createElement(
+                componentMapper[type],
+                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+            )}
+            </>
+        )
+    }
+
+    const renderSubtitle = (subtitle, subtitleComponent) => {
+        return (
+            <>
+                {subtitleComponent}
+                { subtitle && <small className='block'>{subtitle}</small>}
+            </>
+        )
+    }
+
+    const renderErrors = (name) => {
+        return (
+            <>
+                { errors[name] && 
+                    errors[name].map(element => {
+                        return (
+                            <small key={element} className='p-error block'>{element}</small> 
+                        )
+                    })
+                }
+            </>
+        )
+    }
 
     const renderComponents = () => {
         return (
             <>
                 {metadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, sectionIds, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
-                        console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))
+                        const sectionNumberIds = `${sectionNumber}_Ids`
+
                         return (
                             <Sortable key={index} id={index + 1}>
-                                <div className='field col-12'>
+                            <div className='field col-12'>
                                 {renderDialog()}
-                                <div className="flex justify-content-between" style={{'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}}>
-                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                        {label}
-                                    </label> 
-                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                                </div>
+                                {renderLabel(label, type)}
                                 <div>
                                 {/* style={{'maxHeight': '175px', 'overflowY': 'scroll'}} */}
                                     <Droppable id={`section-${index + 1}`}>
@@ -87,7 +138,8 @@ export const useFormCreator = () => {
                                             >
 
                                             </SortableContext> */}
-                                            {createSectionComponents(sectionMetadata, sectionNumber)}
+                                            {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber, sectionNumberIds, sectionIds))}
+                                            {createSectionComponents(sectionMetadata, sectionNumber, sectionNumberIds, sectionIds)}
                                     </Droppable>
                                 </div>
                             </div>
@@ -107,27 +159,10 @@ export const useFormCreator = () => {
             <Sortable key={index} id={index + 1}>
                 <div  className='field col-12'>
                     {renderDialog()}
-                    <div className="flex justify-content-between">
-                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            {label}
-                        </label> 
-                        <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                    </div>
-                    {createElement(
-                        componentMapper[type],
-                        {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                    )}
-                    { subtitleComponent }
-                    { subtitle && 
-                        <small className='block'>{subtitle}</small>
-                    }
-                    { errors[name] && 
-                        errors[name].map(element => {
-                            return (
-                                <small key={element} className='p-error block'>{element}</small> 
-                            )
-                        })
-                    }
+                    {renderLabel(label, type)}
+                    {renderCreateElements(type, name, rest)}
+                    {renderSubtitle(subtitle, subtitleComponent)}
+                    {renderErrors(name)}
                 </div>
             </Sortable>
         )
@@ -138,26 +173,17 @@ export const useFormCreator = () => {
             <>
                 {metadata.map((data, index) => {
                     if (data.type === 'section') {
-                        const {label, sectionMetadata } = data
+                        const {label, type, sectionMetadata } = data
                         return (
                             <>
-                                <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: 'center'}}>
-                                    {label}
-                                </label>
+                                {renderLabel(label, type, true)}
                                 {sectionMetadata.map((section, sectionIndex) => {
                                     const { type, name, label, subtitle, ...rest } = section
                                     return (
                                         <div className='field col-12' key={sectionIndex}>
-                                            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                                {label}
-                                            </label> 
-                                            {createElement(
-                                                componentMapper[type],
-                                                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                                            )}
-                                            { subtitle && 
-                                            <small className='block'>{subtitle}</small>
-                                            }
+                                            {renderLabel(label, type, true)}
+                                            {renderCreateElements(type, name, rest)}
+                                            {renderSubtitle(subtitle, null)}
                                         </div>
                                     )
                                 })}
@@ -170,24 +196,13 @@ export const useFormCreator = () => {
                         <div key={index} style={{marginTop: '1rem'}}>
                             <div  className='field col-12'>
                                 {renderDialog()}
-                                <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                    {label}
-                                </label> 
-                                {createElement(
-                                    componentMapper[type],
-                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                                )}
+                                {renderLabel(label, type, true)}
+                                {renderCreateElements(type, name, rest)}
                                 { subtitleComponent }
                                 { subtitle && 
                                     <small className='block'>{subtitle}</small>
                                 }
-                                { errors[name] && 
-                                    errors[name].map(element => {
-                                        return (
-                                            <small key={element} className='p-error block'>{element}</small> 
-                                        )
-                                    })
-                                }
+                                {renderErrors(name)}
                             </div>
                         </div>
                     )
@@ -196,7 +211,7 @@ export const useFormCreator = () => {
         )
     }
 
-    const createSectionComponents = (metadata, sectionNumber) => {
+    const createSectionComponents = (metadata, sectionNumber, sectionNumberIds, sectionIds) => {
         return (
             <>
                 {metadata.map((data, index) => {
@@ -204,31 +219,25 @@ export const useFormCreator = () => {
                     if (type === 'section') {
                         return alert('Error: Cannot place section component within another section component.')
                     }
+
+                    // if (sectionIds.length === 0 || sectionIds.some(element => element.id !== sectionNumber)) {
+                    //     sectionIds.push({
+                    //         id: sectionNumber,
+                    //         [sectionNumberIds]: []
+                    //     })
+
+                    //     const sectionIndex = sectionIds.findIndex(element => element.id === sectionNumber)
+                    //     sectionIds[sectionIndex][sectionNumberIds].push(`${sectionNumber}_${index + 1}`)
+                    // }
+
                     return (
                         <div key={index} id={`${sectionNumber}_${index + 1}`}>
                             <div  className='field col-12'>
                                 {renderDialog()}
-                                <div className='flex justify-content-between'>
-                                    <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                                        {label}
-                                    </label>
-                                    <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(data)}></i>
-                                </div>
-                                {createElement(
-                                    componentMapper[type],
-                                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-                                )}
-                                { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
-                                { errors[name] && 
-                                    errors[name].map(element => {
-                                        return (
-                                            <small key={element} className='p-error block'>{element}</small> 
-                                        )
-                                    })
-                                }
+                                {renderLabel(label, type)}
+                                {renderCreateElements(type, name, rest)}
+                                {renderSubtitle(subtitle, subtitleComponent)}
+                                {renderErrors(name)}
                             </div>
                         </div>
                     )

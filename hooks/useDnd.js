@@ -40,6 +40,7 @@ const useDnd = () => {
                 if (indexOfSection === -1) return prevState // Prevents error being thrown when indexOfSection returns -1.
 
                 const tempMetadata = JSON.parse(JSON.stringify(prevState))
+
                 dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}_${Guid.newGuid()}`
 
                 tempMetadata[indexOfSection].sectionMetadata.push(dragOverCapture.current.componentData)
