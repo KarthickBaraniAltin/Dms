@@ -28,7 +28,6 @@ export const useFormCreator = () => {
 
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
-        // console.log('renderComponents:', renderComponents())
     }, [metadata])
 
 
@@ -119,7 +118,7 @@ export const useFormCreator = () => {
         return (
             <>
                 {metadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, sectionIds, ...rest } = data
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
                         const sectionNumberIds = `${sectionNumber}_Ids`
@@ -138,8 +137,8 @@ export const useFormCreator = () => {
                                             >
 
                                             </SortableContext> */}
-                                            {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber, sectionNumberIds, sectionIds))}
-                                            {createSectionComponents(sectionMetadata, sectionNumber, sectionNumberIds, sectionIds)}
+                                            {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))}
+                                            {createSectionComponents(sectionMetadata, sectionNumber)}
                                     </Droppable>
                                 </div>
                             </div>
@@ -211,7 +210,7 @@ export const useFormCreator = () => {
         )
     }
 
-    const createSectionComponents = (metadata, sectionNumber, sectionNumberIds, sectionIds) => {
+    const createSectionComponents = (metadata, sectionNumber) => {
         return (
             <>
                 {metadata.map((data, index) => {
@@ -219,17 +218,6 @@ export const useFormCreator = () => {
                     if (type === 'section') {
                         return alert('Error: Cannot place section component within another section component.')
                     }
-
-                    // if (sectionIds.length === 0 || sectionIds.some(element => element.id !== sectionNumber)) {
-                    //     sectionIds.push({
-                    //         id: sectionNumber,
-                    //         [sectionNumberIds]: []
-                    //     })
-
-                    //     const sectionIndex = sectionIds.findIndex(element => element.id === sectionNumber)
-                    //     sectionIds[sectionIndex][sectionNumberIds].push(`${sectionNumber}_${index + 1}`)
-                    // }
-
                     return (
                         <div key={index} id={`${sectionNumber}_${index + 1}`}>
                             <div  className='field col-12'>
