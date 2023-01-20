@@ -78,7 +78,5 @@ export const useValidation = ({ metadata, inputs }) => {
         validate()
     }, [metadata, validate])
     
-    console.log("Validation Errors = ", errors)
-
     return { errors }
 }

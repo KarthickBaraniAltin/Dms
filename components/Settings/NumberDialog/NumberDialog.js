@@ -2,6 +2,7 @@ import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { InputNumber } from 'primereact/inputnumber';
 
 export default function NumberDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getFormDefinitions, postFormDefinition } from "../../../api/apiCalls";
+import { getFormDatas, getFormDefinitions, postFormData, postFormDefinition } from "../../../api/apiCalls";
 
 export default async function handler(req, res) {
     const { method, body, headers } = req
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
     if (method === 'GET') {
         try {
-            const result = await getFormDefinitions()
+            const result = await getFormDatas()
             res.status(200).json(result.data)
         } catch (error) {
             console.log(error)
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         }
     } else if (method === 'POST') {
         try {
-            const result = await postFormDefinition(body)
+            const result = await postFormData(body)
             res.status(200).json(result.data)
         } catch (error) {
             console.log(error)

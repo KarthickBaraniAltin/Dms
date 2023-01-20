@@ -23,3 +23,15 @@ export const getFormDefinition = (id) => {
 export const getFormDefinitions = () => {
     return axios.get(`${formBuilderStudioApi}/Form/Definition`)
 }
+
+export const postFormData = (body) => {
+    return axios.post(`${formBuilderStudioApi}/Form/Data`, body)
+}
+
+export const getFormDatas = () => {
+    return axios.get(`${formBuilderStudioApi}/Form/Data`)
+}
+
+export const getFormData = (id) => {
+    return axios.get(`${formBuilderStudioApi}/Form/Data/${id}`)
+}

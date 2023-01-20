@@ -14,7 +14,7 @@ import { useShowForm } from '../../../../hooks/useShowForm'
 import { usePreviewDialog } from '../../../../hooks/usePreviewDialog'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
+    const { metadata, addMetadata, setMetadata, renderComponents, response, loading, submitForm, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
@@ -22,7 +22,7 @@ export default function DndWithClientSideValidations() {
     return (
         <>
             <Head>
-                <title>DnD With Client Side Validations</title>
+                <title>Create Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
@@ -49,6 +49,9 @@ export default function DndWithClientSideValidations() {
                                     {metadata.length === 0 ? <h5>Drop field here</h5> : renderComponents()}
                                 </SortableContext>
                             </Droppable>
+                            <div className='flex flex-column justify-content-center'>
+                                <Button label='Submit Form' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
+                            </div>
                         </Card>
                     </div>
                     </DndContext>
@@ -57,11 +60,11 @@ export default function DndWithClientSideValidations() {
                 }
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                    <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
-                        <div className='card-body'>
-                            <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
-                        </div>
+                <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
+                    <div className='card-body'>
+                        <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
                     </div>
+                </div>
             </UnauthenticatedTemplate>
         </>
     )

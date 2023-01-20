@@ -53,7 +53,7 @@ export const useFormCreator = () => {
         setMetadata((prevList) => [...prevList, data])
     }
 
-    const postFormApiCall = async () => {
+    const submitForm = async () => {
         const { accessToken } = await acquireToken()
 
         const params = {
@@ -62,10 +62,19 @@ export const useFormCreator = () => {
             headers: {
                 Accept: '*/*',
                 Authorization: `Bearer ${accessToken}`
+            },
+            data: {
+                name: "Test ",
+                description: "Desc ",
+                authorFullName: "Ahmet ",
+                authorId: '1',
+                metadata: {
+                    metadata: metadata
+                } 
             }
         }
 
-        await callApi(params)
+        const res = await callApi(params)
     }
     
     useEffect(() => {
@@ -80,10 +89,7 @@ export const useFormCreator = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata])
     
-    console.log("Response = ", response)
-    console.log("Metadata = ", metadata)
-
-    const renderLabel = (label, type, isPreview = false) => {
+    const renderLabel = (componentData, label, type, isPreview = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
         const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
         return (
@@ -184,7 +190,7 @@ export const useFormCreator = () => {
             <Sortable key={index} id={index + 1}>
                 <div  className='field col-12'>
                     {renderDialog()}
-                    {renderLabel(label, type)}
+                    {renderLabel(data, label, type)}
                     {renderCreateElements(type, name, rest)}
                     {renderSubtitle(subtitle, subtitleComponent)}
                     {renderErrors(name)}
@@ -201,12 +207,12 @@ export const useFormCreator = () => {
                         const {label, type, sectionMetadata } = data
                         return (
                             <>
-                                {renderLabel(label, type, true)}
+                                {renderLabel(null, label, type, true)}
                                 {sectionMetadata.map((section, sectionIndex) => {
                                     const { type, name, label, subtitle, ...rest } = section
                                     return (
                                         <div className='field col-12' key={sectionIndex}>
-                                            {renderLabel(label, type, true)}
+                                            {renderLabel(null, label, type, true)}
                                             {renderCreateElements(type, name, rest)}
                                             {renderSubtitle(subtitle, null)}
                                         </div>
@@ -218,17 +224,15 @@ export const useFormCreator = () => {
 
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     return (
-                        <div key={index} style={{marginTop: '1rem'}}>
-                            <div  className='field col-12'>
-                                {renderDialog()}
-                                {renderLabel(label, type, true)}
-                                {renderCreateElements(type, name, rest)}
-                                { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
-                                {renderErrors(name)}
-                            </div>
+                        <div className='field col-12' key={index}>
+                            {renderDialog()}
+                            {renderLabel(null, label, type, true)}
+                            {renderCreateElements(type, name, rest)}
+                            { subtitleComponent }
+                            { subtitle && 
+                                <small className='block'>{subtitle}</small>
+                            }
+                            {renderErrors(name)}
                         </div>
                     )
                 })}
@@ -260,5 +264,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, postFormApiCall, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture }
+    return { renderComponents, inputs, response, submitForm, loading, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture, setInputs }
 }
