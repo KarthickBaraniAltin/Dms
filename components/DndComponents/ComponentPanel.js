@@ -38,6 +38,7 @@ export default function ComponentPanel() {
                     sectionMetadata={[]}
                 >
                     <div>
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin:'0 0 0.2rem 0'}}>{component.toUpperCase()}</h5>
                         <div className='flex justify-content-between'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             Section
@@ -60,6 +61,7 @@ export default function ComponentPanel() {
                     subtitle='Text Subtitle'
                     defaultValue=''
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Basic Text</h5>
                         <Input 
@@ -88,6 +90,7 @@ export default function ComponentPanel() {
                     defaultValue=''
                     dateFormat='dd-mm-yy'
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Calendar</h5>
                         <Input
@@ -117,6 +120,7 @@ export default function ComponentPanel() {
                     subtitle='Number Subtitle'
                     defaultValue=''
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Number</h5>
                             <Input 
@@ -146,6 +150,7 @@ export default function ComponentPanel() {
                     subtitle='Textarea Subtitle'
                     defaultValue=''
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-12 md:col-12'>
                         <h5>Text Area</h5>
                             <Input
@@ -175,6 +180,7 @@ export default function ComponentPanel() {
                     defaultValue=''
                     mask='(999) 999-9999'
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Mask</h5>
                             <Input
@@ -205,6 +211,7 @@ export default function ComponentPanel() {
                     defaultValue=''
                     options={cities}
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Dropdown</h5>
                             <Input
@@ -236,6 +243,7 @@ export default function ComponentPanel() {
                     options={cities}
                     display='chip'
                 >
+                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
                         <h5>Multiselect</h5>
                             <Input

@@ -14,7 +14,7 @@ import { useShowForm } from '../../hooks/useShowForm'
 import { usePreviewDialog } from '../../hooks/usePreviewDialog'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
+    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, sectionIds, setSectionIds, dragOverCapture } = useFormCreator()
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
     const { showPreviewDialog, handlePreview } = usePreviewDialog()
     const { handleDragEnd, handleDragOver } = useDnd()
@@ -28,7 +28,7 @@ export default function DndWithClientSideValidations() {
             <AuthenticatedTemplate>
                 {newForm ? 
                     <DndContext
-                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture)}
+                        onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, sectionIds, setSectionIds, dragOverCapture)}
                         onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                     >
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
@@ -36,8 +36,8 @@ export default function DndWithClientSideValidations() {
                         <ComponentPanel />
                         <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                             <div className='flex flex-column justify-content-center'>
-                                <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
-                                    <h1 style={{'text-align': 'center'}}>{formTitle}</h1>
+                                <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                                    <h1 style={{'textAlign': 'center'}}>{formTitle}</h1>
                                 </Card>
                                 <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                             </div>

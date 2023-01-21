@@ -23,12 +23,22 @@ export const useFormCreator = () => {
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
-    const sectionIds = useRef()
-    sectionIds.current = []
+    const [sectionIds, setSectionIds] = useState([])
     const dragOverCapture = useRef()
 
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
+
+        // setSectionIds(metadata.map(component => {
+        //     console.log('made it')
+        //     if (component.type === 'section') {
+        //         console.log('componentData:', component.sectionMetadata.map(sectionComponent => sectionComponent.id))
+        //         return {
+        //             id: component.name,
+        //             componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
+        //         }
+        //     }
+        // }))
     }, [metadata])
 
     const componentMapper = {
@@ -121,27 +131,25 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
+                        let sectionIdsForDroppable = sectionMetadata.map(element => element.id)
 
-                        if (sectionIds.current.length === 0 || sectionIds.current.every(element => element.id !== sectionNumber)) {
-                             sectionIds.current.push({id: sectionNumber, sectionComponents: createSectionComponents(sectionMetadata, sectionNumber).props?.children.map(component => component.props.id)})
-                        }
+                        console.log('sectionIdsForDroppable:', sectionIdsForDroppable)
 
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
+                                {type.toUpperCase()}
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 <div>
                                 {/* style={{'maxHeight': '175px', 'overflowY': 'scroll'}} */}
                                     <Droppable id={sectionNumber}>
-                                            {/* <SortableContext
-                                                items={sectionIds}
+                                            <SortableContext
+                                                items={sectionIdsForDroppable}
                                                 strategy={verticalListSortingStrategy}
                                             >
-
-                                            </SortableContext> */}
-                                            {/* {console.log('createSectionComponents:', createSectionComponents(sectionMetadata, sectionNumber))} */}
-                                            {createSectionComponents(sectionMetadata, sectionNumber)}
+                                                {createSectionComponents(sectionMetadata)}
+                                            </SortableContext>
                                     </Droppable>
                                 </div>
                             </div>
@@ -158,19 +166,22 @@ export const useFormCreator = () => {
     const createComponents = (data, index) => {
         const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
         return (
-            <Sortable key={index} id={index + 1}>
-                <div  className='field col-12'>
-                    {renderDialog()}
-                    {renderLabel(data, label, type)}
-                    {renderCreateElements(type, name, rest)}
-                    {renderSubtitle(subtitle, subtitleComponent)}
-                    {renderErrors(name)}
-                </div>
-            </Sortable>
+            <>
+                <Sortable key={index} id={index + 1}>
+                    <div  className='field col-12'>
+                    {type.toUpperCase()}
+                        {renderDialog()}
+                        {renderLabel(data, label, type)}
+                        {renderCreateElements(type, name, rest)}
+                        {renderSubtitle(subtitle, subtitleComponent)}
+                        {renderErrors(name)}
+                    </div>
+                </Sortable>
+            </>
         )
     }
 
-    const createSectionComponents = (metadata, sectionNumber) => {
+    const createSectionComponents = (metadata) => {
         return (
             <>
                 {metadata.map((data, index) => {
@@ -179,15 +190,18 @@ export const useFormCreator = () => {
                         return alert('Error: Cannot place section component within another section component.')
                     }
                     return (
-                        <div key={index} id={`${sectionNumber}_${index + 1}`}>
+                        <>
+                        <Sortable key={index} id={`${metadata[index].id}`}>
                             <div  className='field col-12'>
+                            {type.toUpperCase()}
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 {renderCreateElements(type, name, rest)}
                                 {renderSubtitle(subtitle, subtitleComponent)}
                                 {renderErrors(name)}
                             </div>
-                        </div>
+                        </Sortable>
+                        </>
                     )
                 })}
             </>
@@ -237,5 +251,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, dragOverCapture }
+    return { renderComponents, addMetadata, metadata, setMetadata, renderPreview, mainFormIds, setMainFormIds, sectionIds, setSectionIds, dragOverCapture }
 }

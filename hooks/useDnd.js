@@ -5,6 +5,7 @@ const useDnd = () => {
 
     const handleDragOver = (event, dragOverCapture) => {
         const { active, over } = event
+        console.log('event(dragOver):', event)
 
         if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
         if (active.data.current.sortable) return // Prevents error being thrown when sorting components on main form panel.
@@ -23,8 +24,9 @@ const useDnd = () => {
         }
     }
 
-    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture) => {
+    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, sectionIds, setSectionIds, dragOverCapture) => {
         const { active, over } = event
+        console.log('event(dragEnd):', event)
 
         if (dragOverCapture.current) {
             if (typeof dragOverCapture.current.id !== 'number') {
@@ -41,7 +43,8 @@ const useDnd = () => {
 
                 const tempMetadata = JSON.parse(JSON.stringify(prevState))
 
-                dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}_${Guid.newGuid()}`
+                dragOverCapture.current.componentData.id = `section-${indexOfSection + 1}_${tempMetadata[indexOfSection].sectionMetadata.length + 1}`
+                dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}-${Guid.newGuid()}`
 
                 tempMetadata[indexOfSection].sectionMetadata.push(dragOverCapture.current.componentData)
 
@@ -53,10 +56,56 @@ const useDnd = () => {
             return
         }
 
+        if (typeof active.id === 'string') { // This nested if is for sorting components within a section.
+            if (active.id.includes('section')) {
+                if (active.id !== over.id) {
+                    const sectionNumber = active.id.substring(0, 9)
+
+                    setMetadata(prevState => {
+                        let tempMetadata = prevState.slice(0)
+                        const sectionIndex = tempMetadata.findIndex(element => element.name === sectionNumber)
+                        let tempSectionMetadata = tempMetadata[sectionIndex].sectionMetadata.slice(0)
+                        const movingComponentId = tempMetadata[sectionIndex].sectionMetadata.findIndex(element => element.id === active.id)
+                        const newPositionId = tempMetadata[sectionIndex].sectionMetadata.findIndex(element => element.id === over.id)
+                        const movingComponent = tempMetadata[sectionIndex].sectionMetadata.slice(movingComponentId, movingComponentId + 1 ? movingComponentId + 1 : null)
+                        
+                        // console.log('movingComponentId:', movingComponentId)
+                        // console.log('newPositionId:', newPositionId)
+                        // console.log('movingComponent:', movingComponent)
+
+                        tempSectionMetadata.splice(movingComponentId, 1)
+                        tempSectionMetadata.splice(newPositionId, 0, ...movingComponent)
+
+                        tempMetadata[sectionIndex].sectionMetadata = tempSectionMetadata
+
+                        console.log('tempMetadata:', tempMetadata)
+
+                        return tempMetadata
+
+                    })
+                }
+                return
+            }
+        }
+
         if (over !== null && !active.data.current.sortable) {
             const updatedData = JSON.parse(JSON.stringify(active.data.current))
 
-            updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
+            if (updatedData.type === 'section') {
+                if (metadata.length === 0) {
+                    updatedData.name = `${updatedData.name}-1`
+                } else {
+                    let numberOfSections = 0
+                    metadata.map(element => {
+                        if (element.type === 'section') {
+                            numberOfSections++
+                        }
+                    })
+                    updatedData.name = `${updatedData.name}-${numberOfSections + 1}`
+                }
+            } else {
+                updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
+            }
 
             addMetadata(updatedData)
         }
