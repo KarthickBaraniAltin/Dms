@@ -29,16 +29,14 @@ export const useFormCreator = () => {
     useEffect(() => {
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
 
-        // setSectionIds(metadata.map(component => {
-        //     console.log('made it')
-        //     if (component.type === 'section') {
-        //         console.log('componentData:', component.sectionMetadata.map(sectionComponent => sectionComponent.id))
-        //         return {
-        //             id: component.name,
-        //             componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
-        //         }
-        //     }
-        // }))
+        setSectionIds(metadata.map(component => {
+            if (component.type === 'section') {
+                return {
+                    id: component.name,
+                    componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
+                }
+            }
+        }))
     }, [metadata])
 
     const componentMapper = {
@@ -131,10 +129,9 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
-                        let sectionIdsForDroppable = sectionMetadata.map(element => element.id)
-
-                        console.log('sectionIdsForDroppable:', sectionIdsForDroppable)
-
+                        let sectionIdsForDroppable = sectionIds.find(element => element.id === sectionNumber)
+                        sectionIdsForDroppable = sectionIdsForDroppable?.componentData ? sectionIdsForDroppable.componentData : []
+                       
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
@@ -166,18 +163,16 @@ export const useFormCreator = () => {
     const createComponents = (data, index) => {
         const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
         return (
-            <>
-                <Sortable key={index} id={index + 1}>
-                    <div  className='field col-12'>
-                    {type.toUpperCase()}
-                        {renderDialog()}
-                        {renderLabel(data, label, type)}
-                        {renderCreateElements(type, name, rest)}
-                        {renderSubtitle(subtitle, subtitleComponent)}
-                        {renderErrors(name)}
-                    </div>
-                </Sortable>
-            </>
+            <Sortable key={index} id={index + 1}>
+                <div  className='field col-12'>
+                {type.toUpperCase()}
+                    {renderDialog()}
+                    {renderLabel(data, label, type)}
+                    {renderCreateElements(type, name, rest)}
+                    {renderSubtitle(subtitle, subtitleComponent)}
+                    {renderErrors(name)}
+                </div>
+            </Sortable>
         )
     }
 

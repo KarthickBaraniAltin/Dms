@@ -68,17 +68,13 @@ const useDnd = () => {
                         const movingComponentId = tempMetadata[sectionIndex].sectionMetadata.findIndex(element => element.id === active.id)
                         const newPositionId = tempMetadata[sectionIndex].sectionMetadata.findIndex(element => element.id === over.id)
                         const movingComponent = tempMetadata[sectionIndex].sectionMetadata.slice(movingComponentId, movingComponentId + 1 ? movingComponentId + 1 : null)
-                        
-                        // console.log('movingComponentId:', movingComponentId)
-                        // console.log('newPositionId:', newPositionId)
-                        // console.log('movingComponent:', movingComponent)
 
                         tempSectionMetadata.splice(movingComponentId, 1)
                         tempSectionMetadata.splice(newPositionId, 0, ...movingComponent)
 
-                        tempMetadata[sectionIndex].sectionMetadata = tempSectionMetadata
+                        console.log('tempSectionMetadata:', tempSectionMetadata)
 
-                        console.log('tempMetadata:', tempMetadata)
+                        tempMetadata[sectionIndex].sectionMetadata = tempSectionMetadata
 
                         return tempMetadata
 
