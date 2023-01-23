@@ -129,7 +129,7 @@ export const useFormCreator = () => {
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
-                                {type.toUpperCase()}
+                                <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 <div>
@@ -159,7 +159,7 @@ export const useFormCreator = () => {
         return (
             <Sortable key={index} id={index + 1}>
                 <div  className='field col-12'>
-                {type.toUpperCase()}
+                    <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                     {renderDialog()}
                     {renderLabel(data, label, type)}
                     {renderCreateElements(type, name, rest)}
@@ -182,7 +182,7 @@ export const useFormCreator = () => {
                         <>
                         <Sortable key={index} id={`${metadata[index].id}`}>
                             <div  className='field col-12'>
-                            {type.toUpperCase()}
+                                <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 {renderCreateElements(type, name, rest)}
