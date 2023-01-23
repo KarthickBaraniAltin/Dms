@@ -123,7 +123,7 @@ export const useFormCreator = () => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
                         const sectionNumber = `section-${index + 1}`
-                        let sectionIdsForDroppable = sectionIds.find(element => element.id === sectionNumber)
+                        let sectionIdsForDroppable = sectionIds.find(element => element?.id === sectionNumber)
                         sectionIdsForDroppable = sectionIdsForDroppable?.componentData ? sectionIdsForDroppable.componentData : []
                        
                         return (
@@ -133,14 +133,14 @@ export const useFormCreator = () => {
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 <div>
-                                {/* style={{'maxHeight': '175px', 'overflowY': 'scroll'}} */}
                                     <Droppable id={sectionNumber}>
-                                            <SortableContext
-                                                items={sectionIdsForDroppable}
-                                                strategy={verticalListSortingStrategy}
-                                            >
-                                                {createSectionComponents(sectionMetadata)}
-                                            </SortableContext>
+                                        <SortableContext
+                                            items={sectionIdsForDroppable}
+                                            strategy={verticalListSortingStrategy}
+                                        >
+                                            
+                                            {createComponents(sectionMetadata, null, true)}
+                                        </SortableContext>
                                     </Droppable>
                                 </div>
                             </div>
@@ -148,52 +148,52 @@ export const useFormCreator = () => {
                         )
                     }
 
+
                     return createComponents(data, index)
                 })}
             </>
         )
     }
 
-    const createComponents = (data, index) => {
-        const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-        return (
-            <Sortable key={index} id={index + 1}>
-                <div  className='field col-12'>
-                    <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
-                    {renderDialog()}
-                    {renderLabel(data, label, type)}
-                    {renderCreateElements(type, name, rest)}
-                    {renderSubtitle(subtitle, subtitleComponent)}
-                    {renderErrors(name)}
-                </div>
-            </Sortable>
-        )
+    const createComponents = (metadata, index, isSection = false) => {
+        if (isSection) {
+            return (
+                <>
+                    {metadata.map((data, sectionIndex) => {
+                        const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                        if (type === 'section') {
+                            return alert('Error: Cannot place section component within another section component.')
+                        }
+                        return (
+                            <>
+                                <Sortable key={sectionIndex} id={`${metadata[sectionIndex].id}`}>
+                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent)}
+                                </Sortable>
+                            </>
+                        )
+                    })}
+                </>
+            )
+        } else {
+            const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = metadata
+            return (
+                <Sortable key={index} id={index + 1}>
+                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent)}
+                </Sortable>
+            )
+        }
     }
 
-    const createSectionComponents = (metadata) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent) => {
         return (
-            <>
-                {metadata.map((data, index) => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
-                    if (type === 'section') {
-                        return alert('Error: Cannot place section component within another section component.')
-                    }
-                    return (
-                        <>
-                        <Sortable key={index} id={`${metadata[index].id}`}>
-                            <div  className='field col-12'>
-                                <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
-                                {renderDialog()}
-                                {renderLabel(data, label, type)}
-                                {renderCreateElements(type, name, rest)}
-                                {renderSubtitle(subtitle, subtitleComponent)}
-                                {renderErrors(name)}
-                            </div>
-                        </Sortable>
-                        </>
-                    )
-                })}
-            </>
+            <div  className='field col-12'>
+                <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
+                {renderDialog()}
+                {renderLabel(data, label, type)}
+                {renderCreateElements(type, name, rest)}
+                {renderSubtitle(subtitle, subtitleComponent)}
+                {renderErrors(name)}
+            </div>
         )
     }
 
