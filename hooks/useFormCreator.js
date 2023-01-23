@@ -27,6 +27,12 @@ export const useFormCreator = () => {
     const dragOverCapture = useRef()
 
     useEffect(() => {
+        metadata.forEach(element => {
+            if (element.defaultValue) {
+                setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
+            }
+        })
+
         setMainFormIds(renderComponents().props.children.map(component => component.props.id))
 
         setSectionIds(metadata.map(component => {
@@ -52,18 +58,6 @@ export const useFormCreator = () => {
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
     }
-    
-    useEffect(() => {
-        metadata.forEach(element => {
-            if (element.defaultValue) {
-                setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
-            }
-        });    
-
-        
-    // Try to remove this warning later
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metadata])
 
     const renderLabel = (componentData, label, type, isPreview = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}

@@ -5,7 +5,6 @@ const useDnd = () => {
 
     const handleDragOver = (event, dragOverCapture) => {
         const { active, over } = event
-        console.log('event(dragOver):', event)
 
         if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
         if (active.data.current.sortable) return // Prevents error being thrown when sorting components on main form panel.
@@ -26,7 +25,6 @@ const useDnd = () => {
 
     const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, sectionIds, setSectionIds, dragOverCapture) => {
         const { active, over } = event
-        console.log('event(dragEnd):', event)
 
         if (dragOverCapture.current) {
             if (typeof dragOverCapture.current.id !== 'number') {
@@ -71,9 +69,7 @@ const useDnd = () => {
 
                         tempSectionMetadata.splice(movingComponentId, 1)
                         tempSectionMetadata.splice(newPositionId, 0, ...movingComponent)
-
-                        console.log('tempSectionMetadata:', tempSectionMetadata)
-
+                        
                         tempMetadata[sectionIndex].sectionMetadata = tempSectionMetadata
 
                         return tempMetadata
