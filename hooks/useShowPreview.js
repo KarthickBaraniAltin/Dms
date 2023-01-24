@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export const usePreviewDialog = () => {
+export const useShowPreview = () => {
     const [showPreviewDialog, setShowPreviewDialog] = useState(false)
 
     function handlePreview() {

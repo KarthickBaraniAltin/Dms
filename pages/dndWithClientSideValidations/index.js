@@ -1,22 +1,23 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
+import { usePreviewCreator } from '../../hooks/usePreviewCreator'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowForm } from '../../hooks/useShowForm'
-import { usePreviewDialog } from '../../hooks/usePreviewDialog'
+import { useShowPreview } from '../../hooks/useShowPreview'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, renderPreview, mainFormIds, setMainFormIds, sectionIds, setSectionIds, dragOverCapture } = useFormCreator()
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, sectionIds, setSectionIds, dragOverCapture } = useFormCreator()
+    const { renderPreview } = usePreviewCreator({ metadata })
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
-    const { showPreviewDialog, handlePreview } = usePreviewDialog()
+    const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 
     return (
@@ -46,7 +47,7 @@ export default function DndWithClientSideValidations() {
                                     items={mainFormIds}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderComponents()}
+                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
                                 </SortableContext>
                             </Droppable>
                         </Card>
