@@ -36,6 +36,7 @@ export default function ComponentPanel() {
                     name={component}
                     label='Section'
                     sectionMetadata={[]}
+                    guid=''
                 >
                     <div>
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin:'0 0 0.2rem 0'}}>{component.toUpperCase()}</h5>
@@ -60,6 +61,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Text Subtitle'
                     defaultValue=''
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -89,6 +91,7 @@ export default function ComponentPanel() {
                     subtitle='Subtitle'
                     defaultValue=''
                     dateFormat='dd-mm-yy'
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -119,6 +122,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Number Subtitle'
                     defaultValue=''
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -149,6 +153,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Textarea Subtitle'
                     defaultValue=''
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-12 md:col-12'>
@@ -179,6 +184,7 @@ export default function ComponentPanel() {
                     subtitle='Mask Subtitle'
                     defaultValue=''
                     mask='(999) 999-9999'
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -210,6 +216,7 @@ export default function ComponentPanel() {
                     subtitle='Dropdown Subtitle'
                     defaultValue=''
                     options={cities}
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -242,6 +249,7 @@ export default function ComponentPanel() {
                     defaultValue=''
                     options={cities}
                     display='chip'
+                    guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
                     <div className='field col-4 md:col-4'>
@@ -262,17 +270,6 @@ export default function ComponentPanel() {
             )
         }
     })
-
-    const sectionPanel = (
-        <div>
-            <div className='flex justify-content-between'>
-            <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                Section Panel
-            </label> 
-            <i className='pi pi-cog' style={{fontSize: '1em'}}></i>
-            </div>
-        </div>
-    )
 
     return (
         <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>

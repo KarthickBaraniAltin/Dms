@@ -84,8 +84,10 @@ const useDnd = () => {
                     updatedData.name = `${updatedData.name}-${numberOfSections + 1}`
                 }
             } else {
-                updatedData.name = `${updatedData.name}_${Guid.newGuid()}`
+                updatedData.name = `${updatedData.name}_${metadata.length + 1}`
             }
+
+            updatedData.guid = `${Guid.newGuid().StringGuid}`
 
             addMetadata(updatedData)
     }
