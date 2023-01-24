@@ -32,7 +32,6 @@ export const usePreviewCreator = ({ metadata }) => {
                     return (
                         <div key={index} style={{marginTop: '1rem'}}>
                             <div  className='field col-12'>
-                                {/* {renderDialog()} */}
                                 {renderLabel(null, label, type, true)}
                                 {renderCreateElements(type, name, rest)}
                                 { subtitleComponent }

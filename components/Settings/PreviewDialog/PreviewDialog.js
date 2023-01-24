@@ -15,9 +15,9 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
             subtitleList.push(null) // Required for subtitle to appear in non-section components.
             return
         }
-        labelList.push(component.props.children.props.children[1])
-        inputFieldList.push(component.props.children.props.children[2])
-        subtitleList.push(component.props.children.props.children[4])
+        labelList.push(component.props.children.props.children[0])
+        inputFieldList.push(component.props.children.props.children[1])
+        subtitleList.push(component.props.children.props.children[3])
     })
 
     for (let i = 0; i < components.length; i++) {
@@ -71,40 +71,3 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
         </>
     )
 }
-
-    // if (metadata.props.children) {
-    //     labelList = components.map(component => {
-    //         return <div>{component.props.children.props.children[1]}</div>
-    //     })
-
-    //     inputFieldList = components.map(component => {
-    //         return <div>{component.props.children.props.children[2]}</div>
-    //     })
-
-    //     subtitleList = components.map(component => {
-    //         return <div>{component.props.children.props.children[4]}</div>
-    //     })
-
-    //     for (let i = 0; i < components.length; i++) {
-    //         if (components[i].props.children.type === 'label') {
-    //             componentList.push(
-    //                 <div>
-    //                     {components[i].props.children.props.children}
-    //                 </div>
-    //             )
-
-    //             continue
-    //         }
-
-    //         componentList.push(
-    //         <div key={i} style={{'display': 'flex', 'gap': '2rem', 'margin-bottom': '1rem'}}>
-    //             <div style={{'width': '100px'}}>
-    //                 {labelList[i]}
-    //                 {subtitleList[i]}
-    //             </div>
-    //             {inputFieldList[i]}
-    //         </div>
-    //         )
-    //     }
-        
-    // }
