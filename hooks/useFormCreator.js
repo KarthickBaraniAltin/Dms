@@ -79,5 +79,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderForm, addMetadata, metadata, setMetadata, mainFormIds, setMainFormIds, sectionIds, setSectionIds, dragOverCapture }
+    return { renderForm, addMetadata, metadata, setMetadata, mainFormIds, setMainFormIds, dragOverCapture }
 }

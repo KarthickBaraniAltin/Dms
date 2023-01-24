@@ -23,7 +23,7 @@ const useDnd = () => {
         }
     }
 
-    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, sectionIds, setSectionIds, dragOverCapture) => {
+    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture) => {
         const { active, over } = event
 
         if (dragOverCapture.current) {
