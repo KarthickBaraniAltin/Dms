@@ -27,15 +27,32 @@ export const useFormCreator = () => {
 
         setMainFormIds(renderForm().props.children.map(component => component.props.id))
 
-        setSectionIds(metadata.map(component => {
+        const sectionIdArray = []
+        metadata.map(component => {
+            if (component.type === undefined) {
+                return
+            }
             if (component.type === 'section') {
-                return {
+                sectionIdArray.push({
                     id: component.name,
                     componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
-                }
+                })
             }
-        }))
+        })
+
+        setSectionIds(sectionIdArray)
     }, [metadata])
+
+    // metadata.map(component => {
+    //     if (component.type === 'section') {
+    //         return {
+    //             id: component.name,
+    //             componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
+    //         }
+    //     }
+    // })
+
+    console.log('sectionIds:', sectionIds)
 
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
@@ -47,8 +64,8 @@ export const useFormCreator = () => {
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
-                        const sectionNumber = `section-${index + 1}`
-                        let sectionIdsForDroppable = sectionIds.find(element => element?.id === sectionNumber)
+                        // const sectionNumber = `section-${index + 1}`
+                        let sectionIdsForDroppable = sectionIds.find(element => element?.id === name)
                         sectionIdsForDroppable = sectionIdsForDroppable?.componentData ? sectionIdsForDroppable.componentData : []
                        
                         return (
@@ -58,7 +75,7 @@ export const useFormCreator = () => {
                                 {renderDialog()}
                                 {renderLabel(data, label, type)}
                                 <div>
-                                    <Droppable id={sectionNumber}>
+                                    <Droppable id={name}>
                                         <SortableContext
                                             items={sectionIdsForDroppable}
                                             strategy={verticalListSortingStrategy}

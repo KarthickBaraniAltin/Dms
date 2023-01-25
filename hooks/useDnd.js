@@ -12,8 +12,9 @@ const useDnd = () => {
         if (event.collisions.length > 0) {
             event.collisions.map(collision => {
                 if (typeof collision.id !== 'string') return // Prevents error being thrown when id is not a string.
-
+                console.log('collisions:', event.collisions)
                 if (collision.id.includes('section')) {
+                    console.log('over:', over)
                     dragOverCapture.current = {
                         id: over.id,
                         componentData: active.data.current
@@ -23,23 +24,44 @@ const useDnd = () => {
         }
     }
 
-    const addComponentInSection = (dragOverCapture, setMetadata, mainFormIds) => {
+    const addComponentInSection = (dragOverCapture, setMetadata) => {
+        let wasIdString = false
         if (typeof dragOverCapture.current.id !== 'number') {
             if (dragOverCapture.current.id.includes('section')) {
-                dragOverCapture.current.id = Number(dragOverCapture.current.id.substring(dragOverCapture.current.id.length - 1))
-                // Grabs number at the end of 'section-' which is required for the code below to find the position of the section component.
+                wasIdString = true
             }
         }
 
         setMetadata(prevState => {
-            const indexOfSection = mainFormIds.findIndex(element => element == dragOverCapture.current?.id)
+            let indexOfSection
+            let sectionNumber
+
+            if (wasIdString) {
+                indexOfSection = prevState.findIndex(element => {
+                    if (element.name === dragOverCapture.current.id) {
+                        sectionNumber = element.name
+                        return element.name === dragOverCapture.current.id
+                    }
+                })
+                wasIdString = false
+            } else {
+                indexOfSection = prevState.findIndex(element => {
+                    if (Number(element.name.substring(8, 9)) === dragOverCapture.current.id) {
+                        sectionNumber = element.name
+                        return Number(element.name.substring(8, 9)) === dragOverCapture.current.id
+                    }
+                })
+            }
 
             if (indexOfSection === -1) return prevState // Prevents error being thrown when indexOfSection returns -1.
 
             const tempMetadata = JSON.parse(JSON.stringify(prevState))
 
-            dragOverCapture.current.componentData.id = `section-${indexOfSection + 1}_${tempMetadata[indexOfSection].sectionMetadata.length + 1}`
-            dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}-${Guid.newGuid()}`
+            dragOverCapture.current.componentData.id = `${sectionNumber}_${tempMetadata[indexOfSection].sectionMetadata.length + 1}`
+
+            dragOverCapture.current.componentData.name = `${dragOverCapture.current.componentData.name}-${sectionNumber.substring(8, 9)}_${tempMetadata[indexOfSection].sectionMetadata.length + 1}`
+
+            dragOverCapture.current.componentData.guid = `${Guid.newGuid().StringGuid}`
 
             tempMetadata[indexOfSection].sectionMetadata.push(dragOverCapture.current.componentData)
 
@@ -113,11 +135,11 @@ const useDnd = () => {
         })
     }
 
-    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture) => {
+    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture) => {
         const { active, over } = event
 
         if (dragOverCapture.current) {
-            addComponentInSection(dragOverCapture, setMetadata, mainFormIds)
+            addComponentInSection(dragOverCapture, setMetadata)
 
             dragOverCapture.current = null
 
