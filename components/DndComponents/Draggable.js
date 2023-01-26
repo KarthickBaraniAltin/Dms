@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDraggable} from '@dnd-kit/core'
 import {CSS} from '@dnd-kit/utilities'
-
+ 
 export function Draggable(props) {
   const {attributes, listeners, setNodeRef, transform} = useDraggable({
     id: props.id,
@@ -13,7 +13,10 @@ export function Draggable(props) {
         defaultValue: props.defaultValue,
         options: props?.options,
         mask: props?.mask,
+        format: props?.format,
         display: props?.display,
+        minDate: props?.minDate,
+        maxDate: props?.maxDate,
         sectionMetadata: props?.sectionMetadata,
         id: props.id
     }

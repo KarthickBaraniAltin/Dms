@@ -91,6 +91,8 @@ export default function ComponentPanel() {
                     subtitle='Subtitle'
                     defaultValue=''
                     dateFormat='dd-mm-yy'
+                    minDate=''
+                    maxDate=''
                     guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
@@ -122,6 +124,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Number Subtitle'
                     defaultValue=''
+                    format={false}
                     guid=''
                 >
                     <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>

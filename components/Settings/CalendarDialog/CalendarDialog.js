@@ -1,8 +1,8 @@
 import React from 'react'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { InputNumber } from 'primereact/inputnumber';
+import { InputText } from 'primereact/inputtext'
+import { Button } from 'primereact/button'
+import { Calendar } from 'primereact/calendar'
 
 export default function CalendarDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -15,7 +15,7 @@ export default function CalendarDialog({ visible, hideDialog, name, inputs, hand
 
   return (
     <div>
-      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Calendar Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -35,20 +35,20 @@ export default function CalendarDialog({ visible, hideDialog, name, inputs, hand
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
-            <label>Min Length</label>
-            <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />
+            <label>Min Date</label>
+            <Calendar name='validations.minDate.date' value={inputs?.validations?.minDate?.date ?? undefined} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Min Length Message</label>
-            <InputText name='validations.minLength.message' value={inputs?.validations?.minLength?.message ?? ''} onChange={handleInputChange} />
+            <label>Min Date Message</label>
+            <InputText name='validations.minDate.message' value={inputs?.validations?.minDate?.message ?? ''} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Max Length</label>
-            <InputNumber name='validations.maxLength.length' value={inputs?.validations?.maxLength?.length ?? 255} onChange={handleInputChange} />
+            <label>Max Date</label>
+            <Calendar name='validations.maxDate.date' value={inputs?.validations?.maxDate?.date ?? undefined} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Max Length Message</label>
-            <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
+            <label>Max Date Message</label>
+            <InputText name='validations.maxDate.message' value={inputs?.validations?.maxDate?.message ?? ''} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>
