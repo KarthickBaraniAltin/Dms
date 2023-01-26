@@ -12,7 +12,7 @@ const useDnd = () => {
         if (event.collisions.length > 0) {
             event.collisions.map(collision => {
                 if (typeof collision.id !== 'string') return // Prevents error being thrown when id is not a string.
-                console.log('collisions:', event.collisions)
+
                 if (collision.id.includes('section')) {
                     console.log('over:', over)
                     dragOverCapture.current = {

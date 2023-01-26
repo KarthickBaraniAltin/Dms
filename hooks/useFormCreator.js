@@ -43,17 +43,6 @@ export const useFormCreator = () => {
         setSectionIds(sectionIdArray)
     }, [metadata])
 
-    // metadata.map(component => {
-    //     if (component.type === 'section') {
-    //         return {
-    //             id: component.name,
-    //             componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
-    //         }
-    //     }
-    // })
-
-    console.log('sectionIds:', sectionIds)
-
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
     }

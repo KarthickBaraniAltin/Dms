@@ -23,6 +23,20 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             intBiggerThan: (value1, value2) => {
                 return value1 > value2
+            },
+            minNum: (minNum, currentNum) => { // The minNum variable is a number because of the onValueChange attribute set in the NumberDialog while currentNum is a string.
+                if (!minNum || !currentNum) {
+                    return true
+                }
+
+                return minNum <= currentNum
+            },
+            maxNum: (maxNum, currentNum) => { // The maxNum variable is a number because of the onValueChange attribute set in the NumberDialog while currentNum is a string.
+                if (!maxNum || !currentNum) {
+                    return true
+                }
+
+                return maxNum >= currentNum
             }
         }
 
@@ -35,7 +49,6 @@ export const useValidation = ({ metadata, inputs }) => {
             const currentErrors = []
             if (validations) {
                 for (const [key, value] of Object.entries(validations)) {
-
                     switch(key) {
                         case 'required': {
                             const { message } = value
@@ -45,7 +58,6 @@ export const useValidation = ({ metadata, inputs }) => {
                             break
                         }
                         case 'minLength': {
-                            console.log("Min Length")
                             const { message, length } = value
                             if (!validationMapper.minLength(length, inputValue?.length)) {
                                 currentErrors.push(message ?? `This field must have more than ${length} characters`)
@@ -54,8 +66,22 @@ export const useValidation = ({ metadata, inputs }) => {
                         }
                         case 'maxLength': {
                             const { message, length } = value
-                            if(!validationMapper.maxLength(length, inputValue?.length)) {
+                            if (!validationMapper.maxLength(length, inputValue?.length)) {
                                 currentErrors.push(message ?? `This field can't have more than ${length} characters`)
+                            }
+                            break
+                        }
+                        case 'minNum': {
+                            const { message, number } = value
+                            if (!validationMapper.minNum(number, inputValue)) {
+                                currentErrors.push(message ?? `This field can't be smaller than ${number}`)
+                            }
+                            break
+                        }
+                        case 'maxNum': {
+                            const { message, number } = value
+                            if (!validationMapper.maxNum(number, inputValue)) {
+                                currentErrors.push(message ?? `This field can't be larger than ${number}`)
                             }
                             break
                         }
@@ -78,7 +104,7 @@ export const useValidation = ({ metadata, inputs }) => {
         validate()
     }, [metadata, validate])
     
-    console.log("Validation Errors = ", errors)
+    // console.log("Validation Errors = ", errors)
 
     return { errors }
 }

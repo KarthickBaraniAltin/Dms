@@ -52,14 +52,26 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     }
 
     const renderCreateElements = (type, name, rest) => {
-        return (
-            <>
-            {createElement(
-                componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
-            )}
-            </>
-        )
+
+        if (type === 'number') { // Required because otherwise the input in the number component will have commas as the number size increases which returns a NaN.
+            return (
+                <>
+                {createElement(
+                    componentMapper[type],
+                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange, format: false}
+                )}
+                </>
+            )
+        } else {
+            return (
+                <>
+                {createElement(
+                    componentMapper[type],
+                    {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                )}
+                </>
+            )
+        }
     }
 
     const renderSubtitle = (subtitle, subtitleComponent) => {

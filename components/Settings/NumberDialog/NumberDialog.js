@@ -1,7 +1,8 @@
 import React from 'react'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext'
+import { Button } from 'primereact/button'
+import { InputNumber } from 'primereact/inputnumber'
 
 export default function NumberDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -14,7 +15,7 @@ export default function NumberDialog({ visible, hideDialog, name, inputs, handle
 
   return (
     <div>
-      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Number Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -35,20 +36,20 @@ export default function NumberDialog({ visible, hideDialog, name, inputs, handle
 
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
-            <label>Min Length</label>
-            <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />
+            <label>Min Number</label>
+            <InputNumber name='validations.minNum.number' value={inputs?.validations?.minNum?.number ?? 0} onValueChange={handleInputChange} format={false}/>
+          </div> {/* If onValueChange was onChange instead, the minNum in useValidation would be a string instead of a number. */}
+          <div className='field col-6 md:col-6'>
+            <label>Min Number Message</label>
+            <InputText name='validations.minNum.message' value={inputs?.validations?.minNum?.message ?? ''} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Min Length Message</label>
-            <InputText name='validations.minLength.message' value={inputs?.validations?.minLength?.message ?? ''} onChange={handleInputChange} />
-          </div>
+            <label>Max Number</label>
+            <InputNumber name='validations.maxNum.number' value={inputs?.validations?.maxNum?.number ?? 1000} onValueChange={handleInputChange} format={false}/>
+          </div> {/* If onValueChange was onChange instead, the maxNum in useValidation would be a string instead of a number. */}
           <div className='field col-6 md:col-6'>
-            <label>Max Length</label>
-            <InputNumber name='validations.maxLength.length' value={inputs?.validations?.maxLength?.length ?? 255} onChange={handleInputChange} />
-          </div>
-          <div className='field col-6 md:col-6'>
-            <label>Max Length Message</label>
-            <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
+            <label>Max Number Message</label>
+            <InputText name='validations.maxNum.message' value={inputs?.validations?.maxNum?.message ?? ''} onChange={handleInputChange} />
           </div>
 
         </div>
