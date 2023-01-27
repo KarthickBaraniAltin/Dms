@@ -40,20 +40,26 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             minDate: (minDate, inputValue, calendarName) => {               
                 const index = metadata.findIndex(element => element.name === calendarName)
-
-                const minDateDay = minDate.getDate()
-                const minDateMonth = minDate.getMonth()
-                const minDateYear = minDate.getFullYear()
-
-                const inputValueDay = inputValue?.getDate()
-                const inputValueMonth = inputValue?.getMonth()
-                const inputValueYear = inputValue?.getFullYear()
+                // const newMinDate = `${minDate.getMonth()}/${minDate.getDay()}/${minDate.getFullYear()}`
+                // const newInputDate = `${inputValue?.getMonth()}/${inputValue?.getDate()}/${inputValue?.getFullYear()}`
 
                 metadata[index].minDate = minDate
 
-                if (minDateYear > inputValueYear) return true
-                if (minDateMonth > inputValueMonth) return true
-                if (minDateDay > inputValueDay) return true              
+                // if (newMinDate > newInputDate) {
+                //     return true
+                // } else {
+                //     return false
+                // }           
+
+                if (minDate.getFullYear() >= inputValue?.getFullYear()) {
+                    if (minDate.getMonth() >= inputValue?.getMonth()) {
+                        if (minDate.getDate() >= inputValue?.getDate()) {
+                            return true
+                        }
+                    }
+                } else {
+                    return false
+                }
             },
             maxDate: (maxDate, inputValue, calendarName) => {
                 const index = metadata.findIndex(element => element.name === calendarName)
@@ -78,8 +84,6 @@ export const useValidation = ({ metadata, inputs }) => {
 
         metadata.forEach(element => {
             const { validations, name } = element
-            console.log('inputs:', inputs)
-            console.log('name:', name)
             const inputValue = inputs[name]
 
             const currentErrors = []
@@ -133,6 +137,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             if (validationMapper.maxDate(date, inputValue, name)) {
                                 currentErrors.push(message ?? `Please pick a date on or before ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
                             }
+                            break
                         }
                         default:
                             console.error(`Cant find validation named = ${key}`)
