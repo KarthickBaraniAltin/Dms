@@ -135,6 +135,14 @@ const useDnd = () => {
         })
     }
 
+    const removeMainForm = (active, setMetadata) => {
+        setMetadata(prevState => {
+            let tempState = prevState.slice(0)
+            tempState.splice(active.id - 1, 1)
+            return tempState
+        })
+    }
+
     const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture) => {
         const { active, over } = event
 
@@ -161,7 +169,13 @@ const useDnd = () => {
         }
 
         if (active.data.current.sortable) {
-            if (active.id !== over.id) {
+            if (over?.id === 'droppable-container-form') {
+                removeMainForm(active, setMetadata)
+
+                return
+            }
+
+            if (active.id !== over?.id) {
                 sortMainForm(active, over, setMainFormIds, setMetadata)
             }
         }
