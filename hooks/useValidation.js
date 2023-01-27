@@ -56,19 +56,11 @@ export const useValidation = ({ metadata, inputs }) => {
             maxDate: (maxDate, inputValue, calendarName) => {
                 const index = metadata.findIndex(element => element.name === calendarName)
 
-                const maxDateDay = maxDate.getDate()
-                const maxDateMonth = maxDate.getMonth()
-                const maxDateYear = maxDate.getFullYear()
-
-                const inputValueDay = inputValue?.getDate()
-                const inputValueMonth = inputValue?.getMonth()
-                const inputValueYear = inputValue?.getFullYear()
-
                 metadata[index].maxDate = maxDate
 
-                if (maxDateYear < inputValueYear) return true
-                if (maxDateMonth < inputValueMonth) return true
-                if (maxDateDay < inputValueDay) return true
+                if (maxDate.getFullYear() < inputValue?.getFullYear()) return true
+                if (maxDate.getMonth() < inputValue?.getMonth()) return true
+                if (maxDate.getDate() < inputValue?.getDate()) return true
             }
         }
 
