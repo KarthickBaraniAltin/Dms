@@ -36,7 +36,8 @@ export default function Home({  }) {
                 defaultValue: 'text default value',
                 validations: {
                     minLength: {
-                      length: "0"
+                      length: "0",
+                      message: "Error Message"
                     },
                     maxLength: {
                       length: "255"

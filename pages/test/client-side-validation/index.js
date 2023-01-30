@@ -9,38 +9,8 @@ import { useValidation } from '../../../hooks/useValidation'
 
 export default function Index() {
 
-    const { handleInputChange, inputs } = useInputs()
     const { renderComponents, addMetadata, metadata } = useFormCreator()
-    const { errors, validate } = useValidation({ metadata })
     
-    const addTextInput = () => {
-        addMetadata({
-            type: 'text',
-            inputProps: {
-                name: 'text', 
-                onChange: handleInputChange, 
-            },
-            value: inputs.text ? inputs.text : '',
-            label: 'Label ',
-            subtitle: 'Some Subtitle'
-        })
-    }
-
-    const addTextInput2 = () => {
-        addMetadata({
-            type: 'text2',
-            inputProps: {
-                name: 'text2', 
-                onChange: handleInputChange, 
-            },
-            value: inputs.text2 ? inputs.text2 : '',
-            label: 'Label ',
-            subtitle: 'Some Subtitle'
-        })
-    }
-
-    console.log('Inputs = ', inputs)
-
     return (
         <>
             <Head>
