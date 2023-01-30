@@ -37,9 +37,9 @@ export default function DndWithClientSideValidations() {
                         <ComponentPanel />
                         <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                             <div className='flex flex-column justify-content-center'>
-                                <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                                {/* <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
                                     <h1 style={{'textAlign': 'center'}}>{formTitle}</h1>
-                                </Card>
+                                </Card> */}
                                 <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                             </div>
                             <Droppable id={'droppable-container-form'}>

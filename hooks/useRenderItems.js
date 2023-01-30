@@ -11,6 +11,7 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
+import { Card } from 'primereact/card'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
@@ -25,10 +26,11 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'textarea': InputTextarea,
         'mask': InputMask,
         'dropdown': Dropdown,
-        'multiselect': MultiSelect
+        'multiselect': MultiSelect,
+        'header': 'h1'
     }
 
-    const renderLabel = (componentData, label, type, isPreview = false) => {
+    const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
         const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
         return (
@@ -37,6 +39,16 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
                     {label}
                 </label>
+                :
+                isHeader ?
+                <>
+                    <div className='flex flex-column'>
+                        <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
+                        <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                            <h1 style={{'textAlign': 'center'}}>{label}</h1>
+                        </Card>
+                    </div>
+                </>
                 :
                 <>
                     <div className="flex justify-content-between" style={type === 'section' ? sectionLabelStyle : null}>
@@ -90,7 +102,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
-                {renderLabel(data, label, type)}
+                {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
                 {renderCreateElements(type, name, rest)}
                 {renderSubtitle(subtitle, subtitleComponent)}
                 {renderErrors(name)}

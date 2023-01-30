@@ -7,6 +7,7 @@ export default function ComponentPanel() {
     const { handleInputChange, inputs } = useInputs()
 
     const componentTypes = [
+        'header',
         'section',
         'text',
         'calendar',
@@ -27,6 +28,25 @@ export default function ComponentPanel() {
       ]
 
     const draggableItems = componentTypes.map((component, index) => {
+        if (component === 'header') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Header'
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Header
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
         if (component === 'section') {
             return (
                 <Draggable
@@ -38,15 +58,11 @@ export default function ComponentPanel() {
                     sectionMetadata={[]}
                     guid=''
                 >
-                    <div>
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin:'0 0 0.2rem 0'}}>{component.toUpperCase()}</h5>
-                        <div className='flex justify-content-between'>
+                    <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             Section
                         </label> 
-                        <i className='pi pi-cog' style={{fontSize: '1em'}}></i>
-                        </div>
-                </div>
+                    </div>
                 </Draggable>
             )
         }
@@ -63,19 +79,11 @@ export default function ComponentPanel() {
                     defaultValue=''
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Basic Text</h5>
-                        <Input 
-                            type='text'
-                            inputProps={{
-                                name: 'text', 
-                                onChange: handleInputChange, 
-                                value: inputs.text ? inputs.text : '',
-                            }}
-                            label='Label'
-                        />
-                    </div> 
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Text
+                        </label> 
+                    </div>
                 </Draggable>
             )
         }
@@ -95,21 +103,11 @@ export default function ComponentPanel() {
                     maxDate=''
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Calendar</h5>
-                        <Input
-                            type='calendar'
-                            inputProps={{
-                                name: 'date',
-                                onChange: handleInputChange,
-                                value: inputs.date ? inputs.date : new Date(),
-                                dateFormat: 'dd-mm-yy'                
-                            }}
-                            label='Label'
-                            subtitle='Calendar Subtitle'
-                        />
-                    </div>  
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Calendar
+                        </label> 
+                    </div> 
                 </Draggable>
             )
         }
@@ -127,20 +125,10 @@ export default function ComponentPanel() {
                     format={false}
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Number</h5>
-                            <Input 
-                                type='number' 
-                                inputProps={{
-                                    name: 'number',
-                                    onChange: handleInputChange,
-                                    value: inputs.number ? inputs.number : undefined,
-                                    useGrouping: false
-                                }}  
-                                label='Label'
-                                subtitle='Subtitle'
-                            />
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Number
+                        </label> 
                     </div>
                 </Draggable>
             )
@@ -158,19 +146,10 @@ export default function ComponentPanel() {
                     defaultValue=''
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-12 md:col-12'>
-                        <h5>Text Area</h5>
-                            <Input
-                                type='textarea'
-                                inputProps={{
-                                    name: 'textarea',
-                                    onChange: handleInputChange,
-                                    value: inputs.textarea ? inputs.textarea : '',
-                                }}
-                                label='Label'
-                                subtitle='subtitle'
-                            />
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Textarea
+                        </label> 
                     </div>
                 </Draggable>
             )
@@ -189,20 +168,10 @@ export default function ComponentPanel() {
                     mask='(999) 999-9999'
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Mask</h5>
-                            <Input
-                                type='mask'
-                                inputProps={{
-                                    name: 'mask',
-                                    onChange: handleInputChange,
-                                    value: inputs.mask ? inputs.mask: '',
-                                    mask: '(999) 999-9999'
-                                }}
-                                label='Label'
-                                subtitle='subtitle'
-                            />
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Mask
+                        </label> 
                     </div>
                 </Draggable>
             )
@@ -221,20 +190,10 @@ export default function ComponentPanel() {
                     options={cities}
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Dropdown</h5>
-                            <Input
-                                type='dropdown'
-                                inputProps={{
-                                    name: 'dropdown',
-                                    options: cities,
-                                    onChange: handleInputChange,
-                                    value: inputs.dropdown ? inputs.dropdown : '',
-                                }}
-                                label='Label'
-                                subtitle='subtitle'
-                            />
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Dropdown
+                        </label> 
                     </div>
                 </Draggable>
             )
@@ -254,20 +213,10 @@ export default function ComponentPanel() {
                     display='chip'
                     guid=''
                 >
-                    <h5 style={{display: 'flex', justifyContent: 'flex-end', margin: 0}}>{component.toUpperCase()}</h5>
-                    <div className='field col-4 md:col-4'>
-                        <h5>Multiselect</h5>
-                            <Input
-                                type='multiselect'
-                                inputProps={{
-                                    name: 'multiselect',
-                                    options: cities,
-                                    onChange: handleInputChange,
-                                    value: inputs.multiselect ? inputs.multiselect : '',
-                                    display: 'chip'
-                                }}
-                                label='Label'
-                            />
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Multiselect
+                        </label> 
                     </div>
                 </Draggable>
             )

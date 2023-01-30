@@ -53,10 +53,9 @@ export const useFormCreator = () => {
                 {metadata.map((data, index) => {
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, sectionMetadata, ...rest } = data
                     if (type === 'section') {
-                        // const sectionNumber = `section-${index + 1}`
                         let sectionIdsForDroppable = sectionIds.find(element => element?.id === name)
                         sectionIdsForDroppable = sectionIdsForDroppable?.componentData ? sectionIdsForDroppable.componentData : []
-                       
+
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
