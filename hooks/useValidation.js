@@ -58,9 +58,24 @@ export const useValidation = ({ metadata, inputs }) => {
 
                 metadata[index].maxDate = maxDate
 
-                if (maxDate.getFullYear() < inputValue?.getFullYear()) return true
-                if (maxDate.getMonth() < inputValue?.getMonth()) return true
-                if (maxDate.getDate() < inputValue?.getDate()) return true
+                // if (maxDate.getFullYear() < inputValue?.getFullYear()) return true
+                // if (maxDate.getMonth() < inputValue?.getMonth()) return true
+                // if (maxDate.getDate() < inputValue?.getDate()) return true
+
+                if (maxDate.getFullYear() <= inputValue?.getFullYear()) {
+                    if (maxDate.getMonth() <= inputValue?. getMonth()) {
+                        if (maxDate.getDate() <= inputValue?.getDate()) {
+                            return true
+                        }
+                    }
+                } else {
+                    return false
+                }
+            },
+            setMask: (mask, maskName) => {
+                const index = metadata.findIndex(element => element.name === maskName)
+
+                metadata[index].mask = mask
             }
         }
 
@@ -121,6 +136,11 @@ export const useValidation = ({ metadata, inputs }) => {
                             if (validationMapper.maxDate(date, inputValue, name)) {
                                 currentErrors.push(message ?? `Please pick a date on or before ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
                             }
+                            break
+                        }
+                        case 'setMask': {
+                            const { mask } = value
+                            validationMapper.setMask(mask, name)
                             break
                         }
                         default:
