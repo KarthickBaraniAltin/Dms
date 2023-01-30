@@ -32,7 +32,7 @@ export default function DndWithClientSideValidations() {
                         onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                         onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                     >
-                    {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
+                    {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} /> : null}
                     <div className='grid'>
                         <ComponentPanel />
                         <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
