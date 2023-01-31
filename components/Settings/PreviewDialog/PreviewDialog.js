@@ -8,7 +8,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
     let inputFieldList = []
     let subtitleList = []
     let componentList = []
-    const { renderPreview } = usePreviewCreator({metadata})
+    const { renderPreview } = usePreviewCreator({ metadata })
     const components = renderPreview()?.props?.children
 
     components.map(component => {
@@ -22,8 +22,6 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
         inputFieldList.push(component.props.children.props.children[1])
         subtitleList.push(component.props.children.props.children[3])
     })
-
-    console.log('components:', components)
 
     for (let i = 0; i < components.length; i++) {
         if (metadata[i].type === 'header') {
