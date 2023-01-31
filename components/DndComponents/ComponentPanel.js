@@ -15,7 +15,8 @@ export default function ComponentPanel() {
         'textarea',
         'mask',
         'dropdown',
-        'multiselect'
+        'multiselect',
+        'file'
     ]
     const cities = [
         { label: 'Las Vegas', value: 'LV'},
@@ -216,6 +217,26 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             Multiselect
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'file') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle='File Subtitle'
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            File
                         </label> 
                     </div>
                 </Draggable>

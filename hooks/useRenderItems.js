@@ -27,7 +27,8 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'mask': InputMask,
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
-        'header': 'h1'
+        'header': 'h1',
+        'file': 'input'
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -64,11 +65,12 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     }
 
     const renderCreateElements = (type, name, rest) => {
+
         return (
             <>
             {createElement(
                 componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange}
+                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), type: type === 'file' ? type : null, value: inputs[name], onChange: handleInputChange}
             )}
             </>
         )
