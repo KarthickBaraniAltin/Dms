@@ -31,9 +31,6 @@ export default function DndWithClientSideValidations() {
                 <div className='grid'>
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
-                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
-                        </div>
                         <Droppable id={'droppable-container-form'}>
                             <SortableContext
                                 items={mainFormIds}
@@ -42,6 +39,9 @@ export default function DndWithClientSideValidations() {
                                 {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
                             </SortableContext>
                         </Droppable>
+                        <div className='flex flex-column justify-content-center'>
+                            <Button label='Preview' className='flex align-self-center mt-2' onClick={handlePreview} />
+                        </div>
                     </Card>
                 </div>
                 </DndContext>
