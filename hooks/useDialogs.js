@@ -1,11 +1,12 @@
 import { createElement, useState } from "react"
+import { useInputs } from "./useInput"
 import SectionPanelDialog from '../components/Settings/SectionPanelDialog/SectionPanelDialog'
 import TextDialog from "../components/Settings/TextDialog/TextDialog"
 import TextareaDialog from "../components/Settings/TextareaDialog/TextareaDialog"
 import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
 import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog'
-import { useInputs } from "./useInput"
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
+import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -18,7 +19,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'number': NumberDialog,
         'calendar': CalendarDialog,
         'textarea': TextareaDialog,
-        'mask': MaskDialog
+        'mask': MaskDialog,
+        'header': HeaderDialog
     } 
 
     const hideDialog = () => {
