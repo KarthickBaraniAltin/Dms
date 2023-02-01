@@ -63,7 +63,7 @@ stages:
 - stage: 'Deplot'
   displayName: 'Deploy'
   dependsOn: 'Build'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
   jobs:
    - deployment: UAT
      displayName: UAT
