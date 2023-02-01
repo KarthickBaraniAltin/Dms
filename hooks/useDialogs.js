@@ -27,6 +27,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
     }
 
     const openDialog = (data) => {
+        console.log("Data = ", data)
         if (!dialogMapper[data.type]) {
             console.error("Given dialog type doesn't exist in dialog mapper, component can't be created")
             return

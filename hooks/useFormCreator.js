@@ -4,14 +4,18 @@ import { Sortable } from '../components/DndComponents/Sortable'
 import { useInputs } from "./useInput"
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
-import { useRenderItems } from "./useRenderItems"
 
 export const useFormCreator = () => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { setInputs } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
     const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata })
+    const { inputs, setInputs } = useInputs({})
+    const { errors } = useValidation({ metadata, inputs })
+    
+    // Api call variables
+    const { response, error, loading, callApi } = useApi()
+    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
