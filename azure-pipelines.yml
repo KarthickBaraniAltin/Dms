@@ -65,10 +65,10 @@ stages:
   dependsOn: 'Build'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
   jobs:
-   - deployment: DEV
-     displayName: DEV
+   - deployment: UAT
+     displayName: UAT
      environment: 
-       name: 'Dev Server'    
+       name: 'UAT Server Form Builder Studio'    
        resourceType: VirtualMachine
 
      strategy:
