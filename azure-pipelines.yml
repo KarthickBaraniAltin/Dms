@@ -6,15 +6,15 @@
 trigger:
  branches:
    include:
-     - dev
+     - uat
 
 variables:
   projectName: 'form-builder-studio'
-  websiteName: 'dev'
-  appPoolName: 'From-Builder-Studio'
+  websiteName: 'test'
+  appPoolName: 'Form-Builder-Studio'
   appName: 'form-builder-studio'
   distDirectory: '$(System.DefaultWorkingDirectory)/dist'
-  websitePhysicalPath: 'E:\inetpub\Dev\$(appName)'
+  websitePhysicalPath: 'E:\inetpub\Test\$(appName)'
 
 stages:
 - stage: 'Build'
