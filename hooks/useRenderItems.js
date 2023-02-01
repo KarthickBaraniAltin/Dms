@@ -14,7 +14,7 @@ import { Sortable } from '../components/DndComponents/Sortable'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
-    const { handleInputChange, inputs } = useInputs({})
+    const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -127,5 +127,5 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         }
     }
 
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, inputs, setInputs}
 }

@@ -1,37 +1,35 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../../../hooks/useFormCreator'
+import { usePreviewCreator } from '../../../../hooks/usePreviewCreator'
 import useDnd from '../../../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowForm } from '../../../../hooks/useShowForm'
-import { usePreviewDialog } from '../../../../hooks/usePreviewDialog'
+import { useShowPreview } from '../../../../hooks/useShowPreview'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderComponents, response, loading, submitForm, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
-    const { displayForm } = useFormDisplay({ metadata })
-    const { displayFormCreator } = useFormCreator({ metadata })
-
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
+    const { renderPreview } = usePreviewCreator({ metadata })
     const { newForm, renderNewFormCard, formTitle } = useShowForm()
-    const { showPreviewDialog, handlePreview } = usePreviewDialog()
+    const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 
     return (
         <>
             <Head>
-                <title>Create Form</title>
+                <title>DnD With Client Side Validations</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
                 {newForm ? 
                     <DndContext
-                        onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds, mainFormIds, dragOverCapture)}
+                        onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                         onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                     >
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
@@ -39,8 +37,8 @@ export default function DndWithClientSideValidations() {
                         <ComponentPanel />
                         <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                             <div className='flex flex-column justify-content-center'>
-                                <Card style={{'background': '#004990', 'color': 'white', marginBottom: '0.5rem'}}>
-                                    <h1 style={{textAlign: 'center'}}>{formTitle}</h1>
+                                <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                                    <h1 style={{'textAlign': 'center'}}>{formTitle}</h1>
                                 </Card>
                                 <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                             </div>
@@ -49,12 +47,9 @@ export default function DndWithClientSideValidations() {
                                     items={mainFormIds}
                                     strategy={verticalListSortingStrategy}
                                 >
-                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderComponents()}
+                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
                                 </SortableContext>
                             </Droppable>
-                            <div className='flex flex-column justify-content-center'>
-                                <Button label='Submit Form' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
-                            </div>
                         </Card>
                     </div>
                     </DndContext>
@@ -63,11 +58,11 @@ export default function DndWithClientSideValidations() {
                 }
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
-                    <div className='card-body'>
-                        <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
+                    <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
+                        <div className='card-body'>
+                            <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
+                        </div>
                     </div>
-                </div>
             </UnauthenticatedTemplate>
         </>
     )

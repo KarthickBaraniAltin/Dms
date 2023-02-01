@@ -13,25 +13,25 @@ export const getUsersFiltered = (filterString) => {
 }
 
 export const postFormDefinition = (formDefinition) => {
-    return axios.post(`${formBuilderStudioApi}/Form/Definition`, formDefinition)
+    return axios.post(`${formBuilderStudioApi}/FormDefinition`, formDefinition)
 }
 
 export const getFormDefinition = (id) => {
-    return axios.get(`${formBuilderStudioApi}/Form/Definition/${id}`)
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/${id}`)
 }
 
 export const getFormDefinitions = () => {
-    return axios.get(`${formBuilderStudioApi}/Form/Definition`)
+    return axios.get(`${formBuilderStudioApi}/FormDefinition`)
 }
 
 export const postFormData = (body) => {
-    return axios.post(`${formBuilderStudioApi}/Form/Data`, body)
+    return axios.post(`${formBuilderStudioApi}/FormData`, body)
 }
 
 export const getFormDatas = () => {
-    return axios.get(`${formBuilderStudioApi}/Form/Data`)
+    return axios.get(`${formBuilderStudioApi}/FormData`)
 }
 
 export const getFormData = (id) => {
-    return axios.get(`${formBuilderStudioApi}/Form/Data/${id}`)
+    return axios.get(`${formBuilderStudioApi}/FormData/${id}`)
 }

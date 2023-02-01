@@ -1,9 +1,8 @@
 import { useRenderItems } from "./useRenderItems"
-import useDialogs from "./useDialogs"
 
 export const usePreviewCreator = ({ metadata }) => {
 
-    const {renderLabel, renderCreateElements, renderSubtitle, renderErrors } = useRenderItems({ metadata })
+    const {renderLabel, renderCreateElements, renderSubtitle, renderErrors, inputs, setInputs } = useRenderItems({ metadata })
 
     const renderPreview = () => {
         return (
@@ -30,8 +29,8 @@ export const usePreviewCreator = ({ metadata }) => {
 
                     const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                     return (
-                        <div key={index} style={{marginTop: '1rem'}}>
-                            <div  className='field col-12'>
+                        <div className='field md:col-12 mt-1' key={index}>
+                            <div>
                                 {renderLabel(null, label, type, true)}
                                 {renderCreateElements(type, name, rest)}
                                 { subtitleComponent }
@@ -47,5 +46,5 @@ export const usePreviewCreator = ({ metadata }) => {
         )
     }
 
-    return { renderPreview }
+    return { renderPreview, inputs, setInputs }
 }

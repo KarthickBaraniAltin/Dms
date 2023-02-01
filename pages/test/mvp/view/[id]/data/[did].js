@@ -2,26 +2,26 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { useFormCreator } from '../../../../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
-import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../../../../src/msalConfig'
 import { getFormData, getFormDefinition } from '../../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../../../../hooks/useApi'
+import { Button } from 'primereact/button'
+import { usePreviewCreator } from '../../../../../../hooks/usePreviewCreator'
 
 export default function View({ formData, formDefinition }) {
 
-    const { setMetadata, inputs, renderPreview,  setInputs } = useFormCreator()
+    const { metadata, setMetadata } = useFormCreator()
+    const { renderPreview, inputs, setInputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { response, error, loading, callApi } = useApi()
-
+    
     useEffect(() => {
         setMetadata(formDefinition.metadata.metadata)
         setInputs(formData.data)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formDefinition.metadata])
-
-    console.log("response = ", response)
 
     return (
         <>

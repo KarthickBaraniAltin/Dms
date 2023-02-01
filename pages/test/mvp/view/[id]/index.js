@@ -4,7 +4,7 @@ import { useFormCreator } from '../../../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
-import { usePreviewDialog } from '../../../../../hooks/usePreviewDialog'
+import { usePreviewCreator } from '../../../../../hooks/usePreviewCreator'
 import { formBuilderApiRequest } from '../../../../../src/msalConfig'
 import { getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
@@ -12,10 +12,10 @@ import { useApi } from '../../../../../hooks/useApi'
 
 export default function View({ id, data }) {
 
-    const { metadata, addMetadata, setMetadata, inputs, renderComponents, renderPreview, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
-    const { showPreviewDialog, handlePreview } = usePreviewDialog()
+    const { metadata, setMetadata } = useFormCreator()
+    const { renderPreview, inputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { response, error, loading, callApi} = useApi()
+    const { loading, callApi} = useApi()
 
     const submitFormData = async (event) => {
         event.preventDefault()
@@ -40,8 +40,6 @@ export default function View({ id, data }) {
     useEffect(() => {
         setMetadata(data.metadata.metadata)
     }, [data.metadata])
-
-    console.log("response = ", response)
 
     return (
         <>

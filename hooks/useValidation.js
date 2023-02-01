@@ -162,10 +162,5 @@ export const useValidation = ({ metadata, inputs }) => {
         validate()
     }, [metadata, validate])
     
-<<<<<<< HEAD
-    // console.log("Validation Errors = ", errors)
-
-=======
->>>>>>> feature/apiCallForms
     return { errors }
 }
