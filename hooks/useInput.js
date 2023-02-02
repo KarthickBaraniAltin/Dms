@@ -3,7 +3,8 @@ import { useState } from "react"
 export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event) => {       
+        console.log('event:', event)
         if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)

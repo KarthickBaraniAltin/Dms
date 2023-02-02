@@ -7,6 +7,7 @@ import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
 import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog'
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
+import FileDialog from "../components/Settings/FileDialog/FileDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -20,7 +21,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'calendar': CalendarDialog,
         'textarea': TextareaDialog,
         'mask': MaskDialog,
-        'header': HeaderDialog
+        'header': HeaderDialog,
+        'file': FileDialog
     } 
 
     const hideDialog = () => {

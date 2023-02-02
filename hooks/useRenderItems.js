@@ -12,6 +12,7 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
+import { FileUpload } from 'primereact/fileupload'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
@@ -28,7 +29,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
         'header': 'h1',
-        'file': 'input'
+        'file': FileUpload
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -65,12 +66,11 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     }
 
     const renderCreateElements = (type, name, rest) => {
-
         return (
             <>
             {createElement(
                 componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), type: type === 'file' ? type : null, value: inputs[name], onChange: handleInputChange}
+                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange, mode: type === 'file' ? 'basic' : null, url: type === 'file' ? 'api/fileUpload' : null }
             )}
             </>
         )

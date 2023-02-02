@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
 
-export default function TextDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function HeaderDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
     const [metMinLength, setMetMinLength] = useState(true)
     const [metMaxLength, setMetMaxLength] = useState(true)
 
