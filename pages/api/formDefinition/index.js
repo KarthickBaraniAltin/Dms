@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     if (method === 'POST') {
         try {
             const result = await getFormDefinitions(rows)
-            // console.log('result:', result)
             res.status(200).json(result.data)
         } catch (error) {
             console.error(error)
