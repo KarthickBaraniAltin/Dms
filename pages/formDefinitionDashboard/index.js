@@ -2,7 +2,7 @@ import { AuthenticatedTemplate, useMsalAuthentication } from '@azure/msal-react'
 import { InteractionType } from '@azure/msal-browser'
 import { Toast } from 'primereact/toast'
 import Head from 'next/head'
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, lazy } from 'react'
 import { formBuilderApiRequest } from '../../src/msalConfig'
 import { Button } from 'primereact/button'
 import { useApi } from '../../hooks/useApi'
@@ -19,6 +19,7 @@ export default function formDefinitionDashboard() {
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
+    const [totalRecords, setTotalRecords] = useState(0)
     const [lazyParams, setLazyParams] = useState({
         first: 0,
         page: 0,
@@ -26,9 +27,53 @@ export default function formDefinitionDashboard() {
         sortField: null,
         sortOrder: null,
         filters: {
-            'global': {value: '', matchMode: 'contains'}
+            'global': {value: 'a', matchMode: 'contains'}
         }
     })
+
+    const lazyParamsToQueryString = (lazyParams) => {
+        let queryString
+
+        Object.keys(lazyParams).map(key => {
+            if (key === 'filters') {
+                queryString = lazyParams[key]['global'].value
+            }
+        })
+
+        return queryString
+    }
+
+    let loadLazyTimeout = null 
+    useEffect(() => {
+        const loadLazyData = async() => {
+            if (loadLazyTimeout) {
+                clearTimeout(loadLazyTimeout)
+            }
+
+            const { accessToken } = await acquireToken()
+
+            const queryString = lazyParamsToQueryString(lazyParams)
+
+            const params = {
+                method: 'POST',
+                url: `/form-builder-studio/api/formDefinition`,
+                headers: {
+                    Accept: '*/*',
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: {
+                    query: queryString
+                }
+            }
+
+            const res = await callApi(params)
+            console.log('res:', res)
+            setFormDefinitions(res.data.formDefinitions)
+            setTotalRecords(res.data.count)
+        }
+
+        loadLazyData()
+    }, [lazyParams, loadLazyTimeout, acquireToken])
     
     const handleClickForApiCall = async() => {
         const { accessToken } = await acquireToken()
@@ -45,6 +90,7 @@ export default function formDefinitionDashboard() {
         }
         const res = await callApi(params)
         setFormDefinitions(res.data.formDefinitions)
+        setTotalRecords(res.data.count)
     }
 
     const handleClickForModal = (rowData) => {
@@ -91,20 +137,24 @@ export default function formDefinitionDashboard() {
               Employees
               <span className="p-input-icon-left" >
                   <i className="pi pi-search" />
-                  <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search" />
+                  <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
               </span>
             </div>
           </> 
         )
-      }
+    }
 
-      const actionBodyTemplate = (rowData) => {
+    const actionBodyTemplate = (rowData) => {
         return (
-          <span>
+            <span>
             <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForModal(rowData)}>edit_square</span>
-          </span>
+            </span>
         )
-      }
+    }
+
+    const onPage = (event) => {
+        setLazyParams(event)
+    }
 
     return (
         <>
@@ -122,8 +172,11 @@ export default function formDefinitionDashboard() {
                     }
                 </Dialog>
                 <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
-                    <Button style={{marginBottom: '1rem'}} label='Click for API Call' onClick={handleClickForApiCall} />
-                    <DataTable value={formDefinitions} loading={loading} responsiveLayout='scroll' /*header={renderHeader}*/>
+                    {/* <Button style={{marginBottom: '1rem'}} label='Click for API Call' onClick={handleClickForApiCall} /> */}
+                    <DataTable 
+                        value={formDefinitions} loading={loading} responsiveLayout='scroll' paginator first={lazyParams.first} rows={lazyParams.rows}
+                        totalRecords={totalRecords} onPage={onPage}  /*header={renderHeader}*/
+                    >
                         <Column field='action' headerStyle={{...headerStyle, width: '6%'}} header='Action' body={actionBodyTemplate} />
                         <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} />
                         <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} />

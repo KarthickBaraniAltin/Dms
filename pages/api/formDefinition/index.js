@@ -3,7 +3,7 @@ import { getFormDefinitions } from '../../../api/apiCalls'
 
 export default async function handler(req, res) {
     const { method, body, headers } = req
-    const { rows } = body
+    const { query } = body
 
     if (headers.authorization) {
         axios.defaults.headers['Authorization'] = headers.authorization
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
     if (method === 'POST') {
         try {
-            const result = await getFormDefinitions(rows)
+            const result = await getFormDefinitions(query)
             res.status(200).json(result.data)
         } catch (error) {
             console.error(error)

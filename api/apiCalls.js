@@ -13,6 +13,6 @@ export const getUsersFiltered = (filterString) => {
     return axios.get(`${activeDirectoryApi}/User/filter?FilterString=${filterString}`)
 }
 
-export const getFormDefinitions = (rows) => {
-    return axios.get(`${formBuilderStudioApi}/FormDefinition/filter?Rows=${rows}`)
+export const getFormDefinitions = (query) => {
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/filter?Global=${query}`)
 }
