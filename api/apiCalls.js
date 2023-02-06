@@ -14,5 +14,5 @@ export const getUsersFiltered = (filterString) => {
 }
 
 export const getFormDefinitions = (query) => {
-    return axios.get(`${formBuilderStudioApi}/FormDefinition/filter?Global=${query}`)
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/filter${query}`)
 }

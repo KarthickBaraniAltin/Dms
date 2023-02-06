@@ -19,6 +19,7 @@ export default function formDefinitionDashboard() {
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
+    const [selectedValue, setSelectedValue] = useState({})
     const [totalRecords, setTotalRecords] = useState(0)
     const [lazyParams, setLazyParams] = useState({
         first: 0,
@@ -32,15 +33,18 @@ export default function formDefinitionDashboard() {
     })
 
     const lazyParamsToQueryString = (lazyParams) => {
-        let queryString
-
-        Object.keys(lazyParams).map(key => {
-            if (key === 'filters') {
-                queryString = lazyParams[key]['global'].value
+        let queryString = "?";
+        for (const key in lazyParams) {
+            if (key !== 'filters') {
+                if (lazyParams[key] !== null && lazyParams[key] !== undefined) {
+                    if (key === 'first') continue
+                    queryString += `${key}=${lazyParams[key]}&`
             }
-        })
-
-        return queryString
+          } else if (lazyParams.filters.global.value) {
+                queryString += `global=${lazyParams.filters.global.value}&`
+          }
+        }
+        return queryString.slice(0, -1)
     }
 
     let loadLazyTimeout = null 
@@ -68,30 +72,12 @@ export default function formDefinitionDashboard() {
 
             const res = await callApi(params)
             console.log('res:', res)
-            setFormDefinitions(res.data.formDefinitions)
-            setTotalRecords(res.data.count)
+            setFormDefinitions(res?.data?.formDefinitions)
+            setTotalRecords(res?.data?.count)
         }
 
         loadLazyData()
     }, [lazyParams, loadLazyTimeout, acquireToken])
-    
-    const handleClickForApiCall = async() => {
-        const { accessToken } = await acquireToken()
-        const params = {
-            method: 'POST',
-            url: `/form-builder-studio/api/formDefinition`,
-            headers: {
-                Accept: '*/*',
-                Authorization: `Bearer ${accessToken}`
-            },
-            data: {
-                rows: lazyParams.rows
-            }
-        }
-        const res = await callApi(params)
-        setFormDefinitions(res.data.formDefinitions)
-        setTotalRecords(res.data.count)
-    }
 
     const handleClickForModal = (rowData) => {
         setSelectedRow(rowData)
@@ -134,11 +120,13 @@ export default function formDefinitionDashboard() {
         return (
           <>
             <div className='table-header'>
-              Employees
-              <span className="p-input-icon-left" >
-                  <i className="pi pi-search" />
-                  <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
-              </span>
+              <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                Employees
+                <span className="p-input-icon-left" style={{marginLeft: '1rem'}}>
+                    <i className="pi pi-search" />
+                    <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
+                </span>
+              </div>
             </div>
           </> 
         )
@@ -154,6 +142,28 @@ export default function formDefinitionDashboard() {
 
     const onPage = (event) => {
         setLazyParams(event)
+    }
+
+    const onSort = (event) => {
+        setLazyParams(event)
+    }
+
+    const onFilter = (event) => {
+        event['first'] = 0
+        setLazyParams(event)
+    }
+
+    const onSelectionChange = (event) => {
+        const { value } = event
+        setSelectedValue(value)
+    }
+
+    const onGlobalFilterChange = (e) => {
+        const value = e.target.value
+        let _filters = { ...lazyParams.filters }
+        _filters['global'].value = value
+    
+        setLazyParams({ ...lazyParams })
     }
 
     return (
@@ -172,17 +182,21 @@ export default function formDefinitionDashboard() {
                     }
                 </Dialog>
                 <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
-                    {/* <Button style={{marginBottom: '1rem'}} label='Click for API Call' onClick={handleClickForApiCall} /> */}
                     <DataTable 
-                        value={formDefinitions} loading={loading} responsiveLayout='scroll' paginator first={lazyParams.first} rows={lazyParams.rows}
-                        totalRecords={totalRecords} onPage={onPage}  /*header={renderHeader}*/
+                        value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
+                        dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
+                        totalRecords={totalRecords} onPage={onPage} onSort={onSort}
+                        sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                        onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
+                        size='small' loading={loading} onSelectionChange={onSelectionChange}
+                        selection={selectedValue} globalFilterFields={[]}
                     >
                         <Column field='action' headerStyle={{...headerStyle, width: '6%'}} header='Action' body={actionBodyTemplate} />
-                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} />
-                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} />
-                        <Column className='dashboardTitle' field='authorFullName' header='Author Full Name' headerStyle={{...headerStyle, width: '20%'}} />
-                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} />
-                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} />
+                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='authorFullName' header='Author Full Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} sortable />
                     </DataTable>
                 </Card>
             </AuthenticatedTemplate>
