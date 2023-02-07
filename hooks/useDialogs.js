@@ -8,11 +8,13 @@ import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
+import { useFormInputs } from "./useFormInput"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, setInputs } = useInputs()
+    const { inputs, handleInputChange, handleFileInputChange, setInputs } = useInputs()
+    // const { formInputs, handleFileInputChange, setFormInputs } = useFormInputs()
 
     const dialogMapper = {
         'section': SectionPanelDialog,

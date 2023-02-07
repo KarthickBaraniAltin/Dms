@@ -76,6 +76,18 @@ export const useValidation = ({ metadata, inputs }) => {
                 const index = metadata.findIndex(element => element.name === maskName)
 
                 metadata[index].mask = mask
+            },
+            minFile: (minFileSize, currentFileSize) => {
+                if (!minFileSize || !currentFileSize) {
+                    return true
+                }
+                return minFileSize <= currentFileSize
+            },
+            maxFile: (maxFileSize, currentFileSize) => {
+                if (!maxFileSize || !currentFileSize) {
+                    return true
+                }
+                return maxFileSize >= currentFileSize
             }
         }
 
@@ -141,6 +153,20 @@ export const useValidation = ({ metadata, inputs }) => {
                         case 'setMask': {
                             const { mask } = value
                             validationMapper.setMask(mask, name)
+                            break
+                        }
+                        case 'minFile': {
+                            const { fileSize, message } = value
+                            if (!validationMapper.minFile(fileSize, inputValue?.size)) {
+                                currentErrors.push(message ?? `File size must be larger than ${fileSize} bits`)
+                            }
+                            break
+                        }
+                        case 'maxFile': {
+                            const { fileSize, message } = value
+                            if (!validationMapper.maxFile(fileSize, inputValue?.size)) {
+                                currentErrors.push(message ?? `File size must be smaller than ${fileSize} bits`)
+                            }
                             break
                         }
                         default:

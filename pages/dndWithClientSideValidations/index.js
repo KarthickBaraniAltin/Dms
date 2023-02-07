@@ -20,7 +20,7 @@ export default function DndWithClientSideValidations() {
         <>
             <Head>
                 <title>DnD With Client Side Validations</title>
-                <link rel='icon' sizes='32x32' href='/component-library/logo.png' />
+                <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
                 <DndContext

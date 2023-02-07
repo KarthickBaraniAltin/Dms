@@ -13,10 +13,12 @@ import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
 import { FileUpload } from 'primereact/fileupload'
+import { useFormInputs } from './useFormInput'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
-    const { handleInputChange, inputs } = useInputs({})
+    const { handleInputChange, handleFileInputChange, inputs } = useInputs({})
+    // const { handleFileInputChange, formInputs } = useFormInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -29,7 +31,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
         'header': 'h1',
-        'file': FileUpload
+        'file': 'input'
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -70,7 +72,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
             <>
             {createElement(
                 componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: inputs[name], onChange: handleInputChange, mode: type === 'file' ? 'basic' : null, url: type === 'file' ? 'api/fileUpload' : null }
+                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: type === 'file' ? null : inputs[name], onChange: type === 'file' ? handleFileInputChange : handleInputChange, type: type === 'file' ? 'file' : null } // mode: type === 'file' ? 'basic' : null, url: type === 'file' ? 'api/fileUpload' : null
             )}
             </>
         )

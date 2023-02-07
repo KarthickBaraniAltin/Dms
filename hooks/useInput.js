@@ -3,8 +3,19 @@ import { useState } from "react"
 export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
+    const handleFileInputChange = (event) => {
+        if (event.target.files[0]) {
+            const { name } = event.target
+            setInputs({...inputs, [name]: {
+                fileName: event.target.files[0].name,
+                size: event.target.files[0].size,
+                type: event.target.files[0].type
+            }})
+        }
+
+    }
+
     const handleInputChange = (event) => {       
-        console.log('event:', event)
         if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
@@ -35,5 +46,5 @@ export const useInputs = (options) => {
         setInputs({...updatedInputs})
     }
 
-    return { handleInputChange, inputs, setInputs }
+    return { handleInputChange, handleFileInputChange, inputs, setInputs }
 }
