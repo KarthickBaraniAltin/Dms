@@ -12,8 +12,7 @@ import FileDialog from "../components/Settings/FileDialog/FileDialog"
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, handleFileInputChange, setInputs } = useInputs()
-    // const { formInputs, handleFileInputChange, setFormInputs } = useFormInputs()
+    const { inputs, handleInputChange, setInputs } = useInputs()
 
     const dialogMapper = {
         'section': SectionPanelDialog,
@@ -42,9 +41,17 @@ const useDialogs = ({ metadata, setMetadata }) => {
         setInputs(data)
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = (isDeleted = false) => {
         if (!dialogData) {
             return
+        }
+
+        if (isDeleted) {
+            if (confirm('You are about to delete this component. Do you wish to proceed?')) {
+                const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
+                metadata.splice(metadata[deleteIndex], 1)
+                setMetadata(metadata)
+            }
         }
 
         for (let i = 0; i < metadata.length; i++) {

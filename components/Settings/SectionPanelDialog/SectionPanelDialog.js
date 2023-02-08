@@ -5,10 +5,11 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 
-export default function TextDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
+export default function SectionDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
+          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
           <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
       </div>
     )
@@ -16,7 +17,7 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
 
   return (
     <div>
-      <Dialog header='Section Panel Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Section Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>

@@ -24,6 +24,7 @@ export default function HeaderDialog({ visible, hideDialog, inputs, handleInputC
    const renderFooter = () => {
     return (
       <div>
+          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
           {metMinLength && metMaxLength ?
             <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
             :

@@ -16,7 +16,6 @@ import { Card } from 'primereact/card'
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const { handleInputChange, handleFileInputChange, inputs } = useInputs({})
-    // const { handleFileInputChange, formInputs } = useFormInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
