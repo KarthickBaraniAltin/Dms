@@ -58,10 +58,6 @@ export const useValidation = ({ metadata, inputs }) => {
 
                 metadata[index].maxDate = maxDate
 
-                // if (maxDate.getFullYear() < inputValue?.getFullYear()) return true
-                // if (maxDate.getMonth() < inputValue?.getMonth()) return true
-                // if (maxDate.getDate() < inputValue?.getDate()) return true
-
                 if (maxDate.getFullYear() <= inputValue?.getFullYear()) {
                     if (maxDate.getMonth() <= inputValue?. getMonth()) {
                         if (maxDate.getDate() <= inputValue?.getDate()) {
@@ -174,8 +170,6 @@ export const useValidation = ({ metadata, inputs }) => {
                         }
                         case 'fileTypes': {
                             const { fileTypes, message } = value
-                            console.log('inputValue:', inputValue)
-                            console.log('value:', value)
                             if (!validationMapper.fileTypes(fileTypes, inputValue?.type)) {
                                 const validFileTypes = fileTypes.map(fileType => {
                                     return <li>{fileType.split('/')[1]}</li>
