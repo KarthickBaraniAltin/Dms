@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
+import { MultiSelect } from 'primereact/multiselect'
 
 export default function FileDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -13,6 +14,12 @@ export default function FileDialog({ visible, hideDialog, inputs, handleInputCha
       </div>
     )
   }
+
+  const fileTypes = [
+    {label: '.pdf', value: 'application/pdf'},
+    {label: '.png', value: 'image/png'},
+    {label: '.jpeg', value: 'image/jpeg' }
+  ]
 
   return (
     <div>
@@ -53,7 +60,11 @@ export default function FileDialog({ visible, hideDialog, inputs, handleInputCha
           </div>
           <div className='field col-6 md:col-6'>
             <label>Acceptable File Types</label>
-              <Dropdown />
+              <MultiSelect name='validations.fileTypes.fileTypes' value={inputs?.validations?.fileTypes?.fileTypes ?? null} options={fileTypes} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>File Types Message</label>
+            <InputText name='validations.fileTypes.message' value={inputs?.validations?.fileTypes?.message ?? ''} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

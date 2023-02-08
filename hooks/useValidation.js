@@ -88,6 +88,9 @@ export const useValidation = ({ metadata, inputs }) => {
                     return true
                 }
                 return maxFileSize >= currentFileSize
+            },
+            fileTypes: (fileTypes, currentFileType) => {
+                return fileTypes.some(fileType => currentFileType === fileType)
             }
         }
 
@@ -166,6 +169,24 @@ export const useValidation = ({ metadata, inputs }) => {
                             const { fileSize, message } = value
                             if (!validationMapper.maxFile(fileSize, inputValue?.size)) {
                                 currentErrors.push(message ?? `File size must be smaller than ${fileSize} bits`)
+                            }
+                            break
+                        }
+                        case 'fileTypes': {
+                            const { fileTypes, message } = value
+                            console.log('inputValue:', inputValue)
+                            console.log('value:', value)
+                            if (!validationMapper.fileTypes(fileTypes, inputValue?.type)) {
+                                const validFileTypes = fileTypes.map(fileType => {
+                                    return <li>{fileType.split('/')[1]}</li>
+                                })
+                                const finalFileTypeMessage = (
+                                    <div>
+                                        <p style={{margin: 0}}>Accepted file types:</p>
+                                        <ul style={{margin: 0, padding: '0 1rem'}}>{validFileTypes}</ul>
+                                    </div>
+                                )
+                                currentErrors.push(message ?? finalFileTypeMessage)
                             }
                             break
                         }

@@ -15,7 +15,7 @@ export const useInputs = (options) => {
 
     }
 
-    const handleInputChange = (event) => {       
+    const handleInputChange = (event) => {
         if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)

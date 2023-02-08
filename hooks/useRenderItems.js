@@ -12,8 +12,6 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
-import { FileUpload } from 'primereact/fileupload'
-import { useFormInputs } from './useFormInput'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
@@ -72,7 +70,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
             <>
             {createElement(
                 componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: type === 'file' ? null : inputs[name], onChange: type === 'file' ? handleFileInputChange : handleInputChange, type: type === 'file' ? 'file' : null } // mode: type === 'file' ? 'basic' : null, url: type === 'file' ? 'api/fileUpload' : null
+                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: type === 'file' ? null : inputs[name], onChange: type === 'file' ? handleFileInputChange : handleInputChange, type: type === 'file' ? 'file' : null}
             )}
             </>
         )
