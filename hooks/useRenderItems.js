@@ -15,7 +15,7 @@ import { Card } from 'primereact/card'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
-    const { handleInputChange, handleFileInputChange, inputs } = useInputs({})
+    const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -69,7 +69,11 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
             <>
             {createElement(
                 componentMapper[type],
-                {...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), value: type === 'file' ? null : inputs[name], onChange: type === 'file' ? handleFileInputChange : handleInputChange, type: type === 'file' ? 'file' : null}
+                {
+                    ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                    value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
+                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                }
             )}
             </>
         )

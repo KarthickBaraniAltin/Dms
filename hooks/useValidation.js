@@ -73,20 +73,34 @@ export const useValidation = ({ metadata, inputs }) => {
 
                 metadata[index].mask = mask
             },
-            minFile: (minFileSize, currentFileSize) => {
-                if (!minFileSize || !currentFileSize) {
+            minFile: (minFileSize, fileTypes) => {
+                if (!minFileSize || !fileTypes) return true
+                
+                return fileTypes.some(file => {
+                    if (file.size < minFileSize) return false
+                    if (fileTypes.indexOf(file) === fileTypes.length - 1) return true
+                })
+            },
+            maxFile: (maxFileSize, fileTypes) => {
+                if (!maxFileSize || !fileTypes) {
                     return true
                 }
-                return minFileSize <= currentFileSize
+
+                return fileTypes.some(file => {
+                    if (file.size > maxFileSize) return false
+                    if (fileTypes.indexOf(file) === fileTypes.length - 1) return true
+                })
             },
-            maxFile: (maxFileSize, currentFileSize) => {
-                if (!maxFileSize || !currentFileSize) {
-                    return true
-                }
-                return maxFileSize >= currentFileSize
-            },
-            fileTypes: (fileTypes, currentFileType) => {
-                return fileTypes.some(fileType => currentFileType === fileType)
+            fileTypes: (validFileTypes, fileTypes) => {
+                return validFileTypes.some(validFileType => {
+                    return fileTypes.some(fileType => {
+                        if (validFileType !== fileType.type) {
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
+                })
             }
         }
 
@@ -156,21 +170,21 @@ export const useValidation = ({ metadata, inputs }) => {
                         }
                         case 'minFile': {
                             const { fileSize, message } = value
-                            if (!validationMapper.minFile(fileSize, inputValue?.size)) {
-                                currentErrors.push(message ?? `File size must be larger than ${fileSize} bits`)
+                            if (!validationMapper.minFile(fileSize, inputValue)) {
+                                currentErrors.push(message ?? `File(s) size must be larger than ${fileSize} bits`)
                             }
                             break
                         }
                         case 'maxFile': {
                             const { fileSize, message } = value
-                            if (!validationMapper.maxFile(fileSize, inputValue?.size)) {
-                                currentErrors.push(message ?? `File size must be smaller than ${fileSize} bits`)
+                            if (!validationMapper.maxFile(fileSize, inputValue)) {
+                                currentErrors.push(message ?? `File(s) size must be smaller than ${fileSize} bits`)
                             }
                             break
                         }
                         case 'fileTypes': {
                             const { fileTypes, message } = value
-                            if (!validationMapper.fileTypes(fileTypes, inputValue?.type)) {
+                            if (!validationMapper.fileTypes(fileTypes, inputValue)) {
                                 const validFileTypes = fileTypes.map(fileType => {
                                     return <li>{fileType.split('/')[1]}</li>
                                 })
