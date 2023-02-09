@@ -13,32 +13,6 @@ export default function Navbar() {
   const { instance, accounts } = useMsal()
   const account = useAccount(accounts[0] || {})
   const [apiData, setApiData] = useState(null)
-
-  const roles = useRoles();
-
-  useEffect(() => {
-    if (account) {
-      instance.acquireTokenSilent({
-        ...loginRequest,
-        account: account,
-      }).then(async (response) => {
-        if (response) {
-          setAuthorizationHeader(response.accessToken);
-        }
-
-        try {
-          const res = await getAllStudentGroupMembers();
-        } catch(err) {
-          console.log(err);
-        }
-      
-      }).catch((error) => {
-
-      })
-    } else {
-      delete axios.defaults.headers['Authorization']
-    }
-  }, [account, instance])
   
   // For Navbar documentation please go: https://www.primefaces.org/primereact/menubar/
   const authenticatedItems = [

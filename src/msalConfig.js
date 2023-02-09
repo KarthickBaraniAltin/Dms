@@ -24,3 +24,7 @@ export const formBuilderApiRequest = {
 export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
 }
+
+// export const graphConfig = {
+//     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
+// }
