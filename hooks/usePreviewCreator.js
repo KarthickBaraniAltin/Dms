@@ -1,5 +1,4 @@
 import { useRenderItems } from "./useRenderItems"
-import useDialogs from "./useDialogs"
 
 export const usePreviewCreator = ({ metadata }) => {
 
@@ -9,8 +8,17 @@ export const usePreviewCreator = ({ metadata }) => {
         return (
             <>
                 {metadata.map((data, index) => {
+                    if (data.type === 'header') {
+                        const { label, type, name, ...rest } = data
+                        return (
+                            <div key={index}>
+                                {renderLabel(null, label, type, null, true)}
+                            </div>
+                        )
+                    }
+
                     if (data.type === 'section') {
-                        const {label, type, sectionMetadata } = data
+                        const { label, type, sectionMetadata } = data
                         return (
                             <>
                                 {renderLabel(null, label, type, true)}

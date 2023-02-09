@@ -14,7 +14,6 @@ const useDnd = () => {
                 if (typeof collision.id !== 'string') return // Prevents error being thrown when id is not a string.
 
                 if (collision.id.includes('section')) {
-                    console.log('over:', over)
                     dragOverCapture.current = {
                         id: over.id,
                         componentData: active.data.current
@@ -135,14 +134,6 @@ const useDnd = () => {
         })
     }
 
-    const removeMainForm = (active, setMetadata) => {
-        setMetadata(prevState => {
-            let tempState = prevState.slice(0)
-            tempState.splice(active.id - 1, 1)
-            return tempState
-        })
-    }
-
     const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture) => {
         const { active, over } = event
 
@@ -169,12 +160,6 @@ const useDnd = () => {
         }
 
         if (active.data.current.sortable) {
-            if (over?.id === 'droppable-container-form') {
-                removeMainForm(active, setMetadata)
-
-                return
-            }
-
             if (active.id !== over?.id) {
                 sortMainForm(active, over, setMainFormIds, setMetadata)
             }
