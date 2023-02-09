@@ -28,7 +28,8 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
         'header': 'h1',
-        'file': 'input'
+        'file': 'input',
+        'richtext': InputText
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
