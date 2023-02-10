@@ -47,6 +47,18 @@ export default function formDefinitionDashboard() {
         return queryString.slice(0, -1)
     }
 
+    const fixDateFormat = (formDefinitions) => {
+        return formDefinitions.map(formDefinition => {
+            const year = formDefinition.dateCreated.slice(0, 4)
+            const month = formDefinition.dateCreated.slice(5, 7)
+            const day = formDefinition.dateCreated.slice(8, 10)
+
+            formDefinition.dateCreated = `${month}/${day}/${year}`
+
+            return formDefinition
+        })
+    }
+
     let loadLazyTimeout = null 
     useEffect(() => {
         const loadLazyData = async() => {
@@ -72,7 +84,10 @@ export default function formDefinitionDashboard() {
 
             const res = await callApi(params)
             console.log('res:', res)
-            setFormDefinitions(res?.data?.formDefinitions)
+
+            const formDefinitionsWithFixedDate = fixDateFormat(res?.data?.formDefinitions)
+
+            setFormDefinitions(formDefinitionsWithFixedDate)
             setTotalRecords(res?.data?.count)
         }
 
