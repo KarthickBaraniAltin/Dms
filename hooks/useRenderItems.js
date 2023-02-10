@@ -12,6 +12,9 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
+import dynamic from 'next/dynamic'
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
@@ -29,7 +32,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': InputText
+        'richtext': ReactQuill
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -66,6 +69,21 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     }
 
     const renderCreateElements = (type, name, rest) => {
+        if (type === 'richtext') {
+            return (
+                <>
+                {createElement(
+                    componentMapper[type],
+                    {
+                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                        value: inputs[name], onChange: handleInputChange, theme: 'snow', placeholder: 'Write your description here...',
+                        style: {width: '300px'}
+                    }
+                )}
+                </>
+            )
+        }
+
         return (
             <>
             {createElement(
