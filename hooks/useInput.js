@@ -4,6 +4,7 @@ export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
     const handleInputChange = (event) => {
+        console.log('event:', event)
         if (event.target?.files) {
             const filesArray = Object.keys(event.target.files).map(file => {
                 return {
