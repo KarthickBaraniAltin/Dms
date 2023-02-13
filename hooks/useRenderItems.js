@@ -70,6 +70,18 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const renderCreateElements = (type, name, rest) => {
         if (type === 'richtext') {
+            const modules = {
+                toolbar: [
+                  [{ 'header': [1, 2, 3, false] }],
+                  ['bold', 'italic', 'underline','strike'],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                  ['link', 'image'],
+                  ['clean']
+                ],
+              }
+
+
             return (
                 <>
                 {createElement(
@@ -77,7 +89,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                     {
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: inputs[name], onChange: handleInputChange, theme: 'snow', placeholder: 'Write your description here...',
-                        style: {width: '300px'}
+                        style: {width: '300px'}, modules: modules
                     }
                 )}
                 </>
