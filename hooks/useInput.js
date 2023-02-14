@@ -5,7 +5,6 @@ export const useInputs = (options) => {
 
 
     const handleInputChange = (event) => {
-        console.log('event:', event)
 
         if (event.target) {
             if (event.target?.files) {
