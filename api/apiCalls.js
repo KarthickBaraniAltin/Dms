@@ -20,8 +20,8 @@ export const getFormDefinition = (id) => {
     return axios.get(`${formBuilderStudioApi}/FormDefinition/${id}`)
 }
 
-export const getFormDefinitions = () => {
-    return axios.get(`${formBuilderStudioApi}/FormDefinition`)
+export const getFormDefinitions = (query) => {
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/Filter${query}`)
 }
 
 export const postFormData = (formDefinitionId, formData) => {
