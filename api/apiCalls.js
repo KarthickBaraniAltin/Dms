@@ -24,8 +24,13 @@ export const getFormDefinitions = () => {
     return axios.get(`${formBuilderStudioApi}/FormDefinition`)
 }
 
-export const postFormData = (body) => {
-    return axios.post(`${formBuilderStudioApi}/FormData`, body)
+export const postFormData = (formDefinitionId, formData) => {
+    console.log("URL = ", `${formBuilderStudioApi}/FormData/${formDefinitionId}`)
+    return axios.post(`${formBuilderStudioApi}/FormData/${formDefinitionId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
 }
 
 export const getFormDatas = () => {

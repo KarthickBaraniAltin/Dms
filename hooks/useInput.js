@@ -5,20 +5,8 @@ export const useInputs = (options) => {
 
     const handleInputChange = (event) => {
         if (event.target?.files) {
-            const filesArray = Object.keys(event.target.files).map(file => {
-                return {
-                    fileName: event.target.files[file].name,
-                    size: event.target.files[file].size,
-                    type: event.target.files[file].type
-                }
-            })
-
-            setInputs({...inputs, [event.target.name]: filesArray})
-
-            return
-        }
-
-        if (event.target) {
+            setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
+        } else if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
             // setInputs(inputs => ({...inputs, [name]: value}))

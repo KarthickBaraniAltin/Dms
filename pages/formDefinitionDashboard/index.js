@@ -12,7 +12,7 @@ import { Column } from 'primereact/column'
 import { InputText } from 'primereact/inputtext'
 import { Dialog } from 'primereact/dialog'
 
-export default function formDefinitionDashboard() {
+export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
 
@@ -94,13 +94,13 @@ export default function formDefinitionDashboard() {
                         return (
                             <>
                             <h4>{`Component ${index + 1}:`}</h4>
-                            {Object.keys(arrayElement).map(componentElement => <p>{`${componentElement}: ${arrayElement[componentElement]}`}</p>)}
+                            {Object.keys(arrayElement).map((componentElement, index) => <p key={index}>{`${componentElement}: ${arrayElement[componentElement]}`}</p>)}
                             </>
                         )
                     }))
                 } else if (element === 'metadata') {
                     displayData.push(<h4>Metadata:</h4>)
-                    displayData.push(Object.keys(metadata.metadata).map(objectElement => <p>{`- ${objectElement}: ${metadata.metadata[objectElement]}`}</p>))
+                    displayData.push(Object.keys(metadata.metadata).map((objectElement, index) => <p key={index}>{`- ${objectElement}: ${metadata.metadata[objectElement]}`}</p>))
                 } else {
                     displayData.push(<h4>{`${element}: ${metadata[element]}`}</h4>)
                 }
