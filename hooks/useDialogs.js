@@ -1,11 +1,13 @@
 import { createElement, useState } from "react"
+import { useInputs } from "./useInput"
 import SectionPanelDialog from '../components/Settings/SectionPanelDialog/SectionPanelDialog'
 import TextDialog from "../components/Settings/TextDialog/TextDialog"
 import TextareaDialog from "../components/Settings/TextareaDialog/TextareaDialog"
 import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
 import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog'
-import { useInputs } from "./useInput"
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
+import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
+import FileDialog from "../components/Settings/FileDialog/FileDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -18,7 +20,9 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'number': NumberDialog,
         'calendar': CalendarDialog,
         'textarea': TextareaDialog,
-        'mask': MaskDialog
+        'mask': MaskDialog,
+        'header': HeaderDialog,
+        'file': FileDialog
     } 
 
     const hideDialog = () => {
@@ -38,9 +42,17 @@ const useDialogs = ({ metadata, setMetadata }) => {
         setInputs(data)
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = (isDeleted = false) => {
         if (!dialogData) {
             return
+        }
+
+        if (isDeleted) {
+            if (confirm('You are about to delete this component. Do you wish to proceed?')) {
+                const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
+                metadata.splice(metadata[deleteIndex], 1)
+                setMetadata(metadata)
+            }
         }
 
         for (let i = 0; i < metadata.length; i++) {

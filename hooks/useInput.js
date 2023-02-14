@@ -4,7 +4,9 @@ export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
     const handleInputChange = (event) => {
-        if (event.target) {
+        if (event.target?.files) {
+            setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
+        } else if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
             // setInputs(inputs => ({...inputs, [name]: value}))
