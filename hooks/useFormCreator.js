@@ -28,8 +28,13 @@ export const useFormCreator = () => {
     const [sectionIds, setSectionIds] = useState([])
     const dragOverCapture = useRef()
 
+    // These variables are for pagination
+    const [pageNumber, setPageNumber] = useState(1)
+    const [currentPage, setCurrentPage] = useState(pageNumber)
+
     useEffect(() => {
         metadata.forEach(element => {
+            element.page = pageNumber
             if (element.defaultValue) {
                 setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
             }
@@ -55,6 +60,14 @@ export const useFormCreator = () => {
 
     const addMetadata = (data) => {
         setMetadata((prevList) => [...prevList, data])
+    }
+
+    const changePage = () => {
+        setCurrentPage()
+    }
+
+    const addPage = () => {
+        setPageNumber()
     }
 
     const renderForm = () => {

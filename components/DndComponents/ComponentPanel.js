@@ -1,10 +1,7 @@
 import { Card } from 'primereact/card'
-import { useInputs } from '../../hooks/useInput'
-import Input from '../Input/Input'
 import { Draggable } from './Draggable'
 
 export default function ComponentPanel() {
-    const { handleInputChange, inputs } = useInputs()
 
     const componentTypes = [
         'header',
@@ -16,7 +13,8 @@ export default function ComponentPanel() {
         'mask',
         'dropdown',
         'multiselect',
-        'file'
+        'file',
+        'richtext'
     ]
     const cities = [
         { label: 'Las Vegas', value: 'LV'},
@@ -237,6 +235,26 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             File
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'richtext') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle='RichText Subtitle'
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            RichText
                         </label> 
                     </div>
                 </Draggable>

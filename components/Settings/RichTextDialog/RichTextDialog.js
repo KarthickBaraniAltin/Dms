@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
 
-export default function TextareaDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function RichTextDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -16,7 +16,7 @@ export default function TextareaDialog({ visible, hideDialog, inputs, handleInpu
 
   return (
     <div>
-      <Dialog header='Textarea Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='RichText Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>

@@ -3,22 +3,24 @@ import { useState } from "react"
 export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
+
     const handleInputChange = (event) => {
-        if (event.target?.files) {
-            const filesArray = Object.keys(event.target.files).map(file => {
-                return {
-                    fileName: event.target.files[file].name,
-                    size: event.target.files[file].size,
-                    type: event.target.files[file].type
-                }
-            })
-
-            setInputs({...inputs, [event.target.name]: filesArray})
-
-            return
-        }
 
         if (event.target) {
+            if (event.target?.files) {
+                const filesArray = Object.keys(event.target.files).map(file => {
+                    return {
+                        fileName: event.target.files[file].name,
+                        size: event.target.files[file].size,
+                        type: event.target.files[file].type
+                    }
+                })
+    
+                setInputs({...inputs, [event.target.name]: filesArray})
+    
+                return
+            }
+
             const { name, value } = event.target
             assignValuesNested(name, value)
             // setInputs(inputs => ({...inputs, [name]: value}))
@@ -26,6 +28,8 @@ export const useInputs = (options) => {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
             // setInputs(inputs => ({...inputs, [name]: value}))
+        } else if (typeof event === 'string') {
+            
         } else {
             console.error("Error: can't find event target")
         }

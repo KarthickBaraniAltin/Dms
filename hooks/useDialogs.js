@@ -8,6 +8,7 @@ import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
+import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -22,7 +23,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'textarea': TextareaDialog,
         'mask': MaskDialog,
         'header': HeaderDialog,
-        'file': FileDialog
+        'file': FileDialog,
+        'richtext': RichTextDialog
     } 
 
     const hideDialog = () => {

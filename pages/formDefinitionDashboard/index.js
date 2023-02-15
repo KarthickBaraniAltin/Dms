@@ -1,20 +1,27 @@
+import Head from 'next/head'
 import { AuthenticatedTemplate, useMsalAuthentication } from '@azure/msal-react'
 import { InteractionType } from '@azure/msal-browser'
-import { Toast } from 'primereact/toast'
-import Head from 'next/head'
-import React, { useRef, useState, useEffect, lazy } from 'react'
+import React, { useState, useEffect } from 'react'
 import { formBuilderApiRequest } from '../../src/msalConfig'
-import { Button } from 'primereact/button'
 import { useApi } from '../../hooks/useApi'
 import { Card } from 'primereact/card'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
-import { InputText } from 'primereact/inputtext'
 import { Dialog } from 'primereact/dialog'
+import { createElement } from 'react'
+import { useInputs } from '../../hooks/useInput'
+import { Calendar } from "primereact/calendar"
+import { Dropdown } from "primereact/dropdown"
+import { InputMask } from "primereact/inputmask"
+import { InputNumber } from "primereact/inputnumber"
+import { InputText } from "primereact/inputtext"
+import { InputTextarea } from "primereact/inputtextarea"
+import { MultiSelect } from "primereact/multiselect"
 
 export default function formDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
+    const { handleInputChange, inputs } = useInputs({})
 
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -59,6 +66,18 @@ export default function formDefinitionDashboard() {
         })
     }
 
+    const fixDateFormat = (formDefinitions) => {
+        return formDefinitions.map(formDefinition => {
+            const year = formDefinition.dateCreated.slice(0, 4)
+            const month = formDefinition.dateCreated.slice(5, 7)
+            const day = formDefinition.dateCreated.slice(8, 10)
+
+            formDefinition.dateCreated = `${month}/${day}/${year}`
+
+            return formDefinition
+        })
+    }
+
     let loadLazyTimeout = null 
     useEffect(() => {
         const loadLazyData = async() => {
@@ -83,9 +102,8 @@ export default function formDefinitionDashboard() {
             }
 
             const res = await callApi(params)
-            const formDefinitionsWithFixedDate = fixDateFormat(res?.data?.formDefinitions)
-
-            setFormDefinitions(formDefinitionsWithFixedDate)
+            console.log('res:', res)
+            setFormDefinitions(res?.data?.formDefinitions)
             setTotalRecords(res?.data?.count)
         }
 
@@ -98,32 +116,58 @@ export default function formDefinitionDashboard() {
     }
 
     const renderMetadata = (metadata) => {
-        let displayData = []
+        let leftSideList = []
+        let inputFieldList = []
+        let previewList = []
 
-        if (typeof metadata === 'object') {
-            Object.keys(metadata).map(element => {
-                if (Array.isArray(metadata[element])) {
-                    displayData.push(metadata[element].map((arrayElement, index) => {
-                        return (
-                            <>
-                            <h4>{`Component ${index + 1}:`}</h4>
-                            {Object.keys(arrayElement).map(componentElement => <p>{`${componentElement}: ${arrayElement[componentElement]}`}</p>)}
-                            </>
-                        )
-                    }))
-                } else if (element === 'metadata') {
-                    displayData.push(<h4>Metadata:</h4>)
-                    displayData.push(Object.keys(metadata.metadata).map(objectElement => <p>{`- ${objectElement}: ${metadata.metadata[objectElement]}`}</p>))
-                } else {
-                    displayData.push(<h4>{`${element}: ${metadata[element]}`}</h4>)
-                }
-            })
+        const componentMapper = {
+            'text': InputText,
+            'calendar': Calendar,
+            'number': InputNumber,
+            'textarea': InputTextarea,
+            'mask': InputMask,
+            'dropdown': Dropdown,
+            'multiselect': MultiSelect
+        }
+
+        metadata.metadata.map(component => {
+            const { name, label, subtitle, type, ...rest } = component
+
+            leftSideList.push(
+                <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
+                    <div style={{fontWeight: 'bold'}}>{label}</div>
+                    <div style={{fontWeight: 'bold'}}>{subtitle}</div>
+                </div>
+            )
+
+            inputFieldList.push(
+                createElement(
+                    componentMapper[type],
+                    {
+                    ...rest, name, value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
+                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                    }
+                )
+            )
+        })
+
+        for (let i = 0; i < metadata.metadata.length; i++) {
+            previewList.push(
+                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
+                    <div>{leftSideList[i]}</div>
+                    <div style={{width: '200px'}}>{inputFieldList[i]}</div>
+                </div>
+            )
         }
 
         return (
-            <>
-            {displayData}
-            </>
+            <div className='flex flex-column'>
+                <div style={{fontWeight: 'bold', marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div>{`Id: ${metadata.id}`}</div>
+                    <div>{`Created on: ${metadata.createdAtUtc.slice(5, 7)}/${metadata.createdAtUtc.slice(8, 10)}/${metadata.createdAtUtc.slice(0, 4)}`}</div>
+                </div>
+                {previewList}
+            </div>
         )
     }
 
