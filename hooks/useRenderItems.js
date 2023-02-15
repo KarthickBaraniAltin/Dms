@@ -12,15 +12,14 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
-import dynamic from 'next/dynamic'
-
-const ReactQuill = dynamic(import('react-quill'), { ssr: false })
+import { Editor } from '@tinymce/tinymce-react'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+    const RICH_TEXT_API = 'eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
 
     const componentMapper = {
         'text': InputText,
@@ -32,7 +31,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': ReactQuill
+        'richtext': Editor
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -70,26 +69,22 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const renderCreateElements = (type, name, rest) => {
         if (type === 'richtext') {
-            const modules = {
-                toolbar: [
-                  [{ 'header': [1, 2, 3, false] }],
-                  ['bold', 'italic', 'underline','strike'],
-                  [{ 'color': [] }, { 'background': [] }],
-                  [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                  ['link', 'image'],
-                  ['clean']
-                ],
-              }
-
-
             return (
                 <>
                 {createElement(
                     componentMapper[type],
                     {
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: inputs[name], onChange: handleInputChange, theme: 'snow', placeholder: 'Write your description here...',
-                        style: {width: '300px'}, modules: modules
+                        value: inputs[name], onChange: handleInputChange, apikey: RICH_TEXT_API, initialValue: '<p>Write your description here</p>',
+                        height: 200, menubar: false, plugins: [ 'help' ], content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                        toolbar: [
+                            { name: 'history', items: [ 'undo', 'redo' ] },
+                            { name: 'styles', items: [ 'styles' ] },
+                            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
+                            { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
+                            { name: 'indentation', items: [ 'outdent', 'indent' ] },
+                            { name: 'help', items: [ 'help' ] }
+                          ],
                     }
                 )}
                 </>

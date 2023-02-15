@@ -1,10 +1,7 @@
 import { Card } from 'primereact/card'
-import { useInputs } from '../../hooks/useInput'
-import Input from '../Input/Input'
 import { Draggable } from './Draggable'
 
 export default function ComponentPanel() {
-    const { handleInputChange, inputs } = useInputs()
 
     const componentTypes = [
         'header',

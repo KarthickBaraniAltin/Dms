@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React, { useRef } from 'react'
+import { Editor } from '@tinymce/tinymce-react'
+import Head from 'next/head'
 
 export default function Index() {
   const editorRef = useRef(null);
@@ -10,9 +11,13 @@ export default function Index() {
   };
   return (
     <>
+      <Head>
+        <title>TinyMce Rich Text Test Page</title>
+        <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
+      </Head>
       <Editor
         apiKey='eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
-        onInit={(evt, editor) => editorRef.current = editor}
+        // onInit={(evt, editor) => editorRef.current = editor}
         initialValue="<p>This is the initial content of the editor.</p>"
         init={{
           height: 500,
@@ -25,14 +30,15 @@ export default function Index() {
           toolbar: [
             { name: 'history', items: [ 'undo', 'redo' ] },
             { name: 'styles', items: [ 'styles' ] },
-            { name: 'formatting', items: [ 'bold', 'italic', 'fontFamily', 'fontSize' ] },
+            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
             { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-            { name: 'indentation', items: [ 'outdent', 'indent' ] }
+            { name: 'indentation', items: [ 'outdent', 'indent' ] },
+            { name: 'help', items: [ 'help' ] }
           ],
           content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
         }}
       />
-      <button onClick={log}>Log editor content</button>
+      {/* <button onClick={log}>Log editor content</button> */}
     </>
   );
 }
