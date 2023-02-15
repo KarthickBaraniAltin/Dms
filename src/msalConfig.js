@@ -1,5 +1,3 @@
-import * as msal from '@azure/msal-browser';
-
 export const msalConfig = {
     auth: {
         clientId: '1150e924-2c59-4037-8aa6-2f371e3b49f1',
@@ -24,7 +22,3 @@ export const formBuilderApiRequest = {
 export const graphConfig = {
     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
 }
-
-// export const graphConfig = {
-//     graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
-// }

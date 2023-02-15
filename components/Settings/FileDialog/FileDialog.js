@@ -3,8 +3,8 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
-import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
+import { Checkbox } from 'primereact/checkbox';
 
 export default function FileDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -41,6 +41,10 @@ export default function FileDialog({ visible, hideDialog, inputs, handleInputCha
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='col-6'>
+            <label>Multiple</label>
+            <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleInputChange} checked={inputs?.multiple} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>

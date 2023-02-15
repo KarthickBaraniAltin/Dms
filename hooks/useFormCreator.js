@@ -6,10 +6,6 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { useRenderItems } from './useRenderItems'
 import { useValidation } from './useValidation'
-import { useApi } from './useApi'
-import { useMsalAuthentication } from '@azure/msal-react'
-import { InteractionType } from '@azure/msal-browser'
-import { formBuilderApiRequest } from '../src/msalConfig'
 
 export const useFormCreator = () => {
 
@@ -19,10 +15,6 @@ export const useFormCreator = () => {
     const { inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     
-    // Api call variables
-    const { response, error, loading, callApi } = useApi()
-    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
     const [sectionIds, setSectionIds] = useState([])
@@ -91,7 +83,6 @@ export const useFormCreator = () => {
                                             items={sectionIdsForDroppable}
                                             strategy={verticalListSortingStrategy}
                                         >
-                                            
                                             {renderComponents(sectionMetadata, null, true)}
                                         </SortableContext>
                                     </Droppable>

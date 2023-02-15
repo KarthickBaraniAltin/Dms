@@ -18,7 +18,7 @@ import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 
-export default function formDefinitionDashboard() {
+export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
     const { handleInputChange, inputs } = useInputs({})
