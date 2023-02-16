@@ -15,8 +15,6 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
     )
   }
 
-  const [font, setFont] = useState('')
-
   const fontOptions = [
     {label: 'Times New Roman', value: 'Times New Roman'},
     {label: 'Arial', value: 'Arial'},
