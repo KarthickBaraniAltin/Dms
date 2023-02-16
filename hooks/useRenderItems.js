@@ -72,12 +72,17 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         if (type === 'richtext') {
             return (
                 <>
-                {createElement(
-                    componentMapper[type],
-                    {
-                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: inputs[name], onChange: handleInputChange, apikey: RICH_TEXT_API, initialValue: '<p>Write your description here</p>',
-                        height: 200, menubar: false, plugins: [ 'help' ], content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    <Editor
+                        apiKey='eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
+                        initialValue="<p>This is the initial content of the editor.</p>"
+                        init={{
+                        height: 200,
+                        menubar: false,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
                         toolbar: [
                             { name: 'history', items: [ 'undo', 'redo' ] },
                             { name: 'styles', items: [ 'styles' ] },
@@ -85,9 +90,10 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                             { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
                             { name: 'indentation', items: [ 'outdent', 'indent' ] },
                             { name: 'help', items: [ 'help' ] }
-                          ],
-                    }
-                )}
+                        ],
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        }}
+                    />
                 </> 
             )
         }
