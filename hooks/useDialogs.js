@@ -9,13 +9,14 @@ import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
+import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, setInputs } = useInputs()
 
-    const dialogMapper = {
+    const dialogMapper = { 
         'section': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
@@ -24,7 +25,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'mask': MaskDialog,
         'header': HeaderDialog,
         'file': FileDialog,
-        'richtext': RichTextDialog
+        'richtext': RichTextDialog,
+        'signature': SignatureDialog
     } 
 
     const hideDialog = () => {

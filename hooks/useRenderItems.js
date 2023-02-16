@@ -31,7 +31,8 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': Editor
+        'richtext': Editor,
+        'signature': InputText
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -67,7 +68,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderCreateElements = (type, name, rest) => {
+    const renderCreateElements = (type, name, rest, fontStyle) => {
         if (type === 'richtext') {
             return (
                 <>
@@ -87,7 +88,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                           ],
                     }
                 )}
-                </>
+                </> 
             )
         }
 
@@ -98,7 +99,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 {
                     ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                     value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null, style: {fontFamily: fontStyle}
                 }
             )}
             </>
@@ -128,13 +129,13 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
         return (
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
-                {renderCreateElements(type, name, rest)}
+                {renderCreateElements(type, name, rest, fontStyle)}
                 {renderSubtitle(subtitle, subtitleComponent)}
                 {renderErrors(name)}
             </div>
@@ -161,10 +162,10 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 </>
             )
         } else {
-            const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = metadata
+            const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
                 <Sortable key={index} id={index + 1}>
-                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent)}
+                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )
         }

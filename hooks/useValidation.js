@@ -101,6 +101,11 @@ export const useValidation = ({ metadata, inputs }) => {
                         }
                     })
                 })
+            },
+            fonts: (font, name) => {
+                const index = metadata.findIndex(element => element.name === name)
+                
+                metadata[index].fontStyle = font
             }
         }
 
@@ -196,6 +201,11 @@ export const useValidation = ({ metadata, inputs }) => {
                                 )
                                 currentErrors.push(message ?? finalFileTypeMessage)
                             }
+                            break
+                        }
+                        case 'fontFamily': {
+                            const { font } = value
+                            validationMapper.fonts(font, name)
                             break
                         }
                         default:
