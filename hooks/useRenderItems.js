@@ -13,13 +13,15 @@ import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
 import { Editor } from '@tinymce/tinymce-react'
+import { Button } from 'primereact/button'
+import { useState } from 'react'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    const RICH_TEXT_API = 'eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
+    const [signaturePreview, setSignaturePreview] = useState(false)
 
     const componentMapper = {
         'text': InputText,
@@ -98,6 +100,31 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
             )
         }
 
+        if (type === 'signature') {
+            const style = signaturePreview ? {border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle} : {}
+            
+            if (typeof inputs[name] === 'string' && inputs[name] !== '') {
+                if (!signaturePreview) {
+                    setSignaturePreview(true)
+                }
+            } else if (typeof inputs[name] === 'undefined' || inputs[name] === '') {
+                if (signaturePreview) {
+                    setSignaturePreview(false)
+                }
+            }
+
+            return (
+                <div className='flex flex-column'>
+                    <div className='flex'>
+                        <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem'}}/>
+                    </div>
+                    <div>
+                        <p style={style}>{inputs[name]}</p>
+                    </div>
+                </div>
+            )
+        }
+
         return (
             <>
             {createElement(
@@ -105,7 +132,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 {
                     ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                     value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null, style: {fontFamily: fontStyle}
+                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
                 }
             )}
             </>

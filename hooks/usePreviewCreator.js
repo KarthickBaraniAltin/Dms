@@ -36,12 +36,12 @@ export const usePreviewCreator = ({ metadata }) => {
                         )
                     }
 
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = data
                     return (
                         <div key={index} style={{marginTop: '1rem'}}>
                             <div  className='field col-12'>
                                 {renderLabel(null, label, type, true)}
-                                {renderCreateElements(type, name, rest)}
+                                {renderCreateElements(type, name, rest, fontStyle, data)}
                                 { subtitleComponent }
                                 { subtitle && 
                                     <small className='block'>{subtitle}</small>
