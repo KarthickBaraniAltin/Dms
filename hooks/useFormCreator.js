@@ -1,17 +1,17 @@
 import useDialogs from './useDialogs'
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from 'react'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { useInputs } from "./useInput"
+import { useInputs } from './useInput'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
-import { useRenderItems } from "./useRenderItems"
+import { useRenderItems } from './useRenderItems'
 
 export const useFormCreator = () => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { setInputs } = useInputs({})
+    const { inputs, setInputs, handleInputChange } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
-    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata })
+    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, inputs, handleInputChange })
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
@@ -25,6 +25,16 @@ export const useFormCreator = () => {
     useEffect(() => {
         metadata.forEach(element => {
             element.page = pageNumber
+
+            /* Used to erase entries in inputs object for deleted components */
+            const inputKeysArray = Object.keys(inputs)
+            // console.log('element:', element)
+            // console.log('inputKeysArray:', inputKeysArray)
+            if (!(element.name in inputKeysArray)) {
+                // console.log('inputs(useEffect):', inputs)
+            }
+            /* Used to erase entries in inputs object for deleted components */
+
             if (element.defaultValue) {
                 setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
             }

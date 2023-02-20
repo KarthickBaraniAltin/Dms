@@ -15,26 +15,6 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
     )
   }
 
-  const fontOptions = [
-    {label: 'Times New Roman', value: 'Times New Roman'},
-    {label: 'Arial', value: 'Arial'},
-    {label: 'Georgia', value: 'Georgia'},
-    {label: 'Cursive', value: 'Cursive'},
-    {label: 'Calibri' , value: 'Calibri'},
-    {label: 'Courier New' , value: 'Courier New'},
-    {label: 'Garamond' , value: 'Garamond' },
-    {label: 'Helvetica' , value: 'Helvetica'},
-    {label: 'Lato' , value: 'Lato'},
-    {label: 'Lucida Sans' , value: 'Lucida Sans'},
-    {label: 'Open Sans' , value: 'Open Sans'},
-    {label: 'Oswald' , value: 'Oswald'},
-    {label: 'Roboto' , value: 'Roboto'},
-    {label: 'Poppins' , value: 'Poppins'},
-    {label: 'Tahoma' , value: 'Tahoma'},
-    {label: 'Trebuchet MS' , value: 'Trebuchet MS'},
-    {label: 'Tangerine', value: 'Tangerine'}
-  ]
-
   return (
     <div>
       <Dialog header='Signature Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
@@ -71,10 +51,6 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
           <div className='field col-6 md:col-6'>
             <label>Max Length Message</label>
             <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
-          </div>
-          <div className='field col-6 md:col-6'>
-            <label>Fonts</label>
-            <Dropdown name='validations.fontFamily.font' value={inputs?.validations?.fontFamily?.font} options={fontOptions} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

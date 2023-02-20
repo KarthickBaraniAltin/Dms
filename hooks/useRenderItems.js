@@ -15,14 +15,18 @@ import { Card } from 'primereact/card'
 import { Editor } from '@tinymce/tinymce-react'
 import { Button } from 'primereact/button'
 import { useState } from 'react'
+import { useHeaderImage } from './useHeaderImage'
 
-export const useRenderItems = ({ metadata, setMetadata }) => {
+export const useRenderItems = ({ metadata, setMetadata, /* inputs, handleInputChange */ }) => {
 
     const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    const [signaturePreview, setSignaturePreview] = useState(false)
+    const { handleHeaderImage, headerImage } = useHeaderImage()
+    // const [signaturePreview, setSignaturePreview] = useState(false)
+    // console.log('headerImage:', headerImage)
 
+    const [fontInputs, setFontInputs] = useState([])
     const componentMapper = {
         'text': InputText,
         'calendar': Calendar,
@@ -37,6 +41,45 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'signature': InputText
     }
 
+    const fontOptions = [
+        {label: 'Times New Roman', value: 'Times New Roman'},
+        {label: 'Arial', value: 'Arial'},
+        {label: 'Georgia', value: 'Georgia'},
+        {label: 'Cursive', value: 'Cursive'},
+        {label: 'Calibri' , value: 'Calibri'},
+        {label: 'Courier New' , value: 'Courier New'},
+        {label: 'Garamond' , value: 'Garamond' },
+        {label: 'Helvetica' , value: 'Helvetica'},
+        {label: 'Lato' , value: 'Lato'},
+        {label: 'Lucida Sans' , value: 'Lucida Sans'},
+        {label: 'Open Sans' , value: 'Open Sans'},
+        {label: 'Oswald' , value: 'Oswald'},
+        {label: 'Roboto' , value: 'Roboto'},
+        {label: 'Poppins' , value: 'Poppins'},
+        {label: 'Tahoma' , value: 'Tahoma'},
+        {label: 'Trebuchet MS' , value: 'Trebuchet MS'},
+        {label: 'Tangerine', value: 'Tangerine'}
+    ]
+
+    const handleSignatureChange = (event, name) => {
+        const checkSameSignature = fontInputs.some(obj => obj.name === name)
+        const sameSignatureIndex = fontInputs.findIndex(obj => obj.name === name)
+
+        if (checkSameSignature) {
+            let tempFontInputs = JSON.parse(JSON.stringify(fontInputs))
+            tempFontInputs[sameSignatureIndex].value = event.target.value
+            setFontInputs(tempFontInputs)
+        } else {
+            setFontInputs([
+                ...fontInputs,
+                {name: name, value: event.target.value}
+            ])
+        }
+
+        const index = metadata.findIndex(element => element.name === name)
+        metadata[index].fontStyle = event.target.value
+    }    
+
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
         const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
@@ -49,11 +92,23 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 :
                 isHeader ?
                 <>
-                    <div className='flex flex-column'>
+                    {/* <div className='flex flex-column'>
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
                         <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
                             <h1 style={{'textAlign': 'center'}}>{label}</h1>
                         </Card>
+                    </div> */}
+                    <div className='flex flex-column'>
+                        <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
+                        <div>
+                            <div>
+                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'flex'}}>
+                                    {headerImage?.[componentData?.name]?.url && <img src={headerImage[componentData.name].url} width='100px' height='100px' />}
+                                    <h1 style={{'textAlign': 'center'}}>{label}</h1>
+                                </div>
+                            </div>
+                            {<input type='file' onChange={handleHeaderImage} accept="image/png, image/jpeg" data-name={componentData?.name} />}
+                        </div>
                     </div>
                 </>
                 :
@@ -101,25 +156,28 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         }
 
         if (type === 'signature') {
-            const style = signaturePreview ? {border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle} : {}
+            // const style = signaturePreview ? {border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle} : {}
             
-            if (typeof inputs[name] === 'string' && inputs[name] !== '') {
-                if (!signaturePreview) {
-                    setSignaturePreview(true)
-                }
-            } else if (typeof inputs[name] === 'undefined' || inputs[name] === '') {
-                if (signaturePreview) {
-                    setSignaturePreview(false)
-                }
-            }
+            // if (typeof inputs[name] === 'string' && inputs[name] !== '') {
+            //     if (!signaturePreview) {
+            //         setSignaturePreview(true)
+            //     }
+            // } else if (typeof inputs[name] === 'undefined' || inputs[name] === '') {
+            //     if (signaturePreview) {
+            //         setSignaturePreview(false)
+            //     }
+            // }
+
+            const fontValue = fontInputs.find(obj => obj.name === name)
 
             return (
                 <div className='flex flex-column'>
                     <div className='flex'>
-                        <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem'}}/>
+                        <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
+                        <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name)} />
                     </div>
                     <div>
-                        <p style={style}>{inputs[name]}</p>
+                        <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{inputs[name]}</p>
                     </div>
                 </div>
             )

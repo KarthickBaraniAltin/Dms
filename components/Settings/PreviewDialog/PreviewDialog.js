@@ -68,7 +68,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
 
     return (
         <>
-            <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '50vw'}}>
+            <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '75vw'}}>
                 <div className='flex justify-content-center'>
                     <div>
                         {componentList.length > 0 ?
