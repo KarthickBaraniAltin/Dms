@@ -55,6 +55,8 @@ export default function formDefinitionDashboard() {
     }
 
     const fixDateFormat = (formDefinitions) => {
+        console.log('formDefinitions:', formDefinitions)
+        if (typeof formDefinitions === 'undefined') return
         return formDefinitions.map(formDefinition => {
             const year = formDefinition.dateCreated.slice(0, 4)
             const month = formDefinition.dateCreated.slice(5, 7)

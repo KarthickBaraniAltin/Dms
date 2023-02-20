@@ -10,7 +10,6 @@ import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
-import Script from 'next/script'
 
 export default function DndWithClientSideValidations() {
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
@@ -22,7 +21,6 @@ export default function DndWithClientSideValidations() {
             <Head>
                 <title>DnD With Client Side Validations</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
-                {/* <Script src="https://cdn.tiny.cloud/1/eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071/tinymce/5/tinymce.min.js" referrerpolicy="origin"></Script> */}
             </Head>
             <AuthenticatedTemplate>
                 <DndContext
