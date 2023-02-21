@@ -15,10 +15,9 @@ import { useState } from 'react'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
-    const { handleInputChange, inputs } = useInputs({})
+    const { handleInputChange, handleSignatureChange, inputs, fontInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    const [fontInputs, setFontInputs] = useState([])
 
     const componentMapper = {
         'text': InputText,
@@ -41,26 +40,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         {label: 'Cursive', value: 'Cursive'},
         {label: 'Calibri' , value: 'Calibri'},
         {label: 'Tangerine', value: 'Tangerine'}
-    ]
-
-    const handleSignatureChange = (event, name) => {
-        const checkSameSignature = fontInputs.some(obj => obj.name === name)
-        const sameSignatureIndex = fontInputs.findIndex(obj => obj.name === name)
-
-        if (checkSameSignature) {
-            let tempFontInputs = JSON.parse(JSON.stringify(fontInputs))
-            tempFontInputs[sameSignatureIndex].value = event.target.value
-            setFontInputs(tempFontInputs)
-        } else {
-            setFontInputs([
-                ...fontInputs,
-                {name: name, value: event.target.value}
-            ])
-        }
-
-        const index = metadata.findIndex(element => element.name === name)
-        metadata[index].fontStyle = event.target.value
-    }    
+    ]  
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
@@ -134,7 +114,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 <div className='flex flex-column'>
                     <div className='flex'>
                         <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
-                        <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name)} />
+                        <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name, metadata)} />
                     </div>
                     <div>
                         <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{inputs[name]}</p>
