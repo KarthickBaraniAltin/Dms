@@ -11,7 +11,6 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { Editor } from '@tinymce/tinymce-react'
 import { useState } from 'react'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
@@ -31,7 +30,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': Editor,
+        'richtext': InputText,
         'signature': InputText
     }
 
@@ -41,17 +40,6 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         {label: 'Georgia', value: 'Georgia'},
         {label: 'Cursive', value: 'Cursive'},
         {label: 'Calibri' , value: 'Calibri'},
-        {label: 'Courier New' , value: 'Courier New'},
-        {label: 'Garamond' , value: 'Garamond' },
-        {label: 'Helvetica' , value: 'Helvetica'},
-        {label: 'Lato' , value: 'Lato'},
-        {label: 'Lucida Sans' , value: 'Lucida Sans'},
-        {label: 'Open Sans' , value: 'Open Sans'},
-        {label: 'Oswald' , value: 'Oswald'},
-        {label: 'Roboto' , value: 'Roboto'},
-        {label: 'Poppins' , value: 'Poppins'},
-        {label: 'Tahoma' , value: 'Tahoma'},
-        {label: 'Trebuchet MS' , value: 'Trebuchet MS'},
         {label: 'Tangerine', value: 'Tangerine'}
     ]
 
@@ -84,8 +72,12 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 <div className='flex flex-column'>
                     <div>
                         <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
-                            {headerImage[componentData.name]?.url && <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' />}
-                            <h1 style={{alignSelf: 'center'}}>{label}</h1>
+                            {headerImage[componentData.name]?.url ? 
+                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                            : 
+                            <div style={{width: '100px', height: '100px'}}></div>
+                            }
+                            <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
                             <div style={{width: '100px', height: '100px'}}></div>
                         </div>
                     </div>
@@ -103,8 +95,12 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         <div>
                             <div>
                                 <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
-                                    {headerImage[componentData.name]?.url && <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' />}
-                                    <h1 style={{alignSelf: 'center'}}>{label}</h1>
+                                    {headerImage[componentData.name]?.url ? 
+                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                                    : 
+                                    <div style={{width: '100px', height: '100px'}}></div>
+                                    }
+                                    <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
                                     <div style={{width: '100px', height: '100px'}}></div>
                                 </div>
                             </div>
@@ -130,7 +126,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         if (type === 'richtext') {
             return 
         }
-        
+
         if (type === 'signature') {
             const fontValue = fontInputs.find(obj => obj.name === name)
 

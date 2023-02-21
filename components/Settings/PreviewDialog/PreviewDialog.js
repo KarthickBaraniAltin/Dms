@@ -25,6 +25,25 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
         }
 
         if (element.type === 'section') {
+            console.log('element:', element)
+            componentList.push(
+                <div>
+                    <h3>{renderLabel(null, label, type, true)}</h3>
+                    {element.sectionMetadata.map(component => {
+                        const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = component
+                        return (
+                            <div style={{display: 'flex', gap: '2rem', marginBottom: '2rem'}}>
+                                <div style={{width: '100px'}}>
+                                    {renderLabel(null, label, null, true)}
+                                    {renderSubtitle(subtitle, subtitleComponent)}
+                                </div>
+                                {renderCreateElements(type, name, rest, fontStyle)}
+                            </div>
+                        )
+                    })}
+                </div>
+            )
+
             return
         }
 
