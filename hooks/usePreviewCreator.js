@@ -12,7 +12,7 @@ export const usePreviewCreator = ({ metadata }) => {
                         const { label, type, name, ...rest } = data
                         return (
                             <div key={index}>
-                                {renderLabel(null, label, type, null, true)}
+                                {renderLabel(null, label, type, false, true)}
                             </div>
                         )
                     }
@@ -21,12 +21,12 @@ export const usePreviewCreator = ({ metadata }) => {
                         const { label, type, sectionMetadata } = data
                         return (
                             <>
-                                {renderLabel(null, label, type, true)}
+                                {renderLabel(null, label, type, true, false)}
                                 {sectionMetadata.map((section, sectionIndex) => {
                                     const { type, name, label, subtitle, ...rest } = section
                                     return (
                                         <div className='field col-12' key={sectionIndex}>
-                                            {renderLabel(null, label, type, true)}
+                                            {renderLabel(null, label, type, true, false)}
                                             {renderCreateElements(type, name, rest)}
                                             {renderSubtitle(subtitle, null)}
                                         </div>
@@ -40,7 +40,7 @@ export const usePreviewCreator = ({ metadata }) => {
                     return (
                         <div key={index} style={{marginTop: '1rem'}}>
                             <div  className='field col-12'>
-                                {renderLabel(null, label, type, true)}
+                                {renderLabel(null, label, type, true, false)}
                                 {renderCreateElements(type, name, rest, fontStyle, data)}
                                 { subtitleComponent }
                                 { subtitle && 

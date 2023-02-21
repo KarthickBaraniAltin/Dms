@@ -11,22 +11,16 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { Card } from 'primereact/card'
 import { Editor } from '@tinymce/tinymce-react'
-import { Button } from 'primereact/button'
 import { useState } from 'react'
-import { useHeaderImage } from './useHeaderImage'
 
-export const useRenderItems = ({ metadata, setMetadata, /* inputs, handleInputChange */ }) => {
+export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
     const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    const { handleHeaderImage, headerImage } = useHeaderImage()
-    // const [signaturePreview, setSignaturePreview] = useState(false)
-    // console.log('headerImage:', headerImage)
-
     const [fontInputs, setFontInputs] = useState([])
+
     const componentMapper = {
         'text': InputText,
         'calendar': Calendar,
@@ -82,29 +76,36 @@ export const useRenderItems = ({ metadata, setMetadata, /* inputs, handleInputCh
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
-        const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
+        const isSectionHeadingForPreview = (type === 'section' && isPreview) ? true : false
+
         return (
             <>
-                {isPreview ?
+                {isPreview && isHeader ?
+                <div className='flex flex-column'>
+                    <div>
+                        <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                            {headerImage[componentData.name]?.url && <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' />}
+                            <h1 style={{alignSelf: 'center'}}>{label}</h1>
+                            <div style={{width: '100px', height: '100px'}}></div>
+                        </div>
+                    </div>
+                </div>
+                :
+                isPreview ?
                 <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
                     {label}
                 </label>
                 :
                 isHeader ?
                 <>
-                    {/* <div className='flex flex-column'>
-                        <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
-                        <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
-                            <h1 style={{'textAlign': 'center'}}>{label}</h1>
-                        </Card>
-                    </div> */}
                     <div className='flex flex-column'>
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
                         <div>
                             <div>
-                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'flex'}}>
-                                    {headerImage?.[componentData?.name]?.url && <img src={headerImage[componentData.name].url} width='100px' height='100px' />}
-                                    <h1 style={{'textAlign': 'center'}}>{label}</h1>
+                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                                    {headerImage[componentData.name]?.url && <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' />}
+                                    <h1 style={{alignSelf: 'center'}}>{label}</h1>
+                                    <div style={{width: '100px', height: '100px'}}></div>
                                 </div>
                             </div>
                             {<input type='file' onChange={handleHeaderImage} accept="image/png, image/jpeg" data-name={componentData?.name} />}
@@ -127,47 +128,10 @@ export const useRenderItems = ({ metadata, setMetadata, /* inputs, handleInputCh
 
     const renderCreateElements = (type, name, rest, fontStyle) => {
         if (type === 'richtext') {
-            return (
-                <>
-                    <Editor
-                        apiKey='eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
-                        initialValue="<p>This is the initial content of the editor.</p>"
-                        init={{
-                        height: 200,
-                        menubar: false,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                        ],
-                        toolbar: [
-                            { name: 'history', items: [ 'undo', 'redo' ] },
-                            { name: 'styles', items: [ 'styles' ] },
-                            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
-                            { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-                            { name: 'indentation', items: [ 'outdent', 'indent' ] },
-                            { name: 'help', items: [ 'help' ] }
-                        ],
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                        }}
-                    />
-                </> 
-            )
+            return 
         }
-
+        
         if (type === 'signature') {
-            // const style = signaturePreview ? {border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle} : {}
-            
-            // if (typeof inputs[name] === 'string' && inputs[name] !== '') {
-            //     if (!signaturePreview) {
-            //         setSignaturePreview(true)
-            //     }
-            // } else if (typeof inputs[name] === 'undefined' || inputs[name] === '') {
-            //     if (signaturePreview) {
-            //         setSignaturePreview(false)
-            //     }
-            // }
-
             const fontValue = fontInputs.find(obj => obj.name === name)
 
             return (
@@ -225,7 +189,7 @@ export const useRenderItems = ({ metadata, setMetadata, /* inputs, handleInputCh
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
-                {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
+                {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}
                 {renderCreateElements(type, name, rest, fontStyle)}
                 {renderSubtitle(subtitle, subtitleComponent)}
                 {renderErrors(name)}

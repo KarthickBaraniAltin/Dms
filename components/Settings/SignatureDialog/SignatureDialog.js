@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
-import { Dropdown } from 'primereact/dropdown'
 
 export default function SignatureDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {

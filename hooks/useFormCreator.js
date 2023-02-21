@@ -6,12 +6,12 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { useRenderItems } from './useRenderItems'
 
-export const useFormCreator = () => {
+export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
 
     const [ metadata, setMetadata ] = useState([])
     const { inputs, setInputs, handleInputChange } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
-    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, inputs, handleInputChange })
+    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
