@@ -1,5 +1,4 @@
 import axios from "axios";
-import fetch from "node-fetch";
 import { getFormDatas, postFormData } from "../../../../api/apiCalls";
 const https = require('https');
 
@@ -10,7 +9,6 @@ const httpsAgent = new https.Agent({
 export default async function handler(req, res) {
     const { method, query, body, headers } = req
     const { id } = query
-    console.log("Body = ", body)
 
     if (headers.authorization) {
         axios.defaults.headers['Authorization'] = headers.authorization
@@ -29,7 +27,6 @@ export default async function handler(req, res) {
     } else if (method === 'POST') {
         try {
 
-            const formData = new FormData()
             const fetchParams = {
                 method: 'POST',
                 headers: {
@@ -40,10 +37,11 @@ export default async function handler(req, res) {
             }
 
             const response = await fetch(`https://localhost:7262/api/FormData/${id}`, fetchParams)
-            const resBody = await response.text()
-            res.status(200).json()
+            const resBody = await response.json()
+            console.log("Res = ", resBody)
+            res.status(200).json({result: "Success"})
         } catch (error) {
-            // console.log(error)
+            console.log(error)
             res.status(405).json({result: 'Internal Error'})
         }
     } else {

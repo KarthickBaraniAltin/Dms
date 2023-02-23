@@ -9,12 +9,8 @@ import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
-import axios from 'axios'
-import https from 'https'
 
-const formBuilderStudioApi = process.env.FORM_BUILDER_API
-
-export default function View({ id, data }) {
+export default function View({ id, data, api }) {
 
     const { metadata, setMetadata } = useFormCreator()
     const { renderPreview, inputs } = usePreviewCreator({ metadata })
@@ -24,8 +20,6 @@ export default function View({ id, data }) {
     const jsonToFormData = (json) => {
         const formData = new FormData()
         for (var key in json) {
-            console.log("KEY = ", key , "  value = ", json[key])
-            console.log("HERE")
             if (key.startsWith('file')) {
                 json[key].forEach((file, index) => {
                     formData.append(key + '_' + index, file)
@@ -51,7 +45,7 @@ export default function View({ id, data }) {
         }
 
         // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
-        const res = await callApiFetch(`http://localhost:5262/api/FormData/${id}`, fetchParams)
+        const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
         console.log("RES = ", res)
     }
 
@@ -107,7 +101,8 @@ export async function getStaticProps(context) {
         return {
             props: {
                 id,
-                data: res.data
+                data: res.data,
+                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {
