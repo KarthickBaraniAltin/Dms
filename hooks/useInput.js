@@ -4,16 +4,15 @@ export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
     const handleInputChange = (event) => {
+
         if (event.target?.files) {
             setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
         } else if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
-            // setInputs(inputs => ({...inputs, [name]: value}))
         } else if (event.originalEvent) {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
-            // setInputs(inputs => ({...inputs, [name]: value}))
         } else {
             console.error("Error: can't find event target")
         }
@@ -21,6 +20,10 @@ export const useInputs = (options) => {
 
     // We can give values nested objects will be created and assigned accordingly
     const assignValuesNested = (path, value) => {
+        if (!path) {
+            return
+        }
+
         const pathArr = path.split('.')
         const lastKeyIndex = pathArr.length - 1
         let updatedInputs = {...inputs}
@@ -36,5 +39,5 @@ export const useInputs = (options) => {
         setInputs({...updatedInputs})
     }
 
-    return { handleInputChange, inputs, setInputs }
+    return { handleInputChange, assignValuesNested, inputs, setInputs }
 }

@@ -12,12 +12,15 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { Card } from 'primereact/card'
+import LexicalEditor from '../components/LexicalEditor/LexicalEditor'
+import ReadonlyLexicalEditor from '../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 
 export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+    // const { } = useSubtitleEditor({ metadata, setMetadata })
 
     const componentMapper = {
         'text': InputText,
@@ -28,7 +31,9 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
         'header': 'h1',
-        'file': 'input'
+        'file': 'input',
+        'richText': LexicalEditor,
+        'subtitle': 'div'
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -67,24 +72,23 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     const renderCreateElements = (type, name, rest) => {
         return (
             <>
-            {createElement(
-                componentMapper[type],
-                {
-                    ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                    value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
-                }
-            )}
+                {createElement(
+                    componentMapper[type],
+                    {
+                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                        value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
+                        type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                    }
+                )}
             </>
         )
     }
 
-    const renderSubtitle = (subtitle, subtitleComponent) => {
+    const renderSubtitle = (subtitle, subtitleComponent, index = -1) => {
         return (
-            <>
-                {subtitleComponent}
-                { subtitle && <small className='block'>{subtitle}</small>}
-            </>
+            <div className='mt-1'>
+                <ReadonlyLexicalEditor value={subtitle} />
+            </div>
         )
     }
 
@@ -102,14 +106,14 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, index) => {
         return (
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
                 {renderCreateElements(type, name, rest)}
-                {renderSubtitle(subtitle, subtitleComponent)}
+                {renderSubtitle(subtitle, subtitleComponent, index)}
                 {renderErrors(name)}
             </div>
         )
@@ -119,15 +123,15 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         if (isSection) {
             return (
                 <>
-                    {metadata.map((data, sectionIndex) => {
+                    {metadata.map((data, index) => {
                         const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                         if (type === 'section') {
                             return alert('Error: Cannot place section component within another section component.')
                         }
                         return (
                             <>
-                                <Sortable key={sectionIndex} id={`${metadata[sectionIndex].id}`}>
-                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent)}
+                                <Sortable key={index} id={`${metadata[index].id}`}>
+                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent, index)}
                                 </Sortable>
                             </>
                         )

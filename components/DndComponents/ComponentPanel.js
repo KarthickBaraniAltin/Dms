@@ -1,10 +1,7 @@
 import { Card } from 'primereact/card'
-import { useInputs } from '../../hooks/useInput'
-import Input from '../Input/Input'
 import { Draggable } from './Draggable'
 
 export default function ComponentPanel() {
-    const { handleInputChange, inputs } = useInputs()
 
     const componentTypes = [
         'header',
@@ -16,17 +13,10 @@ export default function ComponentPanel() {
         'mask',
         'dropdown',
         'multiselect',
-        'file'
+        'file',
+        'richText',
+        'subtitle'
     ]
-    const cities = [
-        { label: 'Las Vegas', value: 'LV'},
-        { label: 'Toronto', value: 'TO'},
-        { label: 'New York', value: 'NY' },
-        { label: 'Rome', value: 'RM' },
-        { label: 'London', value: 'LDN' },
-        { label: 'Istanbul', value: 'IST' },
-        { label: 'Paris', value: 'PRS' }
-      ]
 
     const draggableItems = componentTypes.map((component, index) => {
         if (component === 'header') {
@@ -76,7 +66,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Text Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     guid=''
                 >
@@ -97,7 +87,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     dateFormat='dd-mm-yy'
                     minDate=''
@@ -121,7 +111,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Number Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     format={false}
                     guid=''
@@ -143,7 +133,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Textarea Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     guid=''
                 >
@@ -164,7 +154,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Mask Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     mask='(999) 999-9999'
                     guid=''
@@ -186,9 +176,8 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Dropdown Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
-                    options={cities}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -208,9 +197,8 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Multiselect Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
-                    options={cities}
                     display='chip'
                     guid=''
                 >
@@ -231,12 +219,51 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='File Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             File
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'richText') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Rich Text
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'subtitle') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Subtitle
                         </label> 
                     </div>
                 </Draggable>

@@ -28,27 +28,27 @@ export default function DndWithClientSideValidations() {
                 <DndContext
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
-                >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
-                <div className='grid'>
-                    <ComponentPanel />
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
-                            <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
-                                <h1 style={{'textAlign': 'center'}}>Default</h1>
-                            </Card>
-                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
-                        </div>
-                        <Droppable id={'droppable-container-form'}>
-                            <SortableContext
-                                items={mainFormIds}
-                                strategy={verticalListSortingStrategy}
-                            >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
-                            </SortableContext>
-                        </Droppable>
-                    </Card>
-                </div>
+                > 
+                    {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
+                    <div className='grid'>
+                        <ComponentPanel />
+                        <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                            <div className='flex flex-column justify-content-center'>
+                                <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                                    <h1 style={{'textAlign': 'center'}}>Default</h1>
+                                </Card>
+                                <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                            </div>
+                            <Droppable id={'droppable-container-form'}>
+                                <SortableContext
+                                    items={mainFormIds}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
+                                </SortableContext>
+                            </Droppable>
+                        </Card>
+                    </div>
                 </DndContext>
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>

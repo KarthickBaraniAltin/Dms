@@ -8,11 +8,13 @@ import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
+import SubtitleDialog from "../components/Settings/SubtitleDialog/SubtitleDialog"
+import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, setInputs } = useInputs()
+    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
 
     const dialogMapper = {
         'section': SectionPanelDialog,
@@ -22,7 +24,9 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'textarea': TextareaDialog,
         'mask': MaskDialog,
         'header': HeaderDialog,
-        'file': FileDialog
+        'file': FileDialog,
+        'subtitle': SubtitleDialog,
+        'richText': RichTextDialog
     } 
 
     const hideDialog = () => {
@@ -82,7 +86,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange: handleInputChange, visible: showDialog, hideDialog, handleUpdate}
+                        {inputs: inputs, handleInputChange: handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }
             </>

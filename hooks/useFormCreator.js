@@ -49,6 +49,8 @@ export const useFormCreator = () => {
         setMetadata((prevList) => [...prevList, data])
     }
 
+    console.log("Metadata = ", metadata)
+
     const renderForm = () => {
         return (
             <>

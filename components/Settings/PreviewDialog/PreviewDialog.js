@@ -43,7 +43,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
                     {inputFieldList[i].map(element => {
                         return (
                             <div key={i} style={{display: 'flex', gap: '2rem', marginBottom: '2rem'}}>
-                                <div style={{width: '100px'}}>
+                                <div style={{width: '120px'}}>
                                     {element.props.children[0]}
                                     {element.props.children[2]}
                                 </div>

@@ -34,7 +34,6 @@ export default async function handler(req, res) {
                 method: 'POST',
                 headers: {
                     'Authorization': `${headers.authorization}`,
-                    'Content-Type': 'multi-part/formdata'
                 }, 
                 body: body,
                 agent: httpsAgent

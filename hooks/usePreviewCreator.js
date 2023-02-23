@@ -1,3 +1,4 @@
+import ReadonlyLexicalEditor from "../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor"
 import { useRenderItems } from "./useRenderItems"
 
 export const usePreviewCreator = ({ metadata }) => {
@@ -43,9 +44,9 @@ export const usePreviewCreator = ({ metadata }) => {
                                 {renderLabel(null, label, type, true)}
                                 {renderCreateElements(type, name, rest)}
                                 { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
+                                <div className='mt-1'>
+                                    <ReadonlyLexicalEditor value={subtitle} />
+                                </div> 
                                 {renderErrors(name)}
                             </div>
                         </div>

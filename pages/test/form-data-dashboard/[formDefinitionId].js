@@ -58,7 +58,7 @@ export default function Home({ data }) {
 
             const res = await callApi(params)
             setValues(res?.data?.formDataRecords)
-            setTotalRecords(res.data.count)
+            setTotalRecords(res?.data?.count)
         }
 
         loadLazyData()
