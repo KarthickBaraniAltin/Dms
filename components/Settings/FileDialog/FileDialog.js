@@ -7,7 +7,7 @@ import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function FileDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>

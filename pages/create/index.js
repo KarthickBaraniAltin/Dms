@@ -49,7 +49,7 @@ export default function CreateForm() {
     return (
         <>
             <Head>
-                <title>DnD With Client Side Validations</title>
+                <title>Create Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>

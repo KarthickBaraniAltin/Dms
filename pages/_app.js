@@ -5,11 +5,9 @@ import 'primeflex/primeflex.css'
 import '../scss/customs.scss'
 import '../styles/globals.css'
 import Navbar from '../components/Navbar'
-import { useEffect } from 'react'
 import { PublicClientApplication, EventType } from '@azure/msal-browser'
 import { msalConfig } from '../src/msalConfig'
 import { MsalProvider } from '@azure/msal-react'
-import 'react-quill/dist/quill.snow.css'
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 

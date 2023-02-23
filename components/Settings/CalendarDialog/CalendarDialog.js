@@ -5,7 +5,7 @@ import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function CalendarDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
+export default function CalendarDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>

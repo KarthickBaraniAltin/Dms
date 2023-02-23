@@ -1,5 +1,5 @@
 {
-  "name": "snap-admin",
+  "name": "form-builder-studio",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -27,14 +27,7 @@
     "primeicons": "^5.0.0",
     "primereact": "^8.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.30.0",
-    "react-icons": "^4.7.1",
-    "slate-history": "^0.86.0",
-    "react-quill": "^2.0.0",
-    "react-transition-group": "^4.4.2",
-    "slate": "^0.90.0",
-    "slate-react": "^0.91.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "eslint": "8.12.0",
