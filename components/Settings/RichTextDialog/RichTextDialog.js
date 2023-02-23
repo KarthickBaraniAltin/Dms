@@ -2,7 +2,6 @@ import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { InputNumber } from 'primereact/inputnumber';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
 export default function RichTextDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {

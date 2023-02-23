@@ -4,7 +4,6 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
-import { usePreviewCreator } from '../../hooks/usePreviewCreator'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
@@ -23,6 +22,7 @@ export default function DndWithClientSideValidations() {
             <Head>
                 <title>Create Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
+                {/* <Script src="https://cdn.tiny.cloud/1/eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071/tinymce/5/tinymce.min.js" referrerpolicy="origin"></Script> */}
             </Head>
             <AuthenticatedTemplate>
                 <DndContext

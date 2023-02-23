@@ -30,10 +30,10 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.7.1",
+    "slate-history": "^0.86.0",
     "react-quill": "^2.0.0",
     "react-transition-group": "^4.4.2",
     "slate": "^0.90.0",
-    "slate-history": "^0.86.0",
     "slate-react": "^0.91.0"
   },
   "devDependencies": {

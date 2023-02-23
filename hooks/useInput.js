@@ -3,6 +3,7 @@ import { useState } from "react"
 export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
+
     const handleInputChange = (event) => {
 
         if (event.target?.files) {
@@ -13,6 +14,9 @@ export const useInputs = (options) => {
         } else if (event.originalEvent) {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
+            // setInputs(inputs => ({...inputs, [name]: value}))
+        } else if (typeof event === 'string') {
+            
         } else {
             console.error("Error: can't find event target")
         }

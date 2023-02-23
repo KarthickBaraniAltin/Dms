@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
-import DialogFooter from '../DialogFooter.js/DialogFooter';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function TextDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
+export default function TextareaDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
