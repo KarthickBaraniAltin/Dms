@@ -1,3 +1,4 @@
+import ReadonlyLexicalEditor from "../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor"
 import { useRenderItems } from "./useRenderItems"
 
 export const usePreviewCreator = ({ metadata }) => {
@@ -8,8 +9,17 @@ export const usePreviewCreator = ({ metadata }) => {
         return (
             <>
                 {metadata.map((data, index) => {
+                    if (data.type === 'header') {
+                        const { label, type, name, ...rest } = data
+                        return (
+                            <div key={index}>
+                                {renderLabel(null, label, type, null, true)}
+                            </div>
+                        )
+                    }
+
                     if (data.type === 'section') {
-                        const {label, type, sectionMetadata } = data
+                        const { label, type, sectionMetadata } = data
                         return (
                             <>
                                 {renderLabel(null, label, type, true)}
@@ -34,9 +44,9 @@ export const usePreviewCreator = ({ metadata }) => {
                                 {renderLabel(null, label, type, true)}
                                 {renderCreateElements(type, name, rest)}
                                 { subtitleComponent }
-                                { subtitle && 
-                                    <small className='block'>{subtitle}</small>
-                                }
+                                <div className='mt-1'>
+                                    <ReadonlyLexicalEditor value={subtitle} />
+                                </div> 
                                 {renderErrors(name)}
                             </div>
                         </div>

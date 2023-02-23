@@ -1,32 +1,25 @@
 import axios from "axios";
-import { getFormDatas, postFormData } from "../../../api/apiCalls";
+import { getFormDataFiltered } from "../../../../api/apiCalls";
 
 export default async function handler(req, res) {
     const { method, body, headers } = req
-
+    const { formDefinitionId, query } = body
+    
     if (headers.authorization) {
         axios.defaults.headers['Authorization'] = headers.authorization
     } else {
         delete axios.defaults.headers['Authorization']
     }
 
-    if (method === 'GET') {
+    if (method === 'POST') {
         try {
-            const result = await getFormDatas()
-            res.status(200).json(result.data)
-        } catch (error) {
-            console.log(error)
-            res.status(405).json({result: 'Internal Error'})
-        }
-    } else if (method === 'POST') {
-        try {
-            const result = await postFormData(body)
+            const result = await getFormDataFiltered(formDefinitionId, query)
             res.status(200).json(result.data)
         } catch (error) {
             console.log(error)
             res.status(405).json({result: 'Internal Error'})
         }
     } else {
-        res.setHeader('Allow', ['POST', 'GET']);
+        res.setHeader('Allow', ['POST'])
     }
 }

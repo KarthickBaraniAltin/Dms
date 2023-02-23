@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
+import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function TextDialog({ visible, hideDialog, name, inputs, handleInputChange, handleUpdate }) {
-   const renderFooter = () => {
+export default function TextDialog({ visible, hideDialog, name, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
+    
+  const renderFooter = () => {
     return (
       <div>
+          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
           <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
       </div>
     )
@@ -15,7 +19,7 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
 
   return (
     <div>
-      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -25,9 +29,9 @@ export default function TextDialog({ visible, hideDialog, name, inputs, handleIn
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>

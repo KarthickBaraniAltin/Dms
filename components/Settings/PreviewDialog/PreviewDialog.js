@@ -1,4 +1,6 @@
 import { Dialog } from "primereact/dialog"
+import { usePreviewCreator } from "../../../hooks/usePreviewCreator"
+import { Card } from "primereact/card"
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
 
@@ -6,7 +8,8 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
     let inputFieldList = []
     let subtitleList = []
     let componentList = []
-    const components = metadata?.props?.children
+    const { renderPreview } = usePreviewCreator({ metadata })
+    const components = renderPreview()?.props?.children
 
     components.map(component => {
         if (component.props.children.length === 2) { // Checks to see if component is section component.
@@ -21,6 +24,16 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
     })
 
     for (let i = 0; i < components.length; i++) {
+        if (metadata[i].type === 'header') {
+            componentList.push(
+                <div>
+                    <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
+                        <h1 style={{'textAlign': 'center'}}>{metadata[i].label}</h1>
+                    </Card>
+                </div>
+            )
+        }
+
         if (components[i].props.children.length === 2) { // Checks to see if component is section component.
             componentList.push(
                 <div>
@@ -30,7 +43,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
                     {inputFieldList[i].map(element => {
                         return (
                             <div key={i} style={{display: 'flex', gap: '2rem', marginBottom: '2rem'}}>
-                                <div style={{width: '100px'}}>
+                                <div style={{width: '120px'}}>
                                     {element.props.children[0]}
                                     {element.props.children[2]}
                                 </div>
@@ -58,7 +71,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata }) {
             <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '50vw'}}>
                 <div className='flex justify-content-center'>
                     <div>
-                        {metadata.props.children ?
+                        {componentList.length > 0 ?
                             <div className='flex flex-column'>
                                 {componentList}
                             </div>

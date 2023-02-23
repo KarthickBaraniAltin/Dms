@@ -1,7 +1,6 @@
 import axios from 'axios'
 import https from 'https'
 
-const graphApi = "https://graph.microsoft.com/v1.0"
 const activeDirectoryApi = process.env.ACTIVE_DIRECTORY_API
 const formBuilderStudioApi = process.env.FORM_BUILDER_API
 
@@ -20,12 +19,17 @@ export const getFormDefinition = (id) => {
     return axios.get(`${formBuilderStudioApi}/FormDefinition/${id}`)
 }
 
-export const getFormDefinitions = () => {
-    return axios.get(`${formBuilderStudioApi}/FormDefinition`)
+export const getFormDefinitions = (query) => {
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/Filter${query}`)
 }
 
-export const postFormData = (body) => {
-    return axios.post(`${formBuilderStudioApi}/FormData`, body)
+export const postFormData = (formDefinitionId, formData) => {
+    console.log("URL = ", `${formBuilderStudioApi}/FormData/${formDefinitionId}`)
+    return axios.post(`${formBuilderStudioApi}/FormData/${formDefinitionId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
 }
 
 export const getFormDatas = () => {
@@ -34,4 +38,8 @@ export const getFormDatas = () => {
 
 export const getFormData = (id) => {
     return axios.get(`${formBuilderStudioApi}/FormData/${id}`)
+}
+
+export const getFormDataFiltered = (formDefinitionId, query) => {
+    return axios.get(`${formBuilderStudioApi}/FormData/formDefinition/${formDefinitionId}/filter${query}`)
 }

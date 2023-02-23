@@ -1,16 +1,20 @@
 import { createElement, useState } from "react"
+import { useInputs } from "./useInput"
 import SectionPanelDialog from '../components/Settings/SectionPanelDialog/SectionPanelDialog'
 import TextDialog from "../components/Settings/TextDialog/TextDialog"
 import TextareaDialog from "../components/Settings/TextareaDialog/TextareaDialog"
 import NumberDialog from "../components/Settings/NumberDialog/NumberDialog"
 import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog'
-import { useInputs } from "./useInput"
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
+import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
+import FileDialog from "../components/Settings/FileDialog/FileDialog"
+import SubtitleDialog from "../components/Settings/SubtitleDialog/SubtitleDialog"
+import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, setInputs } = useInputs()
+    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
 
     const dialogMapper = {
         'section': SectionPanelDialog,
@@ -18,7 +22,11 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'number': NumberDialog,
         'calendar': CalendarDialog,
         'textarea': TextareaDialog,
-        'mask': MaskDialog
+        'mask': MaskDialog,
+        'header': HeaderDialog,
+        'file': FileDialog,
+        'subtitle': SubtitleDialog,
+        'richText': RichTextDialog
     } 
 
     const hideDialog = () => {
@@ -38,9 +46,17 @@ const useDialogs = ({ metadata, setMetadata }) => {
         setInputs(data)
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = (isDeleted = false) => {
         if (!dialogData) {
             return
+        }
+
+        if (isDeleted) {
+            if (confirm('You are about to delete this component. Do you wish to proceed?')) {
+                const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
+                metadata.splice(metadata[deleteIndex], 1)
+                setMetadata(metadata)
+            }
         }
 
         for (let i = 0; i < metadata.length; i++) {
@@ -70,7 +86,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange: handleInputChange, visible: showDialog, hideDialog, handleUpdate}
+                        {inputs: inputs, handleInputChange: handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }
             </>

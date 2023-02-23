@@ -15,7 +15,7 @@ export default function View({ id, data }) {
     const { metadata, setMetadata } = useFormCreator()
     const { renderPreview, inputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { loading, callApi} = useApi()
+    const { loading, callApi } = useApi()
 
     const submitFormData = async (event) => {
         event.preventDefault()
