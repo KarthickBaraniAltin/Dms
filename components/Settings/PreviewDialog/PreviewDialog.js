@@ -36,7 +36,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
                         const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = component
                         return (
                             <div style={{display: 'flex', gap: '2rem', marginBottom: '2rem'}}>
-                                <div style={{width: '100px'}}>
+                                <div style={{width: '120px'}}>
                                     {renderLabel(null, label, null, true)}
                                     {renderSubtitle(subtitle, subtitleComponent)}
                                 </div>

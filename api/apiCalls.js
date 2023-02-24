@@ -1,7 +1,6 @@
 import axios from 'axios'
 import https from 'https'
 
-const graphApi = "https://graph.microsoft.com/v1.0"
 const activeDirectoryApi = process.env.ACTIVE_DIRECTORY_API
 const formBuilderStudioApi = process.env.FORM_BUILDER_API
 
@@ -39,4 +38,8 @@ export const getFormDatas = () => {
 
 export const getFormData = (id) => {
     return axios.get(`${formBuilderStudioApi}/FormData/${id}`)
+}
+
+export const getFormDataFiltered = (formDefinitionId, query) => {
+    return axios.get(`${formBuilderStudioApi}/FormData/formDefinition/${formDefinitionId}/filter${query}`)
 }

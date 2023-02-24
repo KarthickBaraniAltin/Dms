@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext'
-import { Button } from 'primereact/button'
-import { InputNumber } from 'primereact/inputnumber'
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { InputNumber } from 'primereact/inputnumber';
+import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function TextareaDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function TextareaDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -16,7 +17,7 @@ export default function TextareaDialog({ visible, hideDialog, inputs, handleInpu
 
   return (
     <div>
-      <Dialog header='Textarea Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Textarea Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -26,9 +27,9 @@ export default function TextareaDialog({ visible, hideDialog, inputs, handleInpu
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>

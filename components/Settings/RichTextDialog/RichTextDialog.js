@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext'
-import { Button } from 'primereact/button'
-import { InputNumber } from 'primereact/inputnumber'
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function RichTextDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
-   const renderFooter = () => {
+export default function RichTextDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
+    
+  const renderFooter = () => {
     return (
       <div>
           <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
@@ -16,7 +17,7 @@ export default function RichTextDialog({ visible, hideDialog, inputs, handleInpu
 
   return (
     <div>
-      <Dialog header='RichText Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -26,15 +27,15 @@ export default function RichTextDialog({ visible, hideDialog, inputs, handleInpu
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
-          <div className='field col-6 md:col-6'>
+          {/* <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
-          </div>
-          <h4 className='field col-12 md:col-12'>Validations</h4>
+          </div> */}
+          {/* <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
             <label>Min Length</label>
             <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />
@@ -50,7 +51,7 @@ export default function RichTextDialog({ visible, hideDialog, inputs, handleInpu
           <div className='field col-6 md:col-6'>
             <label>Max Length Message</label>
             <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
-          </div>
+          </div> */}
         </div>
       </Dialog>
     </div>

@@ -22,7 +22,6 @@ export const useInputs = (options) => {
 
             const { name, value } = event.target
             assignValuesNested(name, value)
-            // setInputs(inputs => ({...inputs, [name]: value}))
         } else if (event.originalEvent) {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
@@ -36,6 +35,10 @@ export const useInputs = (options) => {
 
     // We can give values nested objects will be created and assigned accordingly
     const assignValuesNested = (path, value) => {
+        if (!path) {
+            return
+        }
+
         const pathArr = path.split('.')
         const lastKeyIndex = pathArr.length - 1
         let updatedInputs = {...inputs}

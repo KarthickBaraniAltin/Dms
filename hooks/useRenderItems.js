@@ -11,6 +11,9 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
+import { Card } from 'primereact/card'
+import LexicalEditor from '../components/LexicalEditor/LexicalEditor'
+import ReadonlyLexicalEditor from '../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 import { useState } from 'react'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
@@ -20,6 +23,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
     const { handleInputChange, handleSignatureChange, inputs, fontInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+    const RICH_TEXT_API = 'eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
 
     const componentMapper = {
         'text': InputText,
@@ -31,8 +35,9 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': InputText,
-        'signature': InputText
+        'richText': LexicalEditor,
+        'signature': InputText,
+        'subtitle': 'div'
     }
 
     const fontOptions = [
@@ -127,24 +132,23 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
 
         return (
             <>
-            {createElement(
-                componentMapper[type],
-                {
-                    ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                    value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
-                }
-            )}
+                {createElement(
+                    componentMapper[type],
+                    {
+                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                        value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
+                        type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                    }
+                )}
             </>
         )
     }
 
-    const renderSubtitle = (subtitle, subtitleComponent) => {
+    const renderSubtitle = (subtitle, subtitleComponent, index = -1) => {
         return (
-            <>
-                {subtitleComponent}
-                { subtitle && <small className='block'>{subtitle}</small>}
-            </>
+            <div className='mt-1'>
+                <ReadonlyLexicalEditor value={subtitle} />
+            </div>
         )
     }
 
@@ -162,14 +166,14 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         )
     }
 
-    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, index, fontStyle) => {
         return (
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}
                 {renderCreateElements(type, name, rest, fontStyle)}
-                {renderSubtitle(subtitle, subtitleComponent)}
+                {renderSubtitle(subtitle, subtitleComponent, index)}
                 {renderErrors(name)}
             </div>
         )
@@ -179,15 +183,15 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         if (isSection) {
             return (
                 <>
-                    {metadata.map((data, sectionIndex) => {
+                    {metadata.map((data, index) => {
                         const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                         if (type === 'section') {
                             return alert('Error: Cannot place section component within another section component.')
                         }
                         return (
                             <>
-                                <Sortable key={sectionIndex} id={`${metadata[sectionIndex].id}`}>
-                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent)}
+                                <Sortable key={index} id={`${metadata[index].id}`}>
+                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent, index)}
                                 </Sortable>
                             </>
                         )

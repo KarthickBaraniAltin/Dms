@@ -68,18 +68,6 @@ export default function FormDefinitionDashboard() {
         })
     }
 
-    const fixDateFormat = (formDefinitions) => {
-        return formDefinitions.map(formDefinition => {
-            const year = formDefinition.dateCreated.slice(0, 4)
-            const month = formDefinition.dateCreated.slice(5, 7)
-            const day = formDefinition.dateCreated.slice(8, 10)
-
-            formDefinition.dateCreated = `${month}/${day}/${year}`
-
-            return formDefinition
-        })
-    }
-
     let loadLazyTimeout = null 
     useEffect(() => {
         const loadLazyData = async() => {

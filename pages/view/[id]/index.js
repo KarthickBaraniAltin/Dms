@@ -9,47 +9,43 @@ import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
-import axios from 'axios'
-import https from 'https'
 
-const formBuilderStudioApi = process.env.FORM_BUILDER_API
-
-export default function View({ id, data }) {
+export default function View({ id, data, api }) {
 
     const { metadata, setMetadata } = useFormCreator()
     const { renderPreview, inputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, error, response, callApiFetch } = useApi()
 
+    const jsonToFormData = (json) => {
+        const formData = new FormData()
+        for (var key in json) {
+            if (key.startsWith('file')) {
+                json[key].forEach((file, index) => {
+                    formData.append(key + '_' + index, file)
+                })
+            } else {
+                formData.append(key, JSON.stringify(json[key]))
+            }
+        }
+        return formData
+    }
+
     const submitFormData = async (event) => {
         event.preventDefault()
         const { accessToken } = await acquireToken()
-
-        function jsonToFormData(json) {
-            var formData = new FormData()
-            for (var key in json) {
-                if (key.startsWith('file')) {
-                    json[key].forEach((file, index) => {
-                        formData.append(key + '_' + index, file)
-                    })
-                } else {
-                    formData.append(key, JSON.stringify(json[key]))
-                }
-            }
-            return formData
-        }
 
         const formData = jsonToFormData(inputs)
         const fetchParams = {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'multi-part/formdata'
             }, 
-            body: jsonToFormData(inputs)
+            body: formData
         }
 
-        const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
+        // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
+        const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
         console.log("RES = ", res)
     }
 
@@ -66,12 +62,14 @@ export default function View({ id, data }) {
             <AuthenticatedTemplate>                   
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
-                        <div className='grid p-fluid form-grid'>
-                            {renderPreview()}
-                            <div className='field md:col-6 col-offset-3'>
-                                <Button label="Submit" onClick={submitFormData} loading={loading} />
+                        <form>
+                            <div className='grid p-fluid form-grid'>
+                                {renderPreview()}
+                                <div className='field md:col-6 col-offset-3'>
+                                    <Button label="Submit" onClick={submitFormData} loading={loading} />
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </Card>
                 </div>
             </AuthenticatedTemplate>
@@ -103,7 +101,8 @@ export async function getStaticProps(context) {
         return {
             props: {
                 id,
-                data: res.data
+                data: res.data,
+                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {
