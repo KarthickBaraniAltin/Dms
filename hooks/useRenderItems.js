@@ -12,6 +12,8 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { useState } from 'react'
+import { Droppable } from '../components/DndComponents/Droppable'
+import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
@@ -193,14 +195,33 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 </>
             )
         } else {
+            // console.log('metadata(renderComp):', metadata)
             const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
-                <Sortable key={index} id={index + 1}>
+                <Sortable key={index} id={index}> {/* index + 1 */}
                     {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )
         }
     }
 
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
+    const renderTestComponents = (metadata) => {
+        
+        return (
+            <>
+                {metadata.map(component => {
+                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = component
+                    return (
+                        <>
+                            <Sortable key={component.id} id={component.id}>
+                                {renderInputField(type, component, label, name, rest, subtitle, subtitleComponent)}
+                            </Sortable>
+                        </>
+                    )
+                })}
+            </>
+        )
+    }
+
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, renderTestComponents}
 }

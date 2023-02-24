@@ -14,9 +14,9 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 
 export default function DndWithClientSideValidations() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+    const { metadata, addMetadata, setMetadata, renderForm, renderTestForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { handleDragEnd, handleDragOver } = useDnd()
+    const { handleDragEnd, handleTestDragEnd, handleDragOver, handleTestDragOver } = useDnd()
 
     return (
         <>
@@ -26,8 +26,10 @@ export default function DndWithClientSideValidations() {
             </Head>
             <AuthenticatedTemplate>
                 <DndContext
-                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
-                    onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    // onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
+                    // onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    onDragEnd={(event) => handleTestDragEnd(event, metadata, addMetadata, setMetadata, dragOverCapture)}
+                    onDragOver={(event) => handleTestDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='grid'>
@@ -38,7 +40,7 @@ export default function DndWithClientSideValidations() {
                                 items={mainFormIds}
                                 strategy={verticalListSortingStrategy}
                             >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
+                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderTestForm()}
                             </SortableContext>
                         </Droppable>
                         <div className='flex flex-column justify-content-center'>
