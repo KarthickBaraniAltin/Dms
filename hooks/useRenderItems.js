@@ -131,14 +131,14 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
 
     const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, index) => {
         return (
-            <div  className='field col-12'>
+            <>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
                 {renderCreateElements(type, name, rest)}
                 {renderSubtitle(subtitle, subtitleComponent, index)}
                 {renderErrors(name)}
-            </div>
+            </>
         )
     }
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import dynamic from 'next/dynamic'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
