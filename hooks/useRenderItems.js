@@ -11,15 +11,15 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { Card } from 'primereact/card'
-import { Editor } from '@tinymce/tinymce-react'
+import { useState } from 'react'
+import { Droppable } from '../components/DndComponents/Droppable'
+import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 
-export const useRenderItems = ({ metadata, setMetadata }) => {
+export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
-    const { handleInputChange, inputs, setInputs } = useInputs({})
+    const { handleInputChange, handleSignatureChange, inputs, fontInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    const RICH_TEXT_API = 'eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071'
 
     const componentMapper = {
         'text': InputText,
@@ -31,15 +31,41 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': Editor
+        'richtext': InputText,
+        'signature': InputText
     }
+
+    const fontOptions = [
+        {label: 'Times New Roman', value: 'Times New Roman'},
+        {label: 'Arial', value: 'Arial'},
+        {label: 'Georgia', value: 'Georgia'},
+        {label: 'Cursive', value: 'Cursive'},
+        {label: 'Calibri' , value: 'Calibri'},
+        {label: 'Tangerine', value: 'Tangerine'}
+    ]  
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
-        const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
+        const isSectionHeadingForPreview = (type === 'section' && isPreview) ? true : false
+
         return (
             <>
-                {isPreview ?
+                {isPreview && isHeader ?
+                <div className='flex flex-column'>
+                    <div>
+                        <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                            {headerImage[componentData.name]?.url ? 
+                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                            : 
+                            <div style={{width: '100px', height: '100px'}}></div>
+                            }
+                            <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
+                            <div style={{width: '100px', height: '100px'}}></div>
+                        </div>
+                    </div>
+                </div>
+                :
+                isPreview ?
                 <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
                     {label}
                 </label>
@@ -48,9 +74,20 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 <>
                     <div className='flex flex-column'>
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
-                        <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
-                            <h1 style={{'textAlign': 'center'}}>{label}</h1>
-                        </Card>
+                        <div>
+                            <div>
+                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                                    {headerImage[componentData.name]?.url ? 
+                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                                    : 
+                                    <div style={{width: '100px', height: '100px'}}></div>
+                                    }
+                                    <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
+                                    <div style={{width: '100px', height: '100px'}}></div>
+                                </div>
+                            </div>
+                            {<input type='file' onChange={handleHeaderImage} accept="image/png, image/jpeg" data-name={componentData?.name} />}
+                        </div>
                     </div>
                 </>
                 :
@@ -67,27 +104,24 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderCreateElements = (type, name, rest) => {
+    const renderCreateElements = (type, name, rest, fontStyle) => {
         if (type === 'richtext') {
+            return 
+        }
+
+        if (type === 'signature') {
+            const fontValue = fontInputs.find(obj => obj.name === name)
+
             return (
-                <>
-                {createElement(
-                    componentMapper[type],
-                    {
-                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: inputs[name], onChange: handleInputChange, apikey: RICH_TEXT_API, initialValue: '<p>Write your description here</p>',
-                        height: 200, menubar: false, plugins: [ 'help' ], content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                        toolbar: [
-                            { name: 'history', items: [ 'undo', 'redo' ] },
-                            { name: 'styles', items: [ 'styles' ] },
-                            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
-                            { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-                            { name: 'indentation', items: [ 'outdent', 'indent' ] },
-                            { name: 'help', items: [ 'help' ] }
-                          ],
-                    }
-                )}
-                </>
+                <div className='flex flex-column'>
+                    <div className='flex'>
+                        <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
+                        <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name, metadata)} />
+                    </div>
+                    <div>
+                        <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{inputs[name]}</p>
+                    </div>
+                </div>
             )
         }
 
@@ -128,13 +162,13 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
         return (
             <div  className='field col-12'>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
-                {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
-                {renderCreateElements(type, name, rest)}
+                {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}
+                {renderCreateElements(type, name, rest, fontStyle)}
                 {renderSubtitle(subtitle, subtitleComponent)}
                 {renderErrors(name)}
             </div>
@@ -161,14 +195,15 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 </>
             )
         } else {
-            const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = metadata
+            // console.log('metadata(renderComp):', metadata)
+            const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
-                <Sortable key={index} id={index + 1}>
-                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent)}
+                <Sortable key={index} id={index}> {/* index + 1 */}
+                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )
         }
     }
 
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, inputs, setInputs}
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
 }

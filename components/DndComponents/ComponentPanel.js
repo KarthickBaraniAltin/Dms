@@ -14,7 +14,8 @@ export default function ComponentPanel() {
         'dropdown',
         'multiselect',
         'file',
-        'richtext'
+        'richtext',
+        'signature'
     ]
     const cities = [
         { label: 'Las Vegas', value: 'LV'},
@@ -255,6 +256,26 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             RichText
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'signature') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle='Signature Subtitle'
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Signature
                         </label> 
                     </div>
                 </Draggable>

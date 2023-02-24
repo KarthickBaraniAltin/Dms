@@ -2,12 +2,24 @@ import { useState } from "react"
 
 export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
-
+    const [fontInputs, setFontInputs] = useState([])
 
     const handleInputChange = (event) => {
-        if (event.target?.files) {
-            setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
-        } else if (event.target) {
+        if (event.target) {
+            if (event.target?.files) {
+                const filesArray = Object.keys(event.target.files).map(file => {
+                    return {
+                        fileName: event.target.files[file].name,
+                        size: event.target.files[file].size,
+                        type: event.target.files[file].type
+                    }
+                })
+    
+                setInputs({...inputs, [event.target.name]: filesArray})
+    
+                return
+            }
+
             const { name, value } = event.target
             assignValuesNested(name, value)
             // setInputs(inputs => ({...inputs, [name]: value}))
@@ -39,5 +51,24 @@ export const useInputs = (options) => {
         setInputs({...updatedInputs})
     }
 
-    return { handleInputChange, inputs, setInputs }
+    const handleSignatureChange = (event, name, metadata) => {
+        const checkSameSignature = fontInputs.some(obj => obj.name === name)
+        const sameSignatureIndex = fontInputs.findIndex(obj => obj.name === name)
+
+        if (checkSameSignature) {
+            let tempFontInputs = JSON.parse(JSON.stringify(fontInputs))
+            tempFontInputs[sameSignatureIndex].value = event.target.value
+            setFontInputs(tempFontInputs)
+        } else {
+            setFontInputs([
+                ...fontInputs,
+                {name: name, value: event.target.value}
+            ])
+        }
+
+        const index = metadata.findIndex(element => element.name === name)
+        metadata[index].fontStyle = event.target.value
+    }  
+
+    return { handleInputChange, handleSignatureChange, inputs, fontInputs, setInputs }
 }

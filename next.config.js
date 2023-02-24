@@ -4,4 +4,7 @@ const nextConfig = {
   basePath: '/form-builder-studio'
 }
 
+const withFonts = require('next-fonts');
+module.exports = withFonts();
+
 module.exports = nextConfig

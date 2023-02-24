@@ -10,26 +10,28 @@ import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
-import Script from 'next/script'
+import { useHeaderImage } from '../../hooks/useHeaderImage'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
+    const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { metadata, addMetadata, setMetadata, renderForm, renderTestForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { handleDragEnd, handleDragOver } = useDnd()
+    const { handleDragEnd, handleTestDragEnd, handleDragOver, handleTestDragOver } = useDnd()
 
     return (
         <>
             <Head>
                 <title>DnD With Client Side Validations</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
-                {/* <Script src="https://cdn.tiny.cloud/1/eelwd28jheyf9j7bmaahb1ppje583m02314vuj09g0aa7071/tinymce/5/tinymce.min.js" referrerpolicy="origin"></Script> */}
             </Head>
             <AuthenticatedTemplate>
                 <DndContext
-                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
-                    onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    // onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
+                    // onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    onDragEnd={(event) => handleTestDragEnd(event, metadata, addMetadata, setMetadata, dragOverCapture)}
+                    onDragOver={(event) => handleTestDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
@@ -38,7 +40,7 @@ export default function DndWithClientSideValidations() {
                                 items={mainFormIds}
                                 strategy={verticalListSortingStrategy}
                             >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
+                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderTestForm()}
                             </SortableContext>
                         </Droppable>
                         <div className='flex flex-column justify-content-center'>
