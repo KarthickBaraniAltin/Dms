@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
@@ -36,12 +36,14 @@ export default function DndWithClientSideValidations() {
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                         <Droppable id={'droppable-container-form'}>
+                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
                             <SortableContext
                                 items={mainFormIds}
-                                strategy={verticalListSortingStrategy}
+                                strategy={rectSortingStrategy}
                             >
                                 {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
                             </SortableContext>
+                            </div>
                         </Droppable>
                         <div className='flex flex-column justify-content-center'>
                             <Button label='Preview' className='flex align-self-center mt-2' onClick={handlePreview} />

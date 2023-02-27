@@ -163,8 +163,10 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
     }
 
     const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
+        console.log('rest.columnSize:', rest.columnSize)
+
         return (
-            <div  className='field col-12'>
+            <div  className={rest?.columnSize ?? 'field col-12'}>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}
@@ -195,10 +197,9 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 </>
             )
         } else {
-            // console.log('metadata(renderComp):', metadata)
             const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
-                <Sortable key={index} id={index + 1}> {/* index + 1 */}
+                <Sortable key={index} id={index + 1}>
                     {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )
