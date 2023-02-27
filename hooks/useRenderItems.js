@@ -198,7 +198,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
             // console.log('metadata(renderComp):', metadata)
             const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
-                <Sortable key={index} id={index}> {/* index + 1 */}
+                <Sortable key={index} id={index + 1}> {/* index + 1 */}
                     {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )

@@ -42,7 +42,7 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
             }
         })
 
-        // setMainFormIds(renderTestForm().props.children.map(component => component.props.id))
+        setMainFormIds(renderForm().props.children.map(component => component.props.id))
 
         const sectionIdArray = []
         metadata.map(component => {
