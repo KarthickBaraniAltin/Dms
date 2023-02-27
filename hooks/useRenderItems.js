@@ -163,10 +163,20 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
     }
 
     const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
-        console.log('rest.columnSize:', rest.columnSize)
+        let fieldSize
+
+        if (rest?.columnSize) {
+            if (rest.columnSize.value == 'field col-6') {
+                fieldSize = rest.columnSize
+            } else {
+                fieldSize = 'field col-12'
+            }
+        } else {
+            fieldSize = 'field col-12'
+        }
 
         return (
-            <div  className={rest?.columnSize ?? 'field col-12'}>
+            <div className={fieldSize} style={{width: type === 'textarea' ? '214.4px' : null}}>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}

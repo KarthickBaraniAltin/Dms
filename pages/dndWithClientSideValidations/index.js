@@ -41,7 +41,7 @@ export default function DndWithClientSideValidations() {
                                 items={mainFormIds}
                                 strategy={rectSortingStrategy}
                             >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
+                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
                             </SortableContext>
                             </div>
                         </Droppable>
