@@ -12,12 +12,11 @@ import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { CreateSignature } from '../components/CreationComponents/CreateSignature'
-import { useSignatureInputs } from './useSignatureInput'
+import { ViewSignature } from '../components/ViewComponents/ViewSignature'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
     const { handleInputChange, inputs } = useInputs({})
-    const { handleSignatureChange, fontInputs } = useSignatureInputs()
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -32,7 +31,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'header': 'h1',
         'file': 'input',
         'richtext': InputText,
-        'signature': CreateSignature
+        'signature': CreateSignature,
+        'signatureDisplay': ViewSignature
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -100,6 +100,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
             return 
         }
 
+        {/* metadata: type === 'signatureDisplay' ? metadata : null */}
+
         return (
             <>
                 {createElement(
@@ -107,8 +109,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                     {
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                        fontStyle: type === 'signature' ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null
+                        fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
+                        multiple: type === 'file' ? true : null, 
                     }
                 )}
             </>
@@ -192,23 +194,5 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
     }
 
-    const renderTestComponents = (metadata) => {
-        
-        return (
-            <>
-                {metadata.map(component => {
-                    const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = component
-                    return (
-                        <>
-                            <Sortable key={component.id} id={component.id}>
-                                {renderInputField(type, component, label, name, rest, subtitle, subtitleComponent)}
-                            </Sortable>
-                        </>
-                    )
-                })}
-            </>
-        )
-    }
-
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, renderTestComponents}
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
 }

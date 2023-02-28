@@ -1,7 +1,9 @@
-import { useSignatureInputs } from "../../hooks/useSignatureInput"
-import { useInputs } from "../../hooks/useInput"
+import { useSignatureInputs } from '../../hooks/useSignatureInput'
+import { useInputs } from '../../hooks/useInput'
+import { InputText } from 'primereact/inputtext'
+import { Dropdown } from 'primereact/dropdown'
 
-export const ViewSignature = (metadata, name, fontStyle) => {
+export const ViewSignature = ({metadata, name, fontStyle}) => {
     const { inputs, handleInputChange } = useInputs({})
     const { handleSignatureChange, fontInputs } = useSignatureInputs()
     const fontValue = fontInputs.find(obj => obj.name === name)

@@ -1,10 +1,11 @@
 import { Dialog } from "primereact/dialog"
 import { useRenderItems } from "../../../hooks/useRenderItems"
+import { ViewSignature } from "../../ViewComponents/ViewSignature"
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, setMetadata, headerImage, handleHeaderImage}) {
     let componentList = []
     const { renderLabel, renderCreateElements, renderSubtitle } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
-
+    console.log('metadata:', metadata)
     metadata.map(element => {
         const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
         if (element.type === 'header') {
@@ -37,7 +38,8 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
 
             return
         }
-
+        console.log('metadata:', metadata)
+        console.log('fontStyle:', fontStyle)
         componentList.push(
             <div className={rest?.columnSize?.value ?? 'field col-12'}>
                 <div style={{display: 'flex', justifyContent:'center', rowGap: '0.5rem'}}>
@@ -45,14 +47,15 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
                         {renderLabel(null, label, null, true)}
                         {renderSubtitle(subtitle, subtitleComponent)}
                     </div>
-                    {renderCreateElements(type, name, rest, fontStyle)}
+                    {type === 'signature' ? 
+                        <ViewSignature metadata={metadata} name={name} fontStyle={fontStyle} /> 
+                        : 
+                        renderCreateElements(type, name, rest, fontStyle)
+                    }
                 </div>
             </div>
         )
     })
-
-    console.log('metadata:', metadata)
-    console.log('componentList:', componentList)
 
     return (
         <>
