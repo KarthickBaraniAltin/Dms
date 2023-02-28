@@ -11,13 +11,13 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { useState } from 'react'
-import { Droppable } from '../components/DndComponents/Droppable'
-import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import { CreateSignature } from '../components/CreationComponents/CreateSignature'
+import { useSignatureInputs } from './useSignatureInput'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
-    const { handleInputChange, handleSignatureChange, inputs, fontInputs } = useInputs({})
+    const { handleInputChange, inputs } = useInputs({})
+    const { handleSignatureChange, fontInputs } = useSignatureInputs()
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -34,15 +34,6 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'richtext': InputText,
         'signature': InputText
     }
-
-    const fontOptions = [
-        {label: 'Times New Roman', value: 'Times New Roman'},
-        {label: 'Arial', value: 'Arial'},
-        {label: 'Georgia', value: 'Georgia'},
-        {label: 'Cursive', value: 'Cursive'},
-        {label: 'Calibri' , value: 'Calibri'},
-        {label: 'Tangerine', value: 'Tangerine'}
-    ]  
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
@@ -110,18 +101,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
 
         if (type === 'signature') {
-            const fontValue = fontInputs.find(obj => obj.name === name)
-
             return (
-                <div className='flex flex-column'>
-                    <div className='flex'>
-                        <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
-                        <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name, metadata)} />
-                    </div>
-                    <div>
-                        <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{inputs[name]}</p>
-                    </div>
-                </div>
+                <CreateSignature />
             )
         }
 

@@ -14,6 +14,15 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
     )
   }
 
+  const fontOptions = [
+    {label: 'Times New Roman', value: 'Times New Roman'},
+    {label: 'Arial', value: 'Arial'},
+    {label: 'Georgia', value: 'Georgia'},
+    {label: 'Cursive', value: 'Cursive'},
+    {label: 'Calibri' , value: 'Calibri'},
+    {label: 'Tangerine', value: 'Tangerine'}
+  ]  
+
   return (
     <div>
       <Dialog header='Signature Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
