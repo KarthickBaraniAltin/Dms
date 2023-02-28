@@ -3,7 +3,7 @@ import { useInputs } from "../../hooks/useInput"
 
 export const ViewSignature = (metadata, name, fontStyle) => {
     const { inputs, handleInputChange } = useInputs({})
-    const { handleSignatureChange } = useSignatureInputs()
+    const { handleSignatureChange, fontInputs } = useSignatureInputs()
     const fontValue = fontInputs.find(obj => obj.name === name)
 
     const fontOptions = [

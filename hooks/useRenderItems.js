@@ -32,7 +32,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'header': 'h1',
         'file': 'input',
         'richtext': InputText,
-        'signature': InputText
+        'signature': CreateSignature
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -100,22 +100,17 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
             return 
         }
 
-        if (type === 'signature') {
-            return (
-                <CreateSignature name={name} fontStyle={fontStyle} inputs={inputs} handleInputChange={handleInputChange} />
-            )
-        }
-
         return (
             <>
-            {createElement(
-                componentMapper[type],
-                {
-                    ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                    value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
-                }
-            )}
+                {createElement(
+                    componentMapper[type],
+                    {
+                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                        value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
+                        fontStyle: type === 'signature' ? fontStyle : null, type: type === 'file' ? 'file' : null, 
+                        multiple: type === 'file' ? true : null
+                    }
+                )}
             </>
         )
     }
