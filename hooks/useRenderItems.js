@@ -102,7 +102,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
 
         if (type === 'signature') {
             return (
-                <CreateSignature />
+                <CreateSignature name={name} fontStyle={fontStyle} inputs={inputs} handleInputChange={handleInputChange} />
             )
         }
 

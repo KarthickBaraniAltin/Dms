@@ -1,7 +1,6 @@
-import { useSignatureInputs } from "../../hooks/useSignatureInput"
+import { InputText } from 'primereact/inputtext'
 
-export const CreateSignature = (type, name, fontStyle) => {
-    const { handleSignatureChange, fontInputs } = useSignatureInputs()
+export const CreateSignature = ({name, fontStyle, inputs, handleInputChange}) => {
 
     return (
         <div className='flex flex-column'>

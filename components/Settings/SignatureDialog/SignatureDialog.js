@@ -3,6 +3,7 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
+import { Dropdown } from 'primereact/dropdown'
 
 export default function SignatureDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -59,6 +60,10 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
           <div className='field col-6 md:col-6'>
             <label>Max Length Message</label>
             <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Fonts</label>
+            <Dropdown name='validations.fontFamily.font' value={inputs?.validations?.fontFamily?.font} options={fontOptions} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>
