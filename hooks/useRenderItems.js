@@ -101,7 +101,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
 
         {/* metadata: type === 'signatureDisplay' ? metadata : null */}
-
+        console.log('type:', type)
         return (
             <>
                 {createElement(
@@ -110,7 +110,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
                         fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null, 
+                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' ? metadata : null
                     }
                 )}
             </>

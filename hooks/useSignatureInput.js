@@ -20,6 +20,7 @@ export const useSignatureInputs = () => {
 
         const index = metadata.findIndex(element => element.name === name)
         metadata[index].fontStyle = event.target.value
+        console.log('metadata:', metadata)
     }  
 
     return {fontInputs, setFontInputs, handleSignatureChange}

@@ -47,11 +47,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
                         {renderLabel(null, label, null, true)}
                         {renderSubtitle(subtitle, subtitleComponent)}
                     </div>
-                    {type === 'signature' ? 
-                        <ViewSignature metadata={metadata} name={name} fontStyle={fontStyle} /> 
-                        : 
-                        renderCreateElements(type, name, rest, fontStyle)
-                    }
+                    {renderCreateElements(type === 'signature' ? 'signatureDisplay' : type, name, rest, fontStyle)}
                 </div>
             </div>
         )
