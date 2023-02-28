@@ -3,8 +3,7 @@ import { useInputs } from '../../hooks/useInput'
 import { InputText } from 'primereact/inputtext'
 import { Dropdown } from 'primereact/dropdown'
 
-export const ViewSignature = ({metadata, name, fontStyle}) => {
-    const { inputs, handleInputChange } = useInputs({})
+export const ViewSignature = ({metadata, name, value, onChange, fontStyle}) => {
     const { handleSignatureChange, fontInputs } = useSignatureInputs()
     const fontValue = fontInputs.find(obj => obj.name === name)
 
@@ -20,11 +19,11 @@ export const ViewSignature = ({metadata, name, fontStyle}) => {
     return (
         <div className='flex flex-column'>
             <div className='flex'>
-                <InputText name={name} value={inputs[name]} onChange={handleInputChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
+                <InputText name={name} value={value} onChange={onChange} style={{fontFamily: fontStyle, fontSize: '1rem', marginRight: '0.25rem'}}/>
                 <Dropdown placeholder='Fonts' name='fonts' value={fontValue?.value} options={fontOptions} onChange={event => handleSignatureChange(event, name, metadata)} />
             </div>
             <div>
-                <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{inputs[name]}</p>
+                <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem' , fontFamily: fontStyle}}>{value}</p>
             </div>
         </div>
     )
