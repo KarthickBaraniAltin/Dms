@@ -10,7 +10,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
         const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
         if (element.type === 'header') {
             componentList.push(
-                <div>
+                <div className="field col-12">
                     {renderLabel(element, label, type, true, true)}
                 </div>
             )
@@ -42,7 +42,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
         console.log('fontStyle:', fontStyle)
         componentList.push(
             <div className={rest?.columnSize?.value ?? 'field col-12'}>
-                <div style={{display: 'flex', justifyContent:'center', rowGap: '0.5rem'}}>
+                <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
                     <div style={{width: '100px'}}>
                         {renderLabel(null, label, null, true)}
                         {renderSubtitle(subtitle, subtitleComponent)}

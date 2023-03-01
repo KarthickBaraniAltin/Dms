@@ -46,7 +46,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 {isPreview && isHeader ?
                 <div className='flex flex-column'>
                     <div>
-                        <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                        <div style={{'color': 'black', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem'}}> {/* 'background': '#004990', 'marginBottom': '0.5rem', padding: '1rem', borderRadius: '1rem'  */}
                             {headerImage[componentData.name]?.url ? 
                             <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
                             : 
@@ -110,7 +110,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
                         fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' ? metadata : null
+                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' ? metadata : null, 
                     }
                 )}
             </>
@@ -154,7 +154,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
 
         return (
-            <div className={fieldSize} style={{width: type === 'textarea' ? '214.4px' : null}}>
+            <div className={fieldSize} style={{width: type === 'textarea' ? '214.4px' : type === 'dropdown' ? '200px' : null}}>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
                 {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}

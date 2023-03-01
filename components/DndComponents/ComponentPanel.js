@@ -179,7 +179,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Dropdown Subtitle'
                     defaultValue=''
-                    options={{}}
+                    options={[]}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -201,7 +201,7 @@ export default function ComponentPanel() {
                     label='Label'
                     subtitle='Multiselect Subtitle'
                     defaultValue=''
-                    options={{}}
+                    options={[]}
                     display='chip'
                     guid=''
                 >

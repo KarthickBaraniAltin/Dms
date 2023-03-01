@@ -11,6 +11,7 @@ import FileDialog from "../components/Settings/FileDialog/FileDialog"
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
+import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -28,7 +29,9 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'file': FileDialog,
         'richtext': RichTextDialog,
         'signature': SignatureDialog,
-        'radiobutton': MultiRadioButtonsDialog
+        'radiobutton': MultiRadioButtonsDialog,
+        'dropdown': DropdownDialog,
+        'multiselect': DropdownDialog
     } 
 
     const hideDialog = () => {
