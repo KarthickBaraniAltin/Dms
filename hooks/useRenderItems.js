@@ -48,7 +48,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                     <div>
                         <div style={{'color': 'black', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem'}}> {/* 'background': '#004990', 'marginBottom': '0.5rem', padding: '1rem', borderRadius: '1rem'  */}
                             {headerImage[componentData.name]?.url ? 
-                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100%' height='auto' /> 
                             : 
                             <div style={{width: '100px', height: '100px'}}></div>
                             }
@@ -69,13 +69,13 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
                         <div>
                             <div>
-                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                                <div style={{'border': '1px #004990 solid', 'color': 'black', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
                                     {headerImage[componentData.name]?.url ? 
-                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100%' height='auto' /> 
                                     : 
-                                    <div style={{width: '100px', height: '100px'}}></div>
+                                    <div style={{width: '100%', height: 'auto'}}></div>
                                     }
-                                    <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
+                                    <label style={{alignSelf: 'center', textAlign: 'center', fontWeight: '700'}}>{label}</label>
                                     <div style={{width: '100px', height: '100px'}}></div>
                                 </div>
                             </div>
