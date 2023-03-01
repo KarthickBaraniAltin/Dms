@@ -11,16 +11,17 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { Card } from 'primereact/card'
 import LexicalEditor from '../components/LexicalEditor/LexicalEditor'
 import ReadonlyLexicalEditor from '../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
+import { CreateSignature } from '../components/CreationComponents/CreateSignature'
+import { ViewSignature } from '../components/ViewComponents/ViewSignature'
+import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
 
-export const useRenderItems = ({ metadata, setMetadata }) => {
+export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
     const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
-    // const { } = useSubtitleEditor({ metadata, setMetadata })
 
     const componentMapper = {
         'text': InputText,
@@ -33,15 +34,34 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'header': 'h1',
         'file': 'input',
         'richText': LexicalEditor,
-        'subtitle': 'div'
+        'subtitle': 'div',
+        'signature': CreateSignature,
+        'signatureDisplay': ViewSignature,
+        'radiobutton': CreateMultiRadioButtons
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
         const sectionLabelStyle = {'min-width': '10rem', 'border': '2px solid #004990', 'padding': '1rem'}
-        const isSectionHeadingForPreview = type === 'section' && isPreview ? true : false
+        const isSectionHeadingForPreview = (type === 'section' && isPreview) ? true : false
+
         return (
             <>
-                {isPreview ?
+                {isPreview && isHeader ?
+                <div className='flex flex-column'>
+                    <div>
+                        <div style={{'color': 'black', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem'}}> {/* 'background': '#004990', 'marginBottom': '0.5rem', padding: '1rem', borderRadius: '1rem'  */}
+                            {headerImage[componentData.name]?.url ? 
+                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                            : 
+                            <div style={{width: '100px', height: '100px'}}></div>
+                            }
+                            <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
+                            <div style={{width: '100px', height: '100px'}}></div>
+                        </div>
+                    </div>
+                </div>
+                :
+                isPreview ?
                 <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
                     {label}
                 </label>
@@ -50,9 +70,20 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 <>
                     <div className='flex flex-column'>
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
-                        <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
-                            <h1 style={{'textAlign': 'center'}}>{label}</h1>
-                        </Card>
+                        <div>
+                            <div>
+                                <div style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
+                                    {headerImage[componentData.name]?.url ? 
+                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100px' height='85px' /> 
+                                    : 
+                                    <div style={{width: '100px', height: '100px'}}></div>
+                                    }
+                                    <h1 style={{alignSelf: 'center', textAlign: 'center'}}>{label}</h1>
+                                    <div style={{width: '100px', height: '100px'}}></div>
+                                </div>
+                            </div>
+                            {<input type='file' onChange={handleHeaderImage} accept="image/png, image/jpeg" data-name={componentData?.name} />}
+                        </div>
                     </div>
                 </>
                 :
@@ -69,30 +100,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderCreateElements = (type, name, rest) => {
-        if (type === 'richtext') {
-            return (
-                <>
-                {createElement(
-                    componentMapper[type],
-                    {
-                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: inputs[name], onChange: handleInputChange, apikey: RICH_TEXT_API, initialValue: '<p>Write your description here</p>',
-                        height: 200, menubar: false, plugins: [ 'help' ], content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                        toolbar: [
-                            { name: 'history', items: [ 'undo', 'redo' ] },
-                            { name: 'styles', items: [ 'styles' ] },
-                            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
-                            { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-                            { name: 'indentation', items: [ 'outdent', 'indent' ] },
-                            { name: 'help', items: [ 'help' ] }
-                          ],
-                    }
-                )}
-                </>
-            )
-        }
-
+    const renderCreateElements = (type, name, rest, fontStyle) => {
         return (
             <>
                 {createElement(
@@ -100,14 +108,15 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                     {
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                        type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
+                        fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
+                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' ? metadata : null, 
                     }
                 )}
             </>
         )
     }
 
-    const renderSubtitle = (subtitle, subtitleComponent, index = -1) => {
+    const renderSubtitle = (subtitle) => {
         return (
             <div className='mt-1'>
                 <ReadonlyLexicalEditor value={subtitle} />
@@ -129,14 +138,26 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         )
     }
 
-    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, index) => {
+    const renderInputField = (type, data, label, name, rest, subtitle, subtitleComponent, fontStyle) => {
+        let fieldSize
+
+        if (rest?.columnSize) {
+            if (rest.columnSize.value == 'field col-6') {
+                fieldSize = rest.columnSize
+            } else {
+                fieldSize = 'field col-12'
+            }
+        } else {
+            fieldSize = 'field col-12'
+        }
+
         return (
-            <div  className='field col-12'>
+            <div className={fieldSize} style={{width: type === 'textarea' ? '214.4px' : type === 'dropdown' ? '200px' : null}}>
                 <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div>
                 {renderDialog()}
-                {type === 'header' ? renderLabel(data, label, type, null, true) : renderLabel(data, label, type)}
-                {renderCreateElements(type, name, rest)}
-                {renderSubtitle(subtitle, subtitleComponent, index)}
+                {type === 'header' ? renderLabel(data, label, type, false, true) : renderLabel(data, label, type)}
+                {renderCreateElements(type, name, rest, fontStyle)}
+                {renderSubtitle(subtitle, subtitleComponent)}
                 {renderErrors(name)}
             </div>
         )
@@ -162,10 +183,10 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
                 </>
             )
         } else {
-            const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = metadata
+            const { type, subtitle, label, subtitleComponent, name, defaultValue, fontStyle, ...rest } = metadata
             return (
                 <Sortable key={index} id={index + 1}>
-                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent)}
+                    {renderInputField(type, metadata, label, name, rest, subtitle, subtitleComponent, fontStyle)}
                 </Sortable>
             )
         }

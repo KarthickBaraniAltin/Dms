@@ -2,10 +2,11 @@ import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
+import { InputNumber } from 'primereact/inputnumber'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import { Dropdown } from 'primereact/dropdown'
 
-export default function MaskDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
+export default function SignatureDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -20,9 +21,18 @@ export default function MaskDialog({ visible, hideDialog, assignValuesNested, in
     {label: 'Half Size', value: 'field col-6'}
   ]
 
+  const fontOptions = [
+    {label: 'Times New Roman', value: 'Times New Roman'},
+    {label: 'Arial', value: 'Arial'},
+    {label: 'Georgia', value: 'Georgia'},
+    {label: 'Cursive', value: 'Cursive'},
+    {label: 'Calibri' , value: 'Calibri'},
+    {label: 'Tangerine', value: 'Tangerine'}
+  ]  
+
   return (
     <div>
-      <Dialog header='Mask Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Signature Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -45,28 +55,26 @@ export default function MaskDialog({ visible, hideDialog, assignValuesNested, in
             <label>Change Column Width</label>
             <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
-          <h4 className='field col-12 md:col-12'>Validation</h4>
+          <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
-            <label>Set Mask</label>
-            <InputText keyfilter={/[a9\*\(\)\-\s]/} name='validations.setMask.mask' value={inputs?.validations?.setMask?.mask ?? undefined} onChange={handleInputChange} />
-            <small>{'a for alphabetic characters, 9 for numeric characters, * for alphanumeric characters, and (, ), and - for formatting.'}</small>
+            <label>Min Length</label>
+            <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Example Masks</label>
-            <div className='flex flex-column'>
-                <div>
-                    <label>SSN: </label>
-                    <div>999-99-9999</div>
-                </div>
-                <div>
-                    <label>{'Phone Number (Default): '}</label>
-                    <div>{'(999) 999-999'}</div>
-                </div>
-                <div>
-                    <label>Serial: </label>
-                    <div>a*-999-a999</div>
-                </div>
-            </div>
+            <label>Min Length Message</label>
+            <InputText name='validations.minLength.message' value={inputs?.validations?.minLength?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Length</label>
+            <InputNumber name='validations.maxLength.length' value={inputs?.validations?.maxLength?.length ?? 255} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Length Message</label>
+            <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Fonts</label>
+            <Dropdown name='validations.fontFamily.font' value={inputs?.validations?.fontFamily?.font} options={fontOptions} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

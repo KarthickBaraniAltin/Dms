@@ -4,18 +4,19 @@ import { useFormCreator } from '../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
-import { usePreviewCreator } from '../../../hooks/usePreviewCreator'
 import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
+import useTimeControl from '../../../hooks/useTimeControl'
+import { useHeaderImage } from '../../../hooks/useHeaderImage'
 
 export default function View({ id, data, api }) {
-
-    const { metadata, setMetadata } = useFormCreator()
-    const { renderPreview, inputs } = usePreviewCreator({ metadata })
+    const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, error, response, callApiFetch } = useApi()
+    const { startViewTime } = useTimeControl()    
 
     const jsonToFormData = (json) => {
         const formData = new FormData()
@@ -35,6 +36,8 @@ export default function View({ id, data, api }) {
         event.preventDefault()
         const { accessToken } = await acquireToken()
 
+        inputs.startViewTime = startViewTime 
+
         const formData = jsonToFormData(inputs)
         const fetchParams = {
             method: 'POST',
@@ -51,7 +54,7 @@ export default function View({ id, data, api }) {
 
     useEffect(() => {
         setMetadata(data.metadata?.metadata)
-    }, [data.metadata])
+    }, [data.metadata, setMetadata])
 
     return (
         <>
@@ -64,7 +67,6 @@ export default function View({ id, data, api }) {
                     <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
                         <form>
                             <div className='grid p-fluid form-grid'>
-                                {renderPreview()}
                                 <div className='field md:col-6 col-offset-3'>
                                     <Button label="Submit" onClick={submitFormData} loading={loading} />
                                 </div>

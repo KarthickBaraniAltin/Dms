@@ -15,7 +15,7 @@ export function Sortable({ id, children }) {
         transition,
         border: '2px solid #004990',
         padding: '1rem',
-        marginBottom: '0.2rem'
+        margin: '0 auto'
     }
 
     const dragHandleStyle = {

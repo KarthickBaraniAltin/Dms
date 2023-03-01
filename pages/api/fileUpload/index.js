@@ -12,7 +12,6 @@ export default async function handler(req, res) {
     if (method === 'POST') {
         try {
             res.status(200).json(result.data.users)
-            console.log('method:', method)
         } catch (error) {
             console.log(error)
             res.status(405).json({result: 'Internal Error'})

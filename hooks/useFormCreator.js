@@ -1,20 +1,18 @@
 import useDialogs from './useDialogs'
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from 'react'
 import { Sortable } from '../components/DndComponents/Sortable'
-import { useInputs } from "./useInput"
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useInputs } from './useInput'
+import { SortableContext, verticalListSortingStrategy, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { useRenderItems } from './useRenderItems'
-import { useValidation } from './useValidation'
 
-export const useFormCreator = () => {
+export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { renderDialog } = useDialogs({ metadata, setMetadata })
-    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata })
     const { inputs, setInputs } = useInputs({})
-    const { errors } = useValidation({ metadata, inputs })
-    
+    const { renderDialog } = useDialogs({ metadata, setMetadata })
+    const { renderLabel, renderComponents, renderTestComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
+
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
     const [sectionIds, setSectionIds] = useState([])
@@ -24,9 +22,21 @@ export const useFormCreator = () => {
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
+    let numOfRows = 0
+
     useEffect(() => {
         metadata.forEach(element => {
             element.page = pageNumber
+
+            /* Used to erase entries in inputs object for deleted components */
+            const inputKeysArray = Object.keys(inputs)
+            // console.log('element:', element)
+            // console.log('inputKeysArray:', inputKeysArray)
+            if (!(element.name in inputKeysArray)) {
+                // console.log('inputs(useEffect):', inputs)
+            }
+            /* Used to erase entries in inputs object for deleted components */
+
             if (element.defaultValue) {
                 setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
             }
@@ -70,7 +80,6 @@ export const useFormCreator = () => {
                     if (type === 'section') {
                         let sectionIdsForDroppable = sectionIds.find(element => element?.id === name)
                         sectionIdsForDroppable = sectionIdsForDroppable?.componentData ? sectionIdsForDroppable.componentData : []
-
                         return (
                             <Sortable key={index} id={index + 1}>
                             <div className='field col-12'>
@@ -98,5 +107,5 @@ export const useFormCreator = () => {
         )
     }
 
-    return { renderForm, addMetadata, metadata, setMetadata, mainFormIds, setMainFormIds, dragOverCapture }
+    return { renderForm, addMetadata, metadata, setMetadata, mainFormIds, setMainFormIds, dragOverCapture}
 }

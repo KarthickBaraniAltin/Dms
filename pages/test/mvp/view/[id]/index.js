@@ -4,7 +4,6 @@ import { useFormCreator } from '../../../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
-import { usePreviewCreator } from '../../../../../hooks/usePreviewCreator'
 import { formBuilderApiRequest } from '../../../../../src/msalConfig'
 import { getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
@@ -13,7 +12,6 @@ import { useApi } from '../../../../../hooks/useApi'
 export default function View({ id, data }) {
 
     const { metadata, setMetadata } = useFormCreator()
-    const { renderPreview, inputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi } = useApi()
 

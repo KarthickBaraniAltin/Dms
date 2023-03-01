@@ -8,9 +8,7 @@ export const HtmlConverterPlugin = () => {
 
     useEffect(() => {
         editor.update(() => {
-            console.log('Editor = ', editor)
             const htmlString = $generateHtmlFromNodes(editor, null);
-            console.log("HTML = ", htmlString)
         })
     }, [editor])
 
