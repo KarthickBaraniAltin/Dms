@@ -302,7 +302,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Signature Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -322,7 +322,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Radio Button Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     options={[]}
                     guid=''
                 >

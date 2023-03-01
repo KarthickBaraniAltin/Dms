@@ -6,7 +6,7 @@ import { InputNumber } from 'primereact/inputnumber'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import { Dropdown } from 'primereact/dropdown'
 
-export default function SignatureDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function SignatureDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
