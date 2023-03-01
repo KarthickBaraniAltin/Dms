@@ -14,6 +14,7 @@ import { Sortable } from '../components/DndComponents/Sortable'
 import { CreateSignature } from '../components/CreationComponents/CreateSignature'
 import { ViewSignature } from '../components/ViewComponents/ViewSignature'
 import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
+import { CreateCheckbox } from '../components/CreationComponents/CreateCheckbox'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
@@ -34,7 +35,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'richtext': InputText,
         'signature': CreateSignature,
         'signatureDisplay': ViewSignature,
-        'radiobutton': CreateMultiRadioButtons
+        'radiobutton': CreateMultiRadioButtons,
+        'checkbox': CreateCheckbox
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -110,7 +112,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
                         fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' ? metadata : null, 
+                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' 
+                        || type === 'checkbox' ? metadata : null, 
                     }
                 )}
             </>
