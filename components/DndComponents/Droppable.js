@@ -9,8 +9,8 @@ export function Droppable(props) {
     // border: '2px solid black',
     backgroundColor: isOver ? '#004990' : 'white',
     color: isOver ? 'white' : undefined,
-    // padding: '3rem 6rem',
-    padding: '1rem 2rem',
+    padding: '3rem 6rem',
+    // padding: '1rem 2rem',
     // display: 'flex',
     gap: '0.5rem'
   }

@@ -28,9 +28,7 @@
     "primeicons": "^5.0.0",
     "primereact": "^8.2.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.30.0",
-    "react-transition-group": "^4.4.2"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "eslint": "8.12.0",

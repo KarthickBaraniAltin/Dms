@@ -7,13 +7,10 @@ import { formBuilderApiRequest } from '../../../../../../src/msalConfig'
 import { getFormData, getFormDefinition } from '../../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../../../../hooks/useApi'
-import { Button } from 'primereact/button'
-import { usePreviewCreator } from '../../../../../../hooks/usePreviewCreator'
 
 export default function View({ formData, formDefinition }) {
 
     const { metadata, setMetadata } = useFormCreator()
-    const { renderPreview, inputs, setInputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { response, error, loading, callApi } = useApi()
     
@@ -33,7 +30,7 @@ export default function View({ formData, formDefinition }) {
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
                         <div className='grid p-fluid form-grid'>
-                            {renderPreview()}
+                            {/* {renderPreview()} */}
                             <div className='field md:col-6 col-offset-3'>
                                 {/* <Button label="Submit" onClick={submitFormData} loading={loading} /> */}
                             </div>

@@ -3,8 +3,10 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
+import LexicalEditor from '../../LexicalEditor/LexicalEditor'
+import { Dropdown } from 'primereact/dropdown'
 
-export default function SignatureDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function SignatureDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -13,6 +15,20 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
       </div>
     )
   }
+
+  const columnSizes = [
+    {label: 'Full Size', value: 'field col-12'},
+    {label: 'Half Size', value: 'field col-6'}
+  ]
+
+  const fontOptions = [
+    {label: 'Times New Roman', value: 'Times New Roman'},
+    {label: 'Arial', value: 'Arial'},
+    {label: 'Georgia', value: 'Georgia'},
+    {label: 'Cursive', value: 'Cursive'},
+    {label: 'Calibri' , value: 'Calibri'},
+    {label: 'Tangerine', value: 'Tangerine'}
+  ]  
 
   return (
     <div>
@@ -26,13 +42,18 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <h4 className='field col-12 md:col-12'>Column Size</h4>
+          <div className='field col-12 md:col-12'>
+            <label>Change Column Width</label>
+            <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
@@ -50,6 +71,10 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
           <div className='field col-6 md:col-6'>
             <label>Max Length Message</label>
             <InputText name='validations.maxLength.message' value={inputs?.validations?.maxLength?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Fonts</label>
+            <Dropdown name='validations.fontFamily.font' value={inputs?.validations?.fontFamily?.font} options={fontOptions} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

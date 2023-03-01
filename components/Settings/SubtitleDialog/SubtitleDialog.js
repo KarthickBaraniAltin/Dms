@@ -18,7 +18,7 @@ export default function SubtitleDialog({ visible, hideDialog, name, inputs, assi
 
   return (
     <div>
-      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '65vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>

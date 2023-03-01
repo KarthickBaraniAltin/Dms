@@ -3,11 +3,9 @@ import { $getRoot, $getSelection } from 'lexical';
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { $generateHtmlFromNodes } from '@lexical/html';
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import TreeViewPlugin from "./Plugins/TreeViewPlugin/TreeViewPlugin";
 import ToolbarPlugin from "./Plugins/ToolbarPlugin/ToolbarPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
@@ -25,7 +23,6 @@ import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin/CodeHighlightPlug
 import AutoLinkPlugin from "./Plugins/AutoLinkPlugin/AutoLinkPlugin";
 
 import styles from './LexicalEditor.module.css'
-import HtmlConverterPlugin from "./Plugins/HtmlConverterPlugin/HtmlConverterPlugin";
 
 function Placeholder() {
   return <div className={styles['editor-placeholder']}>Enter some rich text...</div>
@@ -87,7 +84,6 @@ export default function Editor({value, name, onChange}) {
                       <AutoLinkPlugin />
                       <ListMaxIndentLevelPlugin maxDepth={7} />
                       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                      <HtmlConverterPlugin />
                   </div>
               </div>
           </LexicalComposer>

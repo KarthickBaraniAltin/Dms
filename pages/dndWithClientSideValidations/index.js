@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
@@ -14,9 +14,9 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 
 export default function DndWithClientSideValidations() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, renderTestForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { handleDragEnd, handleTestDragEnd, handleDragOver, handleTestDragOver } = useDnd()
+    const { handleDragEnd, handleDragOver } = useDnd()
 
     return (
         <>
@@ -26,10 +26,8 @@ export default function DndWithClientSideValidations() {
             </Head>
             <AuthenticatedTemplate>
                 <DndContext
-                    // onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
-                    // onDragOver={(event) => handleDragOver(event, dragOverCapture)}
-                    onDragEnd={(event) => handleTestDragEnd(event, metadata, addMetadata, setMetadata, dragOverCapture)}
-                    onDragOver={(event) => handleTestDragOver(event, dragOverCapture)}
+                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
+                    onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='grid'>
@@ -39,12 +37,14 @@ export default function DndWithClientSideValidations() {
                             <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                         </div>
                         <Droppable id={'droppable-container-form'}>
+                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
                             <SortableContext
                                 items={mainFormIds}
-                                strategy={verticalListSortingStrategy}
+                                strategy={rectSortingStrategy}
                             >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderTestForm()}
+                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
                             </SortableContext>
+                            </div>
                         </Droppable>
                     </Card>
                 </div>
