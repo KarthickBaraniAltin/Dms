@@ -13,6 +13,7 @@ import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog
 import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
+import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -34,7 +35,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'signature': SignatureDialog,
         'radiobutton': MultiRadioButtonsDialog,
         'dropdown': DropdownDialog,
-        'multiselect': DropdownDialog
+        'multiselect': DropdownDialog,
+        'checkbox': CheckboxDialog
     } 
 
     const hideDialog = () => {

@@ -17,7 +17,8 @@ export default function ComponentPanel() {
         'richText',
         'subtitle',
         'signature',
-        'radiobutton'
+        'radiobutton',
+        'checkbox'
     ]
 
     const draggableItems = componentTypes.map((component, index) => {
@@ -329,6 +330,27 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             RadioButton
+                        </label>
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'checkbox') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle='Checkbox Subtitle'
+                    options={[]}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Checkbox
                         </label>
                     </div>
                 </Draggable>
