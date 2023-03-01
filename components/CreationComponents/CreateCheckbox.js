@@ -25,7 +25,7 @@ export const CreateCheckbox = ({ metadata, name }) => {
                 <div className='flex flex-column'>
                     {component.options.map((checkboxes, index) => {
                         return (
-                            <div style={{marginBottom: '0.5rem'}}>
+                            <div key={index} style={{marginBottom: '0.5rem'}}>
                                 <Checkbox onChange={onCheckboxChange} checked={checkedValues[index].value} style={{marginRight: '0.5rem'}} />
                                 <label>{checkboxes.value}</label>
                             </div>
