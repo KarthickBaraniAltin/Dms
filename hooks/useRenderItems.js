@@ -11,6 +11,8 @@ import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
+import LexicalEditor from '../components/LexicalEditor/LexicalEditor'
+import ReadonlyLexicalEditor from '../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 import { CreateSignature } from '../components/CreationComponents/CreateSignature'
 import { ViewSignature } from '../components/ViewComponents/ViewSignature'
 import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
@@ -18,7 +20,7 @@ import { CreateCheckbox } from '../components/CreationComponents/CreateCheckbox'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
-    const { handleInputChange, inputs } = useInputs({})
+    const { handleInputChange, inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -32,7 +34,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'multiselect': MultiSelect,
         'header': 'h1',
         'file': 'input',
-        'richtext': InputText,
+        'richText': LexicalEditor,
+        'subtitle': 'div',
         'signature': CreateSignature,
         'signatureDisplay': ViewSignature,
         'radiobutton': CreateMultiRadioButtons,
@@ -100,10 +103,6 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
     }
 
     const renderCreateElements = (type, name, rest, fontStyle) => {
-        if (type === 'richtext') {
-            return 
-        }
-
         return (
             <>
                 {createElement(
@@ -120,12 +119,11 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         )
     }
 
-    const renderSubtitle = (subtitle, subtitleComponent) => {
+    const renderSubtitle = (subtitle) => {
         return (
-            <>
-                {subtitleComponent}
-                { subtitle && <small className='block'>{subtitle}</small>}
-            </>
+            <div className='mt-1'>
+                <ReadonlyLexicalEditor value={subtitle} />
+            </div>
         )
     }
 
@@ -172,15 +170,15 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         if (isSection) {
             return (
                 <>
-                    {metadata.map((data, sectionIndex) => {
+                    {metadata.map((data, index) => {
                         const { type, subtitle, label, subtitleComponent, name, defaultValue, ...rest } = data
                         if (type === 'section') {
                             return alert('Error: Cannot place section component within another section component.')
                         }
                         return (
                             <>
-                                <Sortable key={sectionIndex} id={`${metadata[sectionIndex].id}`}>
-                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent)}
+                                <Sortable key={index} id={`${metadata[index].id}`}>
+                                    {renderInputField(type, data, label, name, rest, subtitle, subtitleComponent, index)}
                                 </Sortable>
                             </>
                         )
@@ -197,5 +195,5 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
     }
 
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, inputs, setInputs}
 }

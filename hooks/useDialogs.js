@@ -8,7 +8,9 @@ import CalendarDialog from '../components/Settings/CalendarDialog/CalendarDialog
 import MaskDialog from "../components/Settings/MaskDialog/MaskDialog"
 import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
+import SubtitleDialog from "../components/Settings/SubtitleDialog/SubtitleDialog"
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
+import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
@@ -28,7 +30,9 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'mask': MaskDialog,
         'header': HeaderDialog,
         'file': FileDialog,
-        'richtext': RichTextDialog,
+        'subtitle': SubtitleDialog,
+        'richText': RichTextDialog,
+        'dropdown': DropdownDialog,
         'signature': SignatureDialog,
         'radiobutton': MultiRadioButtonsDialog,
         'dropdown': DropdownDialog,
@@ -42,6 +46,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
     }
 
     const openDialog = (data) => {
+        console.log("Data = ", data)
         if (!dialogMapper[data.type]) {
             console.error("Given dialog type doesn't exist in dialog mapper, component can't be created")
             return
@@ -94,7 +99,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange: handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
+                        {inputs: inputs, handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }
             </>

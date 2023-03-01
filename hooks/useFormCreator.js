@@ -92,7 +92,6 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
                                             items={sectionIdsForDroppable}
                                             strategy={verticalListSortingStrategy}
                                         >
-                                            
                                             {renderComponents(sectionMetadata, null, true)}
                                         </SortableContext>
                                     </Droppable>

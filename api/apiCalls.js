@@ -4,15 +4,41 @@ import https from 'https'
 const activeDirectoryApi = process.env.ACTIVE_DIRECTORY_API
 const formBuilderStudioApi = process.env.FORM_BUILDER_API
 
-
 axios.defaults.httpsAgent = new https.Agent({
     rejectUnauthorized: false });
-    
     
 export const getUsersFiltered = (filterString) => {
     return axios.get(`${activeDirectoryApi}/User/filter?FilterString=${filterString}`)
 }
 
+export const postFormDefinition = (formDefinition) => {
+    return axios.post(`${formBuilderStudioApi}/FormDefinition`, formDefinition)
+}
+
+export const getFormDefinition = (id) => {
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/${id}`)
+}
+
 export const getFormDefinitions = (query) => {
-    return axios.get(`${formBuilderStudioApi}/FormDefinition/filter${query}`)
+    return axios.get(`${formBuilderStudioApi}/FormDefinition/Filter${query}`)
+}
+
+export const postFormData = (formDefinitionId, formData) => {
+    return axios.post(`${formBuilderStudioApi}/FormData/${formDefinitionId}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+}
+
+export const getFormDatas = () => {
+    return axios.get(`${formBuilderStudioApi}/FormData`)
+}
+
+export const getFormData = (id) => {
+    return axios.get(`${formBuilderStudioApi}/FormData/${id}`)
+}
+
+export const getFormDataFiltered = (formDefinitionId, query) => {
+    return axios.get(`${formBuilderStudioApi}/FormData/formDefinition/${formDefinitionId}/filter${query}`)
 }

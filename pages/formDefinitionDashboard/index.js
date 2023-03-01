@@ -18,7 +18,7 @@ import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 
-export default function formDefinitionDashboard() {
+export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
     const { handleInputChange, inputs } = useInputs({})
@@ -92,10 +92,8 @@ export default function formDefinitionDashboard() {
             }
 
             const res = await callApi(params)
-
-            const formDefinitionsWithFixedDate = fixDateFormat(res?.data?.formDefinitions)
-
-            setFormDefinitions(formDefinitionsWithFixedDate)
+            console.log('res:', res)
+            setFormDefinitions(res?.data?.formDefinitions)
             setTotalRecords(res?.data?.count)
         }
 

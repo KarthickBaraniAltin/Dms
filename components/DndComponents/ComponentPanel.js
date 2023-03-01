@@ -14,7 +14,8 @@ export default function ComponentPanel() {
         'dropdown',
         'multiselect',
         'file',
-        'richtext',
+        'richText',
+        'subtitle',
         'signature',
         'radiobutton',
         'checkbox'
@@ -68,7 +69,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Text Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     guid=''
                 >
@@ -89,7 +90,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     dateFormat='dd-mm-yy'
                     minDate=''
@@ -113,7 +114,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Number Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     format={false}
                     guid=''
@@ -135,7 +136,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Textarea Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     guid=''
                 >
@@ -156,7 +157,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Mask Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     mask='(999) 999-9999'
                     guid=''
@@ -178,7 +179,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Dropdown Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     options={[]}
                     guid=''
@@ -200,7 +201,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Multiselect Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     defaultValue=''
                     options={[]}
                     display='chip'
@@ -223,7 +224,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='File Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -235,7 +236,7 @@ export default function ComponentPanel() {
             )
         }
 
-        if (component === 'richtext') {
+        if (component === 'richText') {
             return (
                 <Draggable
                     key={index}
@@ -243,12 +244,31 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='RichText Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            RichText
+                            Rich Text
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'subtitle') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Subtitle
                         </label> 
                     </div>
                 </Draggable>
@@ -263,7 +283,27 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Signature Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Signature
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'signature') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -283,7 +323,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     label='Label'
-                    subtitle='Radio Button Subtitle'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
                     options={[]}
                     guid=''
                 >
@@ -320,8 +360,8 @@ export default function ComponentPanel() {
 
     return (
         <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>
-            <Card style={{'background': '#004990', 'color': 'white', 'margin-bottom': '0.5rem'}}>
-                <h1 style={{'text-align': 'center'}}>Components</h1>
+            <Card style={{'background': '#004990', 'color': 'white', marginBottom: '0.5rem'}}>
+                <h1 style={{textAlign: 'center'}}>Components</h1>
             </Card>
             {draggableItems}
         </Card>

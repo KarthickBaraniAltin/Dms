@@ -4,24 +4,12 @@ export const useInputs = (options) => {
     const [inputs, setInputs] = useState(options?.initialValues || {})
 
     const handleInputChange = (event) => {
-        if (event.target) {
-            if (event.target?.files) {
-                const filesArray = Object.keys(event.target.files).map(file => {
-                    return {
-                        fileName: event.target.files[file].name,
-                        size: event.target.files[file].size,
-                        type: event.target.files[file].type
-                    }
-                })
-    
-                setInputs({...inputs, [event.target.name]: filesArray})
-    
-                return
-            }
 
+        if (event.target?.files) {
+            setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
+        } else if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
-            // setInputs(inputs => ({...inputs, [name]: value}))
         } else if (event.originalEvent) {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
@@ -35,6 +23,10 @@ export const useInputs = (options) => {
 
     // We can give values nested objects will be created and assigned accordingly
     const assignValuesNested = (path, value) => {
+        if (!path) {
+            return
+        }
+
         const pathArr = path.split('.')
         const lastKeyIndex = pathArr.length - 1
         let updatedInputs = {...inputs}
@@ -50,5 +42,5 @@ export const useInputs = (options) => {
         setInputs({...updatedInputs})
     }
 
-    return { handleInputChange, inputs, setInputs, assignValuesNested }
+    return { handleInputChange, assignValuesNested, inputs, setInputs }
 }

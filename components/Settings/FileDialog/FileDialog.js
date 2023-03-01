@@ -3,10 +3,11 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
-import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
+import { Checkbox } from 'primereact/checkbox';
+import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function FileDialog({ visible, hideDialog, inputs, handleInputChange, handleUpdate }) {
+export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
     return (
       <div>
@@ -24,7 +25,7 @@ export default function FileDialog({ visible, hideDialog, inputs, handleInputCha
 
   return (
     <div>
-      <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -34,13 +35,17 @@ export default function FileDialog({ visible, hideDialog, inputs, handleInputCha
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='col-6'>
+            <label>Multiple</label>
+            <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleInputChange} checked={inputs?.multiple} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
