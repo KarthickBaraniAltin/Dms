@@ -1,6 +1,12 @@
 import { Dialog } from "primereact/dialog"
 import { useRenderItems } from "../../../hooks/useRenderItems"
-import { ViewSignature } from "../../ViewComponents/ViewSignature"
+
+/* 
+    - A one column component should be able to take up a whole row on the form with out another one column component stacking next to it.
+    - The dropdown (and probably multiselect component) need to align with the rest of the components (issue is probably with the width of the input field).
+    - The height of the input fields need to be consistent (currently the height is determined by the height of the label and subtitle to the left of the field).
+    - The label and subtitle need to be right aligned within their div.
+*/
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, setMetadata, headerImage, handleHeaderImage}) {
     let componentList = []
@@ -38,8 +44,7 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
 
             return
         }
-        console.log('metadata:', metadata)
-        console.log('fontStyle:', fontStyle)
+
         componentList.push(
             <div className={rest?.columnSize?.value ?? 'field col-12'}>
                 <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
