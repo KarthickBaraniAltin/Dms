@@ -15,6 +15,11 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
     )
   }
 
+  const columnSizes = [
+    {label: 'Full Size', value: 'field col-12'},
+    {label: 'Half Size', value: 'field col-6'}
+  ]
+
   const fontOptions = [
     {label: 'Times New Roman', value: 'Times New Roman'},
     {label: 'Arial', value: 'Arial'},
@@ -43,6 +48,11 @@ export default function SignatureDialog({ visible, hideDialog, inputs, handleInp
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <h4 className='field col-12 md:col-12'>Column Size</h4>
+          <div className='field col-12 md:col-12'>
+            <label>Change Column Width</label>
+            <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>

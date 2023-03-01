@@ -10,11 +10,12 @@ import HeaderDialog from "../components/Settings/HeaderDialog/HeaderDialog"
 import FileDialog from "../components/Settings/FileDialog/FileDialog"
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
+import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, setInputs } = useInputs()
+    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
 
     const dialogMapper = { 
         'section': SectionPanelDialog,
@@ -26,7 +27,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'header': HeaderDialog,
         'file': FileDialog,
         'richtext': RichTextDialog,
-        'signature': SignatureDialog
+        'signature': SignatureDialog,
+        'radiobutton': MultiRadioButtonsDialog
     } 
 
     const hideDialog = () => {
@@ -87,7 +89,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange: handleInputChange, visible: showDialog, hideDialog, handleUpdate}
+                        {inputs: inputs, handleInputChange: handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }
             </>

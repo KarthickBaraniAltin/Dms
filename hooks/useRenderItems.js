@@ -13,6 +13,7 @@ import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import { CreateSignature } from '../components/CreationComponents/CreateSignature'
 import { ViewSignature } from '../components/ViewComponents/ViewSignature'
+import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
@@ -32,7 +33,8 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'file': 'input',
         'richtext': InputText,
         'signature': CreateSignature,
-        'signatureDisplay': ViewSignature
+        'signatureDisplay': ViewSignature,
+        'radiobutton': CreateMultiRadioButtons
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -100,8 +102,6 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
             return 
         }
 
-        {/* metadata: type === 'signatureDisplay' ? metadata : null */}
-        console.log('type:', type)
         return (
             <>
                 {createElement(
@@ -110,7 +110,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
                         fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' ? metadata : null
+                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' ? metadata : null
                     }
                 )}
             </>
