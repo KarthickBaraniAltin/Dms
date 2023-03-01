@@ -76,7 +76,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                                     <div style={{width: '100%', height: 'auto'}}></div>
                                     }
                                     <label style={{alignSelf: 'center', textAlign: 'center', fontWeight: '700'}}>{label}</label>
-                                    <div style={{width: '100px', height: '100px'}}></div>
+                                    <div style={{width: '100%', height: 'auto'}}></div>
                                 </div>
                             </div>
                             {<input type='file' onChange={handleHeaderImage} accept="image/png, image/jpeg" data-name={componentData?.name} />}
