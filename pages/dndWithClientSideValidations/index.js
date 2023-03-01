@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
@@ -10,11 +10,11 @@ import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
-import { usePreviewCreator } from '../../hooks/usePreviewCreator'
+import { useHeaderImage } from '../../hooks/useHeaderImage'
 
 export default function DndWithClientSideValidations() {
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator()
-    const { renderPreview } = usePreviewCreator({ metadata })
+    const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 
@@ -29,7 +29,7 @@ export default function DndWithClientSideValidations() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={renderPreview()} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
@@ -37,12 +37,14 @@ export default function DndWithClientSideValidations() {
                             <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                         </div>
                         <Droppable id={'droppable-container-form'}>
+                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
                             <SortableContext
                                 items={mainFormIds}
-                                strategy={verticalListSortingStrategy}
+                                strategy={rectSortingStrategy}
                             >
-                                {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
+                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
                             </SortableContext>
+                            </div>
                         </Droppable>
                     </Card>
                 </div>

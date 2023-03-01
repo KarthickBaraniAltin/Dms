@@ -166,7 +166,81 @@ const useDnd = () => {
         }
     }
 
-    return { handleDragEnd, handleDragOver }
+    const handleTestDragEnd = (event, metadata, addMetadata, setMetadata, dragOverCapture) => {
+        const { active, over } = event
+
+        let numOfRows = 0
+        let pastId = null
+
+        for (let i = 0; i < metadata.length; i++) { // Finds the number of rows
+            console.log('metadata.slice:', metadata[i].id.slice(0, 5))
+            if (metadata[i].id.slice(0, 5) !== pastId) {
+                numOfRows++
+                pastId = metadata[i].id.slice(0, 5)
+            }
+        }
+
+        numOfRows++
+        console.log('numOfRows(DragEnd):', numOfRows)
+
+        if (dragOverCapture?.current) {
+            const index = metadata.findIndex(component => component.id.slice(0, 5) === dragOverCapture.current.id)
+
+            // metadata[index].id = `${metadata[index].id}-col_1`
+
+            if (index === -1) {
+                dragOverCapture.current = null
+                return
+            }
+            
+            const newData = dragOverCapture.current.componentData
+            newData.name = `${newData.name}_${metadata.length + 1}`
+            newData.guid = `${Guid.newGuid().StringGuid}`
+            newData.id = `row_${index + 1}-col_2`
+
+            setMetadata(prevState => {
+                let tempMetadata = prevState.slice(0)
+
+                tempMetadata.splice(index + 1, 0, newData)
+
+                return tempMetadata
+            })
+            dragOverCapture.current = null
+
+            return
+        }
+
+        if (over !== null && !active.data.current.sortable) {
+            const updatedData = JSON.parse(JSON.stringify(active.data.current))
+
+            updatedData.name = `${updatedData.name}_${metadata.length + 1}`
+            updatedData.guid = `${Guid.newGuid().StringGuid}`
+            updatedData.id = `row_${numOfRows}-col_1`
+            
+            addMetadata(updatedData)
+        }
+    }
+
+    const handleTestDragOver = (event, dragOverCapture) => {
+        const { active, over } = event
+        if (event.collisions.length === 0) return // Prevents error being thrown when collisions array is empty.
+        if (active.data.current.sortable) return // Prevents error being thrown when sorting components on main form panel.
+
+        if (event.collisions.length > 0) {
+            event.collisions.map(collision => {
+                if (typeof collision.id !== 'string') return // Prevents error being thrown when id is not a string.
+
+                if (collision.id.startsWith('row') && collision.id.length === 5) {
+                    dragOverCapture.current = {
+                        id: over.id,
+                        componentData: active.data.current
+                    }
+                }
+            })
+        }
+    }
+
+    return { handleDragEnd, handleDragOver, handleTestDragEnd, handleTestDragOver }
 }
 
 export default useDnd

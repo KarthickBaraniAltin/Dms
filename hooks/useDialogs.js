@@ -12,13 +12,14 @@ import SubtitleDialog from "../components/Settings/SubtitleDialog/SubtitleDialog
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
+import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
 
-    const dialogMapper = {
+    const dialogMapper = { 
         'section': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
@@ -30,8 +31,10 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'subtitle': SubtitleDialog,
         'richText': RichTextDialog,
         'dropdown': DropdownDialog,
-        'multiselect': DropdownDialog,
-        'signature': SignatureDialog
+        'signature': SignatureDialog,
+        'radiobutton': MultiRadioButtonsDialog,
+        'dropdown': DropdownDialog,
+        'multiselect': DropdownDialog
     } 
 
     const hideDialog = () => {
@@ -59,7 +62,9 @@ const useDialogs = ({ metadata, setMetadata }) => {
         if (isDeleted) {
             if (confirm('You are about to delete this component. Do you wish to proceed?')) {
                 const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
-                metadata.splice(metadata[deleteIndex], 1)
+
+                metadata.splice(deleteIndex, 1)
+
                 setMetadata(metadata)
             }
         }
@@ -77,7 +82,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 setShowDialog(false)
                 return
             }
-        }
+        } 
 
         const index = metadata.findIndex(element => element.name === dialogData.name)
         metadata[index] = {...metadata[index], ...inputs}

@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
-import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 
-export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
+export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
+   const renderFooter = () => {
+    return (
+      <div>
+          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
+          <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
+      </div>
+    )
+  }
 
   const columnSizes = [
     {label: 'Full Size', value: 'field col-12'},
@@ -22,43 +29,37 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
     if (type === 'value') {
         newOptions[index] = { ...newOptions[index], value: value }
         assignValuesNested('options', newOptions)
-    } else if (type === 'label') {
-        newOptions[index] = { ...newOptions[index], label: value }
-        assignValuesNested('options', newOptions)
     } else {
         console.error("Unknown Type")
     }
-  }
 
-  const handleDeleteOptions = (index) => {
-    const newOptions = [...inputs?.options]
-    newOptions.splice(index, 1)
-    assignValuesNested('options', newOptions)
-  }
-
-  const handleAddOptions = () => {
-    if (!inputs.options) {
-        const newOptions = [{label: '', value: ''}]
+    /* else if (type === 'label') {
+        newOptions[index] = { ...newOptions[index], label: value }
         assignValuesNested('options', newOptions)
-        return
+        } 
+    */
+  }
+
+    const handleDeleteOptions = (index) => {
+        const newOptions = [...inputs?.options]
+        newOptions.splice(index, 1)
+        assignValuesNested('options', newOptions)
     }
 
-    const newOptions = [...inputs.options , {label: '', value: ''}]
-    assignValuesNested('options', newOptions)
-  }
+    const handleAddOptions = () => {
+        if (!inputs.options) {
+            const newOptions = [{/* label: '', */ value: ''}]
+            assignValuesNested('options', newOptions)
+            return
+        }
 
-  const renderFooter = () => {
-    return (
-      <div>
-          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
-          <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
-      </div>
-    )
-  }
+        const newOptions = [...inputs.options , {/* label: '', */ value: ''}]
+        assignValuesNested('options', newOptions)
+    }
 
   return (
     <div>
-      <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Multi Radio Buttons Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -68,9 +69,13 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-12 md:col-12'>
+          <div className='field col-6 md:col-6'>
             <label>Subtitle</label>
-            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
+            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Default Value</label>
+            <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
@@ -82,11 +87,11 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
             inputs?.options?.map((option, index) => {
                 return (
                     <>
-                        <div className='col-6 md:col-6'>
+                        {/* <div className='col-6 md:col-6'>
                             <label>Label</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.label} onChange={(event) => handleOptionChange(index, event, 'label')} />
-                        </div>
-                        <div className='col-5 md:col-5'>
+                        </div> */}
+                        <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
                         </div>

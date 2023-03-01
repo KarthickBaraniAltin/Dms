@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
+import { Dropdown } from 'primereact/dropdown'
 
 export default function TextDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
   
@@ -15,6 +16,11 @@ export default function TextDialog({ visible, hideDialog, inputs, assignValuesNe
       </div>
     )
   }
+
+  const columnSizes = [
+    {label: 'Full Size', value: 'field col-12'},
+    {label: 'Half Size', value: 'field col-6'}
+  ]
 
   return (
     <div>
@@ -35,6 +41,11 @@ export default function TextDialog({ visible, hideDialog, inputs, assignValuesNe
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <h4 className='field col-12 md:col-12'>Column Size</h4>
+          <div className='field col-12 md:col-12'>
+            <label>Change Column Width</label>
+            <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
