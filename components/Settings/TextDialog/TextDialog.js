@@ -5,8 +5,8 @@ import { Button } from 'primereact/button';
 import { InputNumber } from 'primereact/inputnumber';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function TextDialog({ visible, hideDialog, name, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-    
+export default function TextDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
+  
   const renderFooter = () => {
     return (
       <div>

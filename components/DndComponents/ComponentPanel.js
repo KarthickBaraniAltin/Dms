@@ -15,7 +15,8 @@ export default function ComponentPanel() {
         'multiselect',
         'file',
         'richText',
-        'subtitle'
+        'subtitle',
+        'signature'
     ]
 
     const draggableItems = componentTypes.map((component, index) => {
@@ -264,6 +265,26 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             Subtitle
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'signature') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    label='Label'
+                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Signature
                         </label> 
                     </div>
                 </Draggable>

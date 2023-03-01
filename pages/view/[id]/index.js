@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormCreator } from '../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
@@ -9,6 +9,7 @@ import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
+import useTimeControl from '../../../hooks/useTimeControl'
 
 export default function View({ id, data, api }) {
 
@@ -16,6 +17,7 @@ export default function View({ id, data, api }) {
     const { renderPreview, inputs } = usePreviewCreator({ metadata })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, error, response, callApiFetch } = useApi()
+    const { startViewTime } = useTimeControl()    
 
     const jsonToFormData = (json) => {
         const formData = new FormData()
@@ -35,6 +37,8 @@ export default function View({ id, data, api }) {
         event.preventDefault()
         const { accessToken } = await acquireToken()
 
+        inputs.startViewTime = startViewTime 
+
         const formData = jsonToFormData(inputs)
         const fetchParams = {
             method: 'POST',
@@ -51,7 +55,7 @@ export default function View({ id, data, api }) {
 
     useEffect(() => {
         setMetadata(data.metadata?.metadata)
-    }, [data.metadata])
+    }, [data.metadata, setMetadata])
 
     return (
         <>

@@ -2,12 +2,9 @@ import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import { InputNumber } from 'primereact/inputnumber';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 
-export default function DropdownDialog({ visible, hideDialog, name, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-
-    console.log("Inputs = ", inputs)
+export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -83,8 +80,7 @@ export default function DropdownDialog({ visible, hideDialog, name, inputs, assi
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
                         </div>
                         <div className='col-1 md:col-1'>
-                            <label style={{color: '#FFFFFF'}}>{'-asas'}</label>
-                            <Button className='p-button-rounded p-button-danger' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />
+                            <Button className='p-button-rounded p-button-danger mt-4' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />
                         </div>
                     </>
                 )

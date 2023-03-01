@@ -56,7 +56,7 @@ export default function Home({ cities }) {
     const getData = async() => {
       const { accessToken } = await acquireToken()
       const inputData =  e.query
-      // console.log(accessToken)
+
       const params = {
         method: 'POST',
         data: {
@@ -71,13 +71,11 @@ export default function Home({ cities }) {
 
       // instead of setting the result in here we can use useEffect with response dependency
       const result = await callApi(params)
-      // console.log("Result = ", result)
       return result
     }
 
     const res = await getData()
     const filteredRes = res?.data.map(person => person.displayName)
-    console.log(filteredRes)
     
     setFilteredUsers(filteredRes)
   }

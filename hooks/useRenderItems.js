@@ -33,7 +33,7 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
         'header': 'h1',
         'file': 'input',
         'richText': LexicalEditor,
-        'subtitle': 'div'
+        'subtitle': 'div',
     }
 
     const renderLabel = (componentData, label, type, isPreview = false, isHeader = false) => {
@@ -70,29 +70,6 @@ export const useRenderItems = ({ metadata, setMetadata }) => {
     }
 
     const renderCreateElements = (type, name, rest) => {
-        if (type === 'richtext') {
-            return (
-                <>
-                {createElement(
-                    componentMapper[type],
-                    {
-                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: inputs[name], onChange: handleInputChange, apikey: RICH_TEXT_API, initialValue: '<p>Write your description here</p>',
-                        height: 200, menubar: false, plugins: [ 'help' ], content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                        toolbar: [
-                            { name: 'history', items: [ 'undo', 'redo' ] },
-                            { name: 'styles', items: [ 'styles' ] },
-                            { name: 'formatting', items: [ 'bold', 'italic', 'underline', 'fontFamily', 'fontSize' ] },
-                            { name: 'alignment', items: [ 'alignleft', 'aligncenter', 'alignright', 'alignjustify' ] },
-                            { name: 'indentation', items: [ 'outdent', 'indent' ] },
-                            { name: 'help', items: [ 'help' ] }
-                          ],
-                    }
-                )}
-                </>
-            )
-        }
-
         return (
             <>
                 {createElement(

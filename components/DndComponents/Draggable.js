@@ -13,6 +13,7 @@ export function Draggable(props) {
         defaultValue: props.defaultValue,
         options: props?.options,
         mask: props?.mask,
+        fontStyle: props?.fontStyle,
         format: props?.format,
         display: props?.display,
         minDate: props?.minDate,

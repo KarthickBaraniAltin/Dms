@@ -15,6 +15,8 @@ export const useFormCreator = () => {
     const { inputs, setInputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     
+    console.log("Metadata = ", metadata)
+
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
     const [sectionIds, setSectionIds] = useState([])

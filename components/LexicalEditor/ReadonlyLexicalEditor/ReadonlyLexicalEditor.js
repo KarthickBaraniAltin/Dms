@@ -19,7 +19,6 @@ import { TRANSFORMERS } from "@lexical/markdown";
 import ListMaxIndentLevelPlugin from "../Plugins/ListMaxIndentLevelPlugin/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "../Plugins/CodeHighlightPlugin/CodeHighlightPlugin";
 import AutoLinkPlugin from "../Plugins/AutoLinkPlugin/AutoLinkPlugin";
-import HtmlConverterPlugin from "../Plugins/HtmlConverterPlugin/HtmlConverterPlugin";
 
 import styles from './ReadonlyLexicalEditor.module.css'
 import SubtitlePlugin from "../Plugins/SubtitlePlugin/SubtitlePlugin";
@@ -71,7 +70,6 @@ export default function ReadonlyLexicalEditor({value}) {
                       <AutoLinkPlugin />
                       <ListMaxIndentLevelPlugin maxDepth={7} />
                       <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                      <HtmlConverterPlugin />
                       <SubtitlePlugin value={value}/>
                   </div>
               </div>

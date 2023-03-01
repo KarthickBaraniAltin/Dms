@@ -11,6 +11,7 @@ import FileDialog from "../components/Settings/FileDialog/FileDialog"
 import SubtitleDialog from "../components/Settings/SubtitleDialog/SubtitleDialog"
 import RichTextDialog from "../components/Settings/RichTextDialog/RichTextDialog"
 import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog"
+import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -29,7 +30,8 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'subtitle': SubtitleDialog,
         'richText': RichTextDialog,
         'dropdown': DropdownDialog,
-        'multiselect': DropdownDialog
+        'multiselect': DropdownDialog,
+        'signature': SignatureDialog
     } 
 
     const hideDialog = () => {
@@ -89,7 +91,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
                 { showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange: handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
+                        {inputs: inputs, handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
                     )
                 }
             </>

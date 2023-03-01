@@ -7,7 +7,7 @@ import { useFormCreator } from '../../hooks/useFormCreator'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useMsalAuthentication } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
 import { useApi } from '../../hooks/useApi'
@@ -19,11 +19,13 @@ export default function CreateForm() {
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 
+    const { instance } = useMsal()
     const { response, error, loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
 
     const submitForm = async () => {
         const { accessToken } = await acquireToken()
+        const { name, username, localAccountId } = instance.getAc
 
         const params = {
             method: 'POST',
@@ -33,10 +35,11 @@ export default function CreateForm() {
                 Authorization: `Bearer ${accessToken}`
             },
             data: {
-                name: "Test ",
+                name: "Test Name",
                 description: "Desc ",
-                authorFullName: "Ahmet ",
-                authorId: '1',
+                authorFullName: name,
+                authorId: localAccountId,
+                authorEmail: username,
                 metadata: {
                     metadata: metadata
                 } 
