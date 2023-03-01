@@ -195,5 +195,5 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         }
     }
 
-    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents, inputs, setInputs}
+    return {renderLabel, renderCreateElements, renderSubtitle, renderErrors, renderInputField, renderComponents}
 }

@@ -31,7 +31,6 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'file': FileDialog,
         'subtitle': SubtitleDialog,
         'richText': RichTextDialog,
-        'dropdown': DropdownDialog,
         'signature': SignatureDialog,
         'radiobutton': MultiRadioButtonsDialog,
         'dropdown': DropdownDialog,
