@@ -11,7 +11,7 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
     const [ metadata, setMetadata ] = useState([])
     const { inputs, setInputs } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
-    const { renderLabel, renderComponents, renderTestComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
+    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
