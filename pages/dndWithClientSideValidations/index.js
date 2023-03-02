@@ -7,16 +7,49 @@ import { useFormCreator } from '../../hooks/useFormCreator'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useMsalAuthentication } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
 import { useHeaderImage } from '../../hooks/useHeaderImage'
+import { useApi } from '../../hooks/useApi'
+import { InteractionType } from '@azure/msal-browser'
+import { formBuilderApiRequest } from '../../src/msalConfig'
 
 export default function DndWithClientSideValidations() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
+
+    const { instance } = useMsal()
+    const { loading, callApi } = useApi()
+    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
+
+    const submitForm = async () => {
+        const { accessToken } = await acquireToken()
+        const { name, username, localAccountId } = instance.getAc
+
+        const params = {
+            method: 'POST',
+            url: `/form-builder-studio/api/form-definition`,
+            headers: {
+                Accept: '*/*',
+                Authorization: `Bearer ${accessToken}`
+            },
+            data: {
+                name: "Test Name",
+                description: "Desc ",
+                authorFullName: name,
+                authorId: localAccountId,
+                authorEmail: username,
+                metadata: {
+                    metadata: metadata
+                } 
+            }
+        }
+
+        const res = await callApi(params)
+    }
 
     return (
         <>
@@ -46,6 +79,9 @@ export default function DndWithClientSideValidations() {
                             </SortableContext>
                             </div>
                         </Droppable>
+                        <div className='flex flex-column justify-content-center'>
+                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
+                        </div>
                     </Card>
                 </div>
                 </DndContext>

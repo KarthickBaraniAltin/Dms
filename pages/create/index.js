@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
@@ -10,10 +10,10 @@ import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, useMsalAuthentication } from "@azure/msal-react"
 import PreviewDialog from '../../components/Settings/PreviewDialog/PreviewDialog'
 import { useShowPreview } from '../../hooks/useShowPreview'
+import { useHeaderImage } from '../../hooks/useHeaderImage'
 import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
-import { useHeaderImage } from '../../hooks/useHeaderImage'
 
 export default function CreateForm() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
@@ -22,7 +22,7 @@ export default function CreateForm() {
     const { handleDragEnd, handleDragOver } = useDnd()
 
     const { instance } = useMsal()
-    const { response, error, loading, callApi } = useApi()
+    const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
 
     const submitForm = async () => {
@@ -62,37 +62,36 @@ export default function CreateForm() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                    {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} /> : null}
-                    <div className='grid'>
-                        <ComponentPanel />
-                        <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                            <div className='flex flex-column justify-content-center'>
-                                <Card style={{'background': '#004990', 'color': 'white', 'marginBottom': '0.5rem'}}>
-                                    <h1 style={{'textAlign': 'center'}}>Default</h1>
-                                </Card>
-                                <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                <div className='grid'>
+                    <ComponentPanel />
+                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                        <div className='flex flex-column justify-content-center'>
+                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                        </div>
+                        <Droppable id={'droppable-container-form'}>
+                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
+                            <SortableContext
+                                items={mainFormIds}
+                                strategy={rectSortingStrategy}
+                            >
+                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
+                            </SortableContext>
                             </div>
-                            <Droppable id={'droppable-container-form'}>
-                                <SortableContext
-                                    items={mainFormIds}
-                                    strategy={verticalListSortingStrategy}
-                                >
-                                    {metadata.length === 0 ? <h5>Drop field here</h5> : renderForm()}
-                                </SortableContext>
-                            </Droppable>
-                            <div className='flex flex-column justify-content-center'>
-                                <Button label='Create' className='flex align-self-center mt-2' onClick={submitForm} />
-                            </div>
-                        </Card>
-                    </div>
+                        </Droppable>
+                        <div className='flex flex-column justify-content-center'>
+                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
+                        </div>
+                    </Card>
+                </div>
                 </DndContext>
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
-                    <div className='card-body'>
-                        <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
+                    <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
+                        <div className='card-body'>
+                            <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
+                        </div>
                     </div>
-                </div>
             </UnauthenticatedTemplate>
         </>
     )
