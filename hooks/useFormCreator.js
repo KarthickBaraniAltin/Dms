@@ -22,22 +22,23 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
-    console.log('inputs:', inputs)
-
     let numOfRows = 0
 
+    console.log('inputs:', inputs)
+
     useEffect(() => {
+        const inputKeysArray = Object.keys(inputs)
+
+        inputKeysArray.map(input => {
+            let isInputFound = metadata.some(element => element.name === input)
+
+            if (!isInputFound) {
+                delete inputs[input]
+            }
+        })
+
         metadata.forEach(element => {
             element.page = pageNumber
-
-            /* Used to erase entries in inputs object for deleted components */
-            const inputKeysArray = Object.keys(inputs)
-            // console.log('element:', element)
-            // console.log('inputKeysArray:', inputKeysArray)
-            if (!(element.name in inputKeysArray)) {
-                // console.log('inputs(useEffect):', inputs)
-            }
-            /* Used to erase entries in inputs object for deleted components */
 
             if (element.defaultValue) {
                 setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
