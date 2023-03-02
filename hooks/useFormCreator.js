@@ -9,9 +9,9 @@ import { useRenderItems } from './useRenderItems'
 export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { inputs, setInputs } = useInputs({})
+    const { handleInputChange, inputs, setInputs } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
-    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
+    const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
     // These variables are for DND
     const [mainFormIds, setMainFormIds] = useState([])
@@ -21,6 +21,8 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
     // These variables are for pagination
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
+
+    console.log('inputs:', inputs)
 
     let numOfRows = 0
 

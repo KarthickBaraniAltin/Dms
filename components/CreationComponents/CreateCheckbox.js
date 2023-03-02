@@ -6,7 +6,6 @@ export const CreateCheckbox = ({ metadata, name }) => {
     const [checkedValues, setCheckedValues] = useState(component?.options)
 
     const onCheckboxChange = (e) => {
-        console.log('event(onCheckboxChange):', e)
         let selectedCheckbox = [...checkedValues];
         if(e.checked)
             selectedCheckbox.push(e.value);
@@ -16,9 +15,6 @@ export const CreateCheckbox = ({ metadata, name }) => {
         setCheckedValues(selectedCheckbox);
     }
 
-    console.log('component:', component)
-    console.log('checkedValues:', checkedValues)
-
     return (
         <div style={{width: '198.4px'}}>
             {component.options.length > 0 ? 
@@ -26,7 +22,7 @@ export const CreateCheckbox = ({ metadata, name }) => {
                     {component.options.map((checkboxes, index) => {
                         return (
                             <div key={index} style={{marginBottom: '0.5rem'}}>
-                                <Checkbox onChange={onCheckboxChange} checked={checkedValues[index].value} style={{marginRight: '0.5rem'}} />
+                                <Checkbox value={checkboxes.value} onChange={onCheckboxChange} checked={checkboxes.value === checkedValues[index]} style={{marginRight: '0.5rem'}} />
                                 <label>{checkboxes.value}</label>
                             </div>
                         )

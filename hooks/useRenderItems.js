@@ -18,9 +18,9 @@ import { ViewSignature } from '../components/ViewComponents/ViewSignature'
 import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
 import { CreateCheckbox } from '../components/CreationComponents/CreateCheckbox'
 
-export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
+export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs }) => {
 
-    const { handleInputChange, inputs, setInputs } = useInputs({})
+    // const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
