@@ -12,7 +12,7 @@ import { useInputs } from "../../../hooks/useInput"
 export default function PreviewDialog({ showDialog, handlePreview, metadata, setMetadata, headerImage, handleHeaderImage}) {
     let componentList = []
     const { handleInputChange, inputs } = useInputs()
-    const { renderLabel, renderCreateElements, renderSubtitle } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
+    const { renderLabel, renderCreateElements, renderSubtitle, renderErrors } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
     metadata.map(element => {
         const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
@@ -54,7 +54,10 @@ export default function PreviewDialog({ showDialog, handlePreview, metadata, set
                         {renderLabel(null, label, null, true)}
                         {renderSubtitle(subtitle, subtitleComponent)}
                     </div>
-                    {renderCreateElements(type === 'signature' ? 'signatureDisplay' : type, name, rest, fontStyle)}
+                    <div className='flex flex-column'>
+                        {renderCreateElements(type === 'signature' ? 'signatureDisplay' : type, name, rest, fontStyle)}
+                        {renderErrors(name)}
+                    </div>
                 </div>
             </div>
         )

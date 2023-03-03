@@ -69,8 +69,8 @@ export const useValidation = ({ metadata, inputs }) => {
                 }
             },
             minTime: (minTime, currentTime) => {
-                if (minTime.getHours() >= currentTime.getHours()) {
-                    if (minTime.getMinutes() >= currentTime.getMinutes()) {
+                if (minTime.getHours() >= currentTime?.getHours()) {
+                    if (minTime.getMinutes() >= currentTime?.getMinutes()) {
                         return true
                     }
                 } else {
@@ -78,8 +78,8 @@ export const useValidation = ({ metadata, inputs }) => {
                 }
             },
             maxTime: (maxTime, currentTime) => {
-                if (maxTime.getHours() <= currentTime.getHours()) {
-                    if (maxTime.getMinutes() <= currentTime.getMinutes()) {
+                if (maxTime.getHours() <= currentTime?.getHours()) {
+                    if (maxTime.getMinutes() <= currentTime?.getMinutes()) {
                         return true
                     }
                 } else {
