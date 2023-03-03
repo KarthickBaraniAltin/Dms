@@ -46,8 +46,23 @@ export default function TimeDialog({ visible, hideDialog, assignValuesNested, in
             <label>Change Column Width</label>
             <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
-          {/* <h4 className='field col-12 md:col-12'>Validations</h4> */}
-         
+          <h4 className='field col-12 md:col-12'>Validations</h4>
+          <div className='field col-6 md:col-6'>
+            <label>Min Time</label>
+            <Calendar showTime timeOnly hourFormat='12' name='validations.minTime.time' value={inputs?.validations?.minTime?.time ?? undefined} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Min Time Message</label>
+            <InputText name='validations.minTime.message' value={inputs?.validations?.minTime?.message ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Time</label>
+            <Calendar showTime timeOnly hourFormat='12' name='validations.maxTime.time' value={inputs?.validations?.maxTime?.time ?? undefined} onChange={handleInputChange} />
+          </div>
+          <div className='field col-6 md:col-6'>
+            <label>Max Time Message</label>
+            <InputText name='validations.maxTime.message' value={inputs?.validations?.maxTime?.message ?? ''} onChange={handleInputChange} />
+          </div>
         </div>
       </Dialog>
     </div>

@@ -68,6 +68,24 @@ export const useValidation = ({ metadata, inputs }) => {
                     return false
                 }
             },
+            minTime: (minTime, currentTime) => {
+                if (minTime.getHours() >= currentTime.getHours()) {
+                    if (minTime.getMinutes() >= currentTime.getMinutes()) {
+                        return true
+                    }
+                } else {
+                    return false
+                }
+            },
+            maxTime: (maxTime, currentTime) => {
+                if (maxTime.getHours() <= currentTime.getHours()) {
+                    if (maxTime.getMinutes() <= currentTime.getMinutes()) {
+                        return true
+                    }
+                } else {
+                    return false
+                }
+            },
             setMask: (mask, maskName) => {
                 const index = metadata.findIndex(element => element.name === maskName)
 
@@ -165,6 +183,36 @@ export const useValidation = ({ metadata, inputs }) => {
                             const { message, date } = value
                             if (validationMapper.maxDate(date, inputValue, name)) {
                                 currentErrors.push(message ?? `Please pick a date on or before ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
+                            }
+                            break
+                        }
+                        case 'minTime': {
+                            const { message, time } = value
+                            if (validationMapper.minTime(time, inputValue)) {
+                                let hours = time.getHours()
+                                let isPM = false
+
+                                if (hours > 12) {
+                                    hours -= 12
+                                    isPM = true
+                                }
+
+                                currentErrors.push(message ?? `Please pick a time after ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
+                            }
+                            break
+                        }
+                        case 'maxTime': {
+                            const { message, time } = value
+                            if (validationMapper.maxTime(time, inputValue)) {
+                                let hours = time.getHours()
+                                let isPM = false
+
+                                if (hours > 12) {
+                                    hours -= 12
+                                    isPM = true
+                                }
+
+                                currentErrors.push(message ?? `Please pick a time before ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
                             }
                             break
                         }
