@@ -6,10 +6,10 @@ import { SortableContext, verticalListSortingStrategy, horizontalListSortingStra
 import { Droppable } from '../components/DndComponents/Droppable'
 import { useRenderItems } from './useRenderItems'
 
-export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
+export const useFormCreator = ({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs }) => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { handleInputChange, inputs, setInputs } = useInputs({})
+    // const { handleInputChange, inputs, setInputs } = useInputs({})
     const { renderDialog } = useDialogs({ metadata, setMetadata })
     const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
@@ -23,8 +23,6 @@ export const useFormCreator = ({ headerImage, handleHeaderImage }) => {
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
     let numOfRows = 0
-
-    console.log('inputs:', inputs)
 
     useEffect(() => {
         const inputKeysArray = Object.keys(inputs)

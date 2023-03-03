@@ -7,14 +7,14 @@ import { useApi } from '../../hooks/useApi'
 import { Card } from 'primereact/card'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
+import { useInputs } from '../../hooks/useInput'
+import { InputText } from "primereact/inputtext"
 import { Dialog } from 'primereact/dialog'
 import { createElement } from 'react'
-import { useInputs } from '../../hooks/useInput'
 import { Calendar } from "primereact/calendar"
 import { Dropdown } from "primereact/dropdown"
 import { InputMask } from "primereact/inputmask"
 import { InputNumber } from "primereact/inputnumber"
-import { InputText } from "primereact/inputtext"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
 
@@ -22,7 +22,7 @@ export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
     const { handleInputChange, inputs } = useInputs({})
-
+    const headerStyle = {fontWeight: '600', fontSize: '15.5px', color: '#000'} 
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
     const [selectedRow, setSelectedRow] = useState(null)
@@ -105,6 +105,98 @@ export default function FormDefinitionDashboard() {
         setIsVisible(true)
     }
 
+    const handleClickForNewWindow = (rowData) => {
+        
+    }
+
+    const renderHeader = () => {
+        return (
+          <>
+            <div className='table-header'>
+              <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                Employees
+                <span className="p-input-icon-left" style={{marginLeft: '1rem'}}>
+                    <i className="pi pi-search" />
+                    <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
+                </span>
+              </div>
+            </div>
+          </> 
+        )
+    }
+
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <span>
+            <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForNewWindow(rowData)}>edit_square</span> {/* () => handleClickForModal(rowData) */}
+            </span>
+        )
+    }
+
+    const onPage = (event) => {
+        setLazyParams(event)
+    }
+
+    const onSort = (event) => {
+        setLazyParams(event)
+    }
+
+    const onFilter = (event) => {
+        event['first'] = 0
+        setLazyParams(event)
+    }
+
+    const onSelectionChange = (event) => {
+        const { value } = event
+        setSelectedValue(value)
+    }
+
+    const onGlobalFilterChange = (e) => {
+        const value = e.target.value
+        let _filters = { ...lazyParams.filters }
+        _filters['global'].value = value
+    
+        setLazyParams({ ...lazyParams })
+    }
+
+    return (
+        <>
+            <Head>
+                <title>Form Definition Dashboard</title>
+                <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
+            </Head>
+            <AuthenticatedTemplate>
+                {/* <Dialog header='Metadata of Form Definition' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
+                    {selectedRow ? 
+                        renderMetadata(selectedRow.metadata)
+                    :
+                        null
+                    }
+                </Dialog> */}
+                <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
+                    <DataTable 
+                        value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
+                        dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
+                        totalRecords={totalRecords} onPage={onPage} onSort={onSort}
+                        sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                        onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
+                        size='small' loading={loading} onSelectionChange={onSelectionChange}
+                        selection={selectedValue} globalFilterFields={[]}
+                    >
+                        <Column field='action' headerStyle={{...headerStyle, width: '6%'}} header='Action' body={actionBodyTemplate} />
+                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='authorFullName' header='Author Full Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                    </DataTable>
+                </Card>
+            </AuthenticatedTemplate>
+        </>
+    )
+}
+
+/* 
     const renderMetadata = (metadata) => {
         let leftSideList = []
         let inputFieldList = []
@@ -160,93 +252,4 @@ export default function FormDefinitionDashboard() {
             </div>
         )
     }
-
-    const headerStyle = {fontWeight: '600', fontSize: '15.5px', color: '#000'} 
-
-    const renderHeader = () => {
-        return (
-          <>
-            <div className='table-header'>
-              <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                Employees
-                <span className="p-input-icon-left" style={{marginLeft: '1rem'}}>
-                    <i className="pi pi-search" />
-                    <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
-                </span>
-              </div>
-            </div>
-          </> 
-        )
-    }
-
-    const actionBodyTemplate = (rowData) => {
-        return (
-            <span>
-            <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForModal(rowData)}>edit_square</span>
-            </span>
-        )
-    }
-
-    const onPage = (event) => {
-        setLazyParams(event)
-    }
-
-    const onSort = (event) => {
-        setLazyParams(event)
-    }
-
-    const onFilter = (event) => {
-        event['first'] = 0
-        setLazyParams(event)
-    }
-
-    const onSelectionChange = (event) => {
-        const { value } = event
-        setSelectedValue(value)
-    }
-
-    const onGlobalFilterChange = (e) => {
-        const value = e.target.value
-        let _filters = { ...lazyParams.filters }
-        _filters['global'].value = value
-    
-        setLazyParams({ ...lazyParams })
-    }
-
-    return (
-        <>
-            <Head>
-                <title>Form Definition Dashboard</title>
-                <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
-            </Head>
-            <AuthenticatedTemplate>
-                {/* <Toast /> */}
-                <Dialog header='Metadata of Form Definition' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
-                    {selectedRow ? 
-                        renderMetadata(selectedRow.metadata)
-                    :
-                        null
-                    }
-                </Dialog>
-                <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
-                    <DataTable 
-                        value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
-                        dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
-                        totalRecords={totalRecords} onPage={onPage} onSort={onSort}
-                        sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
-                        onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
-                        size='small' loading={loading} onSelectionChange={onSelectionChange}
-                        selection={selectedValue} globalFilterFields={[]}
-                    >
-                        <Column field='action' headerStyle={{...headerStyle, width: '6%'}} header='Action' body={actionBodyTemplate} />
-                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                        <Column className='dashboardTitle' field='authorFullName' header='Author Full Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                    </DataTable>
-                </Card>
-            </AuthenticatedTemplate>
-        </>
-    )
-}
+*/

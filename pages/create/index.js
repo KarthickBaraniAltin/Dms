@@ -14,10 +14,12 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
+import { useInputs } from '../../hooks/useInput'
 
 export default function CreateForm() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+    const { handleInputChange, inputs, setInputs } = useInputs()
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 

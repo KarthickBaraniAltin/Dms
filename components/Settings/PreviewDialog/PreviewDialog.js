@@ -1,5 +1,6 @@
 import { Dialog } from "primereact/dialog"
 import { useRenderItems } from "../../../hooks/useRenderItems"
+import { useInputs } from "../../../hooks/useInput"
 
 /* 
     - A one column component should be able to take up a whole row on the form with out another one column component stacking next to it.
@@ -10,7 +11,8 @@ import { useRenderItems } from "../../../hooks/useRenderItems"
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, setMetadata, headerImage, handleHeaderImage}) {
     let componentList = []
-    const { renderLabel, renderCreateElements, renderSubtitle } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage })
+    const { handleInputChange, inputs } = useInputs()
+    const { renderLabel, renderCreateElements, renderSubtitle } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
     metadata.map(element => {
         const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element

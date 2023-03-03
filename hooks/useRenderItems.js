@@ -27,6 +27,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
     const componentMapper = {
         'text': InputText,
         'calendar': Calendar,
+        'time': Calendar,
         'number': InputNumber,
         'textarea': InputTextarea,
         'mask': InputMask,
@@ -112,7 +113,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                         value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
                         fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
                         multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' 
-                        || type === 'checkbox' ? metadata : null, 
+                        || type === 'checkbox' ? metadata : null,
                     }
                 )}
             </>
