@@ -14,6 +14,7 @@ import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
+import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -25,6 +26,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'text': TextDialog,
         'number': NumberDialog,
         'calendar': CalendarDialog,
+        'time': TimeDialog,
         'textarea': TextareaDialog,
         'mask': MaskDialog,
         'header': HeaderDialog,
