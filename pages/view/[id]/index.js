@@ -10,10 +10,12 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { useHeaderImage } from '../../../hooks/useHeaderImage'
+import { useInputs } from '../../../hooks/useInput'
 
 export default function View({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+    const { handleInputChange, inputs, setInputs } = useInputs()
+    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, error, response, callApiFetch } = useApi()
     const { startViewTime } = useTimeControl()    
