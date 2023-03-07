@@ -3,9 +3,15 @@ import { useState } from 'react'
 export const useHeaderImage = () => {
     const [headerImage, setHeaderImage] = useState({})
 
+    console.log("Header Image = ", headerImage)
+
     const handleHeaderImage = (event) => {
         if (event.target.dataset) {
-            setHeaderImage({[event.target.dataset.name]: { file: event.target.files[0], url: URL.createObjectURL(event.target.files[0]) }})
+            const image = new Image()
+            image.src = URL.createObjectURL(event.target.files[0])
+            image.onload = () => {
+                setHeaderImage({[event.target.dataset.name]: { file: event.target.files[0], dimensions: {width: image.naturalWidth, height: image.naturalHeight}, url: URL.createObjectURL(event.target.files[0]) }})
+            };
         }
     }
 

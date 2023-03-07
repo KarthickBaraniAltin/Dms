@@ -13,14 +13,18 @@ import { useValidation } from './useValidation'
 import { Sortable } from '../components/DndComponents/Sortable'
 import LexicalEditor from '../components/LexicalEditor/LexicalEditor'
 import ReadonlyLexicalEditor from '../components/LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
-import { CreateSignature } from '../components/CreationComponents/CreateSignature'
-import { ViewSignature } from '../components/ViewComponents/ViewSignature'
-import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons'
-import { CreateCheckbox } from '../components/CreationComponents/CreateCheckbox'
+import { CreateSignature } from '../components/CreationComponents/CreateSignature/CreateSignature'
+import { ViewSignature } from '../components/ViewComponents/ViewSignature/ViewSignature'
+import { CreateMultiRadioButtons } from '../components/CreationComponents/CreateMultiRadioButtons/CreateMultiRadioButtons'
+import { CreateCheckbox } from '../components/CreationComponents/CreateCheckbox/CreateCheckbox'
+import CreateHeader from '../components/CreationComponents/CreateLabel/CreateLabel'
+import CreateLabel from '../components/CreationComponents/CreateLabel/CreateLabel'
+import Label from '../components/SharedComponents/Label/Label'
+import Image from 'next/image'
 
 export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeaderImage }) => {
 
-    const { handleInputChange, inputs, setInputs } = useInputs({})
+    const { handleInputChange, inputs } = useInputs({})
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -33,7 +37,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
         'dropdown': Dropdown,
         'multiselect': MultiSelect,
         'header': 'h1',
-        'file': 'input',
+        'file': CreateHeader,
         'richText': LexicalEditor,
         'subtitle': 'div',
         'signature': CreateSignature,
@@ -53,7 +57,7 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                     <div>
                         <div style={{'color': 'black', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem'}}> {/* 'background': '#004990', 'marginBottom': '0.5rem', padding: '1rem', borderRadius: '1rem'  */}
                             {headerImage[componentData.name]?.url ? 
-                            <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100%' height='auto' /> 
+                            <Image alt="image" src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100' height='100' /> 
                             : 
                             <div style={{width: '100px', height: '100px'}}></div>
                             }
@@ -64,19 +68,18 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 </div>
                 :
                 isPreview ?
-                <label className='block' style={{fontWeight: '700', color: '#000000', textAlign: isSectionHeadingForPreview ? 'center' : null}}>
-                    {label}
-                </label>
+                <Label label={label} />
                 :
                 isHeader ?
                 <>
                     <div className='flex flex-column'>
                         <i className='pi pi-cog' style={{fontSize: '1em', alignSelf: 'flex-end', marginBottom: '0.25rem'}} onClick={() => openDialog(componentData)}></i>
                         <div>
+                            {/* <CreateHeader componentData={componentData} openDialog={openDialog} /> */}
                             <div>
                                 <div style={{'border': '1px #004990 solid', 'color': 'black', 'marginBottom': '0.5rem', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem', padding: '1rem', borderRadius: '1rem'}}>
                                     {headerImage[componentData.name]?.url ? 
-                                    <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100%' height='auto' /> 
+                                    <Image alt="image" src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100' height='100' /> 
                                     : 
                                     <div style={{width: '100%', height: 'auto'}}></div>
                                     }
@@ -90,29 +93,27 @@ export const useRenderItems = ({ metadata, setMetadata, headerImage, handleHeade
                 </>
                 :
                 <>
-                    <div className="flex justify-content-between" style={type === 'section' ? sectionLabelStyle : null}>
-                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            {label}
-                        </label> 
-                        <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(componentData)}></i>
-                    </div>
+                    <CreateLabel componentData={componentData} label={label} openDialog={openDialog} />
                 </>
                 }
             </>
         )
     }
 
-    const renderCreateElements = (type, name, rest, fontStyle) => {
+    const renderCreateElements = (type, name, rest) => {
         return (
             <>
                 {createElement(
                     componentMapper[type],
                     {
-                        ...rest, name, className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
-                        value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                        fontStyle: type.startsWith('signature') ? fontStyle : null, type: type === 'file' ? 'file' : null, 
-                        multiple: type === 'file' ? true : null, metadata: type === 'signatureDisplay' || type === 'radiobutton' 
-                        || type === 'checkbox' ? metadata : null, 
+                        ...rest, 
+                        name, 
+                        className: cn(errors[name] && errors[name].length != 0 && 'p-invalid'), 
+                        value: type === 'file' ? null : inputs[name],
+                        onChange: handleInputChange, 
+                        type: type === 'file' ? 'file' : null, 
+                        multiple: type === 'file' ? true : null, 
+                        metadata: type === 'signatureDisplay' || type === 'radiobutton' || type === 'checkbox' ? metadata : null, 
                     }
                 )}
             </>

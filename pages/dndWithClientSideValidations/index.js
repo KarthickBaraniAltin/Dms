@@ -21,13 +21,15 @@ export default function DndWithClientSideValidations() {
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
 
+    console.log("Metadata = ", metadata)
+
     const { instance } = useMsal()
     const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
 
     const submitForm = async () => {
         const { accessToken } = await acquireToken()
-        const { name, username, localAccountId } = instance.getAc
+        const { name, username, localAccountId } = instance.getActiveAccount()
 
         const params = {
             method: 'POST',
