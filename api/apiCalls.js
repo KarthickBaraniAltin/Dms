@@ -15,6 +15,10 @@ export const postFormDefinition = (formDefinition) => {
     return axios.post(`${formBuilderStudioApi}/FormDefinition`, formDefinition)
 }
 
+export const putFormDefinition = (formDefinition, id) => {
+    return axios.put(`${formBuilderStudioApi}/FormDefinition/${id}`, formDefinition)
+}
+
 export const getFormDefinition = (id) => {
     return axios.get(`${formBuilderStudioApi}/FormDefinition/${id}`)
 }
