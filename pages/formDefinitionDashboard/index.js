@@ -17,6 +17,8 @@ import { InputMask } from "primereact/inputmask"
 import { InputNumber } from "primereact/inputnumber"
 import { InputTextarea } from "primereact/inputtextarea"
 import { MultiSelect } from "primereact/multiselect"
+import Link from 'next/link'
+import { Button } from 'primereact/button'
 
 export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -55,7 +57,6 @@ export default function FormDefinitionDashboard() {
     }
 
     const fixDateFormat = (formDefinitions) => {
-        console.log('formDefinitions:', formDefinitions)
         if (typeof formDefinitions === 'undefined') return
         return formDefinitions.map(formDefinition => {
             const year = formDefinition.dateCreated.slice(0, 4)
@@ -105,10 +106,6 @@ export default function FormDefinitionDashboard() {
         setIsVisible(true)
     }
 
-    const handleClickForNewWindow = (rowData) => {
-        
-    }
-
     const renderHeader = () => {
         return (
           <>
@@ -128,7 +125,7 @@ export default function FormDefinitionDashboard() {
     const actionBodyTemplate = (rowData) => {
         return (
             <span>
-            <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForNewWindow(rowData)}>edit_square</span> {/* () => handleClickForModal(rowData) */}
+            <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForModal(rowData)}>edit_square</span> {/* () => handleClickForModal(rowData) */}
             </span>
         )
     }
@@ -166,13 +163,20 @@ export default function FormDefinitionDashboard() {
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
-                {/* <Dialog header='Metadata of Form Definition' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
+                <Dialog header='View and Update Page' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
                     {selectedRow ? 
-                        renderMetadata(selectedRow.metadata)
+                        <>
+                            <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${selectedRow.id}`} target='_blank' rel='noopener noreferrer' style={{marginRight: '0.5rem', textDecoration: 'none'}}>
+                                <Button label='View Page' icon='pi pi-external-link' />
+                            </Link>
+                            <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${selectedRow.id}`} target='_blank' rel='noopener noreferrer' style={{textDecoration: 'none'}}>
+                                <Button label='Update Page' icon='pi pi-external-link' />
+                            </Link>
+                        </>
                     :
                         null
                     }
-                </Dialog> */}
+                </Dialog>
                 <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
                     <DataTable 
                         value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
