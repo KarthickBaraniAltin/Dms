@@ -40,12 +40,11 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             minDate: (minDate, inputValue, calendarName) => {               
                 const index = metadata.findIndex(element => element.name === calendarName)
-
                 metadata[index].minDate = minDate          
 
                 if (minDate.getFullYear() >= inputValue?.getFullYear()) {
                     if (minDate.getMonth() >= inputValue?.getMonth()) {
-                        if (minDate.getDate() >= inputValue?.getDate()) {
+                        if (minDate.getDate() > inputValue?.getDate()) {
                             return true
                         }
                     }
@@ -55,12 +54,11 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             maxDate: (maxDate, inputValue, calendarName) => {
                 const index = metadata.findIndex(element => element.name === calendarName)
-
                 metadata[index].maxDate = maxDate
 
                 if (maxDate.getFullYear() <= inputValue?.getFullYear()) {
                     if (maxDate.getMonth() <= inputValue?. getMonth()) {
-                        if (maxDate.getDate() <= inputValue?.getDate()) {
+                        if (maxDate.getDate() < inputValue?.getDate()) {
                             return true
                         }
                     }
