@@ -125,7 +125,12 @@ export default function FormDefinitionDashboard() {
     const actionBodyTemplate = (rowData) => {
         return (
             <span>
-            <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}} onClick={() => handleClickForModal(rowData)}>edit_square</span> {/* () => handleClickForModal(rowData) */}
+                <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${rowData.id}`} rel='noopener noreferrer'>
+                    <span className='pi pi-eye' style={{color: '#034692'}} />
+                </Link>
+                <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${rowData.id}`} rel='noopener noreferrer'>
+                <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
+                </Link>
             </span>
         )
     }
