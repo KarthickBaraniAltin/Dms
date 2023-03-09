@@ -4,9 +4,9 @@ import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from "primereact/button"
 import { useState } from "react"
 
-export default function ShareDialog({showDialog, handleSave, submitFormData, loading}) {
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
+export default function ShareDialog({showDialog, handleSave, submitFormData, loading, prevFormData}) {
+    const [name, setName] = useState(prevFormData.name)
+    const [description, setDescription] = useState(prevFormData.description)
 
     return (
         <>
@@ -22,7 +22,7 @@ export default function ShareDialog({showDialog, handleSave, submitFormData, loa
                             <InputTextarea value={description} onChange={e => setDescription(e.target.value)} />
                         </div>
                     </div>
-                    <Button label='Submit' style={{width: '90px'}} loading={loading} onClick={e => submitFormData(e, name, description)} />
+                    <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => submitFormData(e, name, description)} />
                 </div>
             </Dialog>
         </>

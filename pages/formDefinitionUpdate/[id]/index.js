@@ -22,7 +22,7 @@ import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
 
-export default function View({ id, data, api }) {
+export default function Update({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs, setInputs } = useInputs()
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
@@ -30,6 +30,8 @@ export default function View({ id, data, api }) {
     const { handleDragEnd, handleDragOver } = useDnd()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
     const { showSaveDialog, handleSave } = useSave()
+
+    console.log('data:', data)
 
     useEffect(() => {
         setMetadata(data.metadata?.metadata)
@@ -77,7 +79,7 @@ export default function View({ id, data, api }) {
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} /> : null}
+                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} prevFormData={data} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} formSubmitResult={formSubmitResult} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
