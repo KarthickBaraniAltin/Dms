@@ -7,23 +7,14 @@ import { useApi } from '../../hooks/useApi'
 import { Card } from 'primereact/card'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
-import { useInputs } from '../../hooks/useInput'
 import { InputText } from "primereact/inputtext"
 import { Dialog } from 'primereact/dialog'
-import { createElement } from 'react'
-import { Calendar } from "primereact/calendar"
-import { Dropdown } from "primereact/dropdown"
-import { InputMask } from "primereact/inputmask"
-import { InputNumber } from "primereact/inputnumber"
-import { InputTextarea } from "primereact/inputtextarea"
-import { MultiSelect } from "primereact/multiselect"
 import Link from 'next/link'
 import { Button } from 'primereact/button'
 
 export default function FormDefinitionDashboard() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi} = useApi()
-    const { handleInputChange, inputs } = useInputs({})
     const headerStyle = {fontWeight: '600', fontSize: '15.5px', color: '#000'} 
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -37,7 +28,7 @@ export default function FormDefinitionDashboard() {
         sortField: null,
         sortOrder: null,
         filters: {
-            'global': {value: 'a', matchMode: 'contains'}
+            'global': {value: '', matchMode: 'contains'}
         }
     })
 
@@ -54,19 +45,6 @@ export default function FormDefinitionDashboard() {
           }
         }
         return queryString.slice(0, -1)
-    }
-
-    const fixDateFormat = (formDefinitions) => {
-        if (typeof formDefinitions === 'undefined') return
-        return formDefinitions.map(formDefinition => {
-            const year = formDefinition.dateCreated.slice(0, 4)
-            const month = formDefinition.dateCreated.slice(5, 7)
-            const day = formDefinition.dateCreated.slice(8, 10)
-
-            formDefinition.dateCreated = `${month}/${day}/${year}`
-
-            return formDefinition
-        })
     }
 
     let loadLazyTimeout = null 
@@ -101,17 +79,11 @@ export default function FormDefinitionDashboard() {
         loadLazyData()
     }, [lazyParams, loadLazyTimeout, acquireToken])
 
-    const handleClickForModal = (rowData) => {
-        setSelectedRow(rowData)
-        setIsVisible(true)
-    }
-
     const renderHeader = () => {
         return (
           <>
             <div className='table-header'>
               <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                Employees
                 <span className="p-input-icon-left" style={{marginLeft: '1rem'}}>
                     <i className="pi pi-search" />
                     <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
@@ -125,11 +97,11 @@ export default function FormDefinitionDashboard() {
     const actionBodyTemplate = (rowData) => {
         return (
             <span>
-                <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${rowData.id}`} rel='noopener noreferrer'>
+                <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
                     <span className='pi pi-eye' style={{color: '#034692'}} />
                 </Link>
                 <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${rowData.id}`} rel='noopener noreferrer'>
-                <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
+                    <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
                 </Link>
             </span>
         )
@@ -204,61 +176,3 @@ export default function FormDefinitionDashboard() {
         </>
     )
 }
-
-/* 
-    const renderMetadata = (metadata) => {
-        let leftSideList = []
-        let inputFieldList = []
-        let previewList = []
-
-        const componentMapper = {
-            'text': InputText,
-            'calendar': Calendar,
-            'number': InputNumber,
-            'textarea': InputTextarea,
-            'mask': InputMask,
-            'dropdown': Dropdown,
-            'multiselect': MultiSelect
-        }
-
-        metadata.metadata.map(component => {
-            const { name, label, subtitle, type, ...rest } = component
-
-            leftSideList.push(
-                <div style={{display: 'flex', flexDirection: 'column', width: '100px'}}>
-                    <div style={{fontWeight: 'bold'}}>{label}</div>
-                    <div style={{fontWeight: 'bold'}}>{subtitle}</div>
-                </div>
-            )
-
-            inputFieldList.push(
-                createElement(
-                    componentMapper[type],
-                    {
-                    ...rest, name, value: type === 'file' ? null : inputs[name], onChange: handleInputChange, 
-                    type: type === 'file' ? 'file' : null, multiple: type === 'file' ? true : null
-                    }
-                )
-            )
-        })
-
-        for (let i = 0; i < metadata.metadata.length; i++) {
-            previewList.push(
-                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-                    <div>{leftSideList[i]}</div>
-                    <div style={{width: '200px'}}>{inputFieldList[i]}</div>
-                </div>
-            )
-        }
-
-        return (
-            <div className='flex flex-column'>
-                <div style={{fontWeight: 'bold', marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <div>{`Id: ${metadata.id}`}</div>
-                    <div>{`Created on: ${metadata.createdAtUtc.slice(5, 7)}/${metadata.createdAtUtc.slice(8, 10)}/${metadata.createdAtUtc.slice(0, 4)}`}</div>
-                </div>
-                {previewList}
-            </div>
-        )
-    }
-*/

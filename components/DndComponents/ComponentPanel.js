@@ -76,7 +76,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Text
+                            Short Text
                         </label> 
                     </div>
                 </Draggable>
@@ -100,7 +100,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Calendar
+                            Date Picker
                         </label> 
                     </div> 
                 </Draggable>
@@ -169,7 +169,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Textarea
+                            Large Text
                         </label> 
                     </div>
                 </Draggable>
@@ -236,7 +236,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Multiselect
+                            Multiselect Dropdown
                         </label> 
                     </div>
                 </Draggable>
@@ -256,7 +256,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            File
+                            File Upload
                         </label> 
                     </div>
                 </Draggable>
@@ -295,7 +295,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Subtitle
+                            Paragraph
                         </label> 
                     </div>
                 </Draggable>
@@ -356,7 +356,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            RadioButton
+                            Single Choice
                         </label>
                     </div>
                 </Draggable>
@@ -377,7 +377,7 @@ export default function ComponentPanel() {
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Checkbox
+                            Multiple Choice
                         </label>
                     </div>
                 </Draggable>

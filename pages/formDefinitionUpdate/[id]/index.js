@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormCreator } from '../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
@@ -17,6 +17,10 @@ import { Droppable } from '../../../components/DndComponents/Droppable'
 import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
 import { DndContext } from '@dnd-kit/core'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
+import { useShare } from '../../../hooks/useShare'
+import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
+import { useSave } from '../../../hooks/useSave'
+import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
 
 export default function View({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
@@ -24,16 +28,18 @@ export default function View({ id, data, api }) {
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
-
-    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { loading, callApi } = useApi()
-    const { instance } = useMsal()
+    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
+    const { showSaveDialog, handleSave } = useSave()
 
     useEffect(() => {
         setMetadata(data.metadata?.metadata)
     }, [data.metadata, setMetadata])
 
-    const submitFormData = async (event) => {
+    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
+    const { loading, callApi } = useApi()
+    const { instance } = useMsal()
+
+    const submitFormData = async (event, formName, description) => {
         event.preventDefault()
         const { accessToken } = await acquireToken()
         const { name, username, localAccountId } = instance.getActiveAccount()
@@ -45,8 +51,8 @@ export default function View({ id, data, api }) {
                 'Authorization': `Bearer ${accessToken}`,
             }, 
             data: {
-                name: "Test Name",
-                description: "Desc ",
+                name: formName,
+                description: description,
                 authorFullName: name,
                 authorId: localAccountId,
                 authorEmail: username,
@@ -56,6 +62,7 @@ export default function View({ id, data, api }) {
             }
         }
         const res = await callApi(params)
+        setFormSubmitResult(res)
     }
 
     return (
@@ -70,11 +77,21 @@ export default function View({ id, data, api }) {
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} /> : null}
+                {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} formSubmitResult={formSubmitResult} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
-                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                        <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
+                            <div>
+                                <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
+                            </div>
+                            <div>
+                                <Button label='Save' style={{width: '90px'}} onClick={handleSave} />
+                            </div>
+                            <div>
+                                <Button label='Share' style={{width: '90px'}} {...isShareDisabled} onClick={handleShare} />
+                            </div>
                         </div>
                         <Droppable id={'droppable-container-form'}>
                             <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
@@ -86,9 +103,6 @@ export default function View({ id, data, api }) {
                             </SortableContext>
                             </div>
                         </Droppable>
-                        <div className='flex flex-column justify-content-center'>
-                            <Button label='Update' loading={loading} className='flex align-self-center mt-2' onClick={submitFormData} />
-                        </div>
                     </Card>
                 </div>
                 </DndContext>

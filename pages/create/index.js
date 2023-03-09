@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { useFormCreator } from '../../hooks/useFormCreator'
@@ -24,17 +24,12 @@ export default function CreateForm() {
     const { handleInputChange, inputs, setInputs } = useInputs()
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { showShareDialog, handleShare } = useShare()
+    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
     const { handleDragEnd, handleDragOver } = useDnd()
 
     const { instance } = useMsal()
     const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
-    const [formSubmitResult, setFormSubmitResult] = useState(null)
-
-    const isShareDisabled = {
-        ...(formSubmitResult ? {} : { disabled: true })
-    }
 
     const submitForm = async () => {
         const { accessToken } = await acquireToken()
