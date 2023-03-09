@@ -15,17 +15,26 @@ import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
 import { useInputs } from '../../hooks/useInput'
+import ShareDialog from '../../components/Settings/ShareDialog/ShareDialog'
+import { useShare } from '../../hooks/useShare'
+import { useState } from 'react'
 
 export default function CreateForm() {
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs, setInputs } = useInputs()
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { showPreviewDialog, handlePreview } = useShowPreview()
+    const { showShareDialog, handleShare } = useShare()
     const { handleDragEnd, handleDragOver } = useDnd()
 
     const { instance } = useMsal()
     const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
+    const [formSubmitResult, setFormSubmitResult] = useState(null)
+
+    const isShareDisabled = {
+        ...(formSubmitResult ? {} : { disabled: true })
+    }
 
     const submitForm = async () => {
         const { accessToken } = await acquireToken()
@@ -51,6 +60,7 @@ export default function CreateForm() {
         }
 
         const res = await callApi(params)
+        setFormSubmitResult(res)
     }
 
     return (
@@ -65,11 +75,20 @@ export default function CreateForm() {
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} formSubmitResult={formSubmitResult} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
-                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
+                        <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
+                            <div>
+                                <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
+                            </div>
+                            <div>
+                                <Button label='Create' style={{width: '90px'}} loading={loading} onClick={submitForm} />
+                            </div>
+                            <div>
+                                <Button label='Share' style={{width: '90px'}} {...isShareDisabled} onClick={handleShare} />
+                            </div>
                         </div>
                         <Droppable id={'droppable-container-form'}>
                             <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
@@ -81,9 +100,6 @@ export default function CreateForm() {
                             </SortableContext>
                             </div>
                         </Droppable>
-                        <div className='flex flex-column justify-content-center'>
-                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
-                        </div>
                     </Card>
                 </div>
                 </DndContext>
