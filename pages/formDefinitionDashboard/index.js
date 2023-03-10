@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { AuthenticatedTemplate, useMsalAuthentication } from '@azure/msal-react'
 import { InteractionType } from '@azure/msal-browser'
 import React, { useState, useEffect } from 'react'
@@ -9,7 +10,7 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { InputText } from "primereact/inputtext"
 import { Dialog } from 'primereact/dialog'
-import Link from 'next/link'
+import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from 'primereact/button'
 
 export default function FormDefinitionDashboard() {
@@ -18,7 +19,8 @@ export default function FormDefinitionDashboard() {
     const headerStyle = {fontWeight: '600', fontSize: '15.5px', color: '#000'} 
     const [formDefinitions, setFormDefinitions] = useState(null)
     const [isVisible, setIsVisible] = useState(false)
-    const [selectedRow, setSelectedRow] = useState(null)
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
     const [selectedValue, setSelectedValue] = useState({})
     const [totalRecords, setTotalRecords] = useState(0)
     const [lazyParams, setLazyParams] = useState({
@@ -79,11 +81,13 @@ export default function FormDefinitionDashboard() {
         loadLazyData()
     }, [lazyParams, loadLazyTimeout, acquireToken])
 
+
     const renderHeader = () => {
         return (
           <>
             <div className='table-header'>
               <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+                <span className='pi pi-plus'style={{alignSelf: 'center', cursor: 'pointer'}} onClick={() => setIsVisible(true)}/>
                 <span className="p-input-icon-left" style={{marginLeft: '1rem'}}>
                     <i className="pi pi-search" />
                     <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
@@ -98,13 +102,17 @@ export default function FormDefinitionDashboard() {
         return (
             <span>
                 <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
-                    <span className='pi pi-eye' style={{color: '#034692'}} />
+                    <span className='pi pi-eye' style={{cursor: 'pointer', color: '#034692'}} />
                 </Link>
                 <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${rowData.id}`} rel='noopener noreferrer'>
                     <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
                 </Link>
             </span>
         )
+    }
+
+    const createForm = () => {
+        alert('Functionality still in progress')
     }
 
     const onPage = (event) => {
@@ -140,16 +148,21 @@ export default function FormDefinitionDashboard() {
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>
-                <Dialog header='View and Update Page' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
-                    {selectedRow ? 
-                        <>
-                            <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${selectedRow.id}`} target='_blank' rel='noopener noreferrer' style={{marginRight: '0.5rem', textDecoration: 'none'}}>
-                                <Button label='View Page' icon='pi pi-external-link' />
-                            </Link>
-                            <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${selectedRow.id}`} target='_blank' rel='noopener noreferrer' style={{textDecoration: 'none'}}>
-                                <Button label='Update Page' icon='pi pi-external-link' />
-                            </Link>
-                        </>
+                <Dialog header='Create New Form' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
+                    {isVisible ? 
+                        <div className='flex flex-column'>
+                            <div style={{marginBottom: '0.5rem'}}>
+                                <div className='flex flex-column mb-2'>
+                                    <label>Form Definition Name</label>
+                                    <InputText value={name} onChange={e => setName(e.target.value)} />
+                                </div>
+                                <div className='flex flex-column'>
+                                    <label>Form Definition Description</label>
+                                    <InputTextarea value={description} onChange={e => setDescription(e.target.value)} />
+                                </div>
+                            </div>
+                            <Button label='Create' style={{width: '100px'}} loading={loading} onClick={createForm} />
+                        </div>
                     :
                         null
                     }

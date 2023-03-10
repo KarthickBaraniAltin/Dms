@@ -25,21 +25,21 @@ import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
 export default function Update({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs, setInputs } = useInputs()
+
     const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
-    const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
+
+    const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
     const { showSaveDialog, handleSave } = useSave()
-
-    console.log('data:', data)
-
-    useEffect(() => {
-        setMetadata(data.metadata?.metadata)
-    }, [data.metadata, setMetadata])
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi } = useApi()
     const { instance } = useMsal()
+
+    useEffect(() => {
+        setMetadata(data.metadata?.metadata)
+    }, [data.metadata, setMetadata])
 
     const submitFormData = async (event, formName, description) => {
         event.preventDefault()
