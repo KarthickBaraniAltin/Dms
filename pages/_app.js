@@ -37,7 +37,6 @@ function MyApp({ Component, pageProps, ...appProps }) {
         <MsalProvider instance={msalInstance}>
           <Navbar/>
           <Component {...pageProps} />
-          {/* <Footer /> */}
         </MsalProvider>
       </>
     )

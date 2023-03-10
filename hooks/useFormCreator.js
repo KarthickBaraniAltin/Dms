@@ -9,7 +9,7 @@ import { useRenderItems } from './useRenderItems'
 export const useFormCreator = ({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs }) => {
 
     const [ metadata, setMetadata ] = useState([])
-    // const { handleInputChange, inputs, setInputs } = useInputs({})
+    const { inputs, setInputs } = useInputs({ initialValues: {} })
     const { renderDialog } = useDialogs({ metadata, setMetadata })
     const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
@@ -21,8 +21,6 @@ export const useFormCreator = ({ headerImage, handleHeaderImage, handleInputChan
     // These variables are for pagination
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
-
-    let numOfRows = 0
 
     useEffect(() => {
         const inputKeysArray = Object.keys(inputs)

@@ -1,8 +1,11 @@
 import { Checkbox } from 'primereact/checkbox'
 import { useState } from 'react'
+import Errors from '../../SharedComponents/Errors/Errors'
+import CreateLabel from '../CreateLabel/CreateLabel'
+import CreateSubtitle from '../CreateSubtitle/CreateSubtitle'
 
-export const CreateCheckbox = ({ metadata, name }) => {
-    const component = metadata.find(element => element.name === name)
+export default function CreateCheckboxInput({ metadata, openDialog, value, onChange, errors }) {
+    const { name, label, subtitle, guid, id, page } = metadata 
     const [checkedValues, setCheckedValues] = useState(component?.options)
 
     const onCheckboxChange = (e) => {
@@ -18,6 +21,7 @@ export const CreateCheckbox = ({ metadata, name }) => {
 
     return (
         <div style={{width: '198.4px'}}>
+            <CreateLabel componentData={metadata} label={label} openDialog={openDialog} />
             {component.options.length > 0 ? 
                 <div className='flex flex-column'>
                     {component.options.map((checkboxes, index) => {
@@ -31,6 +35,8 @@ export const CreateCheckbox = ({ metadata, name }) => {
                 </div>
                 : <p>{'Click dialog to add checkboxes'}</p>
             }
+            <CreateSubtitle value={subtitle} />
+            <Errors errors={errors} />
         </div>
     )
 }

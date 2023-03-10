@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Logo from './Logo'
-import axios from 'axios'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useAccount, useMsal } from "@azure/msal-react"
-import { loginRequest } from '../src/msalConfig'
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react"
 import { Menubar } from 'primereact/menubar'
-import useRoles from '../hooks/useRoles'
 import { Button } from 'primereact/button'
 
-
 export default function Navbar() {
+    
+  const { instance } = useMsal()
 
-  const { instance, accounts } = useMsal()
-  const account = useAccount(accounts[0] || {})
-  const [apiData, setApiData] = useState(null)
-  
   // For Navbar documentation please go: https://www.primefaces.org/primereact/menubar/
   const authenticatedItems = [
     {
