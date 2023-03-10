@@ -1,9 +1,10 @@
 import { InputText } from 'primereact/inputtext'
 import React from 'react'
+import Errors from '../../../SharedComponents/Errors/Errors'
 import ViewLabel from '../../ViewLabel/ViewLabel'
 import ViewSubtitle from '../../ViewSubtitle/ViewSubtitle'
 
-export default function ViewText({ metadata, value, onChange }) {
+export default function ViewText({ metadata, value, onChange, errors }) {
     const { name, label, subtitle } = metadata
 
     return (
@@ -13,6 +14,7 @@ export default function ViewText({ metadata, value, onChange }) {
                 <ViewSubtitle subtitle={subtitle} />
             </div>
             <InputText name={name} value={value} onChange={onChange} />
+            <Errors errors={errors} />
         </div>
     )
 }

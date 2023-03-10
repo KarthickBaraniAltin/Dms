@@ -10,7 +10,7 @@ import ViewCalendar from '../Inputs/ViewCalendar/ViewCalendar'
 import ViewText from '../Inputs/ViewText/ViewText'
 import { ViewSignature } from '../ViewSignature/ViewSignature'
 
-export default function ViewComponents({ metadata, inputs, handleInputChange }) {
+export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
     const componentMapper = {
         'text': ViewText,
@@ -30,22 +30,23 @@ export default function ViewComponents({ metadata, inputs, handleInputChange }) 
     }
 
     return (
-        <div>
+        <>
             {metadata?.map((element, index) => {
                 const { name, type, columnSize } = element
                 return (
-                    <div key={index} className={columnSize ?? 'field col-6'}>
+                    <div key={index} className={'field col-6'}>
                         { createElement( 
                             componentMapper[type],
                             {
                                 metadata: element,
                                 value: inputs[name],
-                                onChange: handleInputChange
+                                onChange: handleInputChange,
+                                errors: errors[name]
                             }
                         )}
                     </div>
                 )
             })}
-        </div>
+        </>
     )
 }

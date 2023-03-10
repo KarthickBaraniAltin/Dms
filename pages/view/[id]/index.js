@@ -16,6 +16,13 @@ import { useValidation } from '../../../hooks/useValidation'
 
 export default function View({ id, metadata, api, initialValues }) {
 
+    // metadata = [
+    //     {
+    //         type: "text",
+    //         label: "LASDASD"
+    //     }
+    // ];
+
     console.log("Initial Values = ", initialValues)
 
     // This part is displaying the form
@@ -27,11 +34,12 @@ export default function View({ id, metadata, api, initialValues }) {
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
+
     const { startViewTime } = useTimeControl()    
     const [ userData, setUserData ] = useState(undefined)
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
-
+    
     useState(() => {
         if (!userData && account) {
             callMsGraph().then(response => setUserData(response)).catch((e) => {
@@ -100,7 +108,7 @@ export default function View({ id, metadata, api, initialValues }) {
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
-                            <div className='grid p-fluid form-grid'>
+                            <div className='grid formgrid'>
                                 <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                             </div>
                             <div className='field md:col-6 col-offset-3'>
