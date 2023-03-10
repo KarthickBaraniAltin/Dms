@@ -11,9 +11,8 @@ import { useHeaderImage } from '../../../hooks/useHeaderImage'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
 import { useState } from 'react'
 import { useInputs } from '../../../hooks/useInput'
-import ViewLabel from '../../../components/ViewComponents/ViewLabel/ViewLabel'
-import ViewSubtitle from '../../../components/ViewComponents/ViewSubtitle/ViewSubtitle'
-import ViewInput from '../../../components/ViewComponents/ViewInput/ViewInput'
+import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
+import { useValidation } from '../../../hooks/useValidation'
 
 export default function View({ id, metadata, api, initialValues }) {
 
@@ -24,6 +23,7 @@ export default function View({ id, metadata, api, initialValues }) {
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
     const { inputs, handleInputChange } = useInputs({initialValues})
+    const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
@@ -101,23 +101,10 @@ export default function View({ id, metadata, api, initialValues }) {
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
                             <div className='grid p-fluid form-grid'>
-                                {metadata?.map((element, index) => {
-                                        const { name, label, type, subtitle, defaultValue, ...rest } = element
-                                        return (
-                                            <div key={index} className={rest?.columnSize?.value ?? 'field col-12'}>
-                                                <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
-                                                    <div style={{width: '20%'}}>
-                                                        <ViewLabel label={label} />
-                                                        <ViewSubtitle subtitle={subtitle} />
-                                                    </div>
-                                                    <ViewInput type={type} name={name} value={inputs?.[name]} onChange={handleInputChange} {...rest}/>
-                                                </div>
-                                            </div>
-                                        )
-                                })}
-                                <div className='field md:col-6 col-offset-3'>
-                                    <Button label="Submit" onClick={submitFormData} loading={loading} />
-                                </div>
+                                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
+                            </div>
+                            <div className='field md:col-6 col-offset-3'>
+                                <Button label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>

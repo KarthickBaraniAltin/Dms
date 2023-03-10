@@ -11,7 +11,7 @@ export const useHeaderImage = () => {
             image.src = URL.createObjectURL(event.target.files[0])
             image.onload = () => {
                 setHeaderImage({[event.target.dataset.name]: { file: event.target.files[0], dimensions: {width: image.naturalWidth, height: image.naturalHeight}, url: URL.createObjectURL(event.target.files[0]) }})
-            };
+            }
         }
     }
 

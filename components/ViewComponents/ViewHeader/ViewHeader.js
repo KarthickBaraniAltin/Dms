@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 export default function ViewHeader() {
@@ -6,7 +7,7 @@ export default function ViewHeader() {
         <div>
             <div style={{'color': 'black', display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: '0 2rem'}}> {/* 'background': '#004990', 'marginBottom': '0.5rem', padding: '1rem', borderRadius: '1rem'  */}
                 {headerImage[componentData.name]?.url ? 
-                <img src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100%' height='auto' /> 
+                <Image alt="viewHeader" src={headerImage[componentData.name].url} style={{alignSelf: 'center'}} width='100' height='100' /> 
                 : 
                 <div style={{width: '100px', height: '100px'}}></div>
                 }

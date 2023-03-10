@@ -74,7 +74,7 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
             <label>Change Column Width</label>
-            <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
+            <Dropdown name='columnSize' value={inputs?.columnSize ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
           <h4 className='field col-12 md:col-12'>Options</h4>
           {

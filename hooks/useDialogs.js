@@ -18,7 +18,7 @@ import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
+    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs({ initialValues: {} })
 
     const dialogMapper = { 
         'section': SectionPanelDialog,

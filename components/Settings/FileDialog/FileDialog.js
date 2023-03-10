@@ -6,6 +6,7 @@ import { InputNumber } from 'primereact/inputnumber'
 import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
+import { Dropdown } from 'primereact/dropdown'
 
 export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
    const renderFooter = () => {
@@ -21,6 +22,11 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
     {label: '.pdf', value: 'application/pdf'},
     {label: '.png', value: 'image/png'},
     {label: '.jpeg', value: 'image/jpeg' }
+  ]
+
+  const columnSizes = [
+    {label: 'Full Size', value: 'field col-12'},
+    {label: 'Half Size', value: 'field col-6'}
   ]
 
   return (
@@ -42,6 +48,10 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-12 md:col-12'>
+            <label>Change Column Width</label>
+            <Dropdown name='columnSize' value={inputs?.columnSize ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
           </div>
           <div className='col-6'>
             <label>Multiple</label>
