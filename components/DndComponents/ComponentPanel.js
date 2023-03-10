@@ -5,7 +5,6 @@ export default function ComponentPanel() {
 
     const componentTypes = [
         'header',
-        'section',
         'text',
         'calendar',
         'time',
@@ -22,6 +21,8 @@ export default function ComponentPanel() {
         'checkbox'
     ]
 
+    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
+
     const draggableItems = componentTypes.map((component, index) => {
         if (component === 'header') {
             return (
@@ -30,32 +31,12 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    label='Header'
                     guid=''
+                    columnSize='field col-12'
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             Header
-                        </label> 
-                    </div>
-                </Draggable>
-            )
-        }
-
-        if (component === 'section') {
-            return (
-                <Draggable
-                    key={index}
-                    id={`${index + 1}`}
-                    type={component}
-                    name={component}
-                    label='Section'
-                    sectionMetadata={[]}
-                    guid=''
-                >
-                    <div className='flex justify-content-center'>
-                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Section
                         </label> 
                     </div>
                 </Draggable>
@@ -69,8 +50,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     guid=''
                 >
@@ -90,8 +72,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     dateFormat='dd-mm-yy'
                     minDate=''
@@ -140,8 +123,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     format={false}
                     guid=''
@@ -162,8 +146,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-12'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     guid=''
                 >
@@ -183,8 +168,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     mask='(999) 999-9999'
                     guid=''
@@ -205,8 +191,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     options={[]}
                     guid=''
@@ -227,11 +214,11 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     defaultValue=''
                     options={[]}
-                    display='chip'
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -250,8 +237,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -270,8 +258,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-12'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -290,7 +279,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    columnSize='field col-12'
+                    subtitle={defaultSubtitle}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -309,28 +299,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
-                    guid=''
-                >
-                    <div className='flex justify-content-center'>
-                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
-                            Signature
-                        </label> 
-                    </div>
-                </Draggable>
-            )
-        }
-
-        if (component === 'signature') {
-            return (
-                <Draggable
-                    key={index}
-                    id={`${index + 1}`}
-                    type={component}
-                    name={component}
-                    label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
@@ -349,8 +320,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
+                    columnSize='field col-6'
                     label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    subtitle={defaultSubtitle}
                     options={[]}
                     guid=''
                 >
@@ -372,6 +344,7 @@ export default function ComponentPanel() {
                     name={component}
                     label='Label'
                     subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
+                    columnSize='field col-6'
                     options={[]}
                     guid=''
                 >

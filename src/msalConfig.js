@@ -8,7 +8,7 @@ export const msalConfig = {
 }   
 
 export const loginRequest = {
-    scopes: ['Group.Read.All', 'User.Read.All','User.Read', 'profile', 'openid', 'email']
+    scopes: ['User.Read', 'profile', 'openid', 'email']
 }
 
 export const activeDirectoryApiRequest = {
