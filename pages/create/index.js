@@ -34,24 +34,12 @@ export default function CreateForm() {
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
 
     // These variables are for DND
-    // const [mainFormIds, setMainFormIds] = useState([])
 
     // These variables are for pagination
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
-        // Why we need the below code
-        // const inputKeysArray = Object.keys(inputs)
-
-        // inputKeysArray.map(input => {
-        //     let isInputFound = metadata.some(element => element.name === input)
-
-        //     if (!isInputFound) {
-        //         delete inputs[input]
-        //     }
-        // })
-
         // metadata.forEach(element => {
         //     element.page = pageNumber
 
