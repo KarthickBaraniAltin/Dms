@@ -101,7 +101,7 @@ export default function FormDefinitionDashboard() {
     const actionBodyTemplate = (rowData) => {
         return (
             <span>
-                <Link href='/formDefinitionView/[id]' as={`/formDefinitionView/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
+                <Link href='/view/[id]' as={`/view/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
                     <span className='pi pi-eye' style={{cursor: 'pointer', color: '#034692'}} />
                 </Link>
                 <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${rowData.id}`} rel='noopener noreferrer'>

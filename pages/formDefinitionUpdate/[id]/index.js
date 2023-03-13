@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { useFormCreator } from '../../../hooks/useFormCreator'
+import { useEffect, useState, useRef } from 'react'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal } from "@azure/msal-react"
@@ -9,28 +8,28 @@ import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import { useHeaderImage } from '../../../hooks/useHeaderImage'
-import { useInputs } from '../../../hooks/useInput'
 import { useShowPreview } from '../../../hooks/useShowPreview'
 import useDnd from '../../../hooks/useDnd'
 import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
-import { Droppable } from '../../../components/DndComponents/Droppable'
 import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
+import { useCreateItems } from '../../../hooks/useCreateItems'
 
 export default function Update({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, inputs, setInputs } = useInputs()
+    const [ metadata, setMetadata ] = useState(data.metadata.metadata)
+    const [ mainFormIds, setMainFormIds ] = useState([])
+    const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds })
 
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs })
     const { handleDragEnd, handleDragOver } = useDnd()
+    const dragOverCapture = useRef()
 
     const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
+    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave } = useSave()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -38,8 +37,18 @@ export default function Update({ id, data, api }) {
     const { instance } = useMsal()
 
     useEffect(() => {
-        setMetadata(data.metadata?.metadata)
-    }, [data.metadata, setMetadata])
+        setMainFormIds(metadata.map((data, index) => (index + 1)))
+
+        metadata.map(component => {
+            if (component.type === undefined) {
+                return
+            }
+        })
+    }, [metadata])
+
+    const addMetadata = (data) => {
+        setMetadata((prevList) => [...prevList, data])
+    }
 
     const submitFormData = async (event, formName, description) => {
         event.preventDefault()
@@ -92,19 +101,10 @@ export default function Update({ id, data, api }) {
                                 <Button label='Save' style={{width: '90px'}} onClick={handleSave} />
                             </div>
                             <div>
-                                <Button label='Share' style={{width: '90px'}} {...isShareDisabled} onClick={handleShare} />
+                                <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
                             </div>
                         </div>
-                        <Droppable id={'droppable-container-form'}>
-                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
-                            <SortableContext
-                                items={mainFormIds}
-                                strategy={rectSortingStrategy}
-                            >
-                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
-                            </SortableContext>
-                            </div>
-                        </Droppable>
+                        {renderComponents()}
                     </Card>
                 </div>
                 </DndContext>

@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
-import { Droppable } from '../../components/DndComponents/Droppable'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
@@ -13,13 +11,10 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
-import { useInputs } from '../../hooks/useInput'
 import ShareDialog from '../../components/Settings/ShareDialog/ShareDialog'
 import { useShare } from '../../hooks/useShare'
-import { useState } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { useCreateItems } from '../../hooks/useCreateItems'
-import { Sortable } from '../../components/DndComponents/Sortable'
 
 export default function CreateForm() {
     
@@ -169,9 +164,9 @@ export default function CreateForm() {
                             </div>
                         </div>
                         {renderComponents()}
-                        <div className='flex flex-column justify-content-center'>
+                        {/* <div className='flex flex-column justify-content-center'>
                             <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
-                        </div>
+                        </div> */}
                     </Card>
                 </div>
                 </DndContext>

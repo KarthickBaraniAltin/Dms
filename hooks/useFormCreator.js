@@ -9,7 +9,7 @@ import { useRenderItems } from './useRenderItems'
 export const useFormCreator = ({ headerImage, handleHeaderImage, handleInputChange, inputs, setInputs }) => {
 
     const [ metadata, setMetadata ] = useState([])
-    const { inputs, setInputs } = useInputs({ initialValues: {} })
+    // const { inputs, setInputs } = useInputs({ initialValues: {} })
     const { renderDialog } = useDialogs({ metadata, setMetadata })
     const { renderLabel, renderComponents } = useRenderItems({ metadata, setMetadata, headerImage, handleHeaderImage, handleInputChange, inputs })
 
