@@ -4,7 +4,7 @@ import Errors from '../../SharedComponents/Errors/Errors'
 import CreateLabel from '../CreateLabel/CreateLabel'
 import CreateSubtitle from '../CreateSubtitle/CreateSubtitle'
 
-export default function CreateMultiRadioButtons ({ metadata, openDialog, errors }) {
+export default function CreateMultiRadioButtons ({ metadata, openDialog, onChange, errors }) {
     const { name, label, subtitle, options } = metadata
     const [checkedValue, setCheckedValue] = useState()
 
@@ -16,8 +16,11 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, errors 
                     {options.map((radioButton, index) => {
                         return (
                             <div key={index} style={{marginBottom: '0.5rem'}}>
-                                <RadioButton value={radioButton.value} name={radioButton.value} 
-                                    onChange={(e) => setCheckedValue(e.target.value)} 
+                                <RadioButton value={radioButton.value} name={name} 
+                                    onChange={(e) => {
+                                        setCheckedValue(e.target.value)
+                                        onChange(e)
+                                    }} 
                                     checked={checkedValue === radioButton.value} 
                                     style={{marginRight: '0.5rem'}} />
                                 <label>{radioButton.value}</label>
