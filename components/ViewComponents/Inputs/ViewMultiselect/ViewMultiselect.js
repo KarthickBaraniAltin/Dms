@@ -1,11 +1,11 @@
-import { InputText } from 'primereact/inputtext'
+import { MultiSelect } from 'primereact/multiselect'
 import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import ViewLabel from '../../ViewLabel/ViewLabel'
 import ViewSubtitle from '../../ViewSubtitle/ViewSubtitle'
 
-export default function ViewText({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle } = metadata
+export default function ViewTextarea({ metadata, value, onChange, errors }) {
+    const { name, label, subtitle, className, options } = metadata
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}> 
@@ -13,7 +13,7 @@ export default function ViewText({ metadata, value, onChange, errors }) {
                 <ViewLabel label={label} />
                 <ViewSubtitle subtitle={subtitle} />
             </div>
-            <InputText name={name} value={value} onChange={onChange} />
+            <MultiSelect name={name} className={className} value={value} onChange={onChange} options={options} display='chip' />
             <Errors errors={errors} />
         </div>
     )

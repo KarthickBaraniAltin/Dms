@@ -1,10 +1,11 @@
-import { Calendar } from 'primereact/calendar'
+import { Dropdown } from 'primereact/dropdown'
 import React from 'react'
+import Errors from '../../../SharedComponents/Errors/Errors'
 import ViewLabel from '../../ViewLabel/ViewLabel'
 import ViewSubtitle from '../../ViewSubtitle/ViewSubtitle'
 
-export default function ViewCalendar({ metadata, value, onChange }) {
-    const { name, label, subtitle, defaultValue } = metadata
+export default function ViewTextarea({ metadata, value, onChange, errors }) {
+    const { name, label, subtitle, className, options } = metadata
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}> 
@@ -12,7 +13,8 @@ export default function ViewCalendar({ metadata, value, onChange }) {
                 <ViewLabel label={label} />
                 <ViewSubtitle subtitle={subtitle} />
             </div>
-            <Calendar name={name} value={value} onChange={onChange} />
+            <Dropdown name={name} className={className} value={value} onChange={onChange} options={options} />
+            <Errors errors={errors} />
         </div>
     )
 }

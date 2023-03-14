@@ -15,14 +15,18 @@ import ShareDialog from '../../components/Settings/ShareDialog/ShareDialog'
 import { useShare } from '../../hooks/useShare'
 import { useEffect, useRef, useState } from 'react'
 import { useCreateItems } from '../../hooks/useCreateItems'
+import { useInputs } from '../../hooks/useInput'
+import { useValidation } from '../../hooks/useValidation'
 
 export default function CreateForm() {
     
-    // Rendering the form creastion page
+    // Rendering the form creation page
     const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState([])
     const [ mainFormIds, setMainFormIds ] = useState([])
-    const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds })
+    const { errors } = useValidation({ metadata, inputs })
+    const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds, handleInputChange, inputs, errors })
     
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
@@ -32,8 +36,6 @@ export default function CreateForm() {
     const { instance } = useMsal()
     const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
-
-    // These variables are for DND
 
     // These variables are for pagination
     const [pageNumber, setPageNumber] = useState(1)
@@ -56,46 +58,6 @@ export default function CreateForm() {
             }
         })
     }, [metadata])
-
-    // useEffect(() => {
-    //     // Why we need the below code
-    //     // const inputKeysArray = Object.keys(inputs)
-
-    //     // inputKeysArray.map(input => {
-    //     //     let isInputFound = metadata.some(element => element.name === input)
-
-    //     //     if (!isInputFound) {
-    //     //         delete inputs[input]
-    //     //     }
-    //     // })
-
-    //     metadata.forEach(element => {
-    //         element.page = pageNumber
-
-    //         if (element.defaultValue) {
-    //             setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
-    //         }
-    //     })
-
-    //     setMainFormIds(metadata.map((data, index) => (index + 1)))
-
-    //     const sectionIdArray = []
-    //     metadata.map(component => {
-    //         if (component.type === undefined) {
-    //             return
-    //         }
-    //         if (component.type === 'section') {
-    //             sectionIdArray.push({
-    //                 id: component.name,
-    //                 componentData: component.sectionMetadata.length > 0 ? component.sectionMetadata.map(sectionComponent => sectionComponent.id) : []
-    //             })
-    //         }
-    //     })
-
-    //     setSectionIds(sectionIdArray)
-    // }, [metadata])
-
-    // console.log("MainFormIds = ", mainFormIds)
 
     const changePage = () => {
         setCurrentPage()
@@ -121,14 +83,17 @@ export default function CreateForm() {
                 Authorization: `Bearer ${accessToken}`
             },
             data: {
-                name: "Test Name",
+                name: "New Test",
                 description: "Desc ",
                 authorFullName: name,
                 authorId: localAccountId,
                 authorEmail: username,
                 metadata: {
                     metadata: metadata
-                } 
+                },
+                inputs: {
+                    inputs: inputs
+                }
             }
         }
 
@@ -147,7 +112,7 @@ export default function CreateForm() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} handleInputChange={handleInputChange} inputs={inputs} errors={errors} /> : null} {/* setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} */}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} formSubmitResult={formSubmitResult} /> : null}
                 <div className='grid'>
                     <ComponentPanel />
@@ -164,9 +129,6 @@ export default function CreateForm() {
                             </div>
                         </div>
                         {renderComponents()}
-                        {/* <div className='flex flex-column justify-content-center'>
-                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
-                        </div> */}
                     </Card>
                 </div>
                 </DndContext>

@@ -10,7 +10,7 @@ export default function CreateNumberInput({metadata, value, onChange, openDialog
     return (
         <div>
             <CreateLabel componentData={metadata} label={label} openDialog={openDialog} />
-            <InputNumber name={name} className={className} value={value} onChange={onChange} />
+            <InputNumber name={name} className={className} value={value} onChange={onChange} useGrouping={false}/>
             <CreateSubtitle value={subtitle}/>
             <Errors errors={errors} />
         </div>

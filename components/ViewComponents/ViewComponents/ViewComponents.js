@@ -1,38 +1,46 @@
-import { InputMask } from 'primereact/inputmask'
-import { InputNumber } from 'primereact/inputnumber'
-import { InputTextarea } from 'primereact/inputtextarea'
-import { MultiSelect } from 'primereact/multiselect'
 import React, { createElement } from 'react'
+import { ViewSignature } from '../ViewSignature/ViewSignature'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
-import DropDown from '../../LexicalEditor/UI/DropDown/DropDown'
 import FileInput from '../FileInput/FileInput'
 import ViewCalendar from '../Inputs/ViewCalendar/ViewCalendar'
 import ViewText from '../Inputs/ViewText/ViewText'
-import { ViewSignature } from '../ViewSignature/ViewSignature'
+import ViewNumber from '../Inputs/ViewNumber/ViewNumber'
+import ViewTextarea from '../Inputs/ViewTextarea/ViewTextarea'
+import ViewMask from '../Inputs/ViewMask/ViewMask'
+import ViewDropdown from '../Inputs/ViewDropdown/ViewDropdown'
+import ViewMultiselect from '../Inputs/ViewMultiselect/ViewMultiselect'
+import ViewRichText from '../Inputs/ViewRichText/ViewRichText'
+import ViewSubtitle from '../ViewSubtitle/ViewSubtitle'
+import ViewMultiRadioButtons from '../Inputs/ViewMultiRadioButtons/ViewMultiRadioButtons'
+import ViewCheckbox from '../Inputs/ViewCheckbox/ViewCheckbox'
+import ViewTime from '../Inputs/ViewTime/ViewTime'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
     const componentMapper = {
         'text': ViewText,
         'calendar': ViewCalendar,
-        'number': InputNumber,
-        'textarea': InputTextarea,
-        'mask': InputMask,
-        'dropdown': DropDown,
-        'multiselect': MultiSelect,
+        'time': ViewTime,
+        'number': ViewNumber,
+        'textarea': ViewTextarea,
+        'mask': ViewMask,
+        'dropdown': ViewDropdown,
+        'multiselect': ViewMultiselect,
         'header': 'h1',
         'file': FileInput,
-        'richText': LexicalEditor,
-        'subtitle': 'div',
+        'richText': ViewRichText,
+        'subtitle': ViewSubtitle,
         'signature': ViewSignature,
-        // 'radiobutton': CreateMultiRadioButtons,
-        // 'checkbox': CreateCheckbox
+        'radiobutton': ViewMultiRadioButtons,
+        'checkbox': ViewCheckbox
     }
 
     return (
         <>
             {metadata?.map((element, index) => {
                 const { name, type, columnSize } = element
+                console.log('ViewElement:', element)
+                console.log('ViewInputs:', inputs)
                 return (
                     <div key={index} className={'field col-6'}>
                         { createElement( 

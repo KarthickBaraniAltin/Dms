@@ -1,5 +1,6 @@
 import { Dialog } from "primereact/dialog"
 import { useCreateItems } from "../../../hooks/useCreateItems"
+import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 
 /* 
     - A one column component should be able to take up a whole row on the form with out another one column component stacking next to it.
@@ -8,35 +9,27 @@ import { useCreateItems } from "../../../hooks/useCreateItems"
     - The label and subtitle need to be right aligned within their div.
 */
 
-export default function PreviewDialog({ showDialog, handlePreview, metadata, setMetadata }) {
+export default function PreviewDialog({ showDialog, handlePreview, metadata, handleInputChange, inputs, errors }) {
     let componentList = []
-    const { renderComponents } = useCreateItems({ metadata, setMetadata })
+    // const { renderComponents } = useCreateItems({ metadata, setMetadata }
 
-    metadata.map(element => {
-        const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
+    // metadata.map(element => {
+    //     const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
 
-        componentList.push(
-            <div className={rest?.columnSize?.value ?? 'field col-12'}>
-                <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
-                    {renderComponents(metadata, 1)}
-                </div>
-            </div>
-        )
-    })
+    //     componentList.push(
+    //         <div className={rest?.columnSize?.value ?? 'field col-12'}>
+    //             <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
+    //                 {renderComponents(metadata, 1)}
+    //             </div>
+    //         </div>
+    //     )
+    // })
 
     return (
         <>
             <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '75vw'}}>
-                <div className='flex justify-content-center'>
-                    <div>
-                        {componentList.length > 0 ?
-                            <div className='grid'>
-                                {componentList}
-                            </div>
-                            :
-                            null
-                        }
-                    </div>
+                <div className='flex flex-column justify-content-center'>
+                    <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                 </div>
             </Dialog>
         </>

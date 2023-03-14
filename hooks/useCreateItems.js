@@ -20,6 +20,7 @@ import CreateReadonlySubtitle from '../components/CreationComponents/CreateReado
 import CreateCheckboxInput from '../components/CreationComponents/CreateCheckboxInput/CreateCheckboxInput'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import CreateTimeInput from '../components/CreationComponents/CreateTimeInput/CreateTimeInput'
 
 // useCreateItems
 export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
@@ -33,6 +34,7 @@ export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
     const componentMapper = {
         'text': CreateTextInput,
         'calendar': CreateCalendarInput,
+        'time': CreateTimeInput,
         'number': CreateNumberInput,
         'textarea': CreateTextareaInput,
         'mask': CreateMaskInput,
