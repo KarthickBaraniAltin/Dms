@@ -2,9 +2,9 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from 'primereact/inputtext'
 import { Button } from "primereact/button"
 
-export default function ShareDialog({showDialog, handleShare, formSubmitResult}) {
+export default function ShareDialog({showDialog, handleShare, id, formSubmitResult}) {
     const [domain] = window.location.host.split('/')
-    const currentURL = `http://${domain}/form-builder-studio/view/${formSubmitResult.data.id}`
+    const currentURL = `http://${domain}/form-builder-studio/view/${id}`
 
     const handleLinkCopy = async() => {
         try {
@@ -30,19 +30,19 @@ export default function ShareDialog({showDialog, handleShare, formSubmitResult})
                     </div>
                     <div className='flex'>
                         <h4 style={{margin: 0}}>Form Definition Id:</h4>
-                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.data.id}</div>
+                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.id}</div>
                     </div>
                     <div className='flex'>
                         <h4 style={{margin: 0}}>Author Id:</h4>
-                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.data.authorId}</div>
+                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.authorId}</div>
                     </div>
                     <div className='flex'>
                         <h4 style={{margin: 0}}>Name:</h4>
-                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.data.name}</div>
+                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.name}</div>
                     </div>
                     <div className='flex'>
                         <h4 style={{margin: 0}}>Date Created:</h4>
-                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.data.dateCreated}</div>
+                        <div style={{alignSelf: 'center', marginLeft: '0.5rem'}}>{formSubmitResult.dateCreated}</div>
                     </div>
                 </div>
             </Dialog>
