@@ -58,7 +58,6 @@ export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
                         {metadata.length === 0 && <h5 style={{margin: '0 auto'}}>Drop field here</h5>}
                         {metadata.map((data, index) => {
                             const { type, name, columnSize } = data
-                            console.log('inputs:', inputs)
                             return (
                                 <Sortable className="field col-6" key={index} id={index + 1}>
                                     <div>

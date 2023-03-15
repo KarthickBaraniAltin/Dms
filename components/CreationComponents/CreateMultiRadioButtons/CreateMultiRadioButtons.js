@@ -16,7 +16,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, onChang
                     {options.map((radioButton, index) => {
                         return (
                             <div key={index} style={{marginBottom: '0.5rem'}}>
-                                <RadioButton value={radioButton.value} name={name} 
+                                <RadioButton key={index} value={radioButton.value} name={name} 
                                     onChange={(e) => {
                                         setCheckedValue(e.target.value)
                                         onChange(e)
