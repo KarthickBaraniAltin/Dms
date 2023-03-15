@@ -9,14 +9,14 @@ export function Droppable(props) {
     // border: '2px solid black',
     backgroundColor: isOver ? '#004990' : 'white',
     color: isOver ? 'white' : undefined,
-    padding: '3rem 6rem',
+    // padding: '3rem 6rem',
     // padding: '1rem 2rem',
     // display: 'flex',
-    gap: '0.5rem'
+    // gap: '0.5rem'
   }
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div className="grid grid-nogutter" ref={setNodeRef} style={style}>
       {props.children}
     </div>
   );

@@ -90,7 +90,8 @@ const useDnd = () => {
     }
 
     const addMainForm = (active, metadata, addMetadata) => {
-        const updatedData = JSON.parse(JSON.stringify(active.data.current))
+        // children property will not be used in metadata with destructuring we are deleting it
+        const { children ,...updatedData } = active.data.current
 
             if (updatedData.type === 'section') {
                 if (metadata.length === 0) {

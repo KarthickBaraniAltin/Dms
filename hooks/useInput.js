@@ -1,10 +1,10 @@
 import { useState } from "react"
 
-export const useInputs = (options) => {
-    const [inputs, setInputs] = useState(options?.initialValues || {})
-
+export const useInputs = ({ initialValues = {} }) => {
+    const [inputs, setInputs] = useState(initialValues)
+    
     const handleInputChange = (event) => {
-
+        console.log('event:', event)
         if (event.target?.files) {
             setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
         } else if (event.target) {
@@ -13,7 +13,6 @@ export const useInputs = (options) => {
         } else if (event.originalEvent) {
             const { name, value } = event.originalEvent.target
             assignValuesNested(name, value)
-            // setInputs(inputs => ({...inputs, [name]: value}))
         } else if (typeof event === 'string') {
             
         } else {

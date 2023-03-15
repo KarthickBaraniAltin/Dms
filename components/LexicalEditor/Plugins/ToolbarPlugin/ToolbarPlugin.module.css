@@ -188,6 +188,8 @@ button.item.dropdown-item-active i {
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
     vertical-align: middle;
+    overflow-x: auto; /* Enable horizontal overflow scrolling when necessary */
+    overflow-y: hidden;     
 } 
   
 .toolbar button.toolbar-item {

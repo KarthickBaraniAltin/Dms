@@ -1,24 +1,53 @@
 import Head from 'next/head'
-import { useEffect } from 'react'
-import { useFormCreator } from '../../../hooks/useFormCreator'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useAccount, useMsal, useMsalAuthentication } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
-import { useHeaderImage } from '../../../hooks/useHeaderImage'
+import { callMsGraph } from '../../../src/MsGraphApiCall'
+import { useState } from 'react'
+import { useInputs } from '../../../hooks/useInput'
+import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
+import { useValidation } from '../../../hooks/useValidation'
 
-export default function View({ id, data, api }) {
-    const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+export default function View({ id, metadata, api, initialValues }) {
+
+    // This part is displaying the form
+    // const { headerImage, handleHeaderImage } = useHeaderImage()
+    
+    const { inputs, handleInputChange } = useInputs({initialValues})
+    const { errors } = useValidation({ metadata, inputs })
+
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { loading, error, response, callApiFetch } = useApi()
+    const { loading, callApiFetch } = useApi()
+
     const { startViewTime } = useTimeControl()    
+    const [ userData, setUserData ] = useState(undefined)
+    const { instance, inProgress, accounts } = useMsal()
+    const account = useAccount(accounts[0] ?? {})
+    
+    useState(() => {
+        if (!userData && account) {
+            callMsGraph().then(response => setUserData(response)).catch((e) => {
+                console.log("Error while getting the user data = ", e)
+            })
+        }
+    }, [inProgress, instance, account]) 
 
     const jsonToFormData = (json) => {
+        const convert = (value) => {
+            if (typeof value === "string") {
+                return value
+            } else if (value instanceof Date) {
+                return value
+            } else {
+                return JSON.stringify(value)
+            }
+        }
+
         const formData = new FormData()
         for (var key in json) {
             if (key.startsWith('file')) {
@@ -26,7 +55,7 @@ export default function View({ id, data, api }) {
                     formData.append(key + '_' + index, file)
                 })
             } else {
-                formData.append(key, JSON.stringify(json[key]))
+                formData.append(key, convert(json[key]))
             }
         }
         return formData
@@ -34,9 +63,16 @@ export default function View({ id, data, api }) {
 
     const submitFormData = async (event) => {
         event.preventDefault()
-        const { accessToken } = await acquireToken()
 
-        inputs.startViewTime = startViewTime 
+        const { accessToken } = await acquireToken()
+        const { givenName, surname, mail } = instance.getActiveAccount()
+
+        if (userData) {
+            inputs.startViewTime = startViewTime 
+            inputs.fullLegalName = givenName + " " + surname
+            inputs.email = mail
+            inputs.securityLevel = "Email, Account Authentication(None)"
+        }
 
         const formData = jsonToFormData(inputs)
         const fetchParams = {
@@ -49,12 +85,7 @@ export default function View({ id, data, api }) {
 
         // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
-        console.log("RES = ", res)
     }
-
-    useEffect(() => {
-        setMetadata(data.metadata?.metadata)
-    }, [data.metadata, setMetadata])
 
     return (
         <>
@@ -64,12 +95,13 @@ export default function View({ id, data, api }) {
             </Head>
             <AuthenticatedTemplate>                   
                 <div className='grid'>
-                    <Card className='card form-horizontal mt-5' style={{'width': '50%'}}>
+                    <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
-                            <div className='grid p-fluid form-grid'>
-                                <div className='field md:col-6 col-offset-3'>
-                                    <Button label="Submit" onClick={submitFormData} loading={loading} />
-                                </div>
+                            <div className='grid formgrid'>
+                                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
+                            </div>
+                            <div className='field md:col-6 col-offset-3'>
+                                <Button label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>
@@ -86,24 +118,22 @@ export default function View({ id, data, api }) {
     )
 }
 
-export async function getStaticPaths({  }) {
-    return {
-        paths: [], //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
-    }
-}
-
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const { id } = context.params;
 
     try {
         const res = await getFormDefinition(id)
 
+        const initialValues = {}    
+        res.data?.metadata?.metadata?.forEach((element) => {
+            initialValues[element.name] = element.defaultValue
+        }) 
+
         return {
             props: {
                 id,
-                data: res.data,
+                metadata: res.data.metadata.metadata,
+                initialValues,
                 api: process.env.FORM_BUILDER_API
             }
         }
@@ -115,4 +145,4 @@ export async function getStaticProps(context) {
             }
         }
     }
-  }
+}

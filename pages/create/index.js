@@ -1,9 +1,7 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy, rectSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
-import { Droppable } from '../../components/DndComponents/Droppable'
-import { useFormCreator } from '../../hooks/useFormCreator'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
@@ -14,20 +12,66 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
+import { useShare } from '../../hooks/useShare'
+import { useEffect, useRef, useState } from 'react'
+import CreateComponents from '../../components/CreationComponents/CreateComponents/CreateComponents'
+import useDialogs from '../../hooks/useDialogs'
+import { Droppable } from '../../components/DndComponents/Droppable'
 
 export default function CreateForm() {
+    
+    // Rendering the form creation page
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { metadata, addMetadata, setMetadata, renderForm, mainFormIds, setMainFormIds, dragOverCapture } = useFormCreator({ headerImage, handleHeaderImage })
+    const [ metadata, setMetadata ] = useState([])
+    const [ mainFormIds, setMainFormIds ] = useState([])
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+
     const { showPreviewDialog, handlePreview } = useShowPreview()
+    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
     const { handleDragEnd, handleDragOver } = useDnd()
+    const dragOverCapture = useRef()
 
     const { instance } = useMsal()
     const { loading, callApi } = useApi()
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest) 
 
+    // These variables are for pagination
+    const [pageNumber, setPageNumber] = useState(1)
+    const [currentPage, setCurrentPage] = useState(pageNumber)
+
+    useEffect(() => {
+        // metadata.forEach(element => {
+        //     element.page = pageNumber
+
+        //     if (element.defaultValue) {
+        //         setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
+        //     }
+        // })
+
+        setMainFormIds(metadata.map((data, index) => (index + 1)))
+
+        metadata.map(component => {
+            if (component.type === undefined) {
+                return
+            }
+        })
+    }, [metadata])
+
+    const changePage = () => {
+        setCurrentPage()
+    }
+
+    const addPage = () => {
+        setPageNumber()
+    }
+
+    const addMetadata = (data) => {
+        setMetadata((prevList) => [...prevList, data])
+    }
+
     const submitForm = async () => {
         const { accessToken } = await acquireToken()
-        const { name, username, localAccountId } = instance.getAc
+        const { name, username, localAccountId } = instance.getActiveAccount()
 
         const params = {
             method: 'POST',
@@ -37,18 +81,19 @@ export default function CreateForm() {
                 Authorization: `Bearer ${accessToken}`
             },
             data: {
-                name: "Test Name",
+                name: "New Test",
                 description: "Desc ",
                 authorFullName: name,
                 authorId: localAccountId,
                 authorEmail: username,
                 metadata: {
                     metadata: metadata
-                } 
+                }
             }
         }
 
         const res = await callApi(params)
+        setFormSubmitResult(res)
     }
 
     return (
@@ -63,24 +108,21 @@ export default function CreateForm() {
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                <div className='grid'>
+                <div className='flex'>
+                    {renderDialog()}
                     <ComponentPanel />
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
+                    <div style={{'width': '5%'}} />
+                    <Card className='card ml-5 mt-5 mr-5' style={{'width': '55%'}}>
+                        <div className='flex flex-column mb-4'>
                             <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                         </div>
-                        <Droppable id={'droppable-container-form'}>
-                            <div className='grid' style={{width: '480px', rowGap: '0.5rem'}}>
-                            <SortableContext
-                                items={mainFormIds}
-                                strategy={rectSortingStrategy}
-                            >
-                                {metadata.length === 0 ? <h5 style={{margin: '0 auto'}}>Drop field here</h5> : renderForm()}
+                        <Droppable id='droppable-container-form'>
+                            <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
+                                <CreateComponents metadata={metadata} openDialog={openDialog} />
                             </SortableContext>
-                            </div>
                         </Droppable>
                         <div className='flex flex-column justify-content-center'>
-                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
+                            <Button label='Create' loading={loading} className='flex align-self-center mt-4' onClick={submitForm} />
                         </div>
                     </Card>
                 </div>

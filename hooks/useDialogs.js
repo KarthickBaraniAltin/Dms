@@ -14,17 +14,19 @@ import DropdownDialog from "../components/Settings/DropdownDialog/DropdownDialog
 import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDialog"
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
+import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
-    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs()
+    const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs({ initialValues: {} })
 
     const dialogMapper = { 
         'section': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
         'calendar': CalendarDialog,
+        'time': TimeDialog,
         'textarea': TextareaDialog,
         'mask': MaskDialog,
         'header': HeaderDialog,
@@ -44,7 +46,6 @@ const useDialogs = ({ metadata, setMetadata }) => {
     }
 
     const openDialog = (data) => {
-        console.log("Data = ", data)
         if (!dialogMapper[data.type]) {
             console.error("Given dialog type doesn't exist in dialog mapper, component can't be created")
             return

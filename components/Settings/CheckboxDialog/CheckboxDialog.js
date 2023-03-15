@@ -3,21 +3,11 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
+import LexicalEditor from '../../LexicalEditor/LexicalEditor'
+import Footer from '../Footer/Footer'
+import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 
 export default function CheckboxDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-   const renderFooter = () => {
-    return (
-      <div>
-          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
-          <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
-      </div>
-    )
-  }
-
-  const columnSizes = [
-    {label: 'Full Size', value: 'field col-12'},
-    {label: 'Half Size', value: 'field col-6'}
-  ]
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -53,7 +43,7 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
 
   return (
     <div>
-      <Dialog header='Checkbox Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Checkbox Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -63,9 +53,9 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
-            <InputText name='subtitle' value={inputs?.subtitle ?? ''} onChange={handleInputChange} />
+            <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
@@ -73,8 +63,7 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
-            <label>Change Column Width</label>
-            <Dropdown name='columnSize.value' value={inputs?.columnSize?.value ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
+            <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Options</h4>
           {

@@ -6,17 +6,12 @@ import { InputNumber } from 'primereact/inputnumber'
 import { MultiSelect } from 'primereact/multiselect'
 import { Checkbox } from 'primereact/checkbox';
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
+import { Dropdown } from 'primereact/dropdown'
+import Footer from '../Footer/Footer'
+import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 
 export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-   const renderFooter = () => {
-    return (
-      <div>
-          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
-          <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
-      </div>
-    )
-  }
-
+  
   const fileTypes = [
     {label: '.pdf', value: 'application/pdf'},
     {label: '.png', value: 'image/png'},
@@ -25,7 +20,7 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
 
   return (
     <div>
-      <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -42,6 +37,9 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
             <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+          </div>
+          <div className='field col-12 md:col-12'>
+            <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <div className='col-6'>
             <label>Multiple</label>
