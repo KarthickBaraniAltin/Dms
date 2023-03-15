@@ -14,11 +14,11 @@ export default function CreateTextarea({metadata, value, onChange, openDialog, e
   return (
     <div className='field grid grid-nogutter'>
       <SettingsButton openDialog={openDialog} componentData={metadata} />
-      <div className='col-4'>
+      <div className='col-2'>
         <CreateLabel componentData={metadata} label={label} openDialog={openDialog} />
         <CreateSubtitle value={subtitle} />
       </div>
-      <InputTextarea name={name} autoResize className={clsx('col-8', styles['my-textarea'])} value={value} onChange={onChange} />
+      <InputTextarea name={name} autoResize className={clsx('col-10', styles['my-textarea'])} value={value} onChange={onChange} />
       <Errors errors={errors} />
     </div>
   )

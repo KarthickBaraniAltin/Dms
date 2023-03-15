@@ -14,17 +14,14 @@ import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
 import { useShare } from '../../hooks/useShare'
 import { useEffect, useRef, useState } from 'react'
-import { useCreateItems } from '../../hooks/useCreateItems'
 import CreateComponents from '../../components/CreationComponents/CreateComponents/CreateComponents'
 import useDialogs from '../../hooks/useDialogs'
-import { useInputs } from '../../hooks/useInput'
 import { Droppable } from '../../components/DndComponents/Droppable'
 
 export default function CreateForm() {
     
     // Rendering the form creation page
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState([])
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
@@ -91,9 +88,6 @@ export default function CreateForm() {
                 authorEmail: username,
                 metadata: {
                     metadata: metadata
-                },
-                inputs: {
-                    inputs: inputs
                 }
             }
         }

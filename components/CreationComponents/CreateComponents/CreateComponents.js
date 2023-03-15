@@ -1,4 +1,3 @@
-import useDialogs from '../../../hooks/useDialogs'
 import { useValidation } from '../../../hooks/useValidation'
 import { createElement } from 'react'
 import { useInputs } from '../../../hooks/useInput'
@@ -20,6 +19,7 @@ import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
 import clsx from 'clsx'
 
 import styles from '../CreateComponents/CreateComponents.module.css'
+import CreateTimeInput from '../Inputs/CreateTimeInput/CreateTimeInput'
 
 export default function CreateComponents ({ metadata, openDialog  }) {
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
@@ -32,6 +32,7 @@ export default function CreateComponents ({ metadata, openDialog  }) {
         'textarea': CreateTextarea,
         'mask': CreateMask,
         'dropdown': CreateDropdown,
+        'time': CreateTimeInput,
         'multiselect': CreateMultiSelect,
         'header': CreateHeader,
         'file': CreateFileInput,
@@ -47,11 +48,9 @@ export default function CreateComponents ({ metadata, openDialog  }) {
             {metadata?.length === 0 && <h5 style={{margin: '0 auto'}}>Drop field here</h5>}
             {metadata?.map((data, index) => {
                 const { type, name, divClassName } = data
-                console.log('type = ', type)
                 return (
                     <div className={clsx(divClassName, 'mt-2')} key={index}>
                         <Sortable key={index} id={index + 1}>
-                                {/* <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div> */}
                                 {createElement(componentMapper[type],
                                     {
                                         metadata: data,

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const useInputs = ({ initialValues }) => {
+export const useInputs = ({ initialValues = {} }) => {
     const [inputs, setInputs] = useState(initialValues)
 
     const handleInputChange = (event) => {

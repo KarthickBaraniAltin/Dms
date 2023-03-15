@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Errors({errors, name}) {
+export default function Errors({errors}) {
     return (
         <>
             {errors && 

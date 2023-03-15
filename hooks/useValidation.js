@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 
 export const useValidation = ({ metadata, inputs }) => {
+    console.log("Metadata = ", metadata)
     const [validations, setValidations] = useState({})
     const [errors, setErrors] = useState({})
     
@@ -236,8 +237,8 @@ export const useValidation = ({ metadata, inputs }) => {
                         case 'fileTypes': {
                             const { fileTypes, message } = value
                             if (!validationMapper.fileTypes(fileTypes, inputValue)) {
-                                const validFileTypes = fileTypes.map(fileType => {
-                                    return <li>{fileType.split('/')[1]}</li>
+                                const validFileTypes = fileTypes.map((fileType, index) => {
+                                    return <li key={index}>{fileType.split('/')[1]}</li>
                                 })
                                 const finalFileTypeMessage = (
                                     <div>

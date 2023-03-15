@@ -11,11 +11,11 @@ export default function CreateRichTextInput({ metadata, openDialog, value, onCha
     return (
         <div className='field grid grid-nogutter'>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-4'>
+            <div className='col-2'>
                 <CreateLabel componentData={metadata} label={label} openDialog={openDialog} />
                 <CreateSubtitle value={subtitle} />
             </div>
-            <div className='col-8'>
+            <div className='col-10'>
                 <LexicalEditor name={name} value={value} onChange={onChange} /> 
             </div>
             <Errors errors={errors} />
