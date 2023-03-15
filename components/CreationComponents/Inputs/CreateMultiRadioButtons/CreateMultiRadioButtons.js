@@ -6,7 +6,7 @@ import SettingsButton from '../../SettingsButton/SettingsButton'
 
 export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors }) {
     const { name, label, subtitle, options } = metadata
-    // const [checkedValue, setCheckedValue] = useState()
+    const [checkedValue, setCheckedValue] = useState()
 
     return (
         <div className='field grid grid-nogutter'>
@@ -19,12 +19,18 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                 {options.length > 0 ? 
                     <>
                         {options.map((radioButton, index) => {
-                            return (
-                                <div className='col-12' key={index} style={{marginBottom: '0.5rem'}}>
-                                    <RadioButton value={radioButton.value} name={radioButton.value} onChange={onChange} checked={value === radioButton.value} style={{marginRight: '0.5rem'}} />
-                                    <label>{radioButton.value}</label>
-                                </div>
-                            )
+                        return (
+                            <div key={index} style={{marginBottom: '0.5rem'}}>
+                                <RadioButton key={index} value={radioButton.value} name={name} 
+                                    onChange={(e) => {
+                                        setCheckedValue(index)
+                                        onChange(e)
+                                    }} 
+                                    checked={checkedValue === index}
+                                    style={{marginRight: '0.5rem'}} />
+                                <label>{radioButton.value}</label>
+                            </div>
+                        )
                         })}
                     </>
                     : <p>{'Click dialog to add radiobuttons'}</p>

@@ -19,7 +19,6 @@ import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
 
 export default function Update({ id, data, api }) {
-    console.log('data:', data)
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const [ metadata, setMetadata ] = useState(data.metadata.metadata)
     const [ mainFormIds, setMainFormIds ] = useState([])
@@ -74,8 +73,6 @@ export default function Update({ id, data, api }) {
         const res = await callApi(params)
         setFormSubmitResult(res)
     }
-
-    console.log('formSubmitResult:', formSubmitResult)
 
     return (
         <>

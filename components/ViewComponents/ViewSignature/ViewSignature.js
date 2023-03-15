@@ -1,5 +1,4 @@
 import { useSignatureInputs } from '../../../hooks/useSignatureInput'
-import { useInputs } from '../../../hooks/useInput'
 import { InputText } from 'primereact/inputtext'
 import { Dropdown } from 'primereact/dropdown'
 

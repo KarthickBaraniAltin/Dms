@@ -1,12 +1,3 @@
-import { RadioButton } from 'primereact/radiobutton'
-import { useState } from 'react'
-import Errors from '../../SharedComponents/Errors/Errors'
-import CreateLabel from '../CreateLabel/CreateLabel'
-import CreateSubtitle from '../CreateSubtitle/CreateSubtitle'
-
-export default function CreateMultiRadioButtons ({ metadata, openDialog, onChange, errors }) {
-    const { name, label, subtitle, options } = metadata
-    const [checkedValue, setCheckedValue] = useState()
 
     return (
         <div style={{width: '198.4px'}}>
