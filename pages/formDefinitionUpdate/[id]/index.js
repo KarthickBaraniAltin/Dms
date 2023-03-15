@@ -17,16 +17,12 @@ import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
-import { useCreateItems } from '../../../hooks/useCreateItems'
-import { useInputs } from '../../../hooks/useInput'
-import { useValidation } from '../../../hooks/useValidation'
 
 export default function Update({ id, data, api }) {
     console.log('data:', data)
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const [ metadata, setMetadata ] = useState(data.metadata.metadata)
     const [ mainFormIds, setMainFormIds ] = useState([])
-    const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds })
 
     const { handleDragEnd, handleDragOver } = useDnd()
     const dragOverCapture = useRef()

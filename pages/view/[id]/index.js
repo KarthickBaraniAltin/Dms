@@ -7,7 +7,6 @@ import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
-import { useHeaderImage } from '../../../hooks/useHeaderImage'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
 import { useState } from 'react'
 import { useInputs } from '../../../hooks/useInput'
@@ -16,17 +15,7 @@ import { useValidation } from '../../../hooks/useValidation'
 
 export default function View({ id, metadata, api, initialValues }) {
 
-    // metadata = [
-    //     {
-    //         type: "text",
-    //         label: "LASDASD"
-    //     }
-    // ];
-
-    console.log("Initial Values = ", initialValues)
-
     // This part is displaying the form
-    // const [ metadata, setMetadata ] = useState(metadataRes)
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
     const { inputs, handleInputChange } = useInputs({initialValues})

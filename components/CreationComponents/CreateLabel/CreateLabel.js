@@ -1,11 +1,10 @@
 import React from 'react'
 import Label from '../../SharedComponents/Label/Label'
 
-export default function CreateLabel({componentData, label, openDialog}) {
+export default function CreateLabel({label}) {
   return (
-    <div className="flex justify-content-between">
+    <div className="flex justify-content-between mr-1">
         <Label label={label} /> 
-        <i className='pi pi-cog' style={{fontSize: '1em'}} onClick={() => openDialog(componentData)}></i>
     </div>
   )
 }

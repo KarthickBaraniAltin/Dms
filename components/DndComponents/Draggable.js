@@ -6,24 +6,7 @@ export function Draggable(props) {
   const {attributes, listeners, setNodeRef, transform} = useDraggable({
     id: props.id,
     data: { // This optional property is how the metadata of the component is transferred to the main form panel.
-        type: props.type,
-        name: props.name,
-        label: props.label,
-        subtitle: props.subtitle,
-        defaultValue: props.defaultValue,
-        options: props?.options,
-        dateFormat: props?.dateFormat,
-        showTime: props?.showTime,
-        timeOnly: props?.timeOnly,
-        hourFormat: props?.hourFormat,
-        mask: props?.mask,
-        fontStyle: props?.fontStyle,
-        format: props?.format,
-        display: props?.display,
-        minDate: props?.minDate,
-        maxDate: props?.maxDate,
-        sectionMetadata: props?.sectionMetadata,
-        id: props.id
+        ...props
     }
   })
   
