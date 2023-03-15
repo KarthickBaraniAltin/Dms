@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import useDnd from '../../hooks/useDnd'
 import { Card } from 'primereact/card'
@@ -11,12 +12,13 @@ import { useHeaderImage } from '../../hooks/useHeaderImage'
 import { useApi } from '../../hooks/useApi'
 import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
-import ShareDialog from '../../components/Settings/ShareDialog/ShareDialog'
 import { useShare } from '../../hooks/useShare'
 import { useEffect, useRef, useState } from 'react'
 import { useCreateItems } from '../../hooks/useCreateItems'
+import CreateComponents from '../../components/CreationComponents/CreateComponents/CreateComponents'
+import useDialogs from '../../hooks/useDialogs'
 import { useInputs } from '../../hooks/useInput'
-import { useValidation } from '../../hooks/useValidation'
+import { Droppable } from '../../components/DndComponents/Droppable'
 
 export default function CreateForm() {
     
@@ -25,9 +27,8 @@ export default function CreateForm() {
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState([])
     const [ mainFormIds, setMainFormIds ] = useState([])
-    const { errors } = useValidation({ metadata, inputs })
-    const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds, handleInputChange, inputs, errors })
-    
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult, isShareDisabled } = useShare()
     const { handleDragEnd, handleDragOver } = useDnd()
@@ -112,23 +113,23 @@ export default function CreateForm() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} handleInputChange={handleInputChange} inputs={inputs} errors={errors} /> : null} {/* setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} */}
-                {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} formSubmitResult={formSubmitResult} /> : null}
-                <div className='grid'>
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                <div className='flex'>
+                    {renderDialog()}
                     <ComponentPanel />
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                            <div>
-                                <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
-                            </div>
-                            <div>
-                                <Button label='Create' style={{width: '90px'}} loading={loading} onClick={submitForm} />
-                            </div>
-                            <div>
-                                <Button label='Share' style={{width: '90px'}} {...isShareDisabled} onClick={handleShare} />
-                            </div>
+                    <div style={{'width': '5%'}} />
+                    <Card className='card ml-5 mt-5 mr-5' style={{'width': '55%'}}>
+                        <div className='flex flex-column mb-4'>
+                            <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                         </div>
-                        {renderComponents()}
+                        <Droppable id='droppable-container-form'>
+                            <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
+                                <CreateComponents metadata={metadata} openDialog={openDialog} />
+                            </SortableContext>
+                        </Droppable>
+                        <div className='flex flex-column justify-content-center'>
+                            <Button label='Create' loading={loading} className='flex align-self-center mt-4' onClick={submitForm} />
+                        </div>
                     </Card>
                 </div>
                 </DndContext>

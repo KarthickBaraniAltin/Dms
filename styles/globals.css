@@ -16,6 +16,11 @@ body {
   height: 100%;
 }
 
+.mlr-05 {
+  margin-left: calc(100% / 24);
+  margin-right: calc(100% / 24);
+}
+
 .noicon .p-datatable .p-sortable-column-icon::before {
   content: "" !important;
 }
@@ -31,8 +36,7 @@ body {
 }
 
 .form-horizontal{
-  display:block;
-  width:25%;
+  /* display:block; */
   margin:0 auto;
 }
 

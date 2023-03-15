@@ -1,7 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from '@dnd-kit/utilities'
+import clsx from "clsx"
 
-export function Sortable({ id, children }) {
+export function Sortable({ id, children, className }) {
     const {
         attributes,
         listeners,
@@ -13,9 +14,11 @@ export function Sortable({ id, children }) {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        border: '2px solid #004990',
+        // border: '2px groove #004990',
+        // borderRadius: '10px',
         padding: '1rem',
-        margin: '0 auto'
+        // 'boxShadow': 'inset 0 0 3px 1px rgba(0, 0, 0, 0.5)'
+        // margin: '10px'
     }
 
     const dragHandleStyle = {

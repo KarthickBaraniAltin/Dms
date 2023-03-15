@@ -4,13 +4,10 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
+import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import Footer from '../Footer/Footer'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-
-  const columnSizes = [
-    {label: 'Full Size', value: 'field col-12'},
-    {label: 'Half Size', value: 'field col-6'}
-  ]
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -47,18 +44,9 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
     assignValuesNested('options', newOptions)
   }
 
-  const renderFooter = () => {
-    return (
-      <div>
-          <Button label='Delete' icon='pi pi-times' className='p-button-danger' onClick={() => handleUpdate(true)} />
-          <Button label='Update' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
-      </div>
-    )
-  }
-
   return (
     <div>
-      <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={renderFooter}>
+      <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -74,8 +62,7 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
-            <label>Change Column Width</label>
-            <Dropdown name='columnSize' value={inputs?.columnSize ?? ''} options={columnSizes} onChange={handleInputChange} placeholder='Select a column size' />
+            <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Options</h4>
           {

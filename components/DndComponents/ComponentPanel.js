@@ -21,7 +21,10 @@ export default function ComponentPanel() {
         'checkbox'
     ]
 
-    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
+    const fullSizeClassName = 'col-11 mlr-05'
+    const halfSizeClassName = 'col-5 mlr-05'
+
+    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":" ","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
 
     const draggableItems = componentTypes.map((component, index) => {
         if (component === 'header') {
@@ -32,7 +35,7 @@ export default function ComponentPanel() {
                     type={component}
                     name={component}
                     guid=''
-                    columnSize='field col-12'
+                    divClassName={fullSizeClassName}
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
@@ -50,8 +53,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Text'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     guid=''
@@ -72,8 +75,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Calendar'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     dateFormat='dd-mm-yy'
@@ -123,8 +126,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Number'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     format={false}
@@ -146,8 +149,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-12'
-                    label='Label'
+                    divClassName={fullSizeClassName}
+                    label='Textarea'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     guid=''
@@ -168,8 +171,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Mask'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     mask='(999) 999-9999'
@@ -191,8 +194,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Dropdown'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     options={[]}
@@ -214,8 +217,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Multiselect'
                     subtitle={defaultSubtitle}
                     defaultValue=''
                     options={[]}
@@ -237,8 +240,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='File'
                     subtitle={defaultSubtitle}
                     guid=''
                 >
@@ -258,8 +261,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-12'
-                    label='Label'
+                    divClassName={fullSizeClassName}
+                    label='Rich Text'
                     subtitle={defaultSubtitle}
                     guid=''
                 >
@@ -279,7 +282,7 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-12'
+                    divClassName={fullSizeClassName}
                     subtitle={defaultSubtitle}
                     guid=''
                 >
@@ -299,8 +302,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Signature'
                     subtitle={defaultSubtitle}
                     guid=''
                 >
@@ -320,8 +323,8 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    columnSize='field col-6'
-                    label='Label'
+                    divClassName={halfSizeClassName}
+                    label='Radio Buttons'
                     subtitle={defaultSubtitle}
                     options={[]}
                     guid=''
@@ -342,9 +345,9 @@ export default function ComponentPanel() {
                     id={`${index + 1}`}
                     type={component}
                     name={component}
-                    label='Label'
-                    subtitle={JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Test Sub","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})}
-                    columnSize='field col-6'
+                    label='Checkbox'
+                    subtitle={defaultSubtitle}
+                    divClassName={halfSizeClassName}
                     options={[]}
                     guid=''
                 >
@@ -359,7 +362,7 @@ export default function ComponentPanel() {
     })
 
     return (
-        <Card className='card form-horizontal mt-5' style={{'width': '30%'}}>
+        <Card className='card ml-3 mt-5' style={{'width': '30%'}}>
             <Card style={{'background': '#004990', 'color': 'white', marginBottom: '0.5rem'}}>
                 <h1 style={{textAlign: 'center'}}>Components</h1>
             </Card>
