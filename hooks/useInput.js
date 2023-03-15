@@ -2,9 +2,9 @@ import { useState } from "react"
 
 export const useInputs = ({ initialValues = {} }) => {
     const [inputs, setInputs] = useState(initialValues)
-
+    
     const handleInputChange = (event) => {
-
+        console.log('event:', event)
         if (event.target?.files) {
             setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
         } else if (event.target) {
