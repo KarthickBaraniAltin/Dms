@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { DndContext } from '@dnd-kit/core'
-import { SortableContext, rectSortingStrategy, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import ComponentPanel from '../../components/DndComponents/ComponentPanel'
 import { Droppable } from '../../components/DndComponents/Droppable'
 import useDnd from '../../hooks/useDnd'
@@ -15,7 +15,10 @@ import { InteractionType } from '@azure/msal-browser'
 import { formBuilderApiRequest } from '../../src/msalConfig'
 import { useEffect, useRef, useState } from 'react'
 import { useCreateItems } from '../../hooks/useCreateItems'
-import { Sortable } from '../../components/DndComponents/Sortable'
+import CreateComponents from '../../components/CreationComponents/CreateComponents/CreateComponents'
+import useDialogs from '../../hooks/useDialogs'
+import { useInputs } from '../../hooks/useInput'
+import { useValidation } from '../../hooks/useValidation'
 
 export default function CreateForm() {
     
@@ -24,7 +27,8 @@ export default function CreateForm() {
     const [ metadata, setMetadata ] = useState([])
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderComponents } = useCreateItems({ metadata, setMetadata, mainFormIds })
-    
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { handleDragEnd, handleDragOver } = useDnd()
     const dragOverCapture = useRef()
@@ -147,15 +151,21 @@ export default function CreateForm() {
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                <div className='grid'>
+                <div className='flex'>
+                    {renderDialog()}
                     <ComponentPanel />
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
-                        <div className='flex flex-column justify-content-center'>
+                    <div style={{'width': '5%'}} />
+                    <Card className='card ml-5 mt-5 mr-5' style={{'width': '55%'}}>
+                        <div className='flex flex-column mb-4'>
                             <Button label='Preview' className='flex align-self-center mb-2' onClick={handlePreview} />
                         </div>
-                        {renderComponents()}
+                        <Droppable id='droppable-container-form'>
+                            <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
+                                <CreateComponents metadata={metadata} openDialog={openDialog} />
+                            </SortableContext>
+                        </Droppable>
                         <div className='flex flex-column justify-content-center'>
-                            <Button label='Create' loading={loading} className='flex align-self-center mt-2' onClick={submitForm} />
+                            <Button label='Create' loading={loading} className='flex align-self-center mt-4' onClick={submitForm} />
                         </div>
                     </Card>
                 </div>

@@ -1,50 +1,46 @@
-import cn from 'clsx'
 import useDialogs from './useDialogs'
-import { createElement, useEffect, useState } from 'react'
+import { useValidation } from './useValidation'
+import { createElement } from 'react'
 import { useInputs } from './useInput'
 import { Sortable } from '../components/DndComponents/Sortable'
-import CreateSignatureInput from '../components/CreationComponents/CreateSignatureInput/CreateSignatureInput'
-import CreateMultiRadioButtons from '../components/CreationComponents/CreateMultiRadioButtons/CreateMultiRadioButtons'
-import CreateHeader from '../components/CreationComponents/CreateLabel/CreateLabel'
-import CreateTextInput from '../components/CreationComponents/CreateTextInput/CreateTextInput'
-import CreateCalendarInput from '../components/CreationComponents/CreateCalendarInput/CreateCalendarInput'
-import { useValidation } from './useValidation'
-import CreateNumberInput from '../components/CreationComponents/CreateNumberInput/CreateNumberInput'
-import CreateTextareaInput from '../components/CreationComponents/CreateTextareaInput/CreateTextareaInput'
-import CreateMaskInput from '../components/CreationComponents/CreateMaskInput/CreateMaskInput'
-import CreateDropdownInput from '../components/CreationComponents/CreateDropdownInput/CreateDropdownInput'
-import CreateMultiSelectInput from '../components/CreationComponents/CreateMultiSelectInput/CreateMultiSelectInput'
-import CreateFileInput from '../components/CreationComponents/CreateFileInput/CreateFileinput'
-import CreateRichTextInput from '../components/CreationComponents/CreateRichTextInput/CreateRichTextInput'
-import CreateReadonlySubtitle from '../components/CreationComponents/CreateReadonlySubtitle/CreateReadonlySubtitle'
-import CreateCheckboxInput from '../components/CreationComponents/CreateCheckboxInput/CreateCheckboxInput'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import CreateMultiRadioButtons from '../components/CreationComponents/Inputs/CreateMultiRadioButtons/CreateMultiRadioButtons'
+import CreateHeader from '../components/CreationComponents/CreateLabel/CreateLabel'
+import CreateMask from '../components/CreationComponents/Inputs/CreateMask/CreateMask'
+import CreateFileInput from '../components/CreationComponents/Inputs/CreateFileInput/CreateFileinput'
+import CreateRichTextInput from '../components/CreationComponents/Inputs/CreateRichTextInput/CreateRichTextInput'
+import CreateReadonlySubtitle from '../components/CreationComponents/Inputs/CreateReadonlySubtitle/CreateReadonlySubtitle'
+import CreateCalendar from '../components/CreationComponents/Inputs/CreateCalendar/CreateCalendar'
+import CreateText from '../components/CreationComponents/Inputs/CreateText/CreateText'
+import CreateNumber from '../components/CreationComponents/Inputs/CreateNumber/CreateNumber'
+import CreateTextarea from '../components/CreationComponents/Inputs/CreateTextarea/CreateTextarea'
+import CreateDropdown from '../components/CreationComponents/Inputs/CreateDropdown/CreateDropdown'
+import CreateMultiSelect from '../components/CreationComponents/Inputs/CreateMultiSelect/CreateMultiSelect'
+import CreateSignature from '../components/CreationComponents/Inputs/CreateSignature/CreateSignature'
+import CreateCheckbox from '../components/CreationComponents/Inputs/CreateCheckbox/CreateCheckbox'
 
-// useCreateItems
 export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
 
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const { errors } = useValidation({ metadata, inputs })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
-    console.log("Metadata = ", metadata)
-
     const componentMapper = {
-        'text': CreateTextInput,
-        'calendar': CreateCalendarInput,
-        'number': CreateNumberInput,
-        'textarea': CreateTextareaInput,
-        'mask': CreateMaskInput,
-        'dropdown': CreateDropdownInput,
-        'multiselect': CreateMultiSelectInput,
+        'text': CreateText,
+        'calendar': CreateCalendar,
+        'number': CreateNumber,
+        'textarea': CreateTextarea,
+        'mask': CreateMask,
+        'dropdown': CreateDropdown,
+        'multiselect': CreateMultiSelect,
         'header': CreateHeader,
         'file': CreateFileInput,
         'richText': CreateRichTextInput,
         'subtitle': CreateReadonlySubtitle,
-        'signature': CreateSignatureInput,
+        'signature': CreateSignature,
         'radiobutton': CreateMultiRadioButtons,
-        'checkbox': CreateCheckboxInput
+        'checkbox': CreateCheckbox
     }
 
     const renderComponents = () => {
@@ -57,20 +53,20 @@ export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
                         {metadata.map((data, index) => {
                             const { type, name, columnSize } = data
                             return (
-                                <Sortable className="field col-6" key={index} id={index + 1}>
-                                    <div>
-                                        {/* <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div> */}
-                                        {createElement(componentMapper[type],
-                                            {
-                                                metadata: data,
-                                                openDialog: openDialog,
-                                                value: inputs[name],
-                                                onChange: handleInputChange,
-                                                errors: errors[name]
-                                            }
-                                        )}
-                                    </div>
-                                </Sortable>
+                                <div key={index} className="field col-6">
+                                    <Sortable id={index + 1}>
+                                            {/* <div style={{'display': 'flex', 'justifyContent': 'flex-end'}}>{type.toUpperCase()}</div> */}
+                                            {createElement(componentMapper[type],
+                                                {
+                                                    metadata: data,
+                                                    openDialog: openDialog,
+                                                    value: inputs[name],
+                                                    onChange: handleInputChange,
+                                                    errors: errors[name]
+                                                }
+                                            )}
+                                    </Sortable>
+                                </div>
                             )
                         })}
                     </SortableContext>
