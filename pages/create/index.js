@@ -17,12 +17,18 @@ import { useEffect, useRef, useState } from 'react'
 import CreateComponents from '../../components/CreationComponents/CreateComponents/CreateComponents'
 import useDialogs from '../../hooks/useDialogs'
 import { Droppable } from '../../components/DndComponents/Droppable'
+import { useInputs } from '../../hooks/useInput'
+import { useValidation } from '../../hooks/useValidation'
 
 export default function CreateForm() {
     
     // Rendering the form creation page
     const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState([])
+    const { errors } = useValidation({ metadata, inputs })
+    console.log("Errors = ", errors)
+
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
@@ -40,14 +46,6 @@ export default function CreateForm() {
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
-        // metadata.forEach(element => {
-        //     element.page = pageNumber
-
-        //     if (element.defaultValue) {
-        //         setInputs(inputs => ({...inputs, [element.name]: element.defaultValue}))
-        //     }
-        // })
-
         setMainFormIds(metadata.map((data, index) => (index + 1)))
 
         metadata.map(component => {
@@ -107,7 +105,7 @@ export default function CreateForm() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} inputs={inputs} errors={errors} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='flex'>
                     {renderDialog()}
                     <ComponentPanel />
@@ -118,7 +116,13 @@ export default function CreateForm() {
                         </div>
                         <Droppable id='droppable-container-form'>
                             <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
-                                <CreateComponents metadata={metadata} openDialog={openDialog} />
+                                <CreateComponents 
+                                    metadata={metadata} 
+                                    openDialog={openDialog} 
+                                    inputs={inputs} 
+                                    handleInputChange={handleInputChange} 
+                                    errors={errors}
+                                />
                             </SortableContext>
                         </Droppable>
                         <div className='flex flex-column justify-content-center'>

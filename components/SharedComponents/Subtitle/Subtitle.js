@@ -1,10 +1,10 @@
 import React from 'react'
 import ReadonlyLexicalEditor from '../../LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 
-export default function ViewSubtitle({subtitle}) {
+export default function Subtitle({subtitle}) {
   return (
     <div className='mt-1'>
-        <ReadonlyLexicalEditor value={subtitle} /> 
+        <ReadonlyLexicalEditor value={subtitle} />
     </div>
   )
 }

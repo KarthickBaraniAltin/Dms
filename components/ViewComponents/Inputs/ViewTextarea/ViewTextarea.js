@@ -1,19 +1,19 @@
 import { InputTextarea } from 'primereact/inputtextarea'
 import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
-import ViewLabel from '../../ViewLabel/ViewLabel'
-import ViewSubtitle from '../../ViewSubtitle/ViewSubtitle'
+import Label from '../../../SharedComponents/Label/Label'
+import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewTextarea({ metadata, value, onChange, errors }) {
     const { name, label, subtitle } = metadata
 
     return (
-        <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}> 
-            <div style={{marginRight: '0.5rem'}}>
-                <ViewLabel label={label} />
-                <ViewSubtitle subtitle={subtitle} />
+        <div className='field grid grid-nogutter'> 
+            <div className='col-2'>
+                <Label label={label} />
+                <Subtitle subtitle={subtitle} />
             </div>
-            <InputTextarea name={name} value={value} onChange={onChange} />
+            <InputTextarea className='col-10' name={name} value={value} onChange={onChange} />
             <Errors errors={errors} />
         </div>
     )

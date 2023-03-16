@@ -1,9 +1,6 @@
-import { useValidation } from '../../../hooks/useValidation'
 import { createElement } from 'react'
-import { useInputs } from '../../../hooks/useInput'
 import { Sortable } from '../../../components/DndComponents/Sortable'
 import CreateMultiRadioButtons from '../Inputs/CreateMultiRadioButtons/CreateMultiRadioButtons'
-import CreateHeader from '../../../components/CreationComponents/CreateLabel/CreateLabel'
 import CreateMask from '../Inputs/CreateMask/CreateMask'
 import CreateRichTextInput from '../Inputs/CreateRichTextInput/CreateRichTextInput'
 import CreateReadonlySubtitle from '../Inputs/CreateReadonlySubtitle/CreateReadonlySubtitle'
@@ -17,13 +14,9 @@ import CreateSignature from '../Inputs/CreateSignature/CreateSignature'
 import CreateCheckbox from '../Inputs/CreateCheckbox/CreateCheckbox'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
 import clsx from 'clsx'
+import CreateTime from '../Inputs/CreateTime/CreateTime'
 
-import styles from '../CreateComponents/CreateComponents.module.css'
-import CreateTimeInput from '../Inputs/CreateTimeInput/CreateTimeInput'
-
-export default function CreateComponents ({ metadata, openDialog  }) {
-    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
-    const { errors } = useValidation({ metadata, inputs })
+export default function CreateComponents ({ metadata, openDialog, inputs, handleInputChange, errors }) {
 
     const componentMapper = {
         'text': CreateText,
@@ -32,9 +25,9 @@ export default function CreateComponents ({ metadata, openDialog  }) {
         'textarea': CreateTextarea,
         'mask': CreateMask,
         'dropdown': CreateDropdown,
-        'time': CreateTimeInput,
+        'time': CreateTime,
         'multiselect': CreateMultiSelect,
-        'header': CreateHeader,
+        'header': <h1/>,
         'file': CreateFileInput,
         'richText': CreateRichTextInput,
         'subtitle': CreateReadonlySubtitle,
