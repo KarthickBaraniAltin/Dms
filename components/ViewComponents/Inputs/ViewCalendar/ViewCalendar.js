@@ -1,18 +1,20 @@
 import { Calendar } from 'primereact/calendar'
 import React from 'react'
-import ViewLabel from '../../ViewLabel/ViewLabel'
-import ViewSubtitle from '../../ViewSubtitle/ViewSubtitle'
+import Errors from '../../../SharedComponents/Errors/Errors'
+import Label from '../../../SharedComponents/Label/Label'
+import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewCalendar({ metadata, value, onChange }) {
+export default function ViewCalendar({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, defaultValue } = metadata
 
     return (
-        <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}> 
-            <div style={{marginRight: '0.5rem'}}>
-                <ViewLabel label={label} />
-                <ViewSubtitle subtitle={subtitle} />
+        <div className='field grid grid-nogutter'> 
+            <div className='col-4'>
+                <Label label={label} />
+                <Subtitle subtitle={subtitle} />
             </div>
-            <Calendar name={name} value={value} onChange={onChange} />
+            <Calendar className='col-8' name={name} value={value} onChange={onChange} />
+            <Errors errors={errors} />
         </div>
     )
 }

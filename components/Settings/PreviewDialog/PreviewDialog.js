@@ -10,21 +10,6 @@ import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 */
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, handleInputChange, inputs, errors }) {
-    let componentList = []
-    // const { renderComponents } = useCreateItems({ metadata, setMetadata }
-
-    // metadata.map(element => {
-    //     const { name, label, type, subtitle, subtitleComponent, fontStyle, ...rest } = element
-
-    //     componentList.push(
-    //         <div className={rest?.columnSize?.value ?? 'field col-12'}>
-    //             <div style={{display: 'flex', justifyContent: 'center', rowGap: '0.5rem'}}>
-    //                 {renderComponents(metadata, 1)}
-    //             </div>
-    //         </div>
-    //     )
-    // })
-
     return (
         <>
             <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '75vw'}}>

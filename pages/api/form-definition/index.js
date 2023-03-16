@@ -24,7 +24,7 @@ export default async function handler(req, res) {
             res.status(200).json(result.data)
         } catch (error) {
             console.log(error)
-            res.status(405).json({result: 'Internal Error'})
+            res.status(405).json({result: `Internal Error: ${error}`})
         }
     } else {
         res.setHeader('Allow', ['POST', 'GET']);
