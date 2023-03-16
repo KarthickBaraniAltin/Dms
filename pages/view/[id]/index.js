@@ -126,7 +126,9 @@ export async function getServerSideProps(context) {
         
         const initialValues = {}    
         res.data?.metadata?.metadata?.forEach((element) => {
-            initialValues[element.name] = element.defaultValue
+            if (element.defaultValue) {
+                initialValues[element.name] = element.defaultValue 
+            }
         }) 
 
         return {

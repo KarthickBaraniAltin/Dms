@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:test": "NODE_ENV=test next dev",
     "build": "next build",
+    "build:test": "NODE_ENV=test next build",
     "start": "node server.js",
     "lint": "next lint"
   },
