@@ -9,6 +9,9 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import { useHeaderImage } from '../../../hooks/useHeaderImage'
 import { useShowPreview } from '../../../hooks/useShowPreview'
+import { useInputs } from '../../../hooks/useInput'
+import { useValidation } from '../../../hooks/useValidation'
+import useDialogs from '../../../hooks/useDialogs'
 import useDnd from '../../../hooks/useDnd'
 import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
 import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
@@ -17,11 +20,15 @@ import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
+import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
 
 export default function Update({ id, data, api }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const [ metadata, setMetadata ] = useState(data.metadata.metadata)
     const [ mainFormIds, setMainFormIds ] = useState([])
+    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
+    const { errors } = useValidation({ metadata, inputs })
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
     const { handleDragEnd, handleDragOver } = useDnd()
     const dragOverCapture = useRef()
@@ -85,10 +92,12 @@ export default function Update({ id, data, api }) {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
+                inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} prevFormData={data} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
                 <div className='grid'>
+                    {renderDialog()}
                     <ComponentPanel />
                     <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
                         <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
@@ -102,7 +111,13 @@ export default function Update({ id, data, api }) {
                                 <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
                             </div>
                         </div>
-                        {renderComponents()}
+                        <CreateComponents 
+                            metadata={metadata} 
+                            openDialog={openDialog} 
+                            inputs={inputs} 
+                            handleInputChange={handleInputChange} 
+                            errors={errors}
+                        /> 
                     </Card>
                 </div>
                 </DndContext>
