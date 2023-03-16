@@ -35,12 +35,12 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'checkbox': ViewCheckbox
     }
 
+    console.log('inputs:', inputs)
+
     return (
         <>
             {metadata?.map((element, index) => {
                 const { name, type, columnSize } = element
-                console.log('ViewElement:', element)
-                console.log('ViewInputs:', inputs)
                 return (
                     <div key={index} className={'field col-6'}>
                         { createElement( 
