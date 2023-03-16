@@ -6,7 +6,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewCheckbox({ metadata, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata 
-    const [checkedValues, setCheckedValues] = useState(metadata?.options)
+    const [checkedValues, setCheckedValues] = useState([])
     const [checkedIds, setCheckedIds] = useState([])
     const [eventObject, setEventObject] = useState({target: {name: name, value: []}})
 
