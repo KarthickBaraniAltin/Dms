@@ -1,6 +1,5 @@
 import React, { createElement } from 'react'
 import { ViewSignature } from '../ViewSignature/ViewSignature'
-import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import FileInput from '../FileInput/FileInput'
 import ViewCalendar from '../Inputs/ViewCalendar/ViewCalendar'
 import ViewText from '../Inputs/ViewText/ViewText'
@@ -10,10 +9,10 @@ import ViewMask from '../Inputs/ViewMask/ViewMask'
 import ViewDropdown from '../Inputs/ViewDropdown/ViewDropdown'
 import ViewMultiselect from '../Inputs/ViewMultiselect/ViewMultiselect'
 import ViewRichText from '../Inputs/ViewRichText/ViewRichText'
-import ViewSubtitle from '../ViewSubtitle/ViewSubtitle'
 import ViewMultiRadioButtons from '../Inputs/ViewMultiRadioButtons/ViewMultiRadioButtons'
 import ViewCheckbox from '../Inputs/ViewCheckbox/ViewCheckbox'
 import ViewTime from '../Inputs/ViewTime/ViewTime'
+import ViewSubtitle from '../Inputs/ViewSubtitle/ViewSubtitle'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
@@ -36,17 +35,15 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
     }
 
     return (
-        <>
-            {metadata?.map((element, index) => {
-                const { name, type, columnSize } = element
-                console.log('ViewElement:', element)
-                console.log('ViewInputs:', inputs)
+        <div className='grid grid-nogutter'>
+            {metadata?.map((data, index) => {
+                const { name, type, divClassName } = data
                 return (
-                    <div key={index} className={'field col-6'}>
+                    <div key={index} className={divClassName ?? 'field col-6'}>
                         { createElement( 
                             componentMapper[type],
                             {
-                                metadata: element,
+                                metadata: data,
                                 value: inputs[name],
                                 onChange: handleInputChange,
                                 errors: errors[name]
@@ -55,6 +52,6 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                     </div>
                 )
             })}
-        </>
+        </div>
     )
 }

@@ -6,7 +6,6 @@ import { Sortable } from '../components/DndComponents/Sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import CreateMultiRadioButtons from '../components/CreationComponents/Inputs/CreateMultiRadioButtons/CreateMultiRadioButtons'
-import CreateHeader from '../components/CreationComponents/CreateLabel/CreateLabel'
 import CreateMask from '../components/CreationComponents/Inputs/CreateMask/CreateMask'
 import CreateFileInput from '../components/CreationComponents/Inputs/CreateFileInput/CreateFileinput'
 import CreateRichTextInput from '../components/CreationComponents/Inputs/CreateRichTextInput/CreateRichTextInput'
@@ -34,7 +33,7 @@ export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
         'mask': CreateMask,
         'dropdown': CreateDropdown,
         'multiselect': CreateMultiSelect,
-        'header': CreateHeader,
+        'header': <h1/>,
         'file': CreateFileInput,
         'richText': CreateRichTextInput,
         'subtitle': CreateReadonlySubtitle,

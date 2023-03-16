@@ -1,5 +1,5 @@
 import React from 'react'
-import ReadonlyLexicalEditor from '../../LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
+import ReadonlyLexicalEditor from '../../../LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 
 export default function ViewSubtitle({value}) {
   return (

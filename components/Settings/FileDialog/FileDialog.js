@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
@@ -17,6 +17,18 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
     {label: '.png', value: 'image/png'},
     {label: '.jpeg', value: 'image/jpeg' }
   ]
+
+  const [isMultipleChecked, setIsMultipleChecked] = useState(false)
+
+  const handleFileChange = () => {
+    setIsMultipleChecked(prevState => !prevState)
+    
+    if (inputs?.multiple) {
+      inputs.multiple = false
+    } else {
+      inputs.multiple = true
+    }
+  }
 
   return (
     <div>
@@ -43,7 +55,7 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
           </div>
           <div className='col-6'>
             <label>Multiple</label>
-            <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleInputChange} checked={inputs?.multiple} />
+            <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleFileChange} checked={isMultipleChecked} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-6 md:col-6'>
