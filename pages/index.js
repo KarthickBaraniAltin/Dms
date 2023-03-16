@@ -104,7 +104,7 @@ export default function Home() {
               <Link href='/view/[id]' as={`/view/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
                   <span className='pi pi-eye' style={{cursor: 'pointer', color: '#034692'}} />
               </Link>
-              <Link href='/formDefinitionUpdate/[id]' as={`/formDefinitionUpdate/${rowData.id}`} rel='noopener noreferrer'>
+              <Link href='/update/[id]' as={`/update/${rowData.id}`} rel='noopener noreferrer'>
                   <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
               </Link>
           </span>

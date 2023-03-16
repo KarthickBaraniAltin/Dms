@@ -27,7 +27,6 @@ export default function CreateForm() {
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState([])
     const { errors } = useValidation({ metadata, inputs })
-    console.log("Errors = ", errors)
 
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
@@ -105,7 +104,7 @@ export default function CreateForm() {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} inputs={inputs} errors={errors} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 <div className='flex'>
                     {renderDialog()}
                     <ComponentPanel />
