@@ -3,22 +3,22 @@ import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useAccount, useMsal, useMsalAuthentication } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../../../src/msalConfig'
-import { getFormData } from '../../../../../api/apiCalls'
+import { getFormData, getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
-import { useApi } from '../../../../hooks/useApi'
-import { callMsGraph } from '../../../../src/MsGraphApiCall'
+import { useApi } from '../../../../../hooks/useApi'
+import { callMsGraph } from '../../../../../src/MsGraphApiCall'
 import { useState } from 'react'
-import { useInputs } from '../../../../hooks/useInput'
-import { useValidation } from '../../../../hooks/useValidation'
-import useTimeControl from '../../../../hooks/useTimeControl'
-import ViewComponents from '../../../../components/ViewComponents/ViewComponents/ViewComponents'
+import { useInputs } from '../../../../../hooks/useInput'
+import { useValidation } from '../../../../../hooks/useValidation'
+import useTimeControl from '../../../../../hooks/useTimeControl'
+import ViewComponents from '../../../../../components/ViewComponents/ViewComponents/ViewComponents'
 
-export default function View({ id, metadata, api, initialValues }) {
+export default function FormDataView({ id, metadata, api, savedData }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
-    const { inputs, handleInputChange } = useInputs({initialValues})
+    const { inputs, handleInputChange } = useInputs({savedData})
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -86,11 +86,14 @@ export default function View({ id, metadata, api, initialValues }) {
         // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
+    console.log('id:', id)
+
+    console.log('metadata:', metadata)
 
     return (
         <>
             <Head>
-                <title>View Form</title>
+                <title>View Form Data</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>                   
@@ -119,21 +122,23 @@ export default function View({ id, metadata, api, initialValues }) {
 }
 
 export async function getServerSideProps(context) {
-    const { id } = context.params;
+    const { fid } = context.params
+    const id = '516248b2-c624-4de2-09e3-08db265f2ea3'
 
     try {
-        const res = await getFormData(id)
+        const resFormDefinition = await getFormDefinition(id)
+        const resFormData = await getFormData(fid)
 
-        const initialValues = {}    
-        res.data?.metadata?.metadata?.forEach((element) => {
-            initialValues[element.name] = element.defaultValue
+        const savedData = {}    
+        resFormData?.data?.forEach((element) => {
+            savedData[element.name] = element.defaultValue
         }) 
 
         return {
             props: {
                 id,
-                metadata: res.data.metadata.metadata,
-                initialValues,
+                metadata: resFormDefinition.data.metadata.metadata,
+                savedData,
                 api: process.env.FORM_BUILDER_API
             }
         }
