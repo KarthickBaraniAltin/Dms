@@ -4,19 +4,35 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewCheckbox({ metadata, errors }) {
+export default function ViewCheckbox({ metadata, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata 
-    const [checkedValues, setCheckedValues] = useState(metadata?.options)
+    const [checkedValues, setCheckedValues] = useState([])
+    const [checkedIds, setCheckedIds] = useState([])
+    const [eventObject, setEventObject] = useState({target: {name: name, value: []}})
 
     const onCheckboxChange = (e) => {
-        let selectedCheckbox = [...checkedValues];
+        let selectedCheckbox = [...checkedValues]
+        let selectedId = [...checkedIds]
+
         if(e.checked) {
             selectedCheckbox.push(e.value)
+            selectedId.push(e.target.id)
         }
-        else
+        else {
             selectedCheckbox.splice(selectedCheckbox.indexOf(e.value), 1)
-    
+            selectedId.splice(selectedId.indexOf(e.target.id), 1)
+        }
+
         setCheckedValues(selectedCheckbox)
+        setCheckedIds(selectedId)
+
+        setEventObject(prevState => {
+            let tempState = JSON.parse(JSON.stringify(prevState))
+            tempState.target.value = selectedCheckbox
+            return tempState
+        })
+
+        return { ...eventObject, target: {...eventObject.target, value: selectedCheckbox} }
     }
 
     return (
@@ -31,7 +47,8 @@ export default function ViewCheckbox({ metadata, errors }) {
                         {metadata.options.map((checkboxes, index) => {
                             return (
                                 <div key={index} style={{marginBottom: '0.5rem'}}>
-                                    <Checkbox value={checkboxes.value} onChange={onCheckboxChange} checked={checkedValues.some(element => element === checkboxes.value)} style={{marginRight: '0.5rem'}} />
+                                    <Checkbox key={index} id={index} value={checkboxes.value} onChange={(e) => onChange(onCheckboxChange(e))}
+                                checked={checkedIds.some(id => id === index)} style={{marginRight: '0.5rem'}} />
                                     <label>{checkboxes.value}</label>
                                 </div>
                             )

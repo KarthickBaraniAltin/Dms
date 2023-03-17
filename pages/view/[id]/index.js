@@ -123,10 +123,12 @@ export async function getServerSideProps(context) {
 
     try {
         const res = await getFormDefinition(id)
-
+        
         const initialValues = {}    
         res.data?.metadata?.metadata?.forEach((element) => {
-            initialValues[element.name] = element.defaultValue
+            if (element.defaultValue) {
+                initialValues[element.name] = element.defaultValue 
+            }
         }) 
 
         return {

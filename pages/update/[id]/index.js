@@ -9,6 +9,9 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import { useHeaderImage } from '../../../hooks/useHeaderImage'
 import { useShowPreview } from '../../../hooks/useShowPreview'
+import { useInputs } from '../../../hooks/useInput'
+import { useValidation } from '../../../hooks/useValidation'
+import useDialogs from '../../../hooks/useDialogs'
 import useDnd from '../../../hooks/useDnd'
 import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
 import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
@@ -17,22 +20,34 @@ import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
+import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
+import { Droppable } from '../../../components/DndComponents/Droppable'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update({ id, data, api }) {
+export default function Update({ id, data }) {
+
     const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState(data.metadata.metadata)
-    const [ mainFormIds, setMainFormIds ] = useState([])
+    const { errors } = useValidation({ metadata, inputs })
 
-    const { handleDragEnd, handleDragOver } = useDnd()
-    const dragOverCapture = useRef()
+    const [ mainFormIds, setMainFormIds ] = useState([])
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
 
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave } = useSave()
 
+    const { handleDragEnd, handleDragOver } = useDnd()
+    const dragOverCapture = useRef()
+
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi } = useApi()
     const { instance } = useMsal()
+
+     // These variables are for pagination
+     const [pageNumber, setPageNumber] = useState(1)
+     const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
         setMainFormIds(metadata.map((data, index) => (index + 1)))
@@ -85,12 +100,15 @@ export default function Update({ id, data, api }) {
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
                     onDragOver={(event) => handleDragOver(event, dragOverCapture)}
                 >
-                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
+                {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
+                inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} prevFormData={data} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
                 <div className='grid'>
+                    {renderDialog()}
                     <ComponentPanel />
-                    <Card className='card form-horizontal mt-5 flex justify-content-center' style={{'width': '50%'}}>
+                    <div style={{'width': '5%'}} />
+                    <Card className='card mt-5' style={{'width': '60%'}}>
                         <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                             <div>
                                 <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
@@ -102,7 +120,17 @@ export default function Update({ id, data, api }) {
                                 <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
                             </div>
                         </div>
-                        {renderComponents()}
+                        <Droppable id='droppable-container-form'>
+                            <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
+                                <CreateComponents 
+                                    metadata={metadata} 
+                                    openDialog={openDialog} 
+                                    inputs={inputs} 
+                                    handleInputChange={handleInputChange} 
+                                    errors={errors}
+                                />
+                            </SortableContext>
+                        </Droppable>
                     </Card>
                 </div>
                 </DndContext>
@@ -136,7 +164,6 @@ export async function getStaticProps(context) {
             props: {
                 id,
                 data: res.data,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {
