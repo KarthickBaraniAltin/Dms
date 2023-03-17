@@ -41,13 +41,13 @@ export default function Home() {
       }
   })
 
-  useState(() => {
+  useEffect(() => {
     if (!userData && account) {
         callMsGraph().then(response => setUserData(response)).catch((e) => {
             console.log("Error while getting the user data = ", e)
         })
     }
-  }, [inProgress, instance, account])     
+  }, [inProgress, instance, account, userData])     
 
   const lazyParamsToQueryString = (lazyParams) => {
       let queryString = "?";
@@ -74,7 +74,6 @@ export default function Home() {
           const { accessToken } = await acquireToken()
 
           const queryString = lazyParamsToQueryString(lazyParams)
-
           const params = {
               method: 'POST',
               url: `/form-builder-studio/api/formDefinition`,
@@ -92,7 +91,9 @@ export default function Home() {
           setTotalRecords(res?.data?.count)
       }
 
-      loadLazyData()
+      if (account) {
+        loadLazyData()
+      }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lazyParams, loadLazyTimeout, acquireToken])
 
@@ -129,7 +130,7 @@ export default function Home() {
   const createForm = async (event) => {
     event.preventDefault()
     if (!userData) return
-    console.log("Making the call")
+
     const { accessToken } = await acquireToken()
     const params = {
         method: 'POST',
@@ -151,7 +152,6 @@ export default function Home() {
     }
 
     const res = await callCreateFormApi(params) 
-    console.log("Res = ", res)
     if (res) {
         router.push(`/update/${res.data.id}`);
     }
