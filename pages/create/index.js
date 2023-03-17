@@ -20,8 +20,8 @@ import { Droppable } from '../../components/DndComponents/Droppable'
 import { useInputs } from '../../hooks/useInput'
 import { useValidation } from '../../hooks/useValidation'
 
-export default function CreateForm() {
-    
+export default function CreateForm({api}) {
+    console.log("API = ", api)
     // Rendering the form creation page
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
@@ -140,4 +140,12 @@ export default function CreateForm() {
             </UnauthenticatedTemplate>
         </>
     )
+}
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            api: process.env.FORM_BUILDER_API
+        }
+    }
 }
