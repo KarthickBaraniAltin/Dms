@@ -20,14 +20,15 @@ export default async function handler(req, res) {
             res.status(405).json({result: 'Internal Error'})
         }
     } else if (method === 'PUT') {
+        console.log("HERE")
         try {
-            const result = await putFormDefinition(body, id)
-            res.status(200).json(result.data)
+            const updateResult = await putFormDefinition(body, id)
+            res.status(200).json({...updateResult.data})
         } catch (error) {
             console.log(error)
             res.status(405).json({result: 'Internal Error'})
         }
     } else {
-        res.setHeader('Allow', ['POST', 'GET']);
+        res.setHeader('Allow', ['PUT', 'GET']);
     }
 }

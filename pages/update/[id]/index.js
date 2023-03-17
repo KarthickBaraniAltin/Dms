@@ -63,7 +63,7 @@ export default function Update({ id, data }) {
         setMetadata((prevList) => [...prevList, data])
     }
 
-    const submitFormData = async (event, formName, description) => {
+    const updateForm = async (event, formName, description) => {
         event.preventDefault()
         const { accessToken } = await acquireToken()
         const { name, username, localAccountId } = instance.getActiveAccount()
@@ -86,7 +86,9 @@ export default function Update({ id, data }) {
             }
         }
         const res = await callApi(params)
-        setFormSubmitResult(res)
+        if (res?.status == 200) {
+            setFormSubmitResult(res)
+        }
     }
 
     return (
@@ -102,7 +104,7 @@ export default function Update({ id, data }) {
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} submitFormData={submitFormData} loading={loading} prevFormData={data} /> : null}
+                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} prevFormData={data} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
                 <div className='grid'>
                     {renderDialog()}
@@ -146,15 +148,8 @@ export default function Update({ id, data }) {
     )
 }
 
-export async function getStaticPaths({  }) {
-    return {
-        paths: [], //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
-    }
-}
 
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const { id } = context.params;
 
     try {
