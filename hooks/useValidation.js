@@ -125,7 +125,7 @@ export const useValidation = ({ metadata, inputs }) => {
             }
         }
 
-        if (metadata) {
+        if (metadata && metadata.length > 0) {
             const errorMessages = {}
 
             metadata.forEach(element => {

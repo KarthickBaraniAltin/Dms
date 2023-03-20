@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { AuthenticatedTemplate, useMsalAuthentication } from '@azure/msal-react'
+import { AuthenticatedTemplate, useAccount, useMsal, useMsalAuthentication } from '@azure/msal-react'
 import { InteractionType } from '@azure/msal-browser'
 import React, { useState, useEffect } from 'react'
 import { formBuilderApiRequest } from '../src/msalConfig'
@@ -12,10 +12,15 @@ import { InputText } from "primereact/inputtext"
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from 'primereact/button'
+import { callMsGraph } from '../src/MsGraphApiCall'
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const { instance, inProgress, accounts } = useMsal()
+  const account = useAccount(accounts[0] ?? {})
   const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-  const { loading, callApi} = useApi()
+  const { loading, callApi } = useApi()
+  const { loading: createFormLoading, callApi: callCreateFormApi } = useApi()
   const headerStyle = {fontWeight: '600', fontSize: '15.5px', color: '#000'} 
   const [formDefinitions, setFormDefinitions] = useState(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -23,16 +28,26 @@ export default function Home() {
   const [description, setDescription] = useState('')
   const [selectedValue, setSelectedValue] = useState({})
   const [totalRecords, setTotalRecords] = useState(0)
+  const [userData, setUserData] = useState(undefined)
+  const router = useRouter()
   const [lazyParams, setLazyParams] = useState({
       first: 0,
       page: 0,
       rows: 10,
-      sortField: null,
-      sortOrder: null,
+      sortField: 'dateCreated',
+      sortOrder: -1,
       filters: {
           'global': {value: '', matchMode: 'contains'}
       }
   })
+
+  useEffect(() => {
+    if (!userData && account) {
+        callMsGraph().then(response => setUserData(response)).catch((e) => {
+            console.log("Error while getting the user data = ", e)
+        })
+    }
+  }, [inProgress, instance, account, userData])     
 
   const lazyParamsToQueryString = (lazyParams) => {
       let queryString = "?";
@@ -59,7 +74,6 @@ export default function Home() {
           const { accessToken } = await acquireToken()
 
           const queryString = lazyParamsToQueryString(lazyParams)
-
           const params = {
               method: 'POST',
               url: `/form-builder-studio/api/formDefinition`,
@@ -73,12 +87,14 @@ export default function Home() {
           }
 
           const res = await callApi(params)
-          console.log('res:', res)
           setFormDefinitions(res?.data?.formDefinitions)
           setTotalRecords(res?.data?.count)
       }
 
-      loadLazyData()
+      if (account) {
+        loadLazyData()
+      }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lazyParams, loadLazyTimeout, acquireToken])
 
 
@@ -111,8 +127,34 @@ export default function Home() {
       )
   }
 
-  const createForm = () => {
-      alert('Functionality still in progress')
+  const createForm = async (event) => {
+    event.preventDefault()
+    if (!userData) return
+
+    const { accessToken } = await acquireToken()
+    const params = {
+        method: 'POST',
+        url: `/form-builder-studio/api/form-definition`,
+        headers: {
+            Accept: '*/*',
+            Authorization: `Bearer ${accessToken}`
+        },
+        data: {
+            name: name,
+            description: description,
+            authorFullName: userData.givenName + " " + userData.surname,
+            authorId: userData.id,
+            authorEmail: userData.mail,
+            metadata: {
+                metadata: []
+            }
+        }
+    }
+
+    const res = await callCreateFormApi(params) 
+    if (res) {
+        router.push(`/update/${res.data.id}`);
+    }
   }
 
   const onPage = (event) => {
@@ -149,23 +191,27 @@ export default function Home() {
           </Head>
           <AuthenticatedTemplate>
               <Dialog header='Create New Form' style={{width: '50%'}} visible={isVisible} onHide={() => setIsVisible(false)}>
-                  {isVisible ? 
-                      <div className='flex flex-column'>
-                          <div style={{marginBottom: '0.5rem'}}>
-                              <div className='flex flex-column mb-2'>
-                                  <label>Form Definition Name</label>
-                                  <InputText value={name} onChange={e => setName(e.target.value)} />
-                              </div>
-                              <div className='flex flex-column'>
-                                  <label>Form Definition Description</label>
-                                  <InputTextarea value={description} onChange={e => setDescription(e.target.value)} />
-                              </div>
-                          </div>
-                          <Button label='Create' style={{width: '100px'}} loading={loading} onClick={createForm} />
-                      </div>
-                  :
-                      null
-                  }
+                    <div className='flex flex-column'>
+                        <div className='mt-1'>
+                            <div className='flex flex-column mt-2'>
+                                <label>Form Definition Name</label>
+                                <InputText value={name} onChange={e => setName(e.target.value)} />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>Form Definition Description</label>
+                                <InputTextarea value={description} onChange={e => setDescription(e.target.value)} autoResize />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>User Name</label>
+                                <InputText value={userData?.givenName + " " + userData?.surname} disabled />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>User Email</label>
+                                <InputText value={userData?.mail} disabled />
+                            </div>
+                        </div>
+                        <Button className='mt-3' label='Create' style={{width: '100px'}} loading={createFormLoading} onClick={createForm} />
+                    </div>
               </Dialog>
               <Card className='card mt-5 form-horizontal' style={{width: '80%'}}>
                   <DataTable 

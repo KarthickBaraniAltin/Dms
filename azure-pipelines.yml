@@ -40,7 +40,7 @@ stages:
         - script: yarn --frozen-lockfile --network-timeout=100000
           displayName: 'yarn install'
 
-        - script: yarn build
+        - script: yarn build:test
           displayName: 'yarn build:test'
         
         - task: CopyFiles@2
