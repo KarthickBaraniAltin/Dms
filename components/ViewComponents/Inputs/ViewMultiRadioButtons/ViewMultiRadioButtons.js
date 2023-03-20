@@ -9,8 +9,8 @@ export default function ViewMultiRadioButtons ({ metadata, onChange, errors }) {
     const [checkedValue, setCheckedValue] = useState()
 
     return (
-        <div style={{display: 'flex', justifyContent: 'center', columnGap: '0.5rem', width: '198.4px'}}>
-            <div>
+        <div className='field grid grid-nogutter'>
+            <div className='col-4'>
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
@@ -19,14 +19,17 @@ export default function ViewMultiRadioButtons ({ metadata, onChange, errors }) {
                     <>
                         {options.map((radioButton, index) => {
                             return (
-                                <div key={index} style={{marginBottom: '0.5rem'}}>
-                                    <RadioButton value={radioButton.value} name={name} 
-                                    onChange={(e) => {
-                                        setCheckedValue(e.target.value)
-                                        onChange(e)
-                                    }} 
-                                    checked={checkedValue === radioButton.value} 
-                                    style={{marginRight: '0.5rem'}} />
+                                <div className='mt-1' key={index}>
+                                    <RadioButton 
+                                        value={radioButton.value} 
+                                        name={name} 
+                                        onChange={(e) => {
+                                            setCheckedValue(e.target.value)
+                                            onChange(e)
+                                        }} 
+                                        checked={checkedValue === radioButton.value} 
+                                        style={{marginRight: '0.5rem'}} 
+                                    />
                                     <label>{radioButton.value}</label>
                                 </div>
                             )

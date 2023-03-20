@@ -21,14 +21,17 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                     <>
                         {options.map((radioButton, index) => {
                             return (
-                                <div key={index} style={{marginBottom: '0.5rem'}}>
-                                    <RadioButton key={index} value={radioButton.value} name={name} 
+                                <div className='mt-1' key={index}>
+                                    <RadioButton
+                                        value={radioButton.value} 
+                                        name={name} 
                                         onChange={(e) => {
                                             setCheckedValue(index)
                                             onChange(e)
                                         }} 
                                         checked={checkedValue === index}
-                                        style={{marginRight: '0.5rem'}} />
+                                        style={{marginRight: '0.5rem'}}
+                                    />
                                     <label>{radioButton.value}</label>
                                 </div>
                             )

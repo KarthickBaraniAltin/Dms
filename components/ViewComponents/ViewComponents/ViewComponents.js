@@ -34,8 +34,6 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'checkbox': ViewCheckbox
     }
 
-    console.log('inputs:', inputs)
-
     return (
         <div className='grid grid-nogutter'>
             {metadata?.map((data, index) => {
