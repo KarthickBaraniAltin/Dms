@@ -36,7 +36,7 @@ export default function Update({ id, data }) {
 
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
-    const { showSaveDialog, handleSave } = useSave()
+    const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
 
     const { handleDragEnd, handleDragOver } = useDnd()
     const dragOverCapture = useRef()
@@ -104,7 +104,7 @@ export default function Update({ id, data }) {
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} prevFormData={data} /> : null}
+                {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
                 <div className='grid'>
                     {renderDialog()}
