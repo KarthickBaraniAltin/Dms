@@ -12,7 +12,7 @@ import ViewRichText from '../Inputs/ViewRichText/ViewRichText'
 import ViewMultiRadioButtons from '../Inputs/ViewMultiRadioButtons/ViewMultiRadioButtons'
 import ViewCheckbox from '../Inputs/ViewCheckbox/ViewCheckbox'
 import ViewTime from '../Inputs/ViewTime/ViewTime'
-import ViewSubtitle from '../Inputs/ViewSubtitle/ViewSubtitle'
+import ViewReadonlySubtitle from '../Inputs/ViewReadonlySubtitle/ViewReadonlySubtitle'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
@@ -28,7 +28,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'header': 'h1',
         'file': FileInput,
         'richText': ViewRichText,
-        'subtitle': ViewSubtitle,
+        'subtitle': ViewReadonlySubtitle,
         'signature': ViewSignature,
         'radiobutton': ViewMultiRadioButtons,
         'checkbox': ViewCheckbox
