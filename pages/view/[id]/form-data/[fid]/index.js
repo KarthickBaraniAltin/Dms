@@ -10,6 +10,7 @@ import { callMsGraph } from '../../../../../src/MsGraphApiCall'
 import { useState } from 'react'
 import { useInputs } from '../../../../../hooks/useInput'
 import { useValidation } from '../../../../../hooks/useValidation'
+import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
 import useTimeControl from '../../../../../hooks/useTimeControl'
 import ViewComponents from '../../../../../components/ViewComponents/ViewComponents/ViewComponents'
 
@@ -17,8 +18,20 @@ export default function FormDataView({ id, metadata, api, savedData }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { parseDate, parseTime } = useConvertFormData()
+    const convertedData = Object.keys(savedData.data).reduce((accumulator, key) => {
+        if (key.startsWith('calendar')) {
+          accumulator[key] = parseDate(savedData.data[key])
+        } else if (key.startsWith('time')) {
+            accumulator[key] = parseTime(savedData.data[key])
+        }
+        else {
+          accumulator[key] = savedData.data[key]
+        }
+        return accumulator
+    }, {})
     
-    const { inputs, handleInputChange } = useInputs({savedData})
+    const { inputs, handleInputChange } = useInputs({ initialValues: convertedData })
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -83,12 +96,8 @@ export default function FormDataView({ id, metadata, api, savedData }) {
             body: formData
         }
 
-        // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
-    console.log('id:', id)
-
-    console.log('metadata:', metadata)
 
     return (
         <>
@@ -122,17 +131,16 @@ export default function FormDataView({ id, metadata, api, savedData }) {
 }
 
 export async function getServerSideProps(context) {
-    const { fid } = context.params
-    const id = '516248b2-c624-4de2-09e3-08db265f2ea3'
+    const { id, fid } = context.params
 
     try {
         const resFormDefinition = await getFormDefinition(id)
         const resFormData = await getFormData(fid)
 
-        const savedData = {}    
-        resFormData?.data?.forEach((element) => {
-            savedData[element.name] = element.defaultValue
-        }) 
+        const savedData = {}   
+        Object.keys(resFormData.data).map(key => {
+            savedData[key] = resFormData.data[key]
+        })
 
         return {
             props: {

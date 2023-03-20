@@ -87,8 +87,6 @@ export default function View({ id, metadata, api, initialValues }) {
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
 
-    console.log('metadata:', metadata)
-
     return (
         <>
             <Head>
