@@ -112,6 +112,7 @@ export const useValidation = ({ metadata, inputs }) => {
                 })
             },
             fileTypes: (validFileTypes, fileTypes) => {
+                if (validFileTypes === undefined || fileTypes === undefined) return
                 return validFileTypes.some(validFileType => {
                     return fileTypes.some(fileType => {
                         if (validFileType !== fileType.type) {
