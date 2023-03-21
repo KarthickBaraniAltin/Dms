@@ -97,11 +97,11 @@ export default function View({ id, metadata, api, initialValues }) {
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
-                            <div className='grid formgrid'>
+                            <div className='flex flex-column justify-content-center'>
                                 <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                             </div>
-                            <div className='field md:col-6 col-offset-3'>
-                                <Button label="Submit" onClick={submitFormData} loading={loading} />
+                            <div className='flex justify-content-center mt-5'>
+                                <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>
