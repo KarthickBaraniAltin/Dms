@@ -4,7 +4,7 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewCheckbox({ metadata, onChange, errors }) {
+export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata 
     const [checkedValues, setCheckedValues] = useState([])
     const [checkedIds, setCheckedIds] = useState([])

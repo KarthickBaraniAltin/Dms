@@ -68,7 +68,9 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             minTime: (minTime, currentTime) => {
                 if (minTime.getHours() >= currentTime?.getHours()) {
-                    if (minTime.getMinutes() >= currentTime?.getMinutes()) {
+                    if (minTime.getMinutes() > currentTime?.getMinutes()) {
+                        return true
+                    } else if (minTime.getHours() > currentTime?.getHours()) {
                         return true
                     }
                 } else {
@@ -77,7 +79,9 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             maxTime: (maxTime, currentTime) => {
                 if (maxTime.getHours() <= currentTime?.getHours()) {
-                    if (maxTime.getMinutes() <= currentTime?.getMinutes()) {
+                    if (maxTime.getMinutes() < currentTime?.getMinutes()) {
+                        return true
+                    } else if (maxTime.getHours() < currentTime.getHours()) {
                         return true
                     }
                 } else {
@@ -196,7 +200,7 @@ export const useValidation = ({ metadata, inputs }) => {
                                         isPM = true
                                     }
 
-                                    currentErrors.push(message ?? `Please pick a time after ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
+                                    currentErrors.push(message ?? `Please pick a time on or after ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
                                 }
                                 break
                             }
@@ -211,7 +215,7 @@ export const useValidation = ({ metadata, inputs }) => {
                                         isPM = true
                                     }
 
-                                    currentErrors.push(message ?? `Please pick a time before ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
+                                    currentErrors.push(message ?? `Please pick a time on or before ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
                                 }
                                 break
                             }

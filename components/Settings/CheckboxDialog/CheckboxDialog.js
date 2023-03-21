@@ -57,10 +57,6 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
-          <div className='field col-6 md:col-6'>
-            <label>Default Value</label>
-            <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
-          </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />

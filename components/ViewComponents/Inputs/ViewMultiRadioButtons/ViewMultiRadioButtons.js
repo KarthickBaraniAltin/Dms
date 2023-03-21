@@ -4,9 +4,9 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewMultiRadioButtons ({ metadata, onChange, errors }) {
+export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, options } = metadata
-    const [checkedValue, setCheckedValue] = useState()
+    const [checkedValue, setCheckedValue] = useState(value || null)
 
     return (
         <div className='field grid grid-nogutter'>

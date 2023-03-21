@@ -2,12 +2,8 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from "primereact/button"
-import { useState } from "react"
 
-export default function ShareDialog({showDialog, handleSave, updateForm, loading, prevFormData}) {
-    const [name, setName] = useState(prevFormData.name)
-    const [description, setDescription] = useState(prevFormData.description)
-
+export default function ShareDialog({showDialog, handleSave, updateForm, loading, name, setName, desc, setDesc}) {
     return (
         <>
             <Dialog header='Save Page' visible={showDialog} onHide={() => handleSave()} style={{width: '75vw'}}>
@@ -19,10 +15,10 @@ export default function ShareDialog({showDialog, handleSave, updateForm, loading
                         </div>
                         <div className='flex flex-column'>
                             <label>Form Definition Description</label>
-                            <InputTextarea value={description} onChange={e => setDescription(e.target.value)} />
+                            <InputTextarea value={desc} onChange={e => setDesc(e.target.value)} />
                         </div>
                     </div>
-                    <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => updateForm(e, name, description)} />
+                    <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => updateForm(e, name, desc)} />
                 </div>
             </Dialog>
         </>
