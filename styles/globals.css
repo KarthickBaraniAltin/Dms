@@ -21,6 +21,14 @@ body {
   margin-right: calc(100% / 24);
 }
 
+.col-1-70 {
+  width: 14.2%;
+}
+
+.col-10-3 {
+  width: 85.8%;
+}
+
 .noicon .p-datatable .p-sortable-column-icon::before {
   content: "" !important;
 }

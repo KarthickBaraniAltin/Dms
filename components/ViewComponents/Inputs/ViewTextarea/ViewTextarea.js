@@ -4,16 +4,19 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
+import textareaStyles from '../../../../styles/Inputs/Textarea.module.css'
+import clsx from 'clsx'
+
 export default function ViewTextarea({ metadata, value, onChange, errors }) {
     const { name, label, subtitle } = metadata
 
     return (
-        <div className='field grid grid-nogutter'> 
-            <div className='col-2'>
+        <div className='field grid grid-nogutter mt-3 mb-5'> 
+            <div className='col-1-70'>
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <InputTextarea className='col-10' name={name} value={value} onChange={onChange} />
+            <InputTextarea className={clsx('col-10-3', textareaStyles.textareaInput)} name={name} value={value} autoResize onChange={onChange} />
             <Errors errors={errors} />
         </div>
     )

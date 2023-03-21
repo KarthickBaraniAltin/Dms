@@ -2,23 +2,36 @@ import Head from 'next/head'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useAccount, useMsal, useMsalAuthentication } from "@azure/msal-react"
-import { formBuilderApiRequest } from '../../../src/msalConfig'
-import { getFormDefinition } from '../../../api/apiCalls'
+import { formBuilderApiRequest } from '../../../../../src/msalConfig'
+import { getFormData, getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
-import { useApi } from '../../../hooks/useApi'
-import useTimeControl from '../../../hooks/useTimeControl'
-import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useEffect, useState } from 'react'
-import { useInputs } from '../../../hooks/useInput'
-import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
-import { useValidation } from '../../../hooks/useValidation'
+import { useApi } from '../../../../../hooks/useApi'
+import { callMsGraph } from '../../../../../src/MsGraphApiCall'
+import { useState } from 'react'
+import { useInputs } from '../../../../../hooks/useInput'
+import { useValidation } from '../../../../../hooks/useValidation'
+import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
+import useTimeControl from '../../../../../hooks/useTimeControl'
+import ViewComponents from '../../../../../components/ViewComponents/ViewComponents/ViewComponents'
 
-export default function View({ id, metadata, api, initialValues }) {
+export default function FormDataView({ id, metadata, api, savedData }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
+    const { parseDate, parseTime } = useConvertFormData()
+    const convertedData = Object.keys(savedData.data).reduce((accumulator, key) => {
+        if (key.startsWith('calendar')) {
+          accumulator[key] = parseDate(savedData.data[key])
+        } else if (key.startsWith('time')) {
+            accumulator[key] = parseTime(savedData.data[key])
+        }
+        else {
+          accumulator[key] = savedData.data[key]
+        }
+        return accumulator
+    }, {})
     
-    const { inputs, handleInputChange } = useInputs({initialValues})
+    const { inputs, handleInputChange } = useInputs({ initialValues: convertedData })
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -29,13 +42,13 @@ export default function View({ id, metadata, api, initialValues }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
     
-    useEffect(() => {
+    useState(() => {
         if (!userData && account) {
             callMsGraph().then(response => setUserData(response)).catch((e) => {
                 console.log("Error while getting the user data = ", e)
             })
         }
-    }, [inProgress, instance, account, userData]) 
+    }, [inProgress, instance, account]) 
 
     const jsonToFormData = (json) => {
         const convert = (value) => {
@@ -83,14 +96,13 @@ export default function View({ id, metadata, api, initialValues }) {
             body: formData
         }
 
-        // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
 
     return (
         <>
             <Head>
-                <title>View Form</title>
+                <title>View Form Data</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>                   
@@ -119,23 +131,22 @@ export default function View({ id, metadata, api, initialValues }) {
 }
 
 export async function getServerSideProps(context) {
-    const { id } = context.params;
+    const { id, fid } = context.params
 
     try {
-        const res = await getFormDefinition(id)
-        
-        const initialValues = {}    
-        res.data?.metadata?.metadata?.forEach((element) => {
-            if (element.defaultValue) {
-                initialValues[element.name] = element.defaultValue
-            }
-        }) 
+        const resFormDefinition = await getFormDefinition(id)
+        const resFormData = await getFormData(fid)
+
+        const savedData = {}   
+        Object.keys(resFormData.data).map(key => {
+            savedData[key] = resFormData.data[key]
+        })
 
         return {
             props: {
                 id,
-                metadata: res.data.metadata.metadata,
-                initialValues,
+                metadata: resFormDefinition.data.metadata.metadata,
+                savedData,
                 api: process.env.FORM_BUILDER_API
             }
         }

@@ -4,6 +4,8 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 
+import styles from '../../../../styles/Inputs/Inputs.module.css'
+
 export default function CreateFileInput({ metadata, openDialog, onChange, errors }) {
     const { name, label, multiple, subtitle, guid, id, page } = metadata
 
@@ -14,7 +16,7 @@ export default function CreateFileInput({ metadata, openDialog, onChange, errors
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <input name={name} type='file' title=' ' className='col-8' disabled multiple={multiple} onChange={onChange} />
+            <input name={name} type='file' className={`col-8 ${styles.input}`} disabled multiple={multiple} onChange={onChange} />
             <Errors errors={errors} />
         </div>
     )

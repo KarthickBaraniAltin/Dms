@@ -5,6 +5,8 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 
+import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
+
 export default function CreateMultiSelect({metadata, openDialog, value, onChange, errors}) {
   const { name, className, label, subtitle, options } = metadata
 
@@ -15,7 +17,7 @@ export default function CreateMultiSelect({metadata, openDialog, value, onChange
           <Label label={label} />
           <Subtitle subtitle={subtitle} />
         </div>
-        <MultiSelect name={name} className='col-8' value={value} onChange={onChange} options={options} display='chip' />        
+        <MultiSelect name={name} className={`col-8 ${sharedStyles.input}`} value={value} onChange={onChange} options={options} display='chip' />        
         <Errors errors={errors} />
     </div>
   )
