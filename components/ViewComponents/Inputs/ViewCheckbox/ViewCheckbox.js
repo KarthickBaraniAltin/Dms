@@ -6,19 +6,8 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata 
-
-    let isJson = false
-    let parsedValue
-    try {
-        parsedValue = JSON.parse(value)
-        isJson = typeof parsedValue === 'object'
-    } catch (error) {
-        isJson = false
-    }
-
-    const [checkedValues, setCheckedValues] = useState(isJson ? parsedValue?.checkbox : typeof value === 'object' ? value : [])
-    const [checkedIds, setCheckedIds] = useState(isJson ? parsedValue?.ids : typeof value === 'object' ? value : [])
-    const [eventObject, setEventObject] = useState()
+    const [checkedValues, setCheckedValues] = useState(value?.checkbox)
+    const [checkedIds, setCheckedIds] = useState(value?.ids)
 
     const onCheckboxChange = (e) => {
         const { checked, value, target: { id } } = e
@@ -37,16 +26,7 @@ export default function ViewCheckbox({ metadata, value, onChange, errors }) {
         setCheckedValues(selectedCheckbox)
         setCheckedIds(selectedIds)
 
-        const newEventObject = {
-            target: {
-                name,
-                value: {checkbox: selectedCheckbox, ids: selectedIds}
-            }
-        }
-
-        setEventObject(newEventObject)
-
-        return newEventObject
+        return {target: {name, value: {checkbox: selectedCheckbox, ids: selectedIds}}}
     }
 
     return (

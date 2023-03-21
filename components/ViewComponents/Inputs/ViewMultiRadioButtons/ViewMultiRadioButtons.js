@@ -6,7 +6,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, options } = metadata
-    const [checkedValue, setCheckedValue] = useState(value || null)
+
     return (
         <div className='field grid grid-nogutter'>
             <div className='col-4'>
@@ -14,7 +14,7 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                 <Subtitle subtitle={subtitle} />
             </div>
             <div className='col-8'>
-                {options.length > 0 ? 
+                {options.length > 0 &&
                     <>
                         {options.map((radioButton, index) => {
                             return (
@@ -22,11 +22,10 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                                     <RadioButton 
                                         value={radioButton.value} 
                                         name={name} 
-                                        onChange={(e) => {
-                                            setCheckedValue(e.target.value)
-                                            onChange(e)
+                                        onChange={() => {
+                                            onChange({target: { name: name, value: {radioButton: radioButton.value, id: index} } })
                                         }} 
-                                        checked={checkedValue === radioButton.value} 
+                                        checked={value?.id == index} 
                                         style={{marginRight: '0.5rem'}} 
                                     />
                                     <label>{radioButton.value}</label>
@@ -34,7 +33,6 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                             )
                         })}
                     </>
-                    : <p>{'Click dialog to add radiobuttons'}</p>
                 }
             </div>
             <Errors errors={errors} />
