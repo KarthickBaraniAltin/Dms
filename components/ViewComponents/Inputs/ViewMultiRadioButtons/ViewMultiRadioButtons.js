@@ -7,7 +7,6 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, options } = metadata
     const [checkedValue, setCheckedValue] = useState(value || null)
-    console.log('value:', value)
     return (
         <div className='field grid grid-nogutter'>
             <div className='col-4'>
