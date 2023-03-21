@@ -1,5 +1,5 @@
 import { createElement } from 'react'
-import { Sortable } from '../../../components/DndComponents/Sortable'
+import { Sortable } from '../../DndComponents/Sortable/Sortable'
 import CreateMultiRadioButtons from '../Inputs/CreateMultiRadioButtons/CreateMultiRadioButtons'
 import CreateMask from '../Inputs/CreateMask/CreateMask'
 import CreateRichTextInput from '../Inputs/CreateRichTextInput/CreateRichTextInput'
