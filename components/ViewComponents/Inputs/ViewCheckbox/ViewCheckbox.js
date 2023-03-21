@@ -47,8 +47,14 @@ export default function ViewCheckbox({ metadata, onChange, errors }) {
                         {metadata.options.map((checkboxes, index) => {
                             return (
                                 <div key={index} style={{marginBottom: '0.5rem'}}>
-                                    <Checkbox key={index} id={index} value={checkboxes.value} onChange={(e) => onChange(onCheckboxChange(e))}
-                                checked={checkedIds.some(id => id === index)} style={{marginRight: '0.5rem'}} />
+                                    <Checkbox 
+                                        key={index} 
+                                        id={index} 
+                                        value={checkboxes.value} 
+                                        onChange={(e) => onChange(onCheckboxChange(e))}
+                                        checked={checkedIds.some(id => id === index)} 
+                                        style={{marginRight: '0.5rem'}}
+                                    />
                                     <label>{checkboxes.value}</label>
                                 </div>
                             )

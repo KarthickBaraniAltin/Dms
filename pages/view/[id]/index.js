@@ -8,7 +8,7 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
@@ -29,13 +29,13 @@ export default function View({ id, metadata, api, initialValues }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
     
-    useState(() => {
+    useEffect(() => {
         if (!userData && account) {
             callMsGraph().then(response => setUserData(response)).catch((e) => {
                 console.log("Error while getting the user data = ", e)
             })
         }
-    }, [inProgress, instance, account]) 
+    }, [inProgress, instance, account, userData]) 
 
     const jsonToFormData = (json) => {
         const convert = (value) => {

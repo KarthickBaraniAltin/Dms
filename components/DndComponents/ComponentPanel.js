@@ -1,6 +1,9 @@
 import { Card } from 'primereact/card'
 import { Draggable } from './Draggable'
 
+export const fullSizeClassName = 'col-11 mlr-05'
+export const halfSizeClassName = 'col-5 mlr-05'
+
 export default function ComponentPanel() {
 
     const componentTypes = [
@@ -21,10 +24,7 @@ export default function ComponentPanel() {
         'checkbox'
     ]
 
-    const fullSizeClassName = 'col-11 mlr-05'
-    const halfSizeClassName = 'col-5 mlr-05'
-
-    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":" ","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
+    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
 
     const draggableItems = componentTypes.map((component, index) => {
         if (component === 'header') {
