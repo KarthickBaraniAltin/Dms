@@ -1,6 +1,5 @@
 import React, { createElement } from 'react'
-import { ViewSignature } from '../ViewSignature/ViewSignature'
-import FileInput from '../FileInput/FileInput'
+import ViewSignature from '../Inputs/ViewSignature/ViewSignature'
 import ViewCalendar from '../Inputs/ViewCalendar/ViewCalendar'
 import ViewText from '../Inputs/ViewText/ViewText'
 import ViewNumber from '../Inputs/ViewNumber/ViewNumber'
@@ -13,6 +12,8 @@ import ViewMultiRadioButtons from '../Inputs/ViewMultiRadioButtons/ViewMultiRadi
 import ViewCheckbox from '../Inputs/ViewCheckbox/ViewCheckbox'
 import ViewTime from '../Inputs/ViewTime/ViewTime'
 import ViewReadonlySubtitle from '../Inputs/ViewReadonlySubtitle/ViewReadonlySubtitle'
+import clsx from 'clsx'
+import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
@@ -26,7 +27,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'dropdown': ViewDropdown,
         'multiselect': ViewMultiselect,
         'header': 'h1',
-        'file': FileInput,
+        'file': ViewFileInput,
         'richText': ViewRichText,
         'subtitle': ViewReadonlySubtitle,
         'signature': ViewSignature,
@@ -39,7 +40,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
             {metadata?.map((data, index) => {
                 const { name, type, divClassName } = data
                 return (
-                    <div key={index} className={divClassName ?? 'field col-6'}>
+                    <div key={index} className={clsx(divClassName ?? 'field col-6', 'mt-2')}>
                         { createElement( 
                             componentMapper[type],
                             {

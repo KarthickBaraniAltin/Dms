@@ -42,7 +42,7 @@ export default function CreateComponents ({ metadata, openDialog, inputs, handle
             {metadata?.map((data, index) => {
                 const { type, name, divClassName } = data
                 return (
-                    <div className={clsx(divClassName, 'mt-2')} key={index}>
+                    <div className={clsx(divClassName, 'mt-4')} key={index}>
                         <Sortable key={index} id={index + 1}>
                                 {createElement(componentMapper[type],
                                     {

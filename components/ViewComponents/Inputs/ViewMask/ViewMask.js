@@ -4,6 +4,8 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
+import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
+
 export default function ViewMask({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, mask } = metadata
 
@@ -13,7 +15,7 @@ export default function ViewMask({ metadata, value, onChange, errors }) {
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <InputMask className='col-8' name={name} value={value} onChange={onChange} mask={mask} />
+            <InputMask className={`col-8 ${sharedStyles.input}`} name={name} value={value} onChange={onChange} mask={mask} />
             <Errors errors={errors} />
         </div>
     )

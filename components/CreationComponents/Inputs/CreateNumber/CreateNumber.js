@@ -7,6 +7,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 
 import styles from '../CreateNumber/CreateNumber.module.css'
+import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
 
 export default function CreateNumber({metadata, value, onChange, openDialog, errors}) {
     const { name, className, label, subtitle, guid, id, page } = metadata
@@ -18,7 +19,7 @@ export default function CreateNumber({metadata, value, onChange, openDialog, err
                 <Label label={label} />
                 <Subtitle subtitle={subtitle}/>
             </div>
-            <InputNumber name={name} className={clsx('col-8', styles['numeric-style'])} value={value} onChange={onChange} /> 
+            <InputNumber name={name} className={clsx('col-8', styles['numeric-style'])} inputClassName={sharedStyles.input} value={value} onChange={onChange} /> 
             <Errors errors={errors} />
         </div>
     )
