@@ -49,17 +49,11 @@ export default function Update({ id, data }) {
      const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
-        setMainFormIds(metadata.map((data, index) => (index + 1)))
-
-        metadata.map(component => {
-            if (component.type === undefined) {
-                return
-            }
-        })
+        setMainFormIds(Object.keys(metadata).map(data => data))        
     }, [metadata])
 
     const addMetadata = (data) => {
-        setMetadata((prevList) => [...prevList, data])
+        setMetadata((prevObj) => ({...prevObj, [data.guid]: data}))
     }
 
     const updateForm = async (event, formName, description) => {

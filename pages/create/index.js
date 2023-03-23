@@ -24,7 +24,7 @@ import CreateComponents from '../../components/CreationComponents/CreateComponen
 import { Droppable } from '../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update() {
+export default function Create() {
 
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
@@ -86,7 +86,7 @@ export default function Update() {
     return (
         <>
             <Head>
-                <title>Update Form</title>
+                <title>Create Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
             <AuthenticatedTemplate>                   
