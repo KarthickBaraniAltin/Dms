@@ -125,10 +125,8 @@ export const useValidation = ({ metadata, inputs }) => {
                     })
                 })
             },
-            fonts: (font, name) => {
-                const index = metadata.findIndex(element => element.name === name)
-                
-                metadata[index].fontStyle = font
+            fonts: (font, guid) => {               
+                metadata[guid].fontStyle = font
             }
         }
 
@@ -259,7 +257,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'fontFamily': {
                                 const { font } = value
-                                validationMapper.fonts(font, name)
+                                validationMapper.fonts(font, guid)
                                 break
                             }
                             default:

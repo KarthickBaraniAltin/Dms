@@ -306,6 +306,7 @@ export default function ComponentPanel() {
                     divClassName={halfSizeClassName}
                     label='Signature'
                     subtitle={defaultSubtitle}
+                    fontStyle=''
                     guid=''
                 >
                     <div className='flex justify-content-center'>
