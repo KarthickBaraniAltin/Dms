@@ -1,13 +1,12 @@
 import React from 'react'
 import { Dialog } from 'primereact/dialog'
-import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
-import LexicalEditor from '../../LexicalEditor/LexicalEditor';
-import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm';
-import Footer from '../Footer/Footer';
+import { InputText } from 'primereact/inputtext'
+import { InputNumber } from 'primereact/inputnumber'
+import LexicalEditor from '../../LexicalEditor/LexicalEditor'
+import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import Footer from '../Footer/Footer'
 
 export default function TextDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-
   return (
     <div>
       <Dialog header='Text Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>

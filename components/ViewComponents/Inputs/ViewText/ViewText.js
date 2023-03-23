@@ -7,7 +7,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import styles from '../../../../styles/Inputs/Inputs.module.css'
 
 export default function ViewText({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle } = metadata
+    const { name, label, subtitle, defaultValue } = metadata
 
     return (
         <div className='field grid grid-nogutter'> 
@@ -15,7 +15,7 @@ export default function ViewText({ metadata, value, onChange, errors }) {
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <InputText className={`col-8 ${styles.input}`} name={name} value={value} onChange={onChange} />
+            <InputText className={`col-8 ${styles.input}`} name={name} value={value ?? defaultValue} onChange={onChange} />
             <Errors errors={errors} />
         </div>
     )

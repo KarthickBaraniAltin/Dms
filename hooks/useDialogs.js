@@ -63,31 +63,12 @@ const useDialogs = ({ metadata, setMetadata }) => {
 
         if (isDeleted) {
             if (confirm('You are about to delete this component. Do you wish to proceed?')) {
-                const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
-
-                metadata.splice(deleteIndex, 1)
-
-                setMetadata(metadata)
+                delete metadata[dialogData.guid]
             }
+        } else {
+            metadata[dialogData.guid] = {...metadata[dialogData.guid], ...inputs}
         }
 
-        for (let i = 0; i < metadata.length; i++) {
-            if (metadata[i].name.includes('section')) {
-                let sectionIndex = metadata[i].sectionMetadata.findIndex(sectionElement => sectionElement.name === dialogData.name)
-
-                if (sectionIndex === -1) {
-                    continue
-                }
-
-                metadata[i].sectionMetadata[sectionIndex] = {...metadata[i].sectionMetadata[sectionIndex], ...inputs}
-                setMetadata(metadata)
-                setShowDialog(false)
-                return
-            }
-        } 
-
-        const index = metadata.findIndex(element => element.name === dialogData.name)
-        metadata[index] = {...metadata[index], ...inputs}
         setMetadata(metadata)
         setShowDialog(false)
     }
