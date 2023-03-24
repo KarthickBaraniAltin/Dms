@@ -28,7 +28,8 @@ export default function Update({ id, data }) {
 
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
-    const [ metadata, setMetadata ] = useState(data.metadata.metadata)
+    const [ metadata, setMetadata ] = useState(data.metadata.metadata) 
+    
     const { errors } = useValidation({ metadata, inputs })
 
     const [ mainFormIds, setMainFormIds ] = useState([])
