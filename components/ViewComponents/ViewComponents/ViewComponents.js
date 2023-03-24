@@ -16,7 +16,6 @@ import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
-    const objectKeysArray = Object.keys(metadata)
 
     const componentMapper = {
         'text': ViewText,
@@ -38,7 +37,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
 
     return (
         <div className='grid grid-nogutter'>
-            {objectKeysArray?.map(guid => {
+            {metadata && Object.keys(metadata).map(guid => {
                 const { name, type, divClassName } = metadata[guid]
                 return (
                     <div key={guid} className={clsx(divClassName ?? 'field col-6', 'mt-2')}>
