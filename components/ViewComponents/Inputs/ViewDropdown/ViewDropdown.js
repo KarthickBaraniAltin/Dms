@@ -4,7 +4,7 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewTextarea({ metadata, value, onChange, errors }) {
+export default function ViewDropdown({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, className, options } = metadata
 
     return (
@@ -13,7 +13,7 @@ export default function ViewTextarea({ metadata, value, onChange, errors }) {
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <Dropdown name={name} className={className} value={value} onChange={onChange} options={options} />
+            <Dropdown name={name} className={className} value={value ?? []} onChange={onChange} options={options} />
             <Errors errors={errors} />
         </div>
     )

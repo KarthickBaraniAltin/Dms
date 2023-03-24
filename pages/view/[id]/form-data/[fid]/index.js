@@ -18,18 +18,9 @@ export default function FormDataView({ id, metadata, api, savedData }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { parseDate, parseTime } = useConvertFormData()
-    const convertedData = Object.keys(savedData.data).reduce((accumulator, key) => {
-        if (key.startsWith('calendar')) {
-          accumulator[key] = parseDate(savedData.data[key])
-        } else if (key.startsWith('time')) {
-            accumulator[key] = parseTime(savedData.data[key])
-        }
-        else {
-          accumulator[key] = savedData.data[key]
-        }
-        return accumulator
-    }, {})
+    
+    const { convertData } = useConvertFormData()
+    const convertedData = convertData(savedData.data)
     
     const { inputs, handleInputChange } = useInputs({ initialValues: convertedData })
     const { errors } = useValidation({ metadata, inputs })

@@ -6,33 +6,27 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata 
-    const [checkedValues, setCheckedValues] = useState([])
-    const [checkedIds, setCheckedIds] = useState([])
-    const [eventObject, setEventObject] = useState({target: {name: name, value: []}})
+    const [checkedValues, setCheckedValues] = useState(value?.checkbox || [])
+    const [checkedIds, setCheckedIds] = useState(value?.ids || [])
 
     const onCheckboxChange = (e) => {
+        const { checked, value, target: { id } } = e
         let selectedCheckbox = [...checkedValues]
-        let selectedId = [...checkedIds]
+        let selectedIds = [...checkedIds]
 
-        if(e.checked) {
-            selectedCheckbox.push(e.value)
-            selectedId.push(e.target.id)
+        if(checked) {
+            selectedCheckbox.push(value)
+            selectedIds.push(id)
         }
         else {
-            selectedCheckbox.splice(selectedCheckbox.indexOf(e.value), 1)
-            selectedId.splice(selectedId.indexOf(e.target.id), 1)
+            selectedCheckbox = selectedCheckbox.filter((checkboxValue) => checkboxValue !== value)
+            selectedIds = selectedIds.filter((checkboxId) => checkboxId !== id)
         }
 
         setCheckedValues(selectedCheckbox)
-        setCheckedIds(selectedId)
+        setCheckedIds(selectedIds)
 
-        setEventObject(prevState => {
-            let tempState = JSON.parse(JSON.stringify(prevState))
-            tempState.target.value = selectedCheckbox
-            return tempState
-        })
-
-        return { ...eventObject, target: {...eventObject.target, value: selectedCheckbox} }
+        return {target: {name, value: {checkbox: selectedCheckbox, ids: selectedIds}}}
     }
 
     return (

@@ -38,9 +38,9 @@ export const useValidation = ({ metadata, inputs }) => {
 
                 return maxNum >= currentNum
             },
-            minDate: (minDate, inputValue, calendarName) => {               
-                const index = metadata.findIndex(element => element.name === calendarName)
-                metadata[index].minDate = minDate          
+            minDate: (minDate, inputValue, calendarGuid) => {
+                if (minDate === undefined) return
+                metadata[calendarGuid].minDate = minDate          
 
                 if (minDate.getFullYear() >= inputValue?.getFullYear()) {
                     if (minDate.getMonth() >= inputValue?.getMonth()) {
@@ -52,9 +52,9 @@ export const useValidation = ({ metadata, inputs }) => {
                     return false
                 }
             },
-            maxDate: (maxDate, inputValue, calendarName) => {
-                const index = metadata.findIndex(element => element.name === calendarName)
-                metadata[index].maxDate = maxDate
+            maxDate: (maxDate, inputValue, calendarGuid) => {
+                if (maxDate === undefined) return
+                metadata[calendarGuid].maxDate = maxDate
 
                 if (maxDate.getFullYear() <= inputValue?.getFullYear()) {
                     if (maxDate.getMonth() <= inputValue?. getMonth()) {
@@ -67,6 +67,8 @@ export const useValidation = ({ metadata, inputs }) => {
                 }
             },
             minTime: (minTime, currentTime) => {
+                if (minTime === undefined) return
+
                 if (minTime.getHours() >= currentTime?.getHours()) {
                     if (minTime.getMinutes() > currentTime?.getMinutes()) {
                         return true
@@ -78,6 +80,8 @@ export const useValidation = ({ metadata, inputs }) => {
                 }
             },
             maxTime: (maxTime, currentTime) => {
+                if (maxTime === undefined) return
+
                 if (maxTime.getHours() <= currentTime?.getHours()) {
                     if (maxTime.getMinutes() < currentTime?.getMinutes()) {
                         return true
@@ -88,10 +92,8 @@ export const useValidation = ({ metadata, inputs }) => {
                     return false
                 }
             },
-            setMask: (mask, maskName) => {
-                const index = metadata.findIndex(element => element.name === maskName)
-
-                metadata[index].mask = mask
+            setMask: (mask, maskGuid) => {
+                metadata[maskGuid].mask = mask
             },
             minFile: (minFileSize, fileTypes) => {
                 if (!minFileSize || !fileTypes) return true
@@ -112,6 +114,7 @@ export const useValidation = ({ metadata, inputs }) => {
                 })
             },
             fileTypes: (validFileTypes, fileTypes) => {
+                if (validFileTypes === undefined || fileTypes === undefined) return
                 return validFileTypes.some(validFileType => {
                     return fileTypes.some(fileType => {
                         if (validFileType !== fileType.type) {
@@ -122,21 +125,19 @@ export const useValidation = ({ metadata, inputs }) => {
                     })
                 })
             },
-            fonts: (font, name) => {
-                const index = metadata.findIndex(element => element.name === name)
-                
-                metadata[index].fontStyle = font
+            fonts: (font, guid) => {               
+                metadata[guid].fontStyle = font
             }
         }
 
-        if (metadata && metadata.length > 0) {
+        if (metadata && Object.keys(metadata).length > 0) {
             const errorMessages = {}
 
-            metadata.forEach(element => {
-                const { validations, name } = element
+            for (const [key, element] of Object.entries(metadata)) {
+                const { validations, name, guid } = element
                 const inputValue = inputs[name]
-
                 const currentErrors = []
+
                 if (validations) {
                     for (const [key, value] of Object.entries(validations)) {
                         switch(key) {
@@ -150,7 +151,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             case 'minLength': {
                                 const { message, length } = value
                                 if (!validationMapper.minLength(length, inputValue?.length)) {
-                                    currentErrors.push(message ?? `This field must have more than ${length} characters`)
+                                    currentErrors.push(message ?? `This field must have at least ${length} characters`)
                                 }
                                 break
                             }
@@ -177,14 +178,14 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'minDate': {
                                 const { message, date } = value
-                                if (validationMapper.minDate(date, inputValue, name)) {
+                                if (validationMapper.minDate(date, inputValue, guid)) {
                                     currentErrors.push(message ?? `Please pick a date on or after ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
                                 }
                                 break
                             }
                             case 'maxDate': {
                                 const { message, date } = value
-                                if (validationMapper.maxDate(date, inputValue, name)) {
+                                if (validationMapper.maxDate(date, inputValue, guid)) {
                                     currentErrors.push(message ?? `Please pick a date on or before ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
                                 }
                                 break
@@ -221,7 +222,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'setMask': {
                                 const { mask } = value
-                                validationMapper.setMask(mask, name)
+                                validationMapper.setMask(mask, guid)
                                 break
                             }
                             case 'minFile': {
@@ -256,7 +257,7 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'fontFamily': {
                                 const { font } = value
-                                validationMapper.fonts(font, name)
+                                validationMapper.fonts(font, guid)
                                 break
                             }
                             default:
@@ -268,7 +269,10 @@ export const useValidation = ({ metadata, inputs }) => {
                         errorMessages[name] = currentErrors
                     }
                 }
-            })
+            }
+
+            // metadata.forEach(element => {
+            // })
 
             setErrors({...errorMessages})
         }

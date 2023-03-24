@@ -24,11 +24,11 @@ import CreateComponents from '../../../components/CreationComponents/CreateCompo
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update({ id, data }) {
+export default function Update({ api, id, data }) {
 
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
-    const [ metadata, setMetadata ] = useState(data.metadata.metadata)
+    const [ metadata, setMetadata ] = useState(data.metadata.metadata) 
     const { errors } = useValidation({ metadata, inputs })
 
     const [ mainFormIds, setMainFormIds ] = useState([])
@@ -38,11 +38,10 @@ export default function Update({ id, data }) {
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
 
-    const { handleDragEnd, handleDragOver } = useDnd()
-    const dragOverCapture = useRef()
+    const { handleDragEnd } = useDnd()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { loading, callApi } = useApi()
+    const { loading, callApiFetch } = useApi()
     const { instance } = useMsal()
 
      // These variables are for pagination
@@ -50,17 +49,11 @@ export default function Update({ id, data }) {
      const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
-        setMainFormIds(metadata.map((data, index) => (index + 1)))
-
-        metadata.map(component => {
-            if (component.type === undefined) {
-                return
-            }
-        })
+        setMainFormIds(Object.keys(metadata).map(data => data))        
     }, [metadata])
 
     const addMetadata = (data) => {
-        setMetadata((prevList) => [...prevList, data])
+        setMetadata((prevObj) => ({...prevObj, [data.guid]: data}))
     }
 
     const updateForm = async (event, formName, description) => {
@@ -68,24 +61,25 @@ export default function Update({ id, data }) {
         const { accessToken } = await acquireToken()
         const { name, username, localAccountId } = instance.getActiveAccount()
 
-        const params = {
+        const formData = new FormData()
+        formData.append("info", JSON.stringify({
+            name: formName,
+            description: description,
+            authorFullName: name,
+            authorId: localAccountId,
+            authorEmail: username,
+        }))
+        formData.append("metadata", JSON.stringify(metadata))
+
+        const fetchParams = {
             method: 'PUT',
-            url: `/form-builder-studio/api/form-definition/${id}`,
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-            }, 
-            data: {
-                name: formName,
-                description: description,
-                authorFullName: name,
-                authorId: localAccountId,
-                authorEmail: username,
-                metadata: {
-                    metadata: metadata
-                } 
-            }
+            },
+            body: formData
         }
-        const res = await callApi(params)
+
+        const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
         if (res?.status == 200) {
             setFormSubmitResult(res)
         }
@@ -99,8 +93,7 @@ export default function Update({ id, data }) {
             </Head>
             <AuthenticatedTemplate>                   
             <DndContext
-                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
-                    onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
@@ -159,6 +152,7 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 data: res.data,
+                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {
