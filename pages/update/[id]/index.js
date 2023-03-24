@@ -24,11 +24,11 @@ import CreateComponents from '../../../components/CreationComponents/CreateCompo
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update({ id, data }) {
+export default function Update({ api, id, data }) {
 
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, inputs } = useInputs({ initialValues: {} })
-    const [ metadata, setMetadata ] = useState(data.metadata.metadata)
+    const [ metadata, setMetadata ] = useState(data.metadata.metadata) 
     const { errors } = useValidation({ metadata, inputs })
 
     const [ mainFormIds, setMainFormIds ] = useState([])
@@ -41,7 +41,7 @@ export default function Update({ id, data }) {
     const { handleDragEnd } = useDnd()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
-    const { loading, callApi } = useApi()
+    const { loading, callApiFetch } = useApi()
     const { instance } = useMsal()
 
      // These variables are for pagination
@@ -61,24 +61,25 @@ export default function Update({ id, data }) {
         const { accessToken } = await acquireToken()
         const { name, username, localAccountId } = instance.getActiveAccount()
 
-        const params = {
+        const formData = new FormData()
+        formData.append("info", JSON.stringify({
+            name: formName,
+            description: description,
+            authorFullName: name,
+            authorId: localAccountId,
+            authorEmail: username,
+        }))
+        formData.append("metadata", JSON.stringify(metadata))
+
+        const fetchParams = {
             method: 'PUT',
-            url: `/form-builder-studio/api/form-definition/${id}`,
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-            }, 
-            data: {
-                name: formName,
-                description: description,
-                authorFullName: name,
-                authorId: localAccountId,
-                authorEmail: username,
-                metadata: {
-                    metadata: metadata
-                } 
-            }
+            },
+            body: formData
         }
-        const res = await callApi(params)
+
+        const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
         if (res?.status == 200) {
             setFormSubmitResult(res)
         }
@@ -102,7 +103,7 @@ export default function Update({ id, data }) {
                     {renderDialog()}
                     <ComponentPanel />
                     <div style={{'width': '5%'}} />
-                    <Card className='card mt-5' style={{'width': '60%'}}>
+                    <Card className='mt-5' style={{'width': '60%'}}>
                         <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                             <div>
                                 <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
@@ -151,6 +152,7 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 data: res.data,
+                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {

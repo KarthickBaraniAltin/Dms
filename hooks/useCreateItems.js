@@ -2,7 +2,6 @@ import useDialogs from './useDialogs'
 import { useValidation } from './useValidation'
 import { createElement } from 'react'
 import { useInputs } from './useInput'
-import { Sortable } from '../components/DndComponents/Sortable'
 import { Droppable } from '../components/DndComponents/Droppable'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import CreateMultiRadioButtons from '../components/CreationComponents/Inputs/CreateMultiRadioButtons/CreateMultiRadioButtons'
@@ -18,6 +17,7 @@ import CreateDropdown from '../components/CreationComponents/Inputs/CreateDropdo
 import CreateMultiSelect from '../components/CreationComponents/Inputs/CreateMultiSelect/CreateMultiSelect'
 import CreateSignature from '../components/CreationComponents/Inputs/CreateSignature/CreateSignature'
 import CreateCheckbox from '../components/CreationComponents/Inputs/CreateCheckbox/CreateCheckbox'
+import { Sortable } from '../components/DndComponents/Sortable/Sortable'
 
 export const useCreateItems = ({ metadata, setMetadata, mainFormIds }) => {
 
