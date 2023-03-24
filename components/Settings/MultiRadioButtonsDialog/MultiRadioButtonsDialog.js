@@ -7,7 +7,7 @@ import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-
+  console.log('inputs:', inputs)
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -111,9 +111,13 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
               )
             })
           }
-          <div className='field col-6 md:col-6'>
-            <i className='pi pi-plus' onClick={() => handleAddOtherOptions()}></i>
-          </div>
+          {inputs?.otherOptions == 0 ?
+            <div className='field col-6 md:col-6'>
+              <i className='pi pi-plus' onClick={() => handleAddOtherOptions()}></i>
+            </div>
+            :
+            null
+          }
         </div>
       </Dialog>
     </div>
