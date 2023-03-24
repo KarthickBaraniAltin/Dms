@@ -17,6 +17,7 @@ import clsx from 'clsx'
 import CreateTime from '../Inputs/CreateTime/CreateTime'
 
 export default function CreateComponents ({ metadata, openDialog, inputs, handleInputChange, errors }) {
+    const objectKeysArray = Object.keys(metadata)
 
     const componentMapper = {
         'text': CreateText,
@@ -38,15 +39,15 @@ export default function CreateComponents ({ metadata, openDialog, inputs, handle
 
     return (
         <>
-            {metadata?.length === 0 && <h5 style={{margin: '0 auto'}}>Drop field here</h5>}
-            {metadata?.map((data, index) => {
-                const { type, name, divClassName } = data
+            {objectKeysArray?.length === 0 && <h5 style={{margin: '0 auto'}}>Drop field here</h5>}
+            {objectKeysArray?.map(guid => {
+                const { type, name, divClassName } = metadata[guid]
                 return (
-                    <div className={clsx(divClassName, 'mt-4')} key={index}>
-                        <Sortable key={index} id={index + 1}>
+                    <div className={clsx(divClassName, 'mt-4')} key={guid}>
+                        <Sortable key={guid} id={guid}>
                                 {createElement(componentMapper[type],
                                     {
-                                        metadata: data,
+                                        metadata: metadata[guid],
                                         openDialog: openDialog,
                                         value: inputs[name],
                                         onChange: handleInputChange,

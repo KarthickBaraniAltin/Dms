@@ -63,16 +63,12 @@ const useDialogs = ({ metadata, setMetadata }) => {
 
         if (isDeleted) {
             if (confirm('You are about to delete this component. Do you wish to proceed?')) {
-                const deleteIndex = metadata.findIndex(component => component.name === dialogData.name)
-
-                metadata.splice(deleteIndex, 1)
-
-                setMetadata(metadata)
+                delete metadata[dialogData.guid]
             }
+        } else {
+            metadata[dialogData.guid] = {...metadata[dialogData.guid], ...inputs}
         }
 
-        const index = metadata.findIndex(element => element.name === dialogData.name)
-        metadata[index] = {...metadata[index], ...inputs}
         setMetadata(metadata)
         setShowDialog(false)
     }

@@ -26,7 +26,7 @@ export default function CalendarDialog({ visible, hideDialog, assignValuesNested
           </div>
           <div className='field col-6 md:col-6'>
             <label>Default Value</label>
-            <InputText name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
+            <Calendar name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>

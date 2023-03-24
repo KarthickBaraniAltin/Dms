@@ -13,7 +13,7 @@ export default function ViewCalendar({ metadata, value, onChange, errors }) {
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <Calendar className='col-8' name={name} value={value} onChange={onChange} />
+            <Calendar className='col-8' name={name} value={value ?? defaultValue} onChange={onChange} />
             <Errors errors={errors} />
         </div>
     )

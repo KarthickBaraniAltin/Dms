@@ -39,8 +39,7 @@ export default function Update({ id, data }) {
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
 
-    const { handleDragEnd, handleDragOver } = useDnd()
-    const dragOverCapture = useRef()
+    const { handleDragEnd } = useDnd()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApi } = useApi()
@@ -51,17 +50,11 @@ export default function Update({ id, data }) {
      const [currentPage, setCurrentPage] = useState(pageNumber)
 
     useEffect(() => {
-        setMainFormIds(metadata.map((data, index) => (index + 1)))
-
-        metadata.map(component => {
-            if (component.type === undefined) {
-                return
-            }
-        })
+        setMainFormIds(Object.keys(metadata).map(data => data))        
     }, [metadata])
 
     const addMetadata = (data) => {
-        setMetadata((prevList) => [...prevList, data])
+        setMetadata((prevObj) => ({...prevObj, [data.guid]: data}))
     }
 
     const updateForm = async (event, formName, description) => {
@@ -100,8 +93,7 @@ export default function Update({ id, data }) {
             </Head>
             <AuthenticatedTemplate>                   
             <DndContext
-                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds, dragOverCapture)}
-                    onDragOver={(event) => handleDragOver(event, dragOverCapture)}
+                    onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}

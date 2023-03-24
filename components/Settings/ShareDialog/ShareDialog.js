@@ -4,7 +4,8 @@ import { Button } from "primereact/button"
 
 export default function ShareDialog({showDialog, handleShare, id, formSubmitResult}) {
     const [domain] = window.location.host.split('/')
-    const currentURL = `https://${domain}/form-builder-studio/view/${id}`
+    const http = domain == 'localhost:3000' ? 'http' : 'https'
+    const currentURL = `${http}://${domain}/form-builder-studio/view/${id}`
 
     const handleLinkCopy = async() => {
         try {
