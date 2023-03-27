@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react"
 export const useValidation = ({ metadata, inputs }) => {
     const [validations, setValidations] = useState({})
     const [errors, setErrors] = useState({})
-    
+    console.log('errors:', errors)
     const validate = useCallback(() => {
 
         const validationMapper = {
@@ -40,7 +40,8 @@ export const useValidation = ({ metadata, inputs }) => {
             },
             minDate: (minDate, inputValue, calendarGuid) => {
                 if (minDate === undefined) return
-                metadata[calendarGuid].minDate = minDate          
+                metadata[calendarGuid].minDate = minDate      
+                  
 
                 if (minDate.getFullYear() >= inputValue?.getFullYear()) {
                     if (minDate.getMonth() >= inputValue?.getMonth()) {
@@ -178,45 +179,53 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'minDate': {
                                 const { message, date } = value
-                                if (validationMapper.minDate(date, inputValue, guid)) {
-                                    currentErrors.push(message ?? `Please pick a date on or after ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
+                                let newDate = new Date(date)
+                                if (validationMapper.minDate(newDate, inputValue, guid)) {
+                                    currentErrors.push(message ?? `Please pick a date on or after ${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`)
                                 }
                                 break
                             }
                             case 'maxDate': {
                                 const { message, date } = value
-                                if (validationMapper.maxDate(date, inputValue, guid)) {
-                                    currentErrors.push(message ?? `Please pick a date on or before ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`)
+                                let newDate = new Date(date)
+                                if (validationMapper.maxDate(newDate, inputValue, guid)) {
+                                    currentErrors.push(message ?? `Please pick a date on or before ${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`)
                                 }
                                 break
                             }
                             case 'minTime': {
                                 const { message, time } = value
-                                if (validationMapper.minTime(time, inputValue)) {
-                                    let hours = time.getHours()
+                                let newTime = new Date(time)
+                                if (validationMapper.minTime(newTime, inputValue)) {
+                                    let hours = newTime.getHours()
                                     let isPM = false
 
-                                    if (hours > 12) {
+                                    if (hours === 12) {
+                                        isPM = true
+                                    } else if (hours > 12) {
                                         hours -= 12
                                         isPM = true
                                     }
 
-                                    currentErrors.push(message ?? `Please pick a time on or after ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
+                                    currentErrors.push(message ?? `Please pick a time on or after ${hours}:${newTime.getMinutes() < 10 ? '0' + newTime.getMinutes() : newTime.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
                                 }
                                 break
                             }
                             case 'maxTime': {
                                 const { message, time } = value
-                                if (validationMapper.maxTime(time, inputValue)) {
-                                    let hours = time.getHours()
+                                let newTime = new Date(time)
+                                if (validationMapper.maxTime(newTime, inputValue)) {
+                                    let hours = newTime.getHours()
                                     let isPM = false
 
-                                    if (hours > 12) {
+                                    if (hours === 12) {
+                                        isPM = true
+                                    } else if (hours > 12) {
                                         hours -= 12
                                         isPM = true
                                     }
 
-                                    currentErrors.push(message ?? `Please pick a time on or before ${hours}:${time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
+                                    currentErrors.push(message ?? `Please pick a time on or before ${hours}:${newTime.getMinutes() < 10 ? '0' + newTime.getMinutes() : newTime.getMinutes()}:${isPM ? 'PM' : 'AM'}`)
                                 }
                                 break
                             }

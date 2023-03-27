@@ -61,8 +61,23 @@ export default function View({ id, metadata, api, initialValues }) {
         return formData
     }
 
+    const checkErrors = () => {
+        for (const property in errors) {
+            if (errors[property].length > 0) {
+                return true
+            }
+        }
+
+        return false
+    }
+
     const submitFormData = async (event) => {
         event.preventDefault()
+
+        if (checkErrors()) {
+            alert('Fix validation error(s) before submission')
+            return
+        }
 
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()
