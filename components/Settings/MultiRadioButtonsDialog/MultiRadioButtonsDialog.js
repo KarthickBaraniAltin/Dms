@@ -7,7 +7,6 @@ import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-  console.log('inputs:', inputs)
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
