@@ -67,14 +67,19 @@ export default function View({ id, metadata, api, initialValues }) {
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()
 
+        const formData = new FormData()
+        let info = {}
         if (userData) {
-            inputs.startViewTime = startViewTime 
-            inputs.fullLegalName = givenName + " " + surname
-            inputs.email = mail
-            inputs.securityLevel = "Email, Account Authentication(None)"
+            info = {
+                startViewTime: startViewTime,
+                fullLegalName: givenName + " " + surname,
+                email: mail,
+                securityLevel: "Email, Account Authentication(None)"
+            }
         }
-
-        const formData = jsonToFormData(inputs)
+    
+        formData.append("info", JSON.stringify(info))
+        formData.append("data", JSON.stringify(inputs))
         const fetchParams = {
             method: 'POST',
             headers: {
