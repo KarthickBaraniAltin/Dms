@@ -1,9 +1,9 @@
 export const msalConfig = {
     auth: {
-        clientId: '1150e924-2c59-4037-8aa6-2f371e3b49f1',
-        authority: 'https://login.microsoftonline.com/df35d574-9fba-48ce-a073-737868d77a48',
+        clientId: '0da22cba-df03-42f1-979d-60d9681c493a',
+        authority: 'https://login.microsoftonline.com/04aee3cb-4ce8-410a-8596-5e52728fc79a',
         redirectUri: "/form-builder-studio/blank", 
-        postLogoutRedirectUri: "/" //'http://localhost:3000' 
+        postLogoutRedirectUri: "/" 
     }
 }   
 
@@ -11,12 +11,8 @@ export const loginRequest = {
     scopes: ['User.Read', 'profile', 'openid', 'email']
 }
 
-export const activeDirectoryApiRequest = {
-    scopes: ['api://0d786c0c-60fb-4996-8c20-bca3a0b4533f/All']
-}
-
 export const formBuilderApiRequest = {
-    scopes: ['api://fde24d80-9fdb-44f9-9fd1-29a8a082d58f/All']
+    scopes: ['api://2e825532-5a1a-401b-93c0-db10a48cdf75/All']
 }
 
 export const graphConfig = {
