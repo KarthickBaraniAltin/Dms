@@ -12,9 +12,9 @@ import CreateDropdown from '../Inputs/CreateDropdown/CreateDropdown'
 import CreateMultiSelect from '../Inputs/CreateMultiSelect/CreateMultiSelect'
 import CreateSignature from '../Inputs/CreateSignature/CreateSignature'
 import CreateCheckbox from '../Inputs/CreateCheckbox/CreateCheckbox'
-import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
 import clsx from 'clsx'
 import CreateTime from '../Inputs/CreateTime/CreateTime'
+import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
 
 export default function CreateComponents ({ metadata, openDialog, inputs, handleInputChange, errors }) {
     const objectKeysArray = Object.keys(metadata)
