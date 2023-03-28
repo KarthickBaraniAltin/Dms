@@ -7,8 +7,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function CreateTime({metadata, value, onChange, openDialog, errors}) {  
   const { name, className, label, subtitle, defautltValue, guid, id, page } = metadata
-  console.log('metadata:', metadata)
-  console.log('value:', value)
+
   return (
     <div className='field grid grid-nogutter'>
       <SettingsButton openDialog={openDialog} componentData={metadata} />

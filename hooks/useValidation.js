@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react"
 export const useValidation = ({ metadata, inputs }) => {
     const [validations, setValidations] = useState({})
     const [errors, setErrors] = useState({})
-    console.log('errors:', errors)
     const validate = useCallback(() => {
 
         const validationMapper = {

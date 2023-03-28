@@ -28,6 +28,8 @@ export default function View({ id, metadata, api, initialValues }) {
     const [ userData, setUserData ] = useState(undefined)
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
+
+   const [isDisabled, setIsDisabled] = useState(false)
     
     useEffect(() => {
         if (!userData && account) {
@@ -35,31 +37,9 @@ export default function View({ id, metadata, api, initialValues }) {
                 console.log("Error while getting the user data = ", e)
             })
         }
-    }, [inProgress, instance, account, userData]) 
 
-    const jsonToFormData = (json) => {
-        const convert = (value) => {
-            if (typeof value === "string") {
-                return value
-            } else if (value instanceof Date) {
-                return value
-            } else {
-                return JSON.stringify(value)
-            }
-        }
-
-        const formData = new FormData()
-        for (var key in json) {
-            if (key.startsWith('file')) {
-                json[key].forEach((file, index) => {
-                    formData.append(key + '_' + index, file)
-                })
-            } else {
-                formData.append(key, convert(json[key]))
-            }
-        }
-        return formData
-    }
+        setIsDisabled(checkErrors())
+    }, [inProgress, instance, account, userData, errors]) 
 
     const checkErrors = () => {
         for (const property in errors) {
@@ -74,31 +54,30 @@ export default function View({ id, metadata, api, initialValues }) {
     const submitFormData = async (event) => {
         event.preventDefault()
 
-        if (checkErrors()) {
-            alert('Fix validation error(s) before submission')
-            return
-        }
-
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()
-
+        const formData = new FormData()
+        let info = {}
         if (userData) {
-            inputs.startViewTime = startViewTime 
-            inputs.fullLegalName = givenName + " " + surname
-            inputs.email = mail
-            inputs.securityLevel = "Email, Account Authentication(None)"
+            info = {
+                startViewTime: startViewTime,
+                fullLegalName: givenName + " " + surname,
+                email: mail,
+                securityLevel: "Email, Account Authentication(None)"
+            }
         }
+        
+        formData.append("info", JSON.stringify(info))
+        formData.append("data", JSON.stringify(inputs))
 
-        const formData = jsonToFormData(inputs)
         const fetchParams = {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-            }, 
+            },
             body: formData
         }
 
-        // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
 
@@ -116,7 +95,7 @@ export default function View({ id, metadata, api, initialValues }) {
                                 <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                             </div>
                             <div className='flex justify-content-center mt-5'>
-                                <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                                <Button disabled={isDisabled} className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>
