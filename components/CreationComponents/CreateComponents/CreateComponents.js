@@ -12,7 +12,7 @@ import CreateDropdown from '../Inputs/CreateDropdown/CreateDropdown'
 import CreateMultiSelect from '../Inputs/CreateMultiSelect/CreateMultiSelect'
 import CreateSignature from '../Inputs/CreateSignature/CreateSignature'
 import CreateCheckbox from '../Inputs/CreateCheckbox/CreateCheckbox'
-// import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
+import CreateFileInput from '../Inputs/CreateFileInput/CreateFileinput'
 import clsx from 'clsx'
 import CreateTime from '../Inputs/CreateTime/CreateTime'
 
@@ -29,7 +29,7 @@ export default function CreateComponents ({ metadata, openDialog, inputs, handle
         'time': CreateTime,
         'multiselect': CreateMultiSelect,
         'header': <h1/>,
-        // 'file': CreateFileInput,
+        'file': CreateFileInput,
         'richText': CreateRichTextInput,
         'subtitle': CreateReadonlySubtitle,
         'signature': CreateSignature,
