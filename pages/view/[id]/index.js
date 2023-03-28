@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
+import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 
 export default function View({ id, metadata, api, initialValues }) {
 
@@ -29,7 +30,8 @@ export default function View({ id, metadata, api, initialValues }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-   const [isDisabled, setIsDisabled] = useState(false)
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+
     
     useEffect(() => {
         if (!userData && account) {
@@ -38,18 +40,8 @@ export default function View({ id, metadata, api, initialValues }) {
             })
         }
 
-        setIsDisabled(checkErrors())
+        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, userData, errors]) 
-
-    const checkErrors = () => {
-        for (const property in errors) {
-            if (errors[property].length > 0) {
-                return true
-            }
-        }
-
-        return false
-    }
 
     const submitFormData = async (event) => {
         event.preventDefault()
