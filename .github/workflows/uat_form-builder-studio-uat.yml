@@ -21,12 +21,11 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: npm install, build, and test
+      - name: yarn install, build, and test
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-
+          yarn install
+          yarn build:test
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -45,12 +44,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-
+        
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'form-builder-studio-uat'
+          app-name: 'form-builder-studio-dev'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_59A2D02B3D614F2A93EE128C2E4F5CBD }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D6C1274867A42C9990E14BAAD0D1AC9 }}
           package: .
