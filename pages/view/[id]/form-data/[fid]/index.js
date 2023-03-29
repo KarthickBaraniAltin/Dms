@@ -13,6 +13,7 @@ import { useValidation } from '../../../../../hooks/useValidation'
 import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
 import useTimeControl from '../../../../../hooks/useTimeControl'
 import ViewComponents from '../../../../../components/ViewComponents/ViewComponents/ViewComponents'
+import { usePreventSubmit } from '../../../../../hooks/usePreventSubmit'
 
 export default function FormDataView({ id, metadata, api, savedData }) {
 
@@ -32,6 +33,8 @@ export default function FormDataView({ id, metadata, api, savedData }) {
     const [ userData, setUserData ] = useState(undefined)
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
+
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
     
     useState(() => {
         if (!userData && account) {
@@ -39,7 +42,9 @@ export default function FormDataView({ id, metadata, api, savedData }) {
                 console.log("Error while getting the user data = ", e)
             })
         }
-    }, [inProgress, instance, account]) 
+
+        setIsDisabled(checkErrors(errors))
+    }, [inProgress, instance, account, errors]) 
 
     const jsonToFormData = (json) => {
         const convert = (value) => {

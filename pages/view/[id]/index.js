@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
+import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 
 export default function View({ id, metadata, api, initialValues }) {
 
@@ -28,6 +29,9 @@ export default function View({ id, metadata, api, initialValues }) {
     const [ userData, setUserData ] = useState(undefined)
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
+
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+
     
     useEffect(() => {
         if (!userData && account) {
@@ -35,38 +39,19 @@ export default function View({ id, metadata, api, initialValues }) {
                 console.log("Error while getting the user data = ", e)
             })
         }
-    }, [inProgress, instance, account, userData]) 
 
-    const jsonToFormData = (json) => {
-        const convert = (value) => {
-            if (typeof value === "string") {
-                return value
-            } else if (value instanceof Date) {
-                return value
-            } else {
-                return JSON.stringify(value)
-            }
-        }
-
-        const formData = new FormData()
-        for (var key in json) {
-            if (key.startsWith('file')) {
-                json[key].forEach((file, index) => {
-                    formData.append(key + '_' + index, file)
-                })
-            } else {
-                formData.append(key, convert(json[key]))
-            }
-        }
-        return formData
-    }
+        setIsDisabled(checkErrors(errors))
+    }, [inProgress, instance, account, userData, errors]) 
 
     const submitFormData = async (event) => {
         event.preventDefault()
 
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/alex
         const formData = new FormData()
         let info = {}
         if (userData) {
@@ -77,18 +62,24 @@ export default function View({ id, metadata, api, initialValues }) {
                 securityLevel: "Email, Account Authentication(None)"
             }
         }
+<<<<<<< HEAD
     
         formData.append("info", JSON.stringify(info))
         formData.append("data", JSON.stringify(inputs))
+=======
+        
+        formData.append("info", JSON.stringify(info))
+        formData.append("data", JSON.stringify(inputs))
+
+>>>>>>> feature/alex
         const fetchParams = {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${accessToken}`,
-            }, 
+            },
             body: formData
         }
 
-        // const res = await callApiFetch(`/form-builder-studio/api/form-data/${id}`, fetchParams)
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
     }
 
@@ -106,7 +97,7 @@ export default function View({ id, metadata, api, initialValues }) {
                                 <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                             </div>
                             <div className='flex justify-content-center mt-5'>
-                                <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                                <Button disabled={isDisabled} className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>

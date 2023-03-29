@@ -93,7 +93,7 @@ export default function Update({ api, id, data }) {
             </Head>
             <AuthenticatedTemplate>                   
             <DndContext
-                    onDragEnd={(event) => handleDragEnd(event, addMetadata, setMetadata, setMainFormIds)}
+                    onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
                 >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
