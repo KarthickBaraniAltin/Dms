@@ -55,7 +55,7 @@ jobs:
         with:
           app-name: 'form-builder-studio-uat'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D6C1274867A42C9990E14BAAD0D1AC9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_59A2D02B3D614F2A93EE128C2E4F5CBD }}
           package: next.zip
       
       - name: Delete zip file
