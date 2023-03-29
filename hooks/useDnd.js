@@ -3,12 +3,12 @@ import { Guid } from 'js-guid'
 
 const useDnd = () => {
 
-    const addMainForm = (active, addMetadata) => {
-        // children property will not be used in metadata with destructuring we are deleting it
-        const { children ,...updatedData } = active.data.current
+    const addMainForm = (active, metadata, addMetadata) => {
+        const { ...updatedData } = active.data.current
         const guid = Guid.newGuid().StringGuid
-        
+
         updatedData.guid = guid
+        updatedData.name = `${updatedData.name}_${Object.keys(metadata).length + 1}`
 
         addMetadata(updatedData)
     }
@@ -36,11 +36,11 @@ const useDnd = () => {
         })
     }
 
-    const handleDragEnd = (event, addMetadata, setMetadata, setMainFormIds) => {
+    const handleDragEnd = (event, metadata, addMetadata, setMetadata, setMainFormIds) => {
         const { active, over } = event
 
         if (over !== null && !active.data.current.sortable) {
-            addMainForm(active, addMetadata)
+            addMainForm(active, metadata, addMetadata)
         }
 
         if (active.data.current.sortable) {

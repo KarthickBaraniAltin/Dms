@@ -7,7 +7,6 @@ import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -21,30 +20,41 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
     } else {
         console.error("Unknown Type")
     }
-
-    /* else if (type === 'label') {
-        newOptions[index] = { ...newOptions[index], label: value }
-        assignValuesNested('options', newOptions)
-        } 
-    */
   }
 
-    const handleDeleteOptions = (index) => {
-        const newOptions = [...inputs?.options]
-        newOptions.splice(index, 1)
-        assignValuesNested('options', newOptions)
+  const handleDeleteOptions = (index) => {
+      const newOptions = [...inputs?.options]
+      newOptions.splice(index, 1)
+      assignValuesNested('options', newOptions)
+  }
+
+  const handleAddOptions = () => {
+      if (!inputs.options) {
+          const newOptions = [{value: ''}]
+          assignValuesNested('options', newOptions)
+          return
+      }
+
+      const newOptions = [...inputs.options , {value: ''}]
+      assignValuesNested('options', newOptions)
+  }
+
+  const handleDeleteOtherOptions = (index) => {
+    const newOtherOptions = [...inputs?.otherOptions]
+    newOtherOptions.splice(index, 1)
+    assignValuesNested('otherOptions', newOtherOptions)
+  }
+
+  const handleAddOtherOptions = () => {
+    if (!inputs.otherOptions) {
+      const newOtherOptions = [{value: 'Other:'}]
+      assignValuesNested('otherOptions', newOtherOptions)
+      return
     }
 
-    const handleAddOptions = () => {
-        if (!inputs.options) {
-            const newOptions = [{/* label: '', */ value: ''}]
-            assignValuesNested('options', newOptions)
-            return
-        }
-
-        const newOptions = [...inputs.options , {/* label: '', */ value: ''}]
-        assignValuesNested('options', newOptions)
-    }
+    const newOtherOptions = [...inputs.otherOptions, {value: 'Other:'}]
+    assignValuesNested('otherOptions', newOtherOptions)
+  }
 
   return (
     <div>
@@ -66,15 +76,11 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           <div className='field col-12 md:col-12'>
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
-          <h4 className='field col-12 md:col-12'>Options</h4>
+          <h4 className='field col-12 md:col-12'>Add Options</h4>
           {
             inputs?.options?.map((option, index) => {
                 return (
                     <>
-                        {/* <div className='col-6 md:col-6'>
-                            <label>Label</label>
-                            <InputText autoComplete='off' name={`option-${index}`} value={option.label} onChange={(event) => handleOptionChange(index, event, 'label')} />
-                        </div> */}
                         <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
@@ -89,6 +95,28 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           <div className='field col-6 md:col-6'>
             <i className='pi pi-plus' onClick={() => handleAddOptions()}></i>
           </div>
+          <h4 className='field col-12 md:col-12'>Add Other Options</h4>
+          {
+            inputs?.otherOptions?.map((option, index) => {
+              return (
+                <>
+                  <div className='col-11 md:col-11'>
+                    <label>Other</label>
+                  </div>
+                  <div className='col-1 md:col-1'>
+                    <Button className='p-button-rounded p-button-danger' icon='pi pi-trash' onClick={() => handleDeleteOtherOptions(index)} />
+                  </div>
+                </>
+              )
+            })
+          }
+          {inputs?.otherOptions == 0 ?
+            <div className='field col-6 md:col-6'>
+              <i className='pi pi-plus' onClick={() => handleAddOtherOptions()}></i>
+            </div>
+            :
+            null
+          }
         </div>
       </Dialog>
     </div>
