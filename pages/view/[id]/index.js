@@ -32,7 +32,6 @@ export default function View({ id, metadata, api, initialValues }) {
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
 
-    
     useEffect(() => {
         if (!userData && account) {
             callMsGraph().then(response => setUserData(response)).catch((e) => {
@@ -48,10 +47,6 @@ export default function View({ id, metadata, api, initialValues }) {
 
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/alex
         const formData = new FormData()
         let info = {}
         if (userData) {
@@ -62,16 +57,9 @@ export default function View({ id, metadata, api, initialValues }) {
                 securityLevel: "Email, Account Authentication(None)"
             }
         }
-<<<<<<< HEAD
-    
-        formData.append("info", JSON.stringify(info))
-        formData.append("data", JSON.stringify(inputs))
-=======
         
         formData.append("info", JSON.stringify(info))
         formData.append("data", JSON.stringify(inputs))
-
->>>>>>> feature/alex
         const fetchParams = {
             method: 'POST',
             headers: {
