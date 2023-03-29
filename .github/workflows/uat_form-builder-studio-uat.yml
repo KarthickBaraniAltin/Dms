@@ -53,7 +53,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'form-builder-studio-dev'
+          app-name: 'form-builder-studio-uat'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D6C1274867A42C9990E14BAAD0D1AC9 }}
           package: next.zip
