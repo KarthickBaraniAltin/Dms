@@ -7,12 +7,12 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
 
 export default function ViewMask({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, defaultValue, mask } = metadata
+    const { name, label, subtitle, defaultValue, mask, validations } = metadata
 
     return (
         <div className='field grid grid-nogutter'> 
             <div className='col-4'>
-                <Label label={label} />
+                <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
             <InputMask className={`col-8 ${sharedStyles.input}`} name={name} value={value ?? defaultValue} onChange={onChange} mask={mask} />

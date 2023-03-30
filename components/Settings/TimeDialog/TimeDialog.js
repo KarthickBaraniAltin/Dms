@@ -7,9 +7,10 @@ import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 import { Dropdown } from 'primereact/dropdown'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function TimeDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
-
+  console.log('inputs:', inputs)
   return (
     <div>
       <Dialog header='Calendar Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
@@ -35,6 +36,9 @@ export default function TimeDialog({ visible, hideDialog, assignValuesNested, in
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          </div>
           <div className='field col-6 md:col-6'>
             <label>Min Time</label>
             <Calendar showTime timeOnly hourFormat='12' name='validations.minTime.time' value={inputs?.validations?.minTime?.time ?? undefined} onChange={handleInputChange} />

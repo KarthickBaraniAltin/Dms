@@ -6,7 +6,7 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, options, otherOptions } = metadata
+    const { name, label, subtitle, options, otherOptions, validations } = metadata
     const [checkedValue, setCheckedValue] = useState(value?.id)
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
@@ -36,7 +36,7 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
     return (
         <div className='field grid grid-nogutter'>
             <div className='col-4'>
-                <Label label={label} />
+                <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
             <div className='col-8'>

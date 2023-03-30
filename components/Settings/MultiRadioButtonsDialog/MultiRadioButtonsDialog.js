@@ -5,6 +5,7 @@ import { Button } from 'primereact/button'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   const handleOptionChange = (index, event, type) => {
@@ -67,7 +68,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           <div className='field col-6 md:col-6'>
             <label>Label</label>
             <InputText name='label' value={inputs?.label ?? ''} onChange={handleInputChange} />
-          </div>
+          </div> 
           <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
@@ -117,6 +118,10 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
             :
             null
           }
+          <h4 className='field col-12 md:col-12'>Validation</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          </div>
         </div>
       </Dialog>
     </div>

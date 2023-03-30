@@ -17,6 +17,12 @@ import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
+    const invalidStyle = {
+        border: '1px solid red',
+        boxShadow: '0 0 4px rgba(240, 240, 240, 0.2)',
+        borderRadius: '4px'
+    }
+
     const componentMapper = {
         'text': ViewText,
         'calendar': ViewCalendar,
@@ -39,6 +45,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         <div className='grid grid-nogutter'>
             {metadata && Object.keys(metadata).map(guid => {
                 const { name, type, divClassName } = metadata[guid]
+                console.log('inputs[name]:', inputs[name])
                 return (
                     <div key={guid} className={clsx(divClassName ?? 'field col-6', 'mt-2')}>
                         { createElement( 
@@ -47,7 +54,8 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                                 metadata: metadata[guid],
                                 value: inputs[name],
                                 onChange: handleInputChange,
-                                errors: errors[name]
+                                errors: errors[name],
+                                invalidStyle: invalidStyle
                             }
                         )}
                     </div>

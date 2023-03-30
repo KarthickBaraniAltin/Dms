@@ -40,7 +40,7 @@ export default function View({ id, metadata, api, initialValues }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors))
+        setIsDisabled(checkErrors(errors, metadata))
     }, [inProgress, instance, account, userData, errors]) 
 
     const submitFormData = async (event) => {

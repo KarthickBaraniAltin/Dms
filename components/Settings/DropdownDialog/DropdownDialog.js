@@ -2,13 +2,13 @@ import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
-import { Dropdown } from 'primereact/dropdown'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import Footer from '../Footer/Footer'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-
+  console.log('inputs:', inputs)
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -86,6 +86,10 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
           }
           <div className='field col-6 md:col-6'>
             <i className='pi pi-plus' onClick={() => handleAddOptions()}></i>
+          </div>
+          <h4 className='field col-12 md:col-12'>Validation</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

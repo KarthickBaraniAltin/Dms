@@ -5,7 +5,7 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, guid, id, page } = metadata 
+    const { name, label, subtitle, validations } = metadata 
     const [checkedValues, setCheckedValues] = useState(value?.checkbox || [])
     const [checkedIds, setCheckedIds] = useState(value?.ids || [])
 
@@ -32,7 +32,7 @@ export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     return (
         <div className='field grid grid-nogutter'>
             <div className='col-4'>
-                <Label label={label} />
+                <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
             <div className='col-8'>

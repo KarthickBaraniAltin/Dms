@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
-import { Button } from 'primereact/button'
 import { InputNumber } from 'primereact/inputnumber'
 import { MultiSelect } from 'primereact/multiselect'
-import { Checkbox } from 'primereact/checkbox';
-import LexicalEditor from '../../LexicalEditor/LexicalEditor';
-import { Dropdown } from 'primereact/dropdown'
+import { Checkbox } from 'primereact/checkbox'
+import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   
@@ -54,6 +53,9 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
             <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleFileChange} checked={isMultipleChecked} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          </div>
           <div className='field col-6 md:col-6'>
             <label>Min File Size</label>
             <InputNumber name='validations.minFile.fileSize' value={inputs?.validations?.minFile?.fileSize ?? 0} onChange={handleInputChange} format={false}/>
