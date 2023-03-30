@@ -4,7 +4,9 @@ import { Guid } from 'js-guid'
 const useDnd = () => {
 
     const addMainForm = (active, metadata, addMetadata) => {
-        const { ...updatedData } = active.data.current
+        // children property will not be used in metadata with destructuring we are deleting it
+        // otherwise we will get a cyclic object error
+        const { children, ...updatedData } = active.data.current
         const guid = Guid.newGuid().StringGuid
 
         updatedData.guid = guid
