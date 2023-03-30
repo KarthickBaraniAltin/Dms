@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Node.js version
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
@@ -28,7 +28,7 @@ jobs:
       
       - name: Zip all files for upload between jobs
         # IMPORTANT: .next is a hidden folder and will NOT be included in the zip unless we specify it
-        run: zip next.zip ./* .next -qr
+        run: zip next.zip ./* .next .env.development .env.test .env.production -qr
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3

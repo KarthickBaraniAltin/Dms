@@ -3,6 +3,8 @@ import https from 'https'
 
 const formBuilderStudioApi = process.env.FORM_BUILDER_API
 
+console.log("API = ", formBuilderStudioApi)
+
 axios.defaults.httpsAgent = new https.Agent({
     rejectUnauthorized: false });
     
