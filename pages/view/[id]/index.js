@@ -32,7 +32,6 @@ export default function View({ id, metadata, api, initialValues }) {
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
 
-    
     useEffect(() => {
         if (!userData && account) {
             callMsGraph().then(response => setUserData(response)).catch((e) => {
@@ -61,7 +60,6 @@ export default function View({ id, metadata, api, initialValues }) {
         
         formData.append("info", JSON.stringify(info))
         formData.append("data", JSON.stringify(inputs))
-
         const fetchParams = {
             method: 'POST',
             headers: {
