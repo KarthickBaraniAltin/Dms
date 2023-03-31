@@ -39,7 +39,7 @@ export default function View({ id, metadata, api, initialValues }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors, metadata))
+        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, userData, errors]) 
 
     const submitFormData = async (event) => {
@@ -69,6 +69,7 @@ export default function View({ id, metadata, api, initialValues }) {
         }
 
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
+        console.log('res:', res)
     }
 
     return (

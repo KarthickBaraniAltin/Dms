@@ -10,7 +10,6 @@ import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function TimeDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
-  console.log('inputs:', inputs)
   return (
     <div>
       <Dialog header='Calendar Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>

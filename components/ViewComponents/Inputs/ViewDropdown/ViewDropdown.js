@@ -4,7 +4,7 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
-export default function ViewDropdown({ metadata, value, onChange, errors }) {
+export default function ViewDropdown({ metadata, value, onChange, errors, invalidStyle }) {
     const { name, label, subtitle, className, options, validations } = metadata
 
     return (
@@ -13,7 +13,9 @@ export default function ViewDropdown({ metadata, value, onChange, errors }) {
                 <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <Dropdown name={name} className={className} value={value ?? []} onChange={onChange} options={options} />
+            <Dropdown name={name} className={className} value={value ?? []} onChange={onChange}
+                options={options} style={errors?.length > 0 ? invalidStyle : null}
+            />
             <Errors errors={errors} />
         </div>
     )
