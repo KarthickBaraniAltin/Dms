@@ -8,18 +8,22 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
+import { useConvertFormData } from '../../../hooks/useConvertFormData'
 
 export default function View({ id, metadata, api, initialValues }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
+
+    const { convertData } = useConvertFormData()
+    const convertedData = convertData(initialValues)
     
-    const { inputs, handleInputChange } = useInputs({initialValues})
+    const { inputs, handleInputChange } = useInputs({initialValues: convertedData})
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -31,6 +35,9 @@ export default function View({ id, metadata, api, initialValues }) {
     const account = useAccount(accounts[0] ?? {})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    // const disableSubmitButton = useMemo(() => checkErrors(errors), [errors]);
+
+    // setIsDisabled(disableSubmitButton)
 
     useEffect(() => {
         if (!userData && account) {

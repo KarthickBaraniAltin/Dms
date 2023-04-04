@@ -6,8 +6,10 @@ import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import { Dropdown } from 'primereact/dropdown'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
+  console.log('inputs:', inputs)
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -73,6 +75,10 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
+          <div className='field col-12 md:col-12'>
+            <label>Default Value</label>
+            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+          </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
@@ -100,14 +106,14 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           {
             inputs?.otherOptions?.map((option, index) => {
               return (
-                <>
+                <div>
                   <div className='col-11 md:col-11'>
                     <label>Other</label>
                   </div>
                   <div className='col-1 md:col-1'>
                     <Button className='p-button-rounded p-button-danger' icon='pi pi-trash' onClick={() => handleDeleteOtherOptions(index)} />
                   </div>
-                </>
+                </div>
               )
             })
           }

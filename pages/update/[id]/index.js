@@ -20,6 +20,8 @@ import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
+import { useStatus } from '../../../hooks/useStatus'
+import StatusDialog from '../../../components/Settings/StatusDialog/StatusDialog'
 import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
@@ -37,6 +39,7 @@ export default function Update({ api, id, data }) {
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
+    const { showStatusDialog, handleStatus } = useStatus()
 
     const { handleDragEnd } = useDnd()
 
@@ -94,11 +97,12 @@ export default function Update({ api, id, data }) {
             <AuthenticatedTemplate>                   
             <DndContext
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
-                >
+            >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
+                {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
                 <div className='grid'>
                     {renderDialog()}
                     <ComponentPanel />
@@ -113,6 +117,9 @@ export default function Update({ api, id, data }) {
                             </div>
                             <div>
                                 <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
+                            </div>
+                            <div>
+                                <Button label='Status' style={{width: '90px'}} onClick={handleStatus} />
                             </div>
                         </div>
                         <Droppable id='droppable-container-form'>

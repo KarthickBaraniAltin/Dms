@@ -6,6 +6,8 @@ import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import Footer from '../Footer/Footer'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import { Dropdown } from 'primereact/dropdown'
+import { MultiSelect } from 'primereact/multiselect'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
   console.log('inputs:', inputs)
@@ -59,6 +61,14 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
           <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
+          </div>
+          <div className='field col-12 md:col-12'>
+            <label>Default Value</label>
+            {inputs?.name.startsWith('dropdown') ? 
+              <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+              :
+              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+            }
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
