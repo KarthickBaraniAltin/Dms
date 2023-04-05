@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import { InputMask } from 'primereact/inputmask'
 
 export default function MaskDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
+  // const [mask, setMask] = useState('(999) 999-9999')
+  // onChange={(e) => {
+  //   handleInputChange(),
+  //   setMask(e.target.value)
+  // }}
+  // mask={mask} autoClear={false}
+
   return (
     <div>
       <Dialog header='Mask Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>

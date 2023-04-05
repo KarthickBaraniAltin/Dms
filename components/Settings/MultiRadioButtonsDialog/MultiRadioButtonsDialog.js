@@ -9,7 +9,6 @@ import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { Dropdown } from 'primereact/dropdown'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-  console.log('inputs:', inputs)
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -59,6 +58,8 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
     assignValuesNested('otherOptions', newOtherOptions)
   }
 
+  const convertedOptions = inputs?.options.map(option => option.value)
+
   return (
     <div>
       <Dialog header='Multi Radio Buttons Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
@@ -77,7 +78,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           </div>
           <div className='field col-12 md:col-12'>
             <label>Default Value</label>
-            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>

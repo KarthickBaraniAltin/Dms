@@ -1,13 +1,20 @@
 import { Checkbox } from 'primereact/checkbox'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, validations } = metadata 
+    const { name, label, subtitle, validations, defaultValue } = metadata 
+    const defaultValueIds = metadata?.options
+        .map((option, index) => {
+            if (option.value === defaultValue[index]) {
+                return index
+            }
+        })
+        .filter(id => id !== undefined)
     const [checkedValues, setCheckedValues] = useState(value?.checkbox || [])
-    const [checkedIds, setCheckedIds] = useState(value?.ids || [])
+    const [checkedIds, setCheckedIds] = useState(defaultValue ? defaultValueIds : value?.ids || [])
 
     const onCheckboxChange = (e) => {
         const { checked, value, target: { id } } = e

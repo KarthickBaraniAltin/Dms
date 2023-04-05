@@ -1,15 +1,26 @@
 import { Checkbox } from 'primereact/checkbox'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 
 export default function CreateCheckbox({ metadata, onChange, openDialog, errors }) {
-    const { name, label, subtitle, guid, id, page } = metadata 
+    const { name, label, subtitle, defaultValue } = metadata 
+    const defaultValueIds = metadata?.options
+        .map((option, index) => {
+            if (option.value === defaultValue[index]) {
+                return index
+            }
+        })
+        .filter(id => id !== undefined)
     const [checkedValues, setCheckedValues] = useState(metadata?.options)
     const [checkedIds, setCheckedIds] = useState([])
     const [eventObject, setEventObject] = useState({target: {name: name, value: []}})
+
+    useEffect(() => {
+        setCheckedIds(defaultValueIds)
+    }, [defaultValue])
 
     const onCheckboxChange = (e) => {
         let selectedCheckbox = [...checkedValues]
@@ -50,7 +61,9 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
                             return (
                                 <div key={index} style={{marginBottom: '0.5rem'}}>
                                     <Checkbox key={index} id={index} value={checkboxes.value} onChange={(e) => onChange(onCheckboxChange(e))} 
-                                    checked={checkedIds.some(id => id === index)} style={{marginRight: '0.5rem'}} />
+                                    checked={checkedIds.some(id => id === index)} 
+                                    style={{marginRight: '0.5rem'}}
+                                    />
                                     <label>{checkboxes.value}</label>
                                 </div>
                             )

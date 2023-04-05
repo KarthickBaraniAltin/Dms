@@ -8,7 +8,7 @@ import SettingsButton from '../../SettingsButton/SettingsButton'
 
 export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors }) {
     const { name, label, subtitle, options, otherOptions, defaultValue } = metadata
-    console.log('defaultValue:', defaultValue)
+    
     const [checkedValue, setCheckedValue] = useState()
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
@@ -53,7 +53,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                                             setOtherChecked(null)
                                             onChange(e)
                                         }} 
-                                        checked={checkedValue === index}
+                                        checked={checkedValue ? checkedValue === index : radioButton.value === defaultValue}
                                         style={{marginRight: '0.5rem'}}
                                     />
                                     <label>{radioButton.value}</label>
