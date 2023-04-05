@@ -14,6 +14,7 @@ import ViewTime from '../Inputs/ViewTime/ViewTime'
 import ViewReadonlySubtitle from '../Inputs/ViewReadonlySubtitle/ViewReadonlySubtitle'
 import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
+import ViewImage from '../Inputs/ViewImage/ViewImage'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
@@ -26,6 +27,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'mask': ViewMask,
         'dropdown': ViewDropdown,
         'multiselect': ViewMultiselect,
+        'image': ViewImage,
         'header': 'h1',
         'file': ViewFileInput,
         'richText': ViewRichText,

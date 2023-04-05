@@ -27,7 +27,7 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 export default function Update({ api, id, data }) {
 
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
+    const { handleInputChange, assignValuesNested, inputs } = useInputs({ initialValues: {} })
     const [ metadata, setMetadata ] = useState(data?.metadata?.metadata ?? {}) 
     const { errors } = useValidation({ metadata, inputs })
 
@@ -119,9 +119,11 @@ export default function Update({ api, id, data }) {
                             <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
                                 <CreateComponents 
                                     metadata={metadata} 
+                                    setMetadata={setMetadata}
                                     openDialog={openDialog} 
                                     inputs={inputs} 
                                     handleInputChange={handleInputChange} 
+                                    assignValuesNested={assignValuesNested}
                                     errors={errors}
                                 />
                             </SortableContext>

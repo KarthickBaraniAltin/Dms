@@ -17,6 +17,7 @@ export default function ComponentPanel() {
         'dropdown',
         'multiselect',
         'file',
+        'image',
         'richText',
         'subtitle',
         'signature',
@@ -249,6 +250,27 @@ export default function ComponentPanel() {
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
                             File Upload
+                        </label> 
+                    </div>
+                </Draggable>
+            )
+        }
+
+        if (component === 'image') {
+            return (
+                <Draggable
+                    key={index}
+                    id={`${index + 1}`}
+                    type={component}
+                    name={component}
+                    divClassName={fullSizeClassName}
+                    label='Image'
+                    subtitle={defaultSubtitle}
+                    guid=''
+                >
+                    <div className='flex justify-content-center'>
+                        <label className='block' style={{fontWeight: '700', color: '#000000'}}>
+                            Image
                         </label> 
                     </div>
                 </Draggable>

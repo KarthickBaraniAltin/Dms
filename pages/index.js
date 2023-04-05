@@ -95,7 +95,7 @@ export default function Home() {
         loadLazyData()
       }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lazyParams, loadLazyTimeout, acquireToken])
+  }, [lazyParams, loadLazyTimeout, acquireToken, account])
 
 
   const renderHeader = () => {
