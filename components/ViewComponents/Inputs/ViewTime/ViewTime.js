@@ -6,7 +6,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewTime({metadata, value, onChange, errors, invalidStyle}) {  
     const { name, className, label, subtitle, defaultValue, validations, guid, id, page } = metadata
-    const convertDataFormat = new Date(defaultValue)
+    const convertDataFormat = defaultValue ? new Date(defaultValue) : null
 
     return (
       <div className='field grid grid-nogutter'> 

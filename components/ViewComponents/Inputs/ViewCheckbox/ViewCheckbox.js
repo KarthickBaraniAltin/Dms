@@ -8,7 +8,7 @@ export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, validations, defaultValue } = metadata 
     const defaultValueIds = metadata?.options
         .map((option, index) => {
-            if (option.value === defaultValue[index]) {
+            if (option.value === defaultValue?.[index]) {
                 return index
             }
         })

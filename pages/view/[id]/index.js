@@ -35,9 +35,13 @@ export default function View({ id, metadata, api, initialValues }) {
     const account = useAccount(accounts[0] ?? {})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
-    // const disableSubmitButton = useMemo(() => checkErrors(errors), [errors]);
-
-    // setIsDisabled(disableSubmitButton)
+    const disableSubmitButton = useMemo(() => {
+        return checkErrors(errors)
+    }, [errors])
+      
+    useMemo(() => {
+        setIsDisabled(disableSubmitButton)
+    }, [disableSubmitButton])
 
     useEffect(() => {
         if (!userData && account) {
@@ -46,7 +50,6 @@ export default function View({ id, metadata, api, initialValues }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, userData, errors]) 
 
     const submitFormData = async (event) => {
