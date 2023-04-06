@@ -10,14 +10,16 @@ export default function ViewText({ metadata, value, onChange, errors, invalidSty
 
     return (
         <div className='field grid grid-nogutter'> 
-            <div className='col-4'>
+            <div style={{textAlign: 'right', marginRight: '1rem'}}>
                 <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <InputText className={`col-8 ${styles.input}`} name={name} value={value ?? defaultValue} onChange={onChange}
-                style={errors?.length > 0 ? invalidStyle : null}
-            />
-            <Errors errors={errors} />
+            <div>
+                <InputText className={`col-8 ${styles.input}`} name={name} value={value ?? defaultValue} onChange={onChange}
+                    style={errors?.length > 0 ? invalidStyle : null}
+                />
+                <Errors errors={errors} />
+            </div>
         </div>
     )
 }

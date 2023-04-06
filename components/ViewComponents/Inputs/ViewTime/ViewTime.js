@@ -10,14 +10,16 @@ export default function ViewTime({metadata, value, onChange, errors, invalidStyl
 
     return (
       <div className='field grid grid-nogutter'> 
-        <div className='col-4'>
+        <div style={{textAlign: 'right', marginRight: '1rem'}}>
             <Label label={label} validations={validations} />
             <Subtitle subtitle={subtitle} />
-        </div>     
-          <Calendar className='col-8' timeOnly showTime hourFormat='12' name={name} value={value ?? convertDataFormat} onChange={onChange}
-          style={errors?.length > 0 ? invalidStyle : null}
-          />
-          <Errors errors={errors} />
+        </div>   
+          <div>
+            <Calendar className='col-8' timeOnly showTime hourFormat='12' name={name} value={value ?? convertDataFormat} onChange={onChange}
+            style={errors?.length > 0 ? invalidStyle : null}
+            />
+            <Errors errors={errors} />
+          </div>
       </div>
     )
   }

@@ -9,7 +9,7 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
     const { name, label, subtitle, defaultValue } = metadata 
     const defaultValueIds = metadata?.options
         .map((option, index) => {
-            if (option.value === defaultValue[index]) {
+            if (option.value === defaultValue?.[index]) {
                 return index
             }
         })

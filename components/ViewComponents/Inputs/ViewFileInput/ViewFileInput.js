@@ -9,20 +9,22 @@ export default function ViewFileInput({ metadata, value, onChange, errors, inval
 
   return (
     <div className='field grid grid-nogutter'>
-      <div className='col-4'>
+      <div style={{textAlign: 'right', marginRight: '1rem'}}>
         <Label label={label} validations={validations} />
         <Subtitle subtitle={subtitle} />
       </div>
-      <input
-          name={name} 
-          className='col-8'
-          type='file' 
-          value={value}
-          onChange={onChange}
-          multiple={multiple}
-          style={errors?.length > 0 ? invalidStyle : null}
-      />
-      <Errors errors={errors} />
+      <div>
+        <input
+            name={name} 
+            className='col-8'
+            type='file' 
+            value={value}
+            onChange={onChange}
+            multiple={multiple}
+            style={errors?.length > 0 ? invalidStyle : null}
+        />
+        <Errors errors={errors} />
+      </div>
     </div>
   )
 }

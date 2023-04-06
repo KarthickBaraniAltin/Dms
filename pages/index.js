@@ -230,6 +230,7 @@ export default function Home() {
                       <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
                       <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
                       <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                      <Column className='dashboardTitle' field='status' header='Status' headerStyle={{...headerStyle, width: '20%'}} sortable />
                   </DataTable>
               </Card>
           </AuthenticatedTemplate>

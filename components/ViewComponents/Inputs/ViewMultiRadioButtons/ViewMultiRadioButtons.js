@@ -35,55 +35,57 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
 
     return (
         <div className='field grid grid-nogutter'>
-            <div className='col-4'>
+            <div style={{textAlign: 'right', marginRight: '1rem'}}>
                 <Label label={label} validations={validations} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <div className='col-8'>
-                {(options.length > 0 || otherOptions.length > 0) &&
-                    <>
-                        {options.map((radioButton, index) => {
-                            return (
-                                <div className='mt-1' key={index}>
-                                    <RadioButton 
-                                        value={radioButton.value} 
-                                        name={name} 
-                                        onChange={() => {
-                                            setCheckedValue(index)
-                                            setOtherChecked(null)
-                                            onChange({target: { name: name, value: {radioButton: radioButton.value, id: index} } })
-                                        }} 
-                                        checked={checkedValue ? checkedValue == index : radioButton.value === defaultValue} 
-                                        style={{marginRight: '0.5rem'}} 
-                                    />
-                                    <label>{radioButton.value}</label>
-                                </div>
-                            )
-                        })}
-                        {otherOptions.map((radioButton, index) => {
-                            return (
-                                <div className='mt-1' key={index + otherOptions.length + 1}>
-                                    <RadioButton
-                                        value={radioButton.value}
-                                        name={name}
-                                        onChange={() => {
-                                            setCheckedValue(index + options.length + 1)
-                                            handleOtherOption(index)
-                                        }}
-                                        checked={checkedValue === index + options.length + 1}
-                                        style={{marginRight: '0.5rem'}}
-                                    />
-                                    <label>{radioButton.value}</label>
-                                    {otherChecked === index + options.length + 1 && 
-                                        <InputText className='col-12 mt-2' value={otherOptionInputValue} onChange={(e) => handleOtherOptionInputValueChange(e.target.value, index + options.length + 1)}  />
-                                    }
-                                </div>
-                            )
-                        })}
-                    </>
-                }
+            <div>
+                <div className='col-8'>
+                    {(options.length > 0 || otherOptions.length > 0) &&
+                        <>
+                            {options.map((radioButton, index) => {
+                                return (
+                                    <div className='mt-1' key={index}>
+                                        <RadioButton 
+                                            value={radioButton.value} 
+                                            name={name} 
+                                            onChange={() => {
+                                                setCheckedValue(index)
+                                                setOtherChecked(null)
+                                                onChange({target: { name: name, value: {radioButton: radioButton.value, id: index} } })
+                                            }} 
+                                            checked={checkedValue ? checkedValue == index : radioButton.value === defaultValue} 
+                                            style={{marginRight: '0.5rem'}} 
+                                        />
+                                        <label>{radioButton.value}</label>
+                                    </div>
+                                )
+                            })}
+                            {otherOptions.map((radioButton, index) => {
+                                return (
+                                    <div className='mt-1' key={index + otherOptions.length + 1}>
+                                        <RadioButton
+                                            value={radioButton.value}
+                                            name={name}
+                                            onChange={() => {
+                                                setCheckedValue(index + options.length + 1)
+                                                handleOtherOption(index)
+                                            }}
+                                            checked={checkedValue === index + options.length + 1}
+                                            style={{marginRight: '0.5rem'}}
+                                        />
+                                        <label>{radioButton.value}</label>
+                                        {otherChecked === index + options.length + 1 && 
+                                            <InputText className='col-12 mt-2' value={otherOptionInputValue} onChange={(e) => handleOtherOptionInputValueChange(e.target.value, index + options.length + 1)}  />
+                                        }
+                                    </div>
+                                )
+                            })}
+                        </>
+                    }
+                </div>
+                <Errors errors={errors} />
             </div>
-            <Errors errors={errors} />
         </div>
     )
 }
