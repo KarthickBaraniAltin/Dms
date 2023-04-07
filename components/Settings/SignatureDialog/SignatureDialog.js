@@ -6,6 +6,7 @@ import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import { Dropdown } from 'primereact/dropdown'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 
 export default function SignatureDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
 
@@ -39,6 +40,9 @@ export default function SignatureDialog({ visible, hideDialog, inputs, assignVal
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          </div>
           <div className='field col-6 md:col-6'>
             <label>Min Length</label>
             <InputNumber name='validations.minLength.length' value={inputs?.validations?.minLength?.length ?? 0} onChange={handleInputChange} />

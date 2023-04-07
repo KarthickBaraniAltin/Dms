@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
-import { Dropdown } from 'primereact/dropdown'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import { MultiSelect } from 'primereact/multiselect'
 
 export default function CheckboxDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -24,22 +24,24 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
     }
   }
 
-    const handleDeleteOptions = (index) => {
-        const newOptions = [...inputs?.options]
-        newOptions.splice(index, 1)
-        assignValuesNested('options', newOptions)
-    }
+  const handleDeleteOptions = (index) => {
+      const newOptions = [...inputs?.options]
+      newOptions.splice(index, 1)
+      assignValuesNested('options', newOptions)
+  }
 
-    const handleAddOptions = () => {
-        if (!inputs.options) {
-            const newOptions = [{value: ''}]
-            assignValuesNested('options', newOptions)
-            return
-        }
+  const handleAddOptions = () => {
+      if (!inputs.options) {
+          const newOptions = [{value: ''}]
+          assignValuesNested('options', newOptions)
+          return
+      }
 
-        const newOptions = [...inputs.options , {value: ''}]
-        assignValuesNested('options', newOptions)
-    }
+      const newOptions = [...inputs.options , {value: ''}]
+      assignValuesNested('options', newOptions)
+  }
+
+  const convertedOptions = inputs?.options.map(option => option.value)
 
   return (
     <div>
@@ -56,6 +58,10 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
           <div className='field col-12 md:col-12'>
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
+          </div>
+          <div className='field col-6 md:col-6'>
+              <label>Default Value</label>
+              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
@@ -79,6 +85,10 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
           }
           <div className='field col-6 md:col-6'>
             <i className='pi pi-plus' onClick={() => handleAddOptions()}></i>
+          </div>
+          <h4 className='field col-12 md:col-12'>Validation</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
           </div>
         </div>
       </Dialog>

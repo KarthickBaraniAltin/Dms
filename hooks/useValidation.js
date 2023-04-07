@@ -142,8 +142,8 @@ export const useValidation = ({ metadata, inputs }) => {
                     for (const [key, value] of Object.entries(validations)) {
                         switch(key) {
                             case 'required': {
-                                const { message } = value
-                                if (!inputValue) {
+                                const { message, isRequired } = value
+                                if ((!inputValue || (Array.isArray(inputValue) && inputValue.length === 0)) && isRequired) {
                                     currentErrors.push(message ?? `This field is required`)
                                 }
                                 break

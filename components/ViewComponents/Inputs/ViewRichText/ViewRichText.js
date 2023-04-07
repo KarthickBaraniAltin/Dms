@@ -9,7 +9,7 @@ export default function ViewRichText({ metadata, value, onChange, errors }) {
 
     return (
         <div className='field grid grid-nogutter mt-3 mb-5'> 
-            <div className='col-1-70'>
+            <div style={{textAlign: 'right', marginRight: '1rem'}}> {/* className='col-1-70' */}
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>

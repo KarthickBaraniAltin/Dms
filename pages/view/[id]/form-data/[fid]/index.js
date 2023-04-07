@@ -36,6 +36,13 @@ export default function FormDataView({ id, metadata, savedData }) {
     const account = useAccount(accounts[0] ?? {})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    const disableSubmitButton = useMemo(() => {
+        return checkErrors(errors)
+    }, [errors])
+      
+    useMemo(() => {
+        setIsDisabled(disableSubmitButton)
+    }, [disableSubmitButton])
     
     useState(() => {
         if (!userData && account) {
@@ -44,7 +51,6 @@ export default function FormDataView({ id, metadata, savedData }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, errors]) 
 
     const jsonToFormData = (json) => {
