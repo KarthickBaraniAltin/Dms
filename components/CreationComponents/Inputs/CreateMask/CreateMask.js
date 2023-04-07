@@ -4,11 +4,13 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
-
 import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
 
 export default function CreateMask({ metadata, value, onChange, openDialog, errors}) {
     const { name, className, label, subtitle, mask, defaultValue, guid, id, page } = metadata
+
+    console.log('value:', value)
+    console.log('defaultValue:', typeof defaultValue)
 
     return (
         <div className='field grid grid-nogutter'>
@@ -17,7 +19,10 @@ export default function CreateMask({ metadata, value, onChange, openDialog, erro
                 <Label label={label} />
                 <Subtitle subtitle={subtitle} />
             </div>
-            <InputMask name={name} className={`col-8 ${sharedStyles.input}`} value={value ?? defaultValue} onChange={onChange} mask={mask} />
+            <InputMask name={name} className={`col-8 ${sharedStyles.input}`} 
+                value={defaultValue} onChange={onChange} mask={mask} 
+                autoClear={false} onFocus={(e) => console.log('event:', e)}
+            />
             <Errors errors={errors} />
         </div>
     )

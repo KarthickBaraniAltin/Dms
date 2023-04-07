@@ -20,16 +20,22 @@ import { useShare } from '../../../hooks/useShare'
 import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
 import { useSave } from '../../../hooks/useSave'
 import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
+import { useStatus } from '../../../hooks/useStatus'
+import StatusDialog from '../../../components/Settings/StatusDialog/StatusDialog'
 import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update({ api, id, data }) {
+const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
+export default function Update({ id, data }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, inputs } = useInputs({ initialValues: {} })
+    const { handleInputChange, assignValuesNested, setInputs, inputs } = useInputs({ initialValues: {} })
+    const [ files, setFiles ] = useState({})
     const [ metadata, setMetadata ] = useState(data?.metadata?.metadata ?? {}) 
     const { errors } = useValidation({ metadata, inputs })
+
+    console.log("Inputs = ", inputs)
 
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
@@ -37,6 +43,7 @@ export default function Update({ api, id, data }) {
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
     const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
+    const { showStatusDialog, handleStatus } = useStatus()
 
     const { handleDragEnd } = useDnd()
 
@@ -70,6 +77,11 @@ export default function Update({ api, id, data }) {
             authorEmail: username,
         }))
         formData.append("metadata", JSON.stringify(metadata))
+        
+        // Add files to request
+        Object.keys(files).forEach((fieldName) => {
+            formData.append(fieldName, files[fieldName]);
+        })
 
         const fetchParams = {
             method: 'PUT',
@@ -94,11 +106,12 @@ export default function Update({ api, id, data }) {
             <AuthenticatedTemplate>                   
             <DndContext
                     onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
-                >
+            >
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} /> : null}
                 {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
+                {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
                 <div className='grid'>
                     {renderDialog()}
                     <ComponentPanel />
@@ -114,15 +127,23 @@ export default function Update({ api, id, data }) {
                             <div>
                                 <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
                             </div>
+                            <div>
+                                <Button label='Status' style={{width: '90px'}} onClick={handleStatus} />
+                            </div>
                         </div>
                         <Droppable id='droppable-container-form'>
                             <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
                                 <CreateComponents 
                                     metadata={metadata} 
+                                    setMetadata={setMetadata}
                                     openDialog={openDialog} 
                                     inputs={inputs} 
                                     handleInputChange={handleInputChange} 
+                                    assignValuesNested={assignValuesNested}
                                     errors={errors}
+                                    files={files}
+                                    setFiles={setFiles}
+                                    setInputs={setInputs}
                                 />
                             </SortableContext>
                         </Droppable>
@@ -152,7 +173,6 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 data: res.data,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {

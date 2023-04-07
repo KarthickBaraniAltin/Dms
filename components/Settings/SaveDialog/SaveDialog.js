@@ -3,7 +3,7 @@ import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from "primereact/button"
 
-export default function ShareDialog({showDialog, handleSave, updateForm, loading, name, setName, desc, setDesc}) {
+export default function SaveDialog({showDialog, handleSave, updateForm, loading, name, setName, desc, setDesc}) {
     return (
         <>
             <Dialog header='Save Page' visible={showDialog} onHide={() => handleSave()} style={{width: '75vw'}}>

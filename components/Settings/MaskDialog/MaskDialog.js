@@ -1,11 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
+import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import { InputMask } from 'primereact/inputmask'
 
 export default function MaskDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
+  // const [mask, setMask] = useState('(999) 999-9999')
+  // onChange={(e) => {
+  //   handleInputChange(),
+  //   setMask(e.target.value)
+  // }}
+  // mask={mask} autoClear={false}
 
   return (
     <div>
@@ -32,6 +40,9 @@ export default function MaskDialog({ visible, hideDialog, assignValuesNested, in
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div>
           <h4 className='field col-12 md:col-12'>Validation</h4>
+          <div className='field col-12 md:col-12'>
+            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          </div>
           <div className='field col-6 md:col-6'>
             <label>Set Mask</label>
             <InputText keyfilter={/[a9\*\(\)\-\s]/} name='validations.setMask.mask' value={inputs?.validations?.setMask?.mask ?? undefined} onChange={handleInputChange} />

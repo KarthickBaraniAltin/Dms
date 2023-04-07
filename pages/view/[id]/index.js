@@ -8,18 +8,24 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
+import { useConvertFormData } from '../../../hooks/useConvertFormData'
 
-export default function View({ id, metadata, api, initialValues }) {
+const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
+
+export default function View({ id, metadata, initialValues }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
+
+    const { convertData } = useConvertFormData()
+    const convertedData = convertData(initialValues)
     
-    const { inputs, handleInputChange } = useInputs({initialValues})
+    const { inputs, handleInputChange } = useInputs({initialValues: convertedData})
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -31,6 +37,13 @@ export default function View({ id, metadata, api, initialValues }) {
     const account = useAccount(accounts[0] ?? {})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    const disableSubmitButton = useMemo(() => {
+        return checkErrors(errors)
+    }, [errors])
+      
+    useMemo(() => {
+        setIsDisabled(disableSubmitButton)
+    }, [disableSubmitButton])
 
     useEffect(() => {
         if (!userData && account) {
@@ -39,7 +52,6 @@ export default function View({ id, metadata, api, initialValues }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, userData, errors]) 
 
     const submitFormData = async (event) => {
@@ -69,6 +81,7 @@ export default function View({ id, metadata, api, initialValues }) {
         }
 
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
+        console.log('res:', res)
     }
 
     return (
@@ -124,7 +137,6 @@ export async function getServerSideProps(context) {
                 id,
                 metadata: res.data.metadata.metadata,
                 initialValues,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {

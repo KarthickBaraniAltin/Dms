@@ -6,7 +6,8 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function CreateTime({metadata, value, onChange, openDialog, errors}) {  
-  const { name, className, label, subtitle, defautltValue, guid, id, page } = metadata
+  const { name, className, label, subtitle, defaultValue, guid, id, page } = metadata
+  const convertDataFormat = defaultValue ? new Date(defaultValue) : null
 
   return (
     <div className='field grid grid-nogutter'>
@@ -15,7 +16,7 @@ export default function CreateTime({metadata, value, onChange, openDialog, error
         <Label label={label} />       
         <Subtitle subtitle={subtitle} />
       </div>
-      <Calendar className='col-8' timeOnly showTime hourFormat='12' name={name} value={value ?? defautltValue} onChange={onChange} />
+      <Calendar className='col-8' timeOnly showTime hourFormat='12' name={name} value={value ?? convertDataFormat} onChange={onChange} />
       <Errors errors={errors} />
     </div>
   )

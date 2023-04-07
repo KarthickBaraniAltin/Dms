@@ -15,8 +15,9 @@ import useTimeControl from '../../../../../hooks/useTimeControl'
 import ViewComponents from '../../../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { usePreventSubmit } from '../../../../../hooks/usePreventSubmit'
 
-export default function FormDataView({ id, metadata, api, savedData }) {
+const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
+export default function FormDataView({ id, metadata, savedData }) {
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
@@ -35,6 +36,13 @@ export default function FormDataView({ id, metadata, api, savedData }) {
     const account = useAccount(accounts[0] ?? {})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    const disableSubmitButton = useMemo(() => {
+        return checkErrors(errors)
+    }, [errors])
+      
+    useMemo(() => {
+        setIsDisabled(disableSubmitButton)
+    }, [disableSubmitButton])
     
     useState(() => {
         if (!userData && account) {
@@ -43,7 +51,6 @@ export default function FormDataView({ id, metadata, api, savedData }) {
             })
         }
 
-        setIsDisabled(checkErrors(errors))
     }, [inProgress, instance, account, errors]) 
 
     const jsonToFormData = (json) => {
@@ -143,7 +150,6 @@ export async function getServerSideProps(context) {
                 id,
                 metadata: resFormDefinition.data.metadata.metadata,
                 savedData,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {

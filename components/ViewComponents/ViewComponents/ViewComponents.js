@@ -14,8 +14,15 @@ import ViewTime from '../Inputs/ViewTime/ViewTime'
 import ViewReadonlySubtitle from '../Inputs/ViewReadonlySubtitle/ViewReadonlySubtitle'
 import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
+import ViewImage from '../Inputs/ViewImage/ViewImage'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
+
+    const invalidStyle = {
+        border: '1px solid red',
+        boxShadow: '0 0 4px rgba(240, 240, 240, 0.2)',
+        borderRadius: '4px'
+    }
 
     const componentMapper = {
         'text': ViewText,
@@ -26,6 +33,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'mask': ViewMask,
         'dropdown': ViewDropdown,
         'multiselect': ViewMultiselect,
+        'image': ViewImage,
         'header': 'h1',
         'file': ViewFileInput,
         'richText': ViewRichText,
@@ -47,7 +55,8 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                                 metadata: metadata[guid],
                                 value: inputs[name],
                                 onChange: handleInputChange,
-                                errors: errors[name]
+                                errors: errors[name],
+                                invalidStyle: invalidStyle
                             }
                         )}
                     </div>

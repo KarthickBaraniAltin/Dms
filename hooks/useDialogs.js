@@ -15,6 +15,7 @@ import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDia
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
+import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
 
 const useDialogs = ({ metadata, setMetadata }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -31,6 +32,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'mask': MaskDialog,
         'header': HeaderDialog,
         'file': FileDialog,
+        'image': ImageDialog,
         'subtitle': SubtitleDialog,
         'richText': RichTextDialog,
         'signature': SignatureDialog,
