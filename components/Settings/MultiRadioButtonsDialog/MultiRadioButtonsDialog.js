@@ -107,7 +107,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           {
             inputs?.otherOptions?.map((option, index) => {
               return (
-                <div>
+                <div key={index}>
                   <div className='col-11 md:col-11'>
                     <label>Other</label>
                   </div>
