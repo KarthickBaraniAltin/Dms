@@ -8,19 +8,19 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 import { useConvertFormData } from '../../../hooks/useConvertFormData'
+import { Toast } from 'primereact/toast'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function View({ id, metadata, initialValues }) {
-
-    // This part is displaying the form
-    // const { headerImage, handleHeaderImage } = useHeaderImage()
+    
+    const toast = useRef(null)
 
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
@@ -81,7 +81,9 @@ export default function View({ id, metadata, initialValues }) {
         }
 
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
-        console.log('res:', res)
+        if (res) {
+            toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Submitted', life: 2500 })
+        }
     }
 
     return (
@@ -90,7 +92,8 @@ export default function View({ id, metadata, initialValues }) {
                 <title>View Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
-            <AuthenticatedTemplate>                   
+            <AuthenticatedTemplate>   
+                <Toast ref={toast}/>                
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
