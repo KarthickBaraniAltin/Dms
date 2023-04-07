@@ -14,7 +14,9 @@ import ViewComponents from '../../../components/ViewComponents/ViewComponents/Vi
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 
-export default function View({ id, metadata, api, initialValues }) {
+const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
+
+export default function View({ id, metadata, initialValues }) {
 
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
@@ -124,7 +126,6 @@ export async function getServerSideProps(context) {
                 id,
                 metadata: res.data.metadata.metadata,
                 initialValues,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {

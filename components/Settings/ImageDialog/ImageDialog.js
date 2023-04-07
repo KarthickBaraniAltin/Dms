@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor';
 import Footer from '../Footer/Footer'
-import { InputNumber } from 'primereact/inputnumber';
-import { Checkbox } from 'primereact/checkbox';
 
 export default function ImageDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
 
@@ -24,22 +22,22 @@ export default function ImageDialog({ visible, hideDialog, inputs, assignValuesN
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
-          <div className='field col-4 md:col-4'>
+          <div className='field col-6 md:col-6'>
             <label>Width %</label>
-            <InputNumber disabled name='width' value={inputs?.width ?? 0} onChange={handleInputChange} />
+            <InputText disabled name='width' value={inputs?.width ?? 0} onChange={handleInputChange} />
           </div>
-          <div className='field col-4 md:col-4'>
+          {/* <div className='field col-4 md:col-4'>
             <label>Aspect Ratio</label>
             <InputNumber disabled name='aspectRatio' value={inputs?.height / inputs?.width} onChange={handleInputChange} />
-          </div>
-          <div className='field col-4 md:col-4'>
+          </div> */}
+          <div className='field col-6 md:col-6'>
             <label>Height %</label>
-            <InputNumber disabled name='height' value={inputs?.height ?? 0} onChange={handleInputChange} />
+            <InputText disabled name='height' value={inputs?.height ?? '0'} onChange={handleInputChange} />
           </div>
-          <div className='field col-12 md:col-12'>
+          {/* <div className='field col-12 md:col-12'>
             <label>Preserve Aspect Ratio</label>
             <Checkbox className='col-12 md:col-12' name='lockAspectRatio' checked={inputs?.lockAspectRatio ?? true} onChange={(e) => assignValuesNested('lockAspectRatio', e.checked)} />
-          </div>
+          </div> */}
           {/* <div className='field col-12 md:col-12'>
             <ColumnSizeDropdowm name='divClassName' inputs={inputs} onChange={handleInputChange} />
           </div> */}

@@ -1,17 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewImage({metadata, value}) {
-    const { name, label, subtitle } = metadata
+    const { name, label, subtitle, width, height, file } = metadata
+    const [image, setImage] = useState()
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const apiUrl = `${process.env.NEXT_PUBLIC_FORM_BUILDER_API}/FormMetadata/file/${file.guid}` // Update this URL to the actual API endpoint
+                const response = await fetch(apiUrl)
+            
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`)
+                }
+            
+                const blob = await response.blob()
+                const reader = new FileReader()
+            
+                reader.onloadend = () => {
+                    setImage(reader.result)
+                }
+            
+                reader.readAsDataURL(blob)
+              } catch (error) {
+                console.error("Error fetching image:", error)
+              }
+        }
+
+        if (file) {
+            fetchImage()
+        }
+    }, [])
 
     return (
         <>
             <div className='field grid grid-nogutter'>
                 <div className='col-12'>
                     <Label label={label} />
-                </div>
-                <input className='col-12 mt-1' name={name} type='file' multiple={false} onChange={handleImageUpload} />                
+                </div>                
+                {// eslint-disable-next-line @next/next/no-img-element
+                    <img src={image} alt="Uploaded" style={{width: width, height: height, position: 'relative'}} />                    
+                }
                 <Subtitle subtitle={subtitle} />
             </div>
         </>

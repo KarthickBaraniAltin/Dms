@@ -1,17 +1,42 @@
 import NextImage from 'next/image';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 import 'react-resizable/css/styles.css';
 import Label from '../../../SharedComponents/Label/Label';
 import '../CreateImage/CreateImage.module.css'
 import { Resizable } from 're-resizable';
-import { Checkbox } from 'primereact/checkbox';
 
-export default function CreateImage({ metadata, assignValuesNested, setMetadata, guid, value, openDialog, onChange, errors }) {
-    console.log("Component Data = ", metadata)
-    const { name, label, subtitle, width, height, aspectRatio, lockAspectRatio } = metadata
-    const divRef = useRef(undefined)
+export default function CreateImage({ metadata, assignValuesNested, setMetadata, guid, value, openDialog, errors, setFiles, setInputs }) {
+    const { name, label, subtitle, width, height, aspectRatio, file } = metadata
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const apiUrl = `${process.env.NEXT_PUBLIC_FORM_BUILDER_API}/FormMetadata/file/${file.guid}` // Update this URL to the actual API endpoint
+                const response = await fetch(apiUrl)
+            
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`)
+                }
+            
+                const blob = await response.blob()
+                const reader = new FileReader()
+            
+                reader.onloadend = () => {
+                    setInputs(prevInputs => ({ ...prevInputs, [name]: reader.result }));
+                }
+            
+                reader.readAsDataURL(blob)
+              } catch (error) {
+                console.error("Error fetching image:", error)
+              }
+        }
+
+        if (file) {
+            fetchImage()
+        }
+    }, [])
 
     const updateMetadata = (width, height, aspectRatio = aspectRatio) => {
         setMetadata((prevMetadata) => {
@@ -30,44 +55,18 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
         })
     }
 
-    const handleResize = (width, height) => {
-        const newAspectRatio = lockAspectRatio ? aspectRatio : height / width
-        updateMetadata(width, height, newAspectRatio)
+    const handleResize = (event, direction, ref, delta) => {
+        // const newAspectRatio = lockAspectRatio ? aspectRatio : height / width
+        updateMetadata(ref.style.width, ref.style.height, aspectRatio)
     }
-
-    // const fitToDiv = (e) => {
-    //     const maxWidth = divRef.current.clientWidth
-    //     const maxHeight = divRef.current.clientHeight
-
-    //     const curWidth = width
-    //     const curHeight = height
-
-    //     let newWidth;
-    //     let newHeight;
-
-    //     newWidth = curWidth;
-    //     newHeight = curHeight;
-        
-    //     updateMetadata(newWidth, newHeight, aspectRatio)
-    // }
-
-    // useEffect(() => {
-    //     // Handler to call on window resize
-    //     window.addEventListener('resize', fitToDiv)
-    
-    //     return () => window.removeEventListener('resize', fitToDiv)
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0]
-
-        let maxHeight = 300
-        let maxWidth = 300
-        if (divRef.current) {
-            maxWidth = divRef.current.clientWidth
-            maxHeight = divRef.current.clientHeight
-        }
+        
+        setFiles((prevFiles) => ({
+            ...prevFiles,
+            [event.target.name]: file,
+        }))
 
         if (file) {
             const reader = new FileReader()
@@ -77,31 +76,14 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                 const img = new Image()
                 img.src = e.target.result
                 img.onload = () => {
-                    const width = img.width
-                    const height = img.height
-                    const aspectRatio = width / height
-
-                    let newWidth = maxWidth;
-                    let newHeight = maxHeight;                    
-                    
-                    if (width < maxWidth && height < maxHeight) {
-                        newWidth = width;
-                        newHeight = height;
-                    } else if (width > height) {
-                        newHeight = newWidth / aspectRatio;
-                    } else {
-                        newWidth = newHeight * aspectRatio;
-                    }
-
+                    const aspectRatio = width / height                  
                     updateMetadata('100%', '100%', aspectRatio)
                 }
             }
             reader.readAsDataURL(file)
         }
     }
-
-    console.log("Width = ", width)
-    console.log("Height = ", height)
+    // console.log(`Name ${name} = ${value} `)
 
     return (
         <>
@@ -110,30 +92,28 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                 <div className='col-12'>
                     <Label label={label} />
                 </div>
-                <input className='col-12 mt-1' name={name} type='file' multiple={false} onChange={handleImageUpload} />                
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div ref={divRef}>
+                <input className='col-12 mt-1 mb-2' name={guid} type='file' accept="image/jpeg,image/png"  multiple={false} onChange={handleImageUpload} />                
                 {value &&
                     <Resizable 
                         size={{width, height}}
-                        onResizeStop={(e, direction, ref, d) => {
-                                handleResize(width + d.width, height + d.height)
-                            }
-                        }                      
-                        lockAspectRatio={lockAspectRatio}   
-                        maxWidth={divRef?.current?.clientWidth ?? 1000}
+                        onResizeStop={handleResize}                      
+                        lockAspectRatio={true}   
+                        maxWidth={'100%'}
                         minWidth={40}
                         enable={{
                             right: true,
-                            bottomRight: true,
-                            bottom: true
                         }}
-                        
+                        defaultSize={{
+                            width: '100%',
+                            height: '100%'
+                        }}
                     >
-                        <NextImage src={value} alt="Uploaded" fill sizes='100vw 100vh' />
+                        {// eslint-disable-next-line @next/next/no-img-element
+                        <img src={value} alt="Uploaded" style={{width: '100%', height: '100%', position: 'relative'}} />                    
+                        }
                     </Resizable>
                 }
+                <Subtitle subtitle={subtitle} />
             </div>
         </>
     )

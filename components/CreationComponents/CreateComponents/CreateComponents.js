@@ -17,7 +17,7 @@ import CreateTime from '../Inputs/CreateTime/CreateTime'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileInput'
 import CreateImage from '../Inputs/CreateImage/CreateImage'
 
-export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors }) {
+export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
     const objectKeysArray = Object.keys(metadata)
 
     const componentMapper = {
@@ -56,7 +56,9 @@ export default function CreateComponents ({ metadata, assignValuesNested, openDi
                                         value: inputs[name],
                                         onChange: handleInputChange,
                                         assignValuesNested: assignValuesNested,
-                                        errors: errors[name]
+                                        errors: errors[name],
+                                        setFiles: setFiles,
+                                        setInputs: setInputs
                                     }
                                 )}
                         </Sortable>

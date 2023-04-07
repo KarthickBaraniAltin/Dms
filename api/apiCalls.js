@@ -1,7 +1,7 @@
 import axios from 'axios'
 import https from 'https'
 
-const formBuilderStudioApi = process.env.FORM_BUILDER_API
+const formBuilderStudioApi = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 console.log("API = ", formBuilderStudioApi)
 

@@ -24,12 +24,16 @@ import CreateComponents from '../../../components/CreationComponents/CreateCompo
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 
-export default function Update({ api, id, data }) {
+const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
+export default function Update({ id, data }) {
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, assignValuesNested, inputs } = useInputs({ initialValues: {} })
+    const { handleInputChange, assignValuesNested, setInputs, inputs } = useInputs({ initialValues: {} })
+    const [ files, setFiles ] = useState({})
     const [ metadata, setMetadata ] = useState(data?.metadata?.metadata ?? {}) 
     const { errors } = useValidation({ metadata, inputs })
+
+    console.log("Inputs = ", inputs)
 
     const [ mainFormIds, setMainFormIds ] = useState([])
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
@@ -70,6 +74,11 @@ export default function Update({ api, id, data }) {
             authorEmail: username,
         }))
         formData.append("metadata", JSON.stringify(metadata))
+        
+        // Add files to request
+        Object.keys(files).forEach((fieldName) => {
+            formData.append(fieldName, files[fieldName]);
+        })
 
         const fetchParams = {
             method: 'PUT',
@@ -125,6 +134,9 @@ export default function Update({ api, id, data }) {
                                     handleInputChange={handleInputChange} 
                                     assignValuesNested={assignValuesNested}
                                     errors={errors}
+                                    files={files}
+                                    setFiles={setFiles}
+                                    setInputs={setInputs}
                                 />
                             </SortableContext>
                         </Droppable>
@@ -154,7 +166,6 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 data: res.data,
-                api: process.env.FORM_BUILDER_API
             }
         }
     } catch (err) {
