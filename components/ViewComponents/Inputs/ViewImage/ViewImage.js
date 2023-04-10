@@ -1,6 +1,9 @@
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+
+import styles from '../ViewImage/ViewImage.module.css'
 
 export default function ViewImage({metadata, value}) {
     const { name, label, subtitle, width, height, file } = metadata
@@ -40,8 +43,11 @@ export default function ViewImage({metadata, value}) {
                 <div className='col-12'>
                     <Label label={label} />
                 </div>                
-                {// eslint-disable-next-line @next/next/no-img-element
-                    <img src={image} alt="Uploaded" style={{width: width, height: height, position: 'relative'}} />                    
+                {(value || image) && 
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <div className={styles.imageWrapper} style={{ width: width, height: height}}>
+                        <Image src={value ?? image} alt="Uploaded" fill />                    
+                    </div>
                 }
                 <Subtitle subtitle={subtitle} />
             </div>

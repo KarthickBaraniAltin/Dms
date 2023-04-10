@@ -74,3 +74,11 @@
     bottom: 0;
     transform: rotate(45deg);
 }
+
+.imageWrapper {
+    position: relative;
+}
+
+.imageWrapper img {
+    position: relative !important;
+}
