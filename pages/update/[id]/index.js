@@ -32,13 +32,13 @@ const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 export default function Update({ id, data }) {
     const toast = useRef(null)
     const { headerImage, handleHeaderImage } = useHeaderImage()
-    const { handleInputChange, assignValuesNested, setInputs, inputs } = useInputs({ initialValues: {} })
+    const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
     const [ files, setFiles ] = useState({})
     const [ metadata, setMetadata ] = useState(data?.metadata?.metadata ?? {}) 
     const { errors } = useValidation({ metadata, inputs })
 
     const [ mainFormIds, setMainFormIds ] = useState([])
-    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata })
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata, deleteField })
 
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()

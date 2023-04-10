@@ -17,7 +17,7 @@ import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
 
-const useDialogs = ({ metadata, setMetadata }) => {
+const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs({ initialValues: {} })
@@ -66,6 +66,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
         if (isDeleted) {
             if (confirm('You are about to delete this component. Do you wish to proceed?')) {
                 delete metadata[dialogData.guid]
+                deleteField(dialogData.name)
             }
         } else {
             metadata[dialogData.guid] = {...metadata[dialogData.guid], ...inputs}

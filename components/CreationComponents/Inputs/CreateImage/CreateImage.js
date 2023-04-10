@@ -7,6 +7,8 @@ import Label from '../../../SharedComponents/Label/Label';
 import '../CreateImage/CreateImage.module.css'
 import { Resizable } from 're-resizable';
 
+import styles from '../CreateImage/CreateImage.module.css'
+
 export default function CreateImage({ metadata, assignValuesNested, setMetadata, guid, value, openDialog, errors, setFiles, setInputs }) {
     const { name, label, subtitle, width, height, aspectRatio, file } = metadata
 
@@ -109,7 +111,9 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                         }}
                     >
                         {// eslint-disable-next-line @next/next/no-img-element
-                        <img src={value} alt="Uploaded" style={{width: '100%', height: '100%', position: 'relative'}} />                    
+                            <div className={styles.imageWrapper} style={{ width: width, height: height}}>
+                                <NextImage src={value ?? image} alt="Uploaded" fill />                    
+                            </div>
                         }
                     </Resizable>
                 }
