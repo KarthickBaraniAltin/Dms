@@ -111,7 +111,7 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                         }}
                     >
                         {// eslint-disable-next-line @next/next/no-img-element
-                            <div className={styles.imageWrapper} style={{ width: width, height: height}}>
+                            <div className={styles.imageWrapper}>
                                 <NextImage src={value ?? image} alt="Uploaded" fill />                    
                             </div>
                         }

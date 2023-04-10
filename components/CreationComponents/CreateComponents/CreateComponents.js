@@ -16,6 +16,7 @@ import clsx from 'clsx'
 import CreateTime from '../Inputs/CreateTime/CreateTime'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileInput'
 import CreateImage from '../Inputs/CreateImage/CreateImage'
+import CreateHeader from '../Inputs/CreateHeader/CreateHeader'
 
 export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
     const objectKeysArray = Object.keys(metadata)
@@ -29,7 +30,7 @@ export default function CreateComponents ({ metadata, assignValuesNested, openDi
         'dropdown': CreateDropdown,
         'time': CreateTime,
         'multiselect': CreateMultiSelect,
-        'header': <h1/>,
+        'header': CreateHeader,
         'image': CreateImage,
         'file': CreateFileInput,
         'richText': CreateRichTextInput,
