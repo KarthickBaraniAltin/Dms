@@ -61,17 +61,19 @@ const useDialogs = ({ metadata, setMetadata }) => {
             return
         }
 
-        if (options.some(option => {
-            if (option.label === '' || option.value === '') {
-                return true
+        if (options) {
+            if (options.some(option => {
+                if (option.label === '' || option.value === '') {
+                    return true
+                } else {
+                    return false
+                }
+            })) {
+                setBlankOptions(true)
+                return alert('Options cannot be left blank')
             } else {
-                return false
+                setBlankOptions(false)
             }
-        })) {
-            setBlankOptions(true)
-            return alert('Options cannot be left blank')
-        } else {
-            setBlankOptions(false)
         }
 
         if (isDeleted) {

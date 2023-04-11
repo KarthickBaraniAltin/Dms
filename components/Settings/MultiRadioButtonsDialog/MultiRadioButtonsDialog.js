@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
@@ -7,8 +7,11 @@ import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { Dropdown } from 'primereact/dropdown'
+import { Checkbox } from 'primereact/checkbox'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
+  const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions.length === 0 ? false : true)
+
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -41,21 +44,19 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
       assignValuesNested('options', newOptions)
   }
 
-  const handleDeleteOtherOptions = (index) => {
-    const newOtherOptions = [...inputs?.otherOptions]
-    newOtherOptions.splice(index, 1)
-    assignValuesNested('otherOptions', newOtherOptions)
-  }
-
-  const handleAddOtherOptions = () => {
-    if (!inputs.otherOptions) {
+  const handleOtherOptions = (e) => {
+    if (e.checked) {
+      setOtherChecked(true)
       const newOtherOptions = [{value: 'Other:'}]
       assignValuesNested('otherOptions', newOtherOptions)
       return
-    }
+    } else {
 
-    const newOtherOptions = [...inputs.otherOptions, {value: 'Other:'}]
-    assignValuesNested('otherOptions', newOtherOptions)
+      setOtherChecked(false)
+      const newOtherOptions = [...inputs?.otherOptions]
+      newOtherOptions.splice(0, 1)
+      assignValuesNested('otherOptions', newOtherOptions)
+    }
   }
 
   const convertedOptions = inputs?.options.map(option => option.value)
@@ -103,28 +104,8 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           <div className='field col-6 md:col-6'>
             <i className='pi pi-plus' onClick={() => handleAddOptions()}></i>
           </div>
-          <h4 className='field col-12 md:col-12'>Add Other Options</h4>
-          {
-            inputs?.otherOptions?.map((option, index) => {
-              return (
-                <div>
-                  <div className='col-11 md:col-11'>
-                    <label>Other</label>
-                  </div>
-                  <div className='col-1 md:col-1'>
-                    <Button className='p-button-rounded p-button-danger' icon='pi pi-trash' onClick={() => handleDeleteOtherOptions(index)} />
-                  </div>
-                </div>
-              )
-            })
-          }
-          {inputs?.otherOptions == 0 ?
-            <div className='field col-6 md:col-6'>
-              <i className='pi pi-plus' onClick={() => handleAddOtherOptions()}></i>
-            </div>
-            :
-            null
-          }
+          <label className='mr-2'>Add Other Option</label>
+          <Checkbox onChange={(e) => handleOtherOptions(e)} checked={otherChecked} />
           <h4 className='field col-12 md:col-12'>Validation</h4>
           <div className='field col-12 md:col-12'>
             <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
