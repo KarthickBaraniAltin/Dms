@@ -3,8 +3,6 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from "primereact/button"
 
 export default function ShareDialog({showDialog, handleShare, id, formSubmitResult}) {
-    console.log('share id:', id)
-    console.log('share formSubmitResult', formSubmitResult)
     const [domain] = window.location.host.split('/')
     const http = domain == 'localhost:3000' ? 'http' : 'https'
     const currentURL = `${http}://${domain}/form-builder-studio/view/${id}`

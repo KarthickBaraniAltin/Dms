@@ -83,12 +83,9 @@ export default function Update({ api, id, data }) {
         }
 
         const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
-        console.log('res:', res)
 
         setFormSubmitResult(res)
     }
-
-    console.log('formSubmitResult:', formSubmitResult)
 
     return (
         <>
