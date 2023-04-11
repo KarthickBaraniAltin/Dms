@@ -83,10 +83,12 @@ export default function Update({ api, id, data }) {
         }
 
         const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
-        if (res?.status == 200) {
-            setFormSubmitResult(res)
-        }
+        console.log('res:', res)
+
+        setFormSubmitResult(res)
     }
+
+    console.log('formSubmitResult:', formSubmitResult)
 
     return (
         <>
@@ -101,8 +103,8 @@ export default function Update({ api, id, data }) {
                 {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                 inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                 {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} /> : null}
-                {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
-                {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
+                {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult : data} /> : null}
+                {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} api={api} id={id} acquireToken={acquireToken} loading={loading} /> : null}
                 <div className='grid'>
                     {renderDialog()}
                     <ComponentPanel />
