@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
@@ -10,7 +10,8 @@ import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
-  console.log('inputs:', inputs)
+  const [blankOptions, setBlankOptions] = useState(false)
+
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
         return
@@ -46,9 +47,17 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
     assignValuesNested('options', newOptions)
   }
 
+  const noInputStyle = {
+    border: '1px solid red',
+    boxShadow: '0 0 4px rgba(240, 240, 240, 0.2)',
+    borderRadius: '4px'
+  }
+
   return (
     <div>
-      <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
+      <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog}
+        footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setBlankOptions={setBlankOptions} />}
+      >
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -82,10 +91,12 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
                         <div className='col-6 md:col-6'>
                             <label>Label</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.label} onChange={(event) => handleOptionChange(index, event, 'label')} />
+                            <small style={{color: 'red'}}>{blankOptions && option.label === '' ? 'Label Required' : ''}</small>
                         </div>
                         <div className='col-5 md:col-5'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
+                            <small style={{color: 'red'}}>{blankOptions && option.value === '' ? 'Value Required' : ''}</small>
                         </div>
                         <div className='col-1 md:col-1'>
                             <Button className='p-button-rounded p-button-danger mt-4' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />
