@@ -54,7 +54,7 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                                                 setOtherChecked(null)
                                                 onChange({target: { name: name, value: {radioButton: radioButton.value, id: index} } })
                                             }} 
-                                            checked={checkedValue ? checkedValue == index : radioButton.value === defaultValue} 
+                                            checked={checkedValue ? checkedValue == index : index === defaultValue} 
                                             style={{marginRight: '0.5rem'}} 
                                         />
                                         <label>{radioButton.value}</label>

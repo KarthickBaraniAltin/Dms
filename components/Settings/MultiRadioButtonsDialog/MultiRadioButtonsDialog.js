@@ -59,7 +59,13 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
     }
   }
 
-  const convertedOptions = inputs?.options.map(option => option.value)
+  const convertedOptions = inputs?.options.map((option, index) => {
+    return `${index + 1}. ${option.value}`
+  })
+
+  const handleDefaultValue = (e) => {
+    handleInputChange({target: {name: e.target.name, value: e.target.value[0] - 1}})
+  }
 
   return (
     <div>
@@ -79,7 +85,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           </div>
           <div className='field col-12 md:col-12'>
             <label>Default Value</label>
-            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
+            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleDefaultValue} options={convertedOptions} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>

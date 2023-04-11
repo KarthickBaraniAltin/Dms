@@ -53,7 +53,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                                             setOtherChecked(null)
                                             onChange(e)
                                         }} 
-                                        checked={checkedValue ? checkedValue === index : radioButton.value === defaultValue}
+                                        checked={checkedValue ? checkedValue === index : index === defaultValue}
                                         style={{marginRight: '0.5rem'}}
                                     />
                                     <label>{radioButton.value}</label>
