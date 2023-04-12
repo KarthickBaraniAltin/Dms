@@ -1,8 +1,12 @@
+import clsx from 'clsx'
 import NextImage from 'next/image'
 import { Resizable } from 're-resizable'
 import React, { useEffect, useState } from 'react'
+import ReadonlyLexicalEditor from '../../../LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
+import SettingsButton from '../../SettingsButton/SettingsButton'
 
-import styles from '../CreateImage/CreateImage.module.css'
+import styles from '../CreateHeader/CreateHeader.module.css'
+import sharedImageStyles from '../CreateImage/CreateImage.module.css'
 
 export default function CreateHeader({metadata, openDialog, assignValuesNested, guid, value, setFiles, setInputs, setMetadata}) {
   const { name, label, subtitle, width, height, aspectRatio, file } = metadata
@@ -82,35 +86,37 @@ export default function CreateHeader({metadata, openDialog, assignValuesNested, 
   }
 
   return (
-    <div className='flex flex-column'>
-        <div>
-            <div>
-            <input className='col-12 mt-1 mb-2' name={guid} type='file' accept="image/jpeg,image/png"  multiple={false} onChange={handleImageUpload} />                
-            {value &&
-                <Resizable 
-                    size={{width, height}}
-                    onResizeStop={handleResize}                      
-                    lockAspectRatio={true}   
-                    maxWidth={'100%'}
-                    minWidth={40}
-                    enable={{
-                        right: true,
-                    }}
-                    defaultSize={{
-                        width: '100%',
-                        height: '100%'
-                    }}
-                >
-                    {// eslint-disable-next-line @next/next/no-img-element
-                        <div className={styles.imageWrapper}>
-                            <NextImage src={value ?? image} alt="Uploaded" fill />                    
-                        </div>
-                    }
-                </Resizable>
-            }
-            <h3>label</h3>
-            </div>
-        </div>
+    <div className='field grid grid-nogutter'>
+        <SettingsButton openDialog={openDialog} componentData={metadata} />
+        <input className='col-12 mt-1 mb-2' name={guid} type='file' accept="image/jpeg,image/png"  multiple={false} onChange={handleImageUpload} />                
+        {value && 
+        <div className='col-4'>  
+            <Resizable 
+                size={{width, height}}
+                onResizeStop={handleResize}                      
+                lockAspectRatio={true}   
+                maxWidth={'100%'}
+                minWidth={40}
+                // maxHeight={90}
+                enable={{
+                    right: true,
+                }}
+                defaultSize={{
+                    width: '100%',
+                    height: '100%'
+                }}
+            >
+
+                <div className={sharedImageStyles.imageWrapper}>
+                    <NextImage src={value ?? image} alt="Uploaded" fill />                    
+                </div>
+            </Resizable>
+          </div>
+          } 
+          <div className='col-8'>
+              <ReadonlyLexicalEditor value={label} />
+          </div>
+          {/* <h1 className={clsx(value ? 'col-7' : 'col-12',  styles.label, 'mr-1')} >{label}</h1> */}
     </div>
   )
 }

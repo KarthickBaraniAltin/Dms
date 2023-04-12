@@ -37,6 +37,7 @@ export default function ComponentPanel() {
                     name={component}
                     guid=''
                     divClassName={fullSizeClassName}
+                    label={defaultSubtitle}
                 >
                     <div className='flex justify-content-center'>
                         <label className='block' style={{fontWeight: '700', color: '#000000'}}>
