@@ -1,12 +1,14 @@
-import Image from 'next/image'
+import NextImage from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Label from '../../../SharedComponents/Label/Label'
-import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ReadonlyLexicalEditor from '../../../LexicalEditor/ReadonlyLexicalEditor/ReadonlyLexicalEditor'
 
-import styles from '../ViewImage/ViewImage.module.css'
+import styles from '../../../CreationComponents/Inputs/CreateHeader/CreateHeader.module.css'
+import sharedImageStyles from '../../../CreationComponents/Inputs/CreateImage/CreateImage.module.css'
+import clsx from 'clsx'
 
-export default function ViewImage({metadata, value}) {
-    const { name, label, subtitle, width, height, file } = metadata
+export default function ViewHeader({metadata, value}) {
+    const { name, label, width, height, file } = metadata
     const [image, setImage] = useState()
 
     useEffect(() => {
@@ -37,19 +39,23 @@ export default function ViewImage({metadata, value}) {
         }
     }, [])
 
+
+    console.log("Width = ", width)
+    console.log("height = ", height)
     return (
         <>
-            <div className='field grid grid-nogutter'>
-                <div className='col-12'>
-                    <Label label={label} />
-                </div>                
+            <div className='field grid grid-nogutter'>       
                 {(value || image) && 
-                    <div className={styles.imageWrapper} style={{ width: width, height: height}}>
-                        <Image src={value ?? image} alt="Uploaded" fill />                    
+                    <div className='col-4'>  
+                        <div className={sharedImageStyles.imageWrapper} style={{width: width, height: height}}>
+                            <NextImage src={value ?? image} alt="Uploaded" fill />                    
+                        </div>
                     </div>
                 }
-                <Subtitle subtitle={subtitle} />
-            </div>
+                <div className='col-8'>
+                    <ReadonlyLexicalEditor value={label} />
+                </div>  
+            </div>  
         </>
     )
 }

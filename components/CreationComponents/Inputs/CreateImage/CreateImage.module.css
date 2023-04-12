@@ -82,3 +82,7 @@
 .imageWrapper img {
     position: relative !important;
 }
+
+.rightBorder {
+    border-right: 5px;
+}

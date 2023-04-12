@@ -8,6 +8,7 @@ import '../CreateImage/CreateImage.module.css'
 import { Resizable } from 're-resizable';
 
 import styles from '../CreateImage/CreateImage.module.css'
+import clsx from 'clsx';
 
 export default function CreateImage({ metadata, assignValuesNested, setMetadata, guid, value, openDialog, errors, setFiles, setInputs }) {
     const { name, label, subtitle, width, height, aspectRatio, file } = metadata
@@ -111,7 +112,7 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                         }}
                     >
                         {// eslint-disable-next-line @next/next/no-img-element
-                            <div className={styles.imageWrapper}>
+                            <div className={clsx(styles.imageWrapper, styles.rightBorder)}>
                                 <NextImage src={value ?? image} alt="Uploaded" fill />                    
                             </div>
                         }
