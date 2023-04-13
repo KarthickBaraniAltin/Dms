@@ -8,7 +8,7 @@ export default function Label({label, validations}) {
             <label style={{fontWeight: '700', fontSize: '11pt',color: '#000000'}} >
                 {label}
             </label>
-            <span style={{color: 'red'}}>{validations?.required?.isRequired ? `*` : null}</span>
+            <span style={{color: 'red'}}>{validations?.required?.isRequired ? ` *` : null}</span>
         </div>
     </div>
   )

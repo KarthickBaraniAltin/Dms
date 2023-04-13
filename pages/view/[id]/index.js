@@ -17,9 +17,6 @@ import { useConvertFormData } from '../../../hooks/useConvertFormData'
 
 export default function View({ id, metadata, api, initialValues }) {
 
-    // This part is displaying the form
-    // const { headerImage, handleHeaderImage } = useHeaderImage()
-
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, handleInputChange } = useInputs({initialValues: convertedData})
@@ -54,13 +51,6 @@ export default function View({ id, metadata, api, initialValues }) {
 
     const submitFormData = async (event) => {
         event.preventDefault()
-
-        // if (checkUnfilledRequired(errors)) {
-        //     setUnfilledRequired(true)
-        //     return
-        // } else {
-        //     setUnfilledRequired(false)
-        // }
 
         const { accessToken } = await acquireToken()
         const { givenName, surname, mail } = instance.getActiveAccount()

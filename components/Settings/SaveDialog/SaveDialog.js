@@ -3,7 +3,22 @@ import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from "primereact/button"
 
-export default function SaveDialog({showDialog, handleSave, updateForm, loading, name, setName, desc, setDesc}) {
+export default function SaveDialog({showDialog, handleSave, updateForm, loading, name, setName, desc, setDesc, metadata}) {
+    const areComponentsEmpty = (e) => {
+        for (const property in metadata) {
+            if (metadata[property].type === 'multiselect' || metadata[property].type === 'dropdown'  
+            || metadata[property].type === 'checkbox' || metadata[property].type === 'radiobutton') {
+                if (metadata[property].options.length === 0) {
+                    alert(`Cannot leave ${metadata[property].type} empty`)
+                    handleSave()
+                    return
+                }
+            }
+        }
+
+        updateForm(e, name, desc)
+    }
+
     return (
         <>
             <Dialog header='Save Page' visible={showDialog} onHide={() => handleSave()} style={{width: '75vw'}}>
@@ -18,7 +33,7 @@ export default function SaveDialog({showDialog, handleSave, updateForm, loading,
                             <InputTextarea value={desc} onChange={e => setDesc(e.target.value)} />
                         </div>
                     </div>
-                    <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => updateForm(e, name, desc)} />
+                    <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => areComponentsEmpty(e)} />
                 </div>
             </Dialog>
         </>

@@ -11,6 +11,7 @@ import { Checkbox } from 'primereact/checkbox'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions.length === 0 ? false : true)
+  const [blankOptions, setBlankOptions] = useState(false)
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -69,7 +70,8 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
 
   return (
     <div>
-      <Dialog header='Multi Radio Buttons Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
+      <Dialog header='Multi Radio Buttons Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog}
+      footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setBlankOptions={setBlankOptions} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -99,6 +101,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
                         <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
+                            <small style={{color: 'red'}}>{blankOptions && option.value === '' ? 'Value Required' : ''}</small>
                         </div>
                         <div className='col-1 md:col-1'>
                             <Button className='p-button-rounded p-button-danger mt-4' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />
