@@ -64,7 +64,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
   })
 
   const handleDefaultValue = (e) => {
-    handleInputChange({target: {name: e.target.name, value: e.target.value[0] - 1}})
+    handleInputChange({target: {name: e.target.name, value: e.target.value}})
   }
 
   return (

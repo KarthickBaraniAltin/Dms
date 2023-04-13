@@ -7,6 +7,7 @@ import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, options, otherOptions, validations, defaultValue } = metadata
+    const defaultValueIndex = defaultValue ? defaultValue[0] - 1 : null
     const [checkedValue, setCheckedValue] = useState(value?.id)
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
@@ -54,7 +55,7 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                                                 setOtherChecked(null)
                                                 onChange({target: { name: name, value: {radioButton: radioButton.value, id: index} } })
                                             }} 
-                                            checked={checkedValue ? checkedValue == index : index === defaultValue} 
+                                            checked={checkedValue ? checkedValue == index : index === defaultValueIndex} 
                                             style={{marginRight: '0.5rem'}} 
                                         />
                                         <label>{radioButton.value}</label>

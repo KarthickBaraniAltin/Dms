@@ -3,8 +3,6 @@ import { useState } from 'react'
 export const useHeaderImage = () => {
     const [headerImage, setHeaderImage] = useState({})
 
-    console.log("Header Image = ", headerImage)
-
     const handleHeaderImage = (event) => {
         if (event.target.dataset) {
             const image = new Image()

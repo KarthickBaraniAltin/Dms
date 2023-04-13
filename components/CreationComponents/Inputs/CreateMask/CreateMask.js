@@ -9,9 +9,6 @@ import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
 export default function CreateMask({ metadata, value, onChange, openDialog, errors}) {
     const { name, className, label, subtitle, mask, defaultValue, guid, id, page } = metadata
 
-    console.log('value:', value)
-    console.log('defaultValue:', typeof defaultValue)
-
     return (
         <div className='field grid grid-nogutter'>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
