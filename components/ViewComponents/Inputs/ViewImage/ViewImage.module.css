@@ -5,3 +5,13 @@
 .imageWrapper img {
     position: relative !important;
 }
+
+.labelContainer {
+    width: 13.5%;
+    text-align: right;
+    margin-right: 0px;
+}
+
+.inputsContainer {
+    width: 85%;
+}

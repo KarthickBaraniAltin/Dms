@@ -6,9 +6,13 @@ import 'react-resizable/css/styles.css';
 import Label from '../../../SharedComponents/Label/Label';
 import '../CreateImage/CreateImage.module.css'
 import { Resizable } from 're-resizable';
+import clsx from 'clsx';
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer';
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer';
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer';
 
 import styles from '../CreateImage/CreateImage.module.css'
-import clsx from 'clsx';
+import sharedStyles from '../../../SharedComponents/Image/Image.module.css'
 
 export default function CreateImage({ metadata, assignValuesNested, setMetadata, guid, value, openDialog, errors, setFiles, setInputs }) {
     const { name, label, subtitle, width, height, aspectRatio, file } = metadata
@@ -86,16 +90,15 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
             reader.readAsDataURL(file)
         }
     }
-    // console.log(`Name ${name} = ${value} `)
 
     return (
-        <>
-            <div className='field grid grid-nogutter'>
-                <SettingsButton openDialog={openDialog} componentData={metadata} />
-                <div className='col-12'>
-                    <Label label={label} />
-                </div>
-                <input className='col-12 mt-1 mb-2' name={guid} type='file' accept="image/jpeg,image/png"  multiple={false} onChange={handleImageUpload} />                
+        <ComponenentContainer>
+            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <LabelContainer className={`${styles.labelContainer} mr-2`}>
+                <Label label={label} />
+                <input name={guid} type='file' accept="image/jpeg,image/png"  multiple={false} onChange={handleImageUpload} />                
+            </LabelContainer>
+            <InputsContainer className={styles.inputsContainer}>
                 {value &&
                     <Resizable 
                         size={{width, height}}
@@ -119,7 +122,7 @@ export default function CreateImage({ metadata, assignValuesNested, setMetadata,
                     </Resizable>
                 }
                 <Subtitle subtitle={subtitle} />
-            </div>
-        </>
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

@@ -4,9 +4,12 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 
 export default function CreateCheckbox({ metadata, onChange, openDialog, errors }) {
-    const { name, label, subtitle, defaultValue } = metadata 
+    const { name, label, subtitle, validations, defaultValue } = metadata 
     const defaultValueIds = metadata?.options
         .map((option, index) => {
             if (option.value === defaultValue?.[index]) {
@@ -48,21 +51,24 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
     }
 
     return (
-        <div className='field grid grid-nogutter'>
+        <ComponenentContainer>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-4'>
-                <Label label={label} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div className='col-8'>
+            <LabelContainer>
+                <Label label={label} validations={validations}/>
+            </LabelContainer>
+            <InputsContainer>
                 {metadata.options.length > 0 ? 
                     <>
                         {metadata.options.map((checkboxes, index) => {
                             return (
-                                <div key={index} style={{marginBottom: '0.5rem'}}>
-                                    <Checkbox key={index} id={index} value={checkboxes.value} onChange={(e) => onChange(onCheckboxChange(e))} 
-                                    checked={checkedIds.some(id => id === index)} 
-                                    style={{marginRight: '0.5rem'}}
+                                <div className='mb-1' key={index}>
+                                    <Checkbox 
+                                        className='mr-1'
+                                        key={index} 
+                                        id={index} 
+                                        value={checkboxes.value} 
+                                        onChange={(e) => onChange(onCheckboxChange(e))} 
+                                        checked={checkedIds.some(id => id === index)} 
                                     />
                                     <label>{checkboxes.value}</label>
                                 </div>
@@ -71,8 +77,9 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
                     </>
                     : <p>{'Click dialog to add checkboxes'}</p>
                 }
-            </div>
-            <Errors errors={errors} />
-        </div>
+                <Subtitle subtitle={subtitle} />
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

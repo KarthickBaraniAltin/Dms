@@ -3,22 +3,33 @@ import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import clsx from 'clsx'
 
-export default function ViewMultiselect({ metadata, value, onChange, errors, invalidStyle }) {
-    const { name, label, subtitle, className, options, validations, defaultValue } = metadata
+import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+
+export default function ViewMultiselect({ metadata, value, onChange, errors }) {
+    const { name, label, subtitle, options, validations, defaultValue } = metadata
 
     return (
-        <div className='field grid grid-nogutter'> 
-            <div style={{textAlign: 'right', marginRight: '1rem'}}>
+        <ComponenentContainer> 
+            <LabelContainer>
                 <Label label={label} validations={validations} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div>
-                <MultiSelect className='col-8' name={name} value={value ?? defaultValue} onChange={onChange}
-                    options={options} display='chip' style={errors?.length > 0 ? invalidStyle : null}
+            </LabelContainer>
+            <InputsContainer>
+                <MultiSelect 
+                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
+                    name={name} 
+                    value={value ?? defaultValue} 
+                    onChange={onChange}
+                    options={options} 
+                    display='chip' 
                 />
+                <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
-            </div>
-        </div>
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

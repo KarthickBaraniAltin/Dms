@@ -4,21 +4,26 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import SettingsButton from '../../SettingsButton/SettingsButton'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+
+import styles from '../CreateRichTextInput/CreateRichTextInput.module.css'
 
 export default function CreateRichTextInput({ metadata, openDialog, value, onChange, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata
 
     return (
-        <div className='field grid grid-nogutter mt-3 mb-5'>
+        <ComponenentContainer>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-1-70'>
+            <LabelContainer className={`${styles.labelContainer} mr-2`}>
                 <Label label={label} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div className='col-10-3'>
+            </LabelContainer>
+            <InputsContainer className={styles.inputsContainer}>
                 <LexicalEditor name={name} value={value} onChange={onChange} /> 
-            </div>
-            <Errors errors={errors} />
-        </div>
+                <Subtitle subtitle={subtitle} />
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

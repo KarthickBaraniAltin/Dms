@@ -19,12 +19,6 @@ import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
-    const invalidstyle = {
-        border: '1px solid red',
-        boxShadow: '0 0 4px rgba(240, 240, 240, 0.2)',
-        borderRadius: '4px'
-    }
-
     const componentMapper = {
         'header': ViewHeader,
         'text': ViewText,
@@ -50,7 +44,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                 const { name, type, divClassName } = metadata[guid]
                 console.log("Type = ", type)
                 return (
-                    <div key={guid} className={clsx(divClassName ?? 'field col-6', 'mt-2')}>
+                    <div key={guid} className={clsx(divClassName ?? 'field col-6')}>
                         { createElement( 
                             componentMapper[type],
                             {
@@ -58,7 +52,6 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                                 value: inputs[name],
                                 onChange: handleInputChange,
                                 errors: errors[name],
-                                invalidStyle: invalidstyle
                             }
                         )}
                     </div>

@@ -4,6 +4,9 @@ import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 
 import styles from '../ViewImage/ViewImage.module.css'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
 export default function ViewImage({metadata, value}) {
     const { name, label, subtitle, width, height, file } = metadata
@@ -39,17 +42,19 @@ export default function ViewImage({metadata, value}) {
 
     return (
         <>
-            <div className='field grid grid-nogutter'>
-                <div className='col-12'>
+            <ComponenentContainer>
+                <LabelContainer className={`${styles.labelContainer} mr-2`}>
                     <Label label={label} />
-                </div>                
-                {(value || image) && 
-                    <div className={styles.imageWrapper} style={{ width: width, height: height}}>
-                        <Image src={value ?? image} alt="Uploaded" fill />                    
-                    </div>
-                }
-                <Subtitle subtitle={subtitle} />
-            </div>
+                </LabelContainer>      
+                <InputsContainer className={`${styles.inputsContainer} mb-3`}>
+                    {(value || image) && 
+                        <div className={styles.imageWrapper} style={{ width: width, height: height}}>
+                            <Image src={value ?? image} alt="Uploaded" fill />                    
+                        </div>
+                    }
+                    <Subtitle subtitle={subtitle} />
+                </InputsContainer>          
+            </ComponenentContainer>
         </>
     )
 }
