@@ -6,10 +6,10 @@ export default function Label({label, validations}) {
 
   return (
     <>
+        <span className={styles.asteriks}>{validations?.required?.isRequired ? `* ` : null}</span>
         <label className={styles.labelStyle} >
             {label}
         </label>
-        <span className={styles.asteriks}>{validations?.required?.isRequired ? ` *` : null}</span>
     </> 
   )
 }
