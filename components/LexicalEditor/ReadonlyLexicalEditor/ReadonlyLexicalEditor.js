@@ -22,6 +22,7 @@ import AutoLinkPlugin from "../Plugins/AutoLinkPlugin/AutoLinkPlugin";
 
 import styles from './ReadonlyLexicalEditor.module.css'
 import SubtitlePlugin from "../Plugins/SubtitlePlugin/SubtitlePlugin";
+import clsx from "clsx";
 
 export default function ReadonlyLexicalEditor({value}) {
 
@@ -54,7 +55,7 @@ export default function ReadonlyLexicalEditor({value}) {
 
   return (
     <>
-      <div className={styles['lexical-body']}>
+      <div className={clsx(styles['lexical-body'], 'mt-1')}>
           <LexicalComposer initialConfig={editorConfig}>
               <div className={styles['editor-container']}>
                   <div className={styles['editor-inner']}>

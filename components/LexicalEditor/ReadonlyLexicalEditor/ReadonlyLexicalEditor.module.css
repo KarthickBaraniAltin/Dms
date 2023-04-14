@@ -1,6 +1,6 @@
 .lexical-body {
-    width: 100%;
     margin: 0;
+    padding: 0;
     background: rgb(255, 255, 255);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular",
       sans-serif;

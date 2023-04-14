@@ -3,23 +3,32 @@ import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
-import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import clsx from 'clsx'
 
-export default function ViewMask({ metadata, value, onChange, errors, invalidStyle }) {
+import sharedStyles from '../../../SharedComponents/Mask/Mask.module.css'
+
+export default function ViewMask({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, defaultValue, mask, validations } = metadata
 
     return (
-        <div className='field grid grid-nogutter'> 
-            <div style={{textAlign: 'right', marginRight: '1rem'}}>
+        <ComponenentContainer> 
+            <LabelContainer>
                 <Label label={label} validations={validations} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div>
-                <InputMask className={`col-8 ${sharedStyles.input}`} name={name} value={value ?? defaultValue}
-                    onChange={onChange} mask={mask} style={errors?.length > 0 ? invalidStyle : null}
+            </LabelContainer>
+            <InputsContainer>
+                <InputMask 
+                    className={clsx('col-12', sharedStyles.mask, errors?.length > 0 && 'p-invalid')} 
+                    name={name} 
+                    value={value ?? defaultValue}
+                    onChange={onChange}
+                    mask={mask} 
                 />
+                <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
-            </div>
-        </div>
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

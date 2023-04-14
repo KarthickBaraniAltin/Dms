@@ -40,8 +40,6 @@ export default function ViewHeader({metadata, value}) {
     }, [])
 
 
-    console.log("Width = ", width)
-    console.log("height = ", height)
     return (
         <>
             <div className='field grid grid-nogutter'>       

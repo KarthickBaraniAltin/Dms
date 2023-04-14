@@ -1,30 +1,34 @@
-import { Calendar } from 'primereact/calendar'
 import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import clsx from 'clsx'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
-export default function ViewFileInput({ metadata, value, onChange, errors, invalidStyle }) {
+import sharedStyles from '../../../SharedComponents/File/File.module.css'
+
+export default function ViewFileInput({ metadata, value, onChange, errors }) {
   const { name, label, subtitle, multiple, validations } = metadata
 
   return (
-    <div className='field grid grid-nogutter'>
-      <div style={{textAlign: 'right', marginRight: '1rem'}}>
+    <ComponenentContainer>
+      <LabelContainer className={sharedStyles.labelContainer}>
         <Label label={label} validations={validations} />
-        <Subtitle subtitle={subtitle} />
-      </div>
-      <div>
+      </LabelContainer>
+      <InputsContainer>
         <input
             name={name} 
-            className='col-8'
+            className={clsx('col-12', sharedStyles.file, errors?.length > 0 && 'p-invalid')} 
             type='file' 
             value={value}
             onChange={onChange}
             multiple={multiple}
-            style={errors?.length > 0 ? invalidStyle : null}
         />
+        <Subtitle subtitle={subtitle} />
         <Errors errors={errors} />
-      </div>
-    </div>
+      </InputsContainer>
+    </ComponenentContainer>
   )
 }

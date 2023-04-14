@@ -3,24 +3,34 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import clsx from 'clsx'
+
+import sharedStyles from '../../../SharedComponents/Signature/Signature.module.css'
 
 export default function CreateSignature({ metadata, openDialog, value, onChange, errors }) {
-    const { name, label, subtitle, fontStyle, guid, id, page } = metadata
+    const { name, label, subtitle, validations, fontStyle, guid, id, page } = metadata
 
     return (
-        <div className='field grid grid-nogutter'>
+        <ComponenentContainer>
             <SettingsButton componentData={metadata} openDialog={openDialog} />
-            <div className='col-4'>
-                <Label label={label} />
+            <LabelContainer>
+                <Label label={label} validations={validations} />
+            </LabelContainer>
+            <InputsContainer>
+                <InputText 
+                    className={clsx('col-12', sharedStyles.signature, errors?.length > 0 && 'p-invalid')} 
+                    name={name} 
+                    value={value} 
+                    onChange={onChange} 
+                    style={{fontFamily: fontStyle}}
+                />
+                <p className={`col-12 ${sharedStyles.paragraph}`} style={{fontFamily: fontStyle}}>{value}</p>
                 <Subtitle subtitle={subtitle} />
-            </div>
-            <div className='flex flex-column col-8'>
-                <InputText name={name} value={value} onChange={onChange} style={{fontSize: '1rem', marginRight: '0.25rem', fontFamily: fontStyle}}/>
-                <div>
-                    <p style={{border: '2px solid #004990', padding: '0.5rem', marginRight: '0.5rem', fontFamily: fontStyle}}>{value}</p>
-                </div>
-            </div>
-            <Errors errors={errors} />
-        </div>
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

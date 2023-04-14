@@ -4,7 +4,7 @@ import ReadonlyLexicalEditor from '../../../LexicalEditor/ReadonlyLexicalEditor/
 export default function ViewReadonlySubtitle({ metadata }) {
   const { subtitle } = metadata 
   return (
-    <div>
+    <div className='mb-5 mt-3'>
         <ReadonlyLexicalEditor value={ subtitle } />
     </div>
   )
