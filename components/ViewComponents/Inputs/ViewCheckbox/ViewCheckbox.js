@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, validations, defaultValue } = metadata 
@@ -37,35 +40,33 @@ export default function ViewCheckbox({ metadata, value, onChange, errors }) {
     }
 
     return (
-        <div className='field grid grid-nogutter'>
-            <div style={{textAlign: 'right', marginRight: '1rem'}}>
+        <ComponenentContainer>
+            <LabelContainer>
                 <Label label={label} validations={validations} />
+            </LabelContainer>
+            <InputsContainer>
+                {metadata.options.length > 0 && 
+                    <>
+                        {metadata.options.map((checkboxes, index) => {
+                            return (
+                                <div className='mb-1' key={index}>
+                                    <Checkbox 
+                                        className='mr-1'
+                                        key={index} 
+                                        id={index} 
+                                        value={checkboxes.value} 
+                                        onChange={(e) => onChange(onCheckboxChange(e))}
+                                        checked={checkedIds.some(id => id === index)} 
+                                    />
+                                    <label>{checkboxes.value}</label>
+                                </div>
+                            )
+                        })}
+                    </>
+                }
                 <Subtitle subtitle={subtitle} />
-            </div>
-            <div>
-                <div className='col-8'>
-                    {metadata.options.length > 0 && 
-                        <>
-                            {metadata.options.map((checkboxes, index) => {
-                                return (
-                                    <div key={index} style={{marginBottom: '0.5rem'}}>
-                                        <Checkbox 
-                                            key={index} 
-                                            id={index} 
-                                            value={checkboxes.value} 
-                                            onChange={(e) => onChange(onCheckboxChange(e))}
-                                            checked={checkedIds.some(id => id === index)} 
-                                            style={{marginRight: '0.5rem'}}
-                                        />
-                                        <label>{checkboxes.value}</label>
-                                    </div>
-                                )
-                            })}
-                        </>
-                    }
-                </div>
                 <Errors errors={errors} />
-            </div>
-        </div>
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

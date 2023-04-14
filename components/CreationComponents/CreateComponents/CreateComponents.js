@@ -15,8 +15,10 @@ import CreateCheckbox from '../Inputs/CreateCheckbox/CreateCheckbox'
 import clsx from 'clsx'
 import CreateTime from '../Inputs/CreateTime/CreateTime'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileInput'
+import CreateImage from '../Inputs/CreateImage/CreateImage'
+import CreateHeader from '../Inputs/CreateHeader/CreateHeader'
 
-export default function CreateComponents ({ metadata, openDialog, inputs, handleInputChange, errors }) {
+export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
     const objectKeysArray = Object.keys(metadata)
 
     const componentMapper = {
@@ -28,7 +30,8 @@ export default function CreateComponents ({ metadata, openDialog, inputs, handle
         'dropdown': CreateDropdown,
         'time': CreateTime,
         'multiselect': CreateMultiSelect,
-        'header': <h1/>,
+        'header': CreateHeader,
+        'image': CreateImage,
         'file': CreateFileInput,
         'richText': CreateRichTextInput,
         'subtitle': CreateReadonlySubtitle,
@@ -47,11 +50,16 @@ export default function CreateComponents ({ metadata, openDialog, inputs, handle
                         <Sortable key={guid} id={guid}>
                                 {createElement(componentMapper[type],
                                     {
+                                        guid: guid,
+                                        setMetadata: setMetadata,
                                         metadata: metadata[guid],
                                         openDialog: openDialog,
                                         value: inputs[name],
                                         onChange: handleInputChange,
-                                        errors: errors[name]
+                                        assignValuesNested: assignValuesNested,
+                                        errors: errors[name],
+                                        setFiles: setFiles,
+                                        setInputs: setInputs
                                     }
                                 )}
                         </Sortable>

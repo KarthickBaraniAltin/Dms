@@ -84,6 +84,14 @@ const FONT_SIZE_OPTIONS = [
   ['23px', '23px'],
   ['24px', '24px'],
   ['25px', '25px'],
+  ['26px', '26px'],
+  ['27px', '27px'],
+  ['28px', '28px'],
+  ['29px', '29px'],
+  ['30px', '30px'],
+  ['31px', '31px'],
+  ['32px', '32px'],
+  ['33px', '33px']
 ];
 
 const blockTypeToBlockName = {

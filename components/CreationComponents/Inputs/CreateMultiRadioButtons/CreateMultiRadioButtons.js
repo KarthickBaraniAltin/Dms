@@ -5,6 +5,9 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
 export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors }) {
     const { name, label, subtitle, options, otherOptions, defaultValue } = metadata
@@ -34,13 +37,12 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
     }
 
     return (
-        <div className='field grid grid-nogutter'>
+        <ComponenentContainer>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-4'>
+            <LabelContainer>
                 <Label label={label} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div className='col-8'>
+            </LabelContainer>
+            <InputsContainer>
                 {options.length > 0 || otherOptions.length > 0 ? 
                     <>
                         {options.map((radioButton, index) => {
@@ -85,8 +87,9 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                     </>
                     : <p>{'Click dialog to add radiobuttons'}</p>
                 }
-            </div>
-            <Errors errors={errors} />
-        </div>
+                <Subtitle subtitle={subtitle} />
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

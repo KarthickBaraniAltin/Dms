@@ -9,12 +9,13 @@ import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 */
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, handleInputChange, inputs, errors }) {
+
+    console.log("Metadaata = ", metadata)
+
     return (
         <>
-            <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '75vw'}}>
-                <div className='flex flex-column justify-content-center'>
-                    <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
-                </div>
+            <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '60%'}}>
+                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
             </Dialog>
         </>
     )

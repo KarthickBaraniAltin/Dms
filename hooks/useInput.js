@@ -40,5 +40,28 @@ export const useInputs = ({ initialValues = {} }) => {
         setInputs({...updatedInputs})
     }
 
-    return { handleInputChange, assignValuesNested, inputs, setInputs }
+    const deleteField = (name) => {
+        if (!name) {
+            return;
+        }
+    
+        const pathArr = name.split('.');
+        const lastKeyIndex = pathArr.length - 1;
+        let updatedInputs = { ...inputs };
+        let tmp = updatedInputs;
+        for (let i = 0; i < lastKeyIndex; ++i) {
+            const key = pathArr[i];
+            if (!(key in tmp)) {
+                return; // The specified field does not exist, no need to continue
+            }
+            tmp = tmp[key];
+        }
+    
+        if (pathArr[lastKeyIndex] in tmp) {
+            delete tmp[pathArr[lastKeyIndex]];
+            setInputs({ ...updatedInputs });
+        }
+    };
+
+    return { handleInputChange, assignValuesNested, deleteField, inputs, setInputs }
 }
