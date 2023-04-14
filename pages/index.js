@@ -153,6 +153,7 @@ export default function Home() {
     }
 
     const res = await callCreateFormApi(params) 
+    console.log('res:', res)
     if (res) {
         router.push(`/update/${res.data.id}`)
     }

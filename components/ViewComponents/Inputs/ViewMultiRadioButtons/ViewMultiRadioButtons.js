@@ -10,6 +10,7 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 
 export default function ViewMultiRadioButtons ({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, options, otherOptions, validations, defaultValue } = metadata
+    const defaultValueIndex = defaultValue ? defaultValue[0] - 1 : null
     const [checkedValue, setCheckedValue] = useState(value?.id)
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
@@ -87,7 +88,6 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
             </InputsContainer>
-            
         </ComponenentContainer>
     )
 }

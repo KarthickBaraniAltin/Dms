@@ -59,9 +59,24 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         setInputs(data)
     }
 
-    const handleUpdate = (isDeleted = false) => {
+    const handleUpdate = (isDeleted = false, options = null, setBlankOptions) => {
         if (!dialogData) {
             return
+        }
+
+        if (options) {
+            if (options.some(option => {
+                if (option.label === '' || option.value === '') {
+                    return true
+                } else {
+                    return false
+                }
+            })) {
+                setBlankOptions(true)
+                return alert('Options cannot be left blank')
+            } else {
+                setBlankOptions(false)
+            }
         }
 
         if (isDeleted) {

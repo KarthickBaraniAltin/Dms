@@ -143,7 +143,9 @@ export const useValidation = ({ metadata, inputs }) => {
                         switch(key) {
                             case 'required': {
                                 const { message, isRequired } = value
-                                if ((!inputValue || (Array.isArray(inputValue) && inputValue.length === 0)) && isRequired) {
+                                if ((inputValue === '' || (Array.isArray(inputValue) && inputValue.length === 0)) && isRequired) {
+                                    // The reason I used inputValue === '' is so that the required validation doesn't
+                                    // activate until the user actually changes the input and leaves it blank.
                                     currentErrors.push(message ?? `This field is required`)
                                 }
                                 break

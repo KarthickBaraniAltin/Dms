@@ -24,8 +24,9 @@ export default function View({ id, metadata, initialValues }) {
 
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
-    
     const { inputs, handleInputChange } = useInputs({initialValues: convertedData})
+
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -36,7 +37,6 @@ export default function View({ id, metadata, initialValues }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
     const disableSubmitButton = useMemo(() => {
         return checkErrors(errors)
     }, [errors])
