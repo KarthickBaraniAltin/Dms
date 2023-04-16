@@ -56,23 +56,30 @@ const useDialogs = ({ metadata, setMetadata }) => {
         setInputs(data)
     }
 
-    const handleUpdate = (isDeleted = false, options = null, setBlankOptions) => {
+    const handleUpdate = (isDeleted = false, options = null, setInvalidOptions) => {
         if (!dialogData) {
             return
         }
 
         if (options) {
-            if (options.some(option => {
+            if (options.some((option, index) => {
                 if (option.label === '' || option.value === '') {
                     return true
                 } else {
-                    return false
+                    const isDuplicateLabel = options.label && options.some((otherOption, otherIndex) => {
+                        return otherIndex !== index && otherOption.label === option.label
+                    })
+                    const isDuplicateValue = options.some((otherOption, otherIndex) => {
+                        return otherIndex !== index && otherOption.value === option.value
+                    })
+        
+                    return isDuplicateLabel || isDuplicateValue
                 }
             })) {
-                setBlankOptions(true)
-                return alert('Options cannot be left blank')
+                setInvalidOptions(true)
+                return alert('Label and Value fields cannot be left blank or duplicated')
             } else {
-                setBlankOptions(false)
+                setInvalidOptions(false)
             }
         }
 
