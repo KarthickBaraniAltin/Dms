@@ -3,21 +3,34 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import clsx from 'clsx'
 
-import styles from '../../../../styles/Inputs/Inputs.module.css'
+import sharedStyles from '../../../SharedComponents/File/File.module.css'
 
 export default function CreateFileInput({ metadata, openDialog, onChange, errors }) {
-    const { name, label, multiple, subtitle, guid, id, page } = metadata
+    const { name, label, multiple, subtitle, validations, guid, id, page } = metadata
 
     return (
-        <div className='field grid grid-nogutter'>
+        <ComponenentContainer>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-4'>
-                <Label label={label} />
+            <LabelContainer className={sharedStyles.labelContainer}>
+                <Label label={label} validations={validations} />
+            </LabelContainer>
+            <InputsContainer>
+                <input 
+                    name={name} 
+                    type='file' 
+                    className={clsx('col-12', sharedStyles.file, errors?.length > 0 && 'p-invalid')} 
+                    disabled 
+                    multiple={multiple} 
+                    onChange={onChange} 
+                />
                 <Subtitle subtitle={subtitle} />
-            </div>
-            <input name={name} type='file' className={`col-8 ${styles.input}`} disabled multiple={multiple} onChange={onChange} />
-            <Errors errors={errors} />
-        </div>
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

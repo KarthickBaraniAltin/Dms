@@ -4,20 +4,33 @@ import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
 import SettingsButton from '../../SettingsButton/SettingsButton'
-import sharedStyles from '../../../../styles/Inputs/Inputs.module.css'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import clsx from 'clsx'
+
+import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
 
 export default function CreateDropdown({ metadata, openDialog, value, onChange, errors }) {
-    const { name, className, label, subtitle, options, defaultValue } = metadata
+    const { name, className, validations, label, subtitle, options, defaultValue } = metadata
 
     return (
-        <div className='field grid grid-nogutter'>
+        <ComponenentContainer>
             <SettingsButton openDialog={openDialog} componentData={metadata} />
-            <div className='col-4'>
-                <Label label={label} />
+            <LabelContainer>
+                <Label label={label} validations={validations} />
+            </LabelContainer>
+            <InputsContainer>
+                <Dropdown 
+                    name={name} 
+                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
+                    value={value ?? defaultValue} 
+                    onChange={onChange} 
+                    options={options} 
+                />
                 <Subtitle subtitle={subtitle} />
-            </div>
-            <Dropdown name={name} className={`col-8 ${sharedStyles.input}`}  value={value ?? defaultValue} onChange={onChange} options={options} />
-            <Errors errors={errors} />
-        </div>
+                <Errors errors={errors} />
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

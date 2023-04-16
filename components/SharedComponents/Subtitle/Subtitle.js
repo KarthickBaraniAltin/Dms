@@ -3,8 +3,11 @@ import ReadonlyLexicalEditor from '../../LexicalEditor/ReadonlyLexicalEditor/Rea
 
 export default function Subtitle({subtitle}) {
   return (
-    <div className='mt-1'>
-        <ReadonlyLexicalEditor value={subtitle} />
-    </div>
+    <>
+      {subtitle != `{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}` 
+        &&
+        <ReadonlyLexicalEditor value={subtitle} />  
+      }
+    </>
   )
 }

@@ -3,22 +3,32 @@ import React from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
+import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
+import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
+import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
+import clsx from 'clsx'
 
-export default function ViewDropdown({ metadata, value, onChange, errors, invalidStyle }) {
+import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
+
+export default function ViewDropdown({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, className, options, validations, defaultValue } = metadata
 
     return (
-        <div className='field grid grid-nogutter'> 
-            <div style={{textAlign: 'right', marginRight: '1rem'}}>
+        <ComponenentContainer> 
+            <LabelContainer>
                 <Label label={label} validations={validations} />
-                <Subtitle subtitle={subtitle} />
-            </div>
-            <div>
-                <Dropdown name={name} className={className} value={value ?? defaultValue} onChange={onChange}
-                    options={options} style={errors?.length > 0 ? invalidStyle : null}
+            </LabelContainer>
+            <InputsContainer>
+                <Dropdown 
+                    name={name} 
+                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
+                    value={value ?? defaultValue} 
+                    onChange={onChange}
+                    options={options} 
                 />
+                <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
-            </div>
-        </div>
+            </InputsContainer>
+        </ComponenentContainer>
     )
 }

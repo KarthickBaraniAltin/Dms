@@ -1,0 +1,10 @@
+.textareaInput {
+    min-height: 80px;
+    padding: 1% !important;
+}
+
+.textareaLabel {
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    text-align: right;
+}

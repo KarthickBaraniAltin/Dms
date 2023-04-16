@@ -15,8 +15,9 @@ import SignatureDialog from "../components/Settings/SignatureDialog/SignatureDia
 import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDialog/MultiRadioButtonsDialog'
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
+import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
 
-const useDialogs = ({ metadata, setMetadata }) => {
+const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const [ showDialog, setShowDialog ] = useState(false)
     const [ dialogData, setDialogData ] = useState(undefined)
     const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs({ initialValues: {} })
@@ -31,6 +32,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
         'mask': MaskDialog,
         'header': HeaderDialog,
         'file': FileDialog,
+        'image': ImageDialog,
         'subtitle': SubtitleDialog,
         'richText': RichTextDialog,
         'signature': SignatureDialog,
@@ -46,6 +48,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
     }
 
     const openDialog = (data) => {
+        console.log("Data = ", data)
         if (!dialogMapper[data.type]) {
             console.error("Given dialog type doesn't exist in dialog mapper, component can't be created")
             return
@@ -86,6 +89,7 @@ const useDialogs = ({ metadata, setMetadata }) => {
         if (isDeleted) {
             if (confirm('You are about to delete this component. Do you wish to proceed?')) {
                 delete metadata[dialogData.guid]
+                deleteField(dialogData.name)
             }
         } else {
             metadata[dialogData.guid] = {...metadata[dialogData.guid], ...inputs}
