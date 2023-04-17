@@ -87,6 +87,7 @@ export default function Home() {
           }
 
           const res = await callApi(params)
+          console.log('res:', res)
           setFormDefinitions(res?.data?.formDefinitions)
           setTotalRecords(res?.data?.count)
       }

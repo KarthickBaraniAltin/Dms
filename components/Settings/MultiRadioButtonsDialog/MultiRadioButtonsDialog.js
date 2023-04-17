@@ -10,8 +10,8 @@ import { Dropdown } from 'primereact/dropdown'
 import { Checkbox } from 'primereact/checkbox'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-  const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions.length === 0 ? false : true)
-  const [blankOptions, setBlankOptions] = useState(false)
+  const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions)
+  const [invalidOptions, setInvalidOptions] = useState(false)
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -48,30 +48,20 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
   const handleOtherOptions = (e) => {
     if (e.checked) {
       setOtherChecked(true)
-      const newOtherOptions = [{value: 'Other:'}]
-      assignValuesNested('otherOptions', newOtherOptions)
+      assignValuesNested('otherOptions', true)
       return
     } else {
-
       setOtherChecked(false)
-      const newOtherOptions = [...inputs?.otherOptions]
-      newOtherOptions.splice(0, 1)
-      assignValuesNested('otherOptions', newOtherOptions)
+      assignValuesNested('otherOptions', false)
     }
   }
 
-  const convertedOptions = inputs?.options.map((option, index) => {
-    return `${index + 1}. ${option.value}`
-  })
-
-  const handleDefaultValue = (e) => {
-    handleInputChange({target: {name: e.target.name, value: e.target.value}})
-  }
+  const convertedOptions = inputs?.options.map(option => option.value)
 
   return (
     <div>
       <Dialog header='Multi Radio Buttons Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog}
-      footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setBlankOptions={setBlankOptions} />}>
+      footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setInvalidOptions={setInvalidOptions} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -87,7 +77,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           </div>
           <div className='field col-12 md:col-12'>
             <label>Default Value</label>
-            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleDefaultValue} options={convertedOptions} />
+            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
@@ -101,7 +91,7 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
                         <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
-                            <small style={{color: 'red'}}>{blankOptions && option.value === '' ? 'Value Required' : ''}</small>
+                            <small style={{color: 'red'}}>{invalidOptions && option.value === '' ? 'Value Required' : ''}</small>
                         </div>
                         <div className='col-1 md:col-1'>
                             <Button className='p-button-rounded p-button-danger mt-4' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />

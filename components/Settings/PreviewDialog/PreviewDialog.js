@@ -10,8 +10,6 @@ import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 
 export default function PreviewDialog({ showDialog, handlePreview, metadata, handleInputChange, inputs, errors }) {
 
-    console.log("Metadaata = ", metadata)
-
     return (
         <>
             <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '60%'}}>
