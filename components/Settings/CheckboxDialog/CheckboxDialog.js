@@ -9,7 +9,7 @@ import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { MultiSelect } from 'primereact/multiselect'
 
 export default function CheckboxDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-  const [blankOptions, setBlankOptions] = useState(false)
+  const [invalidOptions, setInvalidOptions] = useState(false)
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -48,7 +48,7 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
   return (
     <div>
       <Dialog header='Checkbox Component Dialog Header' visible={visible} style={{ width: '50vw' }} onHide={hideDialog}
-      footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setBlankOptions={setBlankOptions} />}>
+      footer={<Footer handleUpdate={handleUpdate} options={inputs?.options} setInvalidOptions={setInvalidOptions} />}>
         <div className='grid p-fluid form-grid'>
           <div className='field col-6 md:col-6'>
             <label>Name</label>
@@ -78,7 +78,7 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
                         <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
-                            <small style={{color: 'red'}}>{blankOptions && option.value === '' ? 'Value Required' : ''}</small>
+                            <small style={{color: 'red'}}>{invalidOptions && option.value === '' ? 'Value Required' : ''}</small>
                         </div>
                         <div className='col-1 md:col-1'>
                             <Button className='p-button-rounded p-button-danger mt-4' icon='pi pi-trash' onClick={() => handleDeleteOptions(index)} />

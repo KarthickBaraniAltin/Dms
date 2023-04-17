@@ -42,7 +42,6 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         <div className='grid grid-nogutter'>
             {metadata && Object.keys(metadata).map(guid => {
                 const { name, type, divClassName } = metadata[guid]
-                console.log("Type = ", type)
                 return (
                     <div key={guid} className={clsx(divClassName ?? 'field col-6')}>
                         { createElement( 

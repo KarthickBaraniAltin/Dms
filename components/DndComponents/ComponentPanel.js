@@ -352,7 +352,7 @@ export default function ComponentPanel() {
                     label='Radio Buttons'
                     subtitle={defaultSubtitle}
                     options={[]}
-                    otherOptions={[]}
+                    otherOptions={false}
                     guid=''
                 >
                     <div className='flex justify-content-center'>
