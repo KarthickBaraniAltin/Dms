@@ -98,6 +98,8 @@ export default function Update({ id, data }) {
         }
     }
 
+    console.log('formSubmitResult:', formSubmitResult)
+
     return (
         <>
             <Head>
@@ -112,7 +114,7 @@ export default function Update({ id, data }) {
                     {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
                     inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
                     {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} /> : null}
-                    {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.data.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.data : data} /> : null}
+                    {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult.metadata : data} /> : null}
                     {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
                     <div className='grid'>
                         {renderDialog()}

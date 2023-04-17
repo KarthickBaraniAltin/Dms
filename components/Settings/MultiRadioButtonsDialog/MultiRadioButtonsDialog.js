@@ -10,7 +10,7 @@ import { Dropdown } from 'primereact/dropdown'
 import { Checkbox } from 'primereact/checkbox'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
-  const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions.length === 0 ? false : true)
+  const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions)
   const [invalidOptions, setInvalidOptions] = useState(false)
 
   const handleOptionChange = (index, event, type) => {
@@ -48,14 +48,11 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
   const handleOtherOptions = (e) => {
     if (e.checked) {
       setOtherChecked(true)
-      const newOtherOptions = [{value: 'Other:'}]
-      assignValuesNested('otherOptions', newOtherOptions)
+      assignValuesNested('otherOptions', true)
       return
     } else {
       setOtherChecked(false)
-      const newOtherOptions = [...inputs?.otherOptions]
-      newOtherOptions.splice(0, 1)
-      assignValuesNested('otherOptions', newOtherOptions)
+      assignValuesNested('otherOptions', false)
     }
   }
 
