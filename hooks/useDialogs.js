@@ -58,31 +58,39 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         setInputs(data)
     }
 
+    const optionsValidation = (options, setInvalidOptions) => {
+        if (options) {
+            for (const option of options) {
+                if (option.label === '' || option.value === '') {
+                    setInvalidOptions(true)
+                    alert('Value fields cannot be left blank')
+                    return true
+                }
+            }
+
+            const labels = options.map(option => option.label)
+            const values = options.map(option => option.value)
+
+            if (new Set(labels).size !== labels.length || new Set(values).size !== values.length) {
+                // The Set object automatically removes duplicates so if the size of the Set is smaller than
+                // the length of either labels or values then we know there are duplicates.
+                setInvalidOptions(true)
+                alert('Value fields cannot have duplicates')
+                return true
+            } else {
+                setInvalidOptions(false)
+                return false
+            }
+        }
+    }
+
     const handleUpdate = (isDeleted = false, options = null, setInvalidOptions) => {
         if (!dialogData) {
             return
         }
 
-        if (options) {
-            if (options.some((option, index) => {
-                if (option.label === '' || option.value === '') {
-                    return true
-                } else {
-                    const isDuplicateLabel = options.label && options.some((otherOption, otherIndex) => {
-                        return otherIndex !== index && otherOption.label === option.label
-                    })
-                    const isDuplicateValue = options.some((otherOption, otherIndex) => {
-                        return otherIndex !== index && otherOption.value === option.value
-                    })
-        
-                    return isDuplicateLabel || isDuplicateValue
-                }
-            })) {
-                setInvalidOptions(true)
-                return alert('Label and Value fields cannot be left blank or duplicated')
-            } else {
-                setInvalidOptions(false)
-            }
+        if (optionsValidation(options, setInvalidOptions)) {
+            return
         }
 
         if (isDeleted) {
