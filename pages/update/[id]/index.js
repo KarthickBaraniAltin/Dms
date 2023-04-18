@@ -98,8 +98,6 @@ export default function Update({ id, data }) {
         }
     }
 
-    console.log('formSubmitResult:', formSubmitResult)
-
     return (
         <>
             <Head>
