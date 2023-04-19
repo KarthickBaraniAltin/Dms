@@ -22,7 +22,6 @@ export default function ViewFileInput({ metadata, value, onChange, errors }) {
             name={name} 
             className={clsx('col-12', sharedStyles.file, errors?.length > 0 && 'p-invalid')} 
             type='file' 
-            value={value}
             onChange={onChange}
             multiple={multiple}
         />

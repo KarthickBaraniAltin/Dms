@@ -17,18 +17,6 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
     {label: '.jpeg', value: 'image/jpeg' }
   ]
 
-  const [isMultipleChecked, setIsMultipleChecked] = useState(false)
-
-  const handleFileChange = () => {
-    setIsMultipleChecked(prevState => !prevState)
-    
-    if (inputs?.multiple) {
-      inputs.multiple = false
-    } else {
-      inputs.multiple = true
-    }
-  }
-
   return (
     <div>
       <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
@@ -50,7 +38,7 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
           </div>
           <div className='col-6'>
             <label>Multiple</label>
-            <Checkbox name='multiple' className='ml-2' value={inputs?.multiple ?? false} onChange={handleFileChange} checked={isMultipleChecked} />
+            <Checkbox name='multiple' checked={inputs?.multiple} className='ml-2' value={inputs?.multiple ?? false} onChange={e => assignValuesNested('multiple', e.checked)} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
           <div className='field col-12 md:col-12'>

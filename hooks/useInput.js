@@ -2,10 +2,11 @@ import { useState } from "react"
 
 export const useInputs = ({ initialValues = {} }) => {
     const [inputs, setInputs] = useState(initialValues)
-    
+    const [files, setFiles] = useState({})
+
     const handleInputChange = (event) => {
         if (event.target?.files) {
-            setInputs({...inputs, [event.target.name]: Array.from(event.target.files)})
+            setFiles({...files, [event.target.name]: Array.from(event.target.files)})
         } else if (event.target) {
             const { name, value } = event.target
             assignValuesNested(name, value)
@@ -42,26 +43,26 @@ export const useInputs = ({ initialValues = {} }) => {
 
     const deleteField = (name) => {
         if (!name) {
-            return;
+            return
         }
     
-        const pathArr = name.split('.');
-        const lastKeyIndex = pathArr.length - 1;
-        let updatedInputs = { ...inputs };
-        let tmp = updatedInputs;
+        const pathArr = name.split('.')
+        const lastKeyIndex = pathArr.length - 1
+        let updatedInputs = { ...inputs }
+        let tmp = updatedInputs
         for (let i = 0; i < lastKeyIndex; ++i) {
-            const key = pathArr[i];
+            const key = pathArr[i]
             if (!(key in tmp)) {
                 return; // The specified field does not exist, no need to continue
             }
-            tmp = tmp[key];
+            tmp = tmp[key]
         }
     
         if (pathArr[lastKeyIndex] in tmp) {
-            delete tmp[pathArr[lastKeyIndex]];
-            setInputs({ ...updatedInputs });
+            delete tmp[pathArr[lastKeyIndex]]
+            setInputs({ ...updatedInputs })
         }
-    };
+    }
 
-    return { handleInputChange, assignValuesNested, deleteField, inputs, setInputs }
+    return { inputs, files, setInputs, handleInputChange, assignValuesNested, deleteField }
 }
