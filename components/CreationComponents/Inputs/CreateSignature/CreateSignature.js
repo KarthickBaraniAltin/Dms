@@ -7,7 +7,6 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 import clsx from 'clsx'
-
 import sharedStyles from '../../../SharedComponents/Signature/Signature.module.css'
 
 export default function CreateSignature({ metadata, openDialog, value, onChange, errors }) {
@@ -27,7 +26,6 @@ export default function CreateSignature({ metadata, openDialog, value, onChange,
                     onChange={onChange} 
                     style={{fontFamily: fontStyle}}
                 />
-                <p className={`col-12 ${sharedStyles.paragraph}`} style={{fontFamily: fontStyle}}>{value}</p>
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
             </InputsContainer>
