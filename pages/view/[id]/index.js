@@ -8,7 +8,7 @@ import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
 import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
@@ -24,7 +24,7 @@ export default function View({ id, metadata, initialValues }) {
 
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
-    const { inputs, handleInputChange } = useInputs({initialValues: convertedData})
+    const { inputs, files, handleInputChange } = useInputs({initialValues: convertedData})
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
@@ -45,31 +45,32 @@ export default function View({ id, metadata, initialValues }) {
         setIsDisabled(disableSubmitButton)
     }, [disableSubmitButton])
 
-    useEffect(() => {
-        if (!userData && account) {
-            callMsGraph().then(response => setUserData(response)).catch((e) => {
-                console.log("Error while getting the user data = ", e)
-            })
-        }
-
-    }, [inProgress, instance, account, userData, errors]) 
-
     const submitFormData = async (event) => {
         event.preventDefault()
 
         const { accessToken } = await acquireToken()
-        const { givenName, surname, mail } = instance.getActiveAccount()
         const formData = new FormData()
         let info = {}
-        if (userData) {
-            info = {
-                startViewTime: startViewTime,
-                fullLegalName: givenName + " " + surname,
-                email: mail,
-                securityLevel: "Email, Account Authentication(None)"
-            }
+        if (account) {
+            callMsGraph().then(response => {
+                    const { givenName, surname, mail } = response
+                    info = {
+                        startViewTime: startViewTime,
+                        fullLegalName: givenName + ' ' + surname,
+                        email: mail,
+                        securityLevel: "Email, Account Authentication(None)"
+                    }
+                }).catch((e) => {
+                console.log("Error while getting the user data = ", e)
+            })
         }
         
+        Object.keys(files).forEach((fieldName) => {
+            files[fieldName].forEach((file) => {
+                formData.append(fieldName, file)    
+            })
+        })
+
         formData.append("info", JSON.stringify(info))
         formData.append("data", JSON.stringify(inputs))
         const fetchParams = {
@@ -97,11 +98,14 @@ export default function View({ id, metadata, initialValues }) {
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
-                            <div className='flex flex-column justify-content-center'>
-                                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
-                            </div>
+                            <ViewComponents 
+                                metadata={metadata} 
+                                inputs={inputs} 
+                                handleInputChange={handleInputChange} 
+                                errors={errors} 
+                            />
                             <div className='flex justify-content-center mt-5'>
-                                <Button disabled={isDisabled} className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                                <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
                             </div>
                         </form>
                     </Card>
