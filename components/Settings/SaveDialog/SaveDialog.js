@@ -23,14 +23,14 @@ export default function SaveDialog({showDialog, handleSave, updateForm, loading,
         <>
             <Dialog header='Save Page' visible={showDialog} onHide={() => handleSave()} style={{width: '75vw'}}>
                 <div className='flex flex-column'>
-                    <div style={{marginBottom: '0.5rem'}}>
+                    <div className="mb-1">
                         <div className='flex flex-column mb-2'>
                             <label>Form Definition Name</label>
                             <InputText value={name} onChange={e => setName(e.target.value)} />
                         </div>
                         <div className='flex flex-column'>
                             <label>Form Definition Description</label>
-                            <InputTextarea value={desc} onChange={e => setDesc(e.target.value)} />
+                            <InputTextarea autoResize value={desc} onChange={e => setDesc(e.target.value)} />
                         </div>
                     </div>
                     <Button label='Submit' style={{width: '100px'}} loading={loading} onClick={e => areComponentsEmpty(e)} />

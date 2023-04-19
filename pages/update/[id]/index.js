@@ -83,18 +83,20 @@ export default function Update({ id, data }) {
             const { name, username, localAccountId } = account
 
             info = {
+                ...info,
+                authorDisplayName: name,
                 authorFullName: name,
                 authorId: localAccountId,
                 authorEmail: username,
             }
         }
         
-        formData.append("info", JSON.stringify({info}))
+        formData.append("info", JSON.stringify(info))
         formData.append("metadata", JSON.stringify(metadata))
         
         // Add files to request
         Object.keys(files).forEach((fieldName) => {
-            formData.append(fieldName, files[fieldName]);
+            formData.append(fieldName, files[fieldName])
         })
 
         const fetchParams = {
@@ -104,7 +106,7 @@ export default function Update({ id, data }) {
             },
             body: formData
         }
-
+        
         const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
         if (res) {
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Updated', life: 2500 })
