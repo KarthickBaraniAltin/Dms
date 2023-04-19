@@ -33,7 +33,6 @@ export default function View({ id, metadata, initialValues }) {
     const { loading, callApiFetch } = useApi()
 
     const { startViewTime } = useTimeControl()    
-    const [ userData, setUserData ] = useState(undefined)
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
@@ -52,17 +51,15 @@ export default function View({ id, metadata, initialValues }) {
         const formData = new FormData()
         let info = {}
         if (account) {
-            callMsGraph().then(response => {
-                    const { givenName, surname, mail } = response
-                    info = {
-                        startViewTime: startViewTime,
-                        fullLegalName: givenName + ' ' + surname,
-                        email: mail,
-                        securityLevel: "Email, Account Authentication(None)"
-                    }
-                }).catch((e) => {
-                console.log("Error while getting the user data = ", e)
-            })
+            const { name, username } = account
+            console.log("StartView", startViewTime)
+
+            info = {
+                startViewTime: startViewTime,
+                fullLegalName: name,
+                email: username,
+                securityLevel: "Email, Account Authentication(None)"
+            }
         }
         
         Object.keys(files).forEach((fieldName) => {

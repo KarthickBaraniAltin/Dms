@@ -5,8 +5,7 @@ export default function useTimeControl() {
 
     useEffect(() => {
         setStartViewTime(new Date().toUTCString())
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return { startViewTime, setStartViewTime }
