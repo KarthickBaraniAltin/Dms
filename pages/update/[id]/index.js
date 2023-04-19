@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useEffect, useState, useRef } from 'react'
 import { Card } from 'primereact/card'
 import { Button } from 'primereact/button'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal, useAccount } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
@@ -30,6 +30,7 @@ import { Toast } from 'primereact/toast'
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function Update({ id, data }) {
+    
     const toast = useRef(null)
     const { headerImage, handleHeaderImage } = useHeaderImage()
     const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
@@ -49,7 +50,8 @@ export default function Update({ id, data }) {
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
-    const { instance } = useMsal()
+    const { instance, accounts } = useMsal()
+    const account = useAccount(accounts[0] ?? {})
 
      // These variables are for pagination
      const [pageNumber, setPageNumber] = useState(1)
@@ -66,15 +68,29 @@ export default function Update({ id, data }) {
     const updateForm = async (event, formName, description) => {
         event.preventDefault()
         const { accessToken } = await acquireToken()
-        const { name, username, localAccountId } = instance.getActiveAccount()
 
         const formData = new FormData()
-        formData.append("info", JSON.stringify({
+
+        let info = {
             name: formName,
             description: description,
-            authorFullName: name,
-            authorId: localAccountId,
-            authorEmail: username,
+            authorFullName: '',
+            authorId: '',
+            authorEmail: '',
+        }
+
+        if (account) {
+            const { name, username, localAccountId } = account
+
+            info = {
+                authorFullName: name,
+                authorId: localAccountId,
+                authorEmail: username,
+            }
+        }
+        
+        formData.append("info", JSON.stringify({
+            
         }))
         formData.append("metadata", JSON.stringify(metadata))
         
