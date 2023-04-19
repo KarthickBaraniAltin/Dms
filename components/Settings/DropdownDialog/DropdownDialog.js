@@ -8,9 +8,11 @@ import Footer from '../Footer/Footer'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
+import useDialogValidations from '../../../hooks/useDialogValidations'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
   const [invalidOptions, setInvalidOptions] = useState(false)
+  const { invalidDefaultValues } = useDialogValidations()
 
   const handleOptionChange = (index, event, type) => { //
     if (!inputs.options) {
@@ -53,25 +55,6 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
     assignValuesNested('options', newOptions)
   }
 
-  const invalidDefaultValues = (options) => {
-    for (const option of options) {
-      if (option.label === '' || option.value === '') {
-        return true
-      }
-    }
-
-    const labels = options.map(option => option.label)
-    const values = options.map(option => option.value)
-
-    if (new Set(labels).size !== labels.length || new Set(values).size !== values.length) {
-      // The Set object automatically removes duplicates so if the size of the Set is smaller than
-      // the length of either labels or values then we know there are duplicates.
-      return true
-    } else {
-      return false
-    }
-  }
-
   return (
     <div>
       <Dialog header='Dropdown Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog}
@@ -94,7 +77,7 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
             <label>Default Value</label>
             {inputs?.name.startsWith('dropdown') ? 
               <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}
-              options={inputs?.options} disabled={invalidDefaultValues(inputs?.options)}
+              options={inputs?.options} disabled={invalidDefaultValues(inputs?.options)} editable
               />
               :
               <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}

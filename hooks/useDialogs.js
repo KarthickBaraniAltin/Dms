@@ -68,10 +68,9 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
                 }
             }
 
-            const labels = options.map(option => option.label)
             const values = options.map(option => option.value)
 
-            if (new Set(labels).size !== labels.length || new Set(values).size !== values.length) {
+            if (new Set(values).size !== values.length) {
                 // The Set object automatically removes duplicates so if the size of the Set is smaller than
                 // the length of either labels or values then we know there are duplicates.
                 setInvalidOptions(true)
@@ -87,6 +86,16 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const handleUpdate = (isDeleted = false, options = null, setInvalidOptions) => {
         if (!dialogData) {
             return
+        }
+
+        if (options) {
+            if (dialogData.type === 'dropdown' && options.length < 1) {
+                return alert('Please add at least one option to dropdown')
+            }
+
+            if (dialogData.type === 'multiselect' && options.length < 2) {
+                return alert('Please add at least two options to multiselect dropdown')
+            }
         }
 
         if (optionsValidation(options, setInvalidOptions)) {

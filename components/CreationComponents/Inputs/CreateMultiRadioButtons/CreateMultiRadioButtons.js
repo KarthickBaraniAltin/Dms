@@ -16,8 +16,8 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
 
-    const handleOtherOption = (other) => {
-        setCheckedValue(other)
+    const handleOtherOption = () => {
+        setCheckedValue('PlACEHOLDER')
         setOtherChecked(true)
         setOtherOptionInputValue('')
     }
@@ -67,7 +67,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                                 <RadioButton
                                     value={otherOptionInputValue}
                                     name={name}
-                                    onChange={() => handleOtherOption(otherOptionInputValue)}
+                                    onChange={() => handleOtherOption()}
                                     checked={otherChecked}
                                 />
                                 <label> Other:</label>
