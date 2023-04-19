@@ -8,7 +8,6 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 import clsx from 'clsx'
-
 import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
 
 export default function CreateDropdown({ metadata, openDialog, value, onChange, errors }) {

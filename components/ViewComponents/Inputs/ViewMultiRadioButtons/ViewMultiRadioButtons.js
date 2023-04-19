@@ -15,8 +15,8 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
 
-    const handleOtherOption = (other) => {
-        setCheckedValue(other)
+    const handleOtherOption = () => {
+        setCheckedValue('PlACEHOLDER')
         setOtherChecked(true)
         setOtherOptionInputValue('')
     }
@@ -65,7 +65,7 @@ export default function ViewMultiRadioButtons ({ metadata, value, onChange, erro
                                 <RadioButton
                                     value={otherOptionInputValue}
                                     name={name}
-                                    onChange={() => handleOtherOption(otherOptionInputValue)}
+                                    onChange={() => handleOtherOption()}
                                     checked={otherChecked}
                                 />
                                 <label> Other:</label>

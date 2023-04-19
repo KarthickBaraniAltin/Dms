@@ -7,9 +7,11 @@ import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { MultiSelect } from 'primereact/multiselect'
+import useDialogValidations from '../../../hooks/useDialogValidations'
 
 export default function CheckboxDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   const [invalidOptions, setInvalidOptions] = useState(false)
+  const { invalidDefaultValues } = useDialogValidations()
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -18,6 +20,11 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
 
     const value = event.target.value
     const newOptions = [...inputs?.options]
+
+    if (!newOptions.some(option => option.label === inputs?.defaultValue)) {
+      inputs.defaultValue = null
+    }
+
     if (type === 'value') {
         newOptions[index] = { ...newOptions[index], value: value }
         assignValuesNested('options', newOptions)
@@ -62,9 +69,11 @@ export default function CheckboxDialog({ visible, hideDialog, inputs, assignValu
             <label>Subtitle</label>
             <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
           </div>
-          <div className='field col-6 md:col-6'>
+          <div className='field col-12 md:col-12'>
               <label>Default Value</label>
-              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
+              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}
+              options={convertedOptions} disabled={invalidDefaultValues(inputs?.options)}
+              />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>

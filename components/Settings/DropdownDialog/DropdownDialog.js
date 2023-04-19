@@ -8,25 +8,33 @@ import Footer from '../Footer/Footer'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
+import useDialogValidations from '../../../hooks/useDialogValidations'
 
 export default function DropdownDialog({ visible, hideDialog, inputs, assignValuesNested ,handleInputChange, handleUpdate }) {
   const [invalidOptions, setInvalidOptions] = useState(false)
+  const { invalidDefaultValues } = useDialogValidations()
 
-  const handleOptionChange = (index, event, type) => {
+  const handleOptionChange = (index, event, type) => { //
     if (!inputs.options) {
         return
     }
 
     const value = event.target.value
     const newOptions = [...inputs?.options]
+
+    if (!newOptions.some(option => option.label === inputs?.defaultValue)) {
+      inputs.defaultValue = null
+    }
+
     if (type === 'value') {
-        newOptions[index] = { ...newOptions[index], value: value }
-        assignValuesNested('options', newOptions)
-    } else if (type === 'label') {
-        newOptions[index] = { ...newOptions[index], label: value }
-        assignValuesNested('options', newOptions)
+      newOptions[index] = {
+          ...newOptions[index],
+          label: value,
+          value: type === 'value' ? value : newOptions[index].value
+      }
+      assignValuesNested('options', newOptions)
     } else {
-        console.error("Unknown Type")
+      console.error("Unknown Type")
     }
   }
 
@@ -68,9 +76,13 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
           <div className='field col-12 md:col-12'>
             <label>Default Value</label>
             {inputs?.name.startsWith('dropdown') ? 
-              <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+              <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}
+              options={inputs?.options} disabled={invalidDefaultValues(inputs?.options)} editable
+              />
               :
-              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={inputs?.options} />
+              <MultiSelect name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}
+              options={inputs?.options} disabled={invalidDefaultValues(inputs?.options)}
+              />
             }
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
@@ -82,12 +94,12 @@ export default function DropdownDialog({ visible, hideDialog, inputs, assignValu
             inputs?.options?.map((option, index) => {
                 return (
                     <>
-                        <div className='col-6 md:col-6'>
+                        {/* <div className='col-6 md:col-6'>
                             <label>Label</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.label} onChange={(event) => handleOptionChange(index, event, 'label')} />
                             <small style={{color: 'red'}}>{invalidOptions && option.label === '' ? 'Label Required' : ''}</small>
-                        </div>
-                        <div className='col-5 md:col-5'>
+                        </div> */}
+                        <div className='col-11 md:col-11'>
                             <label>Value</label>
                             <InputText autoComplete='off' name={`option-${index}`} value={option.value} onChange={(event) => handleOptionChange(index, event, 'value')} />
                             <small style={{color: 'red'}}>{invalidOptions && option.value === '' ? 'Value Required' : ''}</small>

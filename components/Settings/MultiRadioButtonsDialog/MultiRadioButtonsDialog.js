@@ -8,10 +8,12 @@ import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
 import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
 import { Dropdown } from 'primereact/dropdown'
 import { Checkbox } from 'primereact/checkbox'
+import useDialogValidations from '../../../hooks/useDialogValidations'
 
 export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   const [otherChecked, setOtherChecked] = useState(inputs?.otherOptions)
   const [invalidOptions, setInvalidOptions] = useState(false)
+  const { invalidDefaultValues } = useDialogValidations()
 
   const handleOptionChange = (index, event, type) => {
     if (!inputs.options) {
@@ -20,6 +22,11 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
 
     const value = event.target.value
     const newOptions = [...inputs?.options]
+
+    if (!newOptions.some(option => option.label === inputs?.defaultValue)) {
+      inputs.defaultValue = null
+    }
+
     if (type === 'value') {
         newOptions[index] = { ...newOptions[index], value: value }
         assignValuesNested('options', newOptions)
@@ -77,7 +84,9 @@ export default function MultiRadioButtonsDialog({ visible, hideDialog, inputs, a
           </div>
           <div className='field col-12 md:col-12'>
             <label>Default Value</label>
-            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} options={convertedOptions} />
+            <Dropdown name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange}
+            options={convertedOptions} disabled={invalidDefaultValues(inputs?.options)} editable
+            />
           </div>
           <h4 className='field col-12 md:col-12'>Column Size</h4>
           <div className='field col-12 md:col-12'>
