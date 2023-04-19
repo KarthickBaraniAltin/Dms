@@ -33,7 +33,7 @@ export default function View({ id, metadata, initialValues }) {
     const { loading, callApiFetch } = useApi()
 
     const { startViewTime } = useTimeControl()    
-    const { instance, inProgress, accounts } = useMsal()
+    const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
     const disableSubmitButton = useMemo(() => {
