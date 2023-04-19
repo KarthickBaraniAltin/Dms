@@ -89,9 +89,7 @@ export default function Update({ id, data }) {
             }
         }
         
-        formData.append("info", JSON.stringify({
-            
-        }))
+        formData.append("info", JSON.stringify({info}))
         formData.append("metadata", JSON.stringify(metadata))
         
         // Add files to request
