@@ -26,7 +26,7 @@ export default function View({ id, metadata, initialValues }) {
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange } = useInputs({initialValues: convertedData})
 
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
+    const { isDisabled, setIsDisabled, checkErrors, scrollToComponent } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -37,13 +37,13 @@ export default function View({ id, metadata, initialValues }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    const disableSubmitButton = useMemo(() => {
-        return checkErrors(errors)
-    }, [errors])
+    // const disableSubmitButton = useMemo(() => {
+    //     return checkErrors(errors)
+    // }, [errors])
       
-    useMemo(() => {
-        setIsDisabled(disableSubmitButton)
-    }, [disableSubmitButton])
+    // useMemo(() => {
+    //     setIsDisabled(disableSubmitButton)
+    // }, [disableSubmitButton])
 
     const submitFormData = async (event) => {
         event.preventDefault()
@@ -87,6 +87,17 @@ export default function View({ id, metadata, initialValues }) {
         }
     }
 
+    const checkValidations = (e) => {
+        e.preventDefault()
+        const errorFound = checkErrors(errors)
+
+        if (errorFound === false) {
+            return submitFormData(e)
+        } else {
+            scrollToComponent(errorFound)
+        }
+    }
+
     return (
         <>
             <Head>
@@ -105,7 +116,7 @@ export default function View({ id, metadata, initialValues }) {
                                 errors={errors} 
                             />
                             <div className='flex justify-content-center mt-5'>
-                                <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                                <Button className='col-2' label="Submit" onClick={(e) => checkValidations(e)} loading={loading} />
                             </div>
                         </form>
                     </Card>
