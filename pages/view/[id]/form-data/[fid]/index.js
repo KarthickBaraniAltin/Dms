@@ -7,7 +7,7 @@ import { getFormData, getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../../../hooks/useApi'
 import { callMsGraph } from '../../../../../src/MsGraphApiCall'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useInputs } from '../../../../../hooks/useInput'
 import { useValidation } from '../../../../../hooks/useValidation'
 import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
@@ -18,6 +18,7 @@ import { usePreventSubmit } from '../../../../../hooks/usePreventSubmit'
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function FormDataView({ id, metadata, savedData }) {
+    
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
@@ -35,7 +36,7 @@ export default function FormDataView({ id, metadata, savedData }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const disableSubmitButton = useMemo(() => {
         return checkErrors(errors)
     }, [errors])
@@ -115,9 +116,9 @@ export default function FormDataView({ id, metadata, savedData }) {
                             <div className='grid formgrid'>
                                 <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                             </div>
-                            <div className='field md:col-6 col-offset-3'>
+                            {/* <div className='field md:col-6 col-offset-3'>
                                 <Button label="Submit" onClick={submitFormData} loading={loading} />
-                            </div>
+                            </div> */}
                         </form>
                     </Card>
                 </div>
