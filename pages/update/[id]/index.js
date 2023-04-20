@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState, useRef } from 'react'
 import { Card } from 'primereact/card'
-import { Button } from 'primereact/button'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal, useAccount } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'

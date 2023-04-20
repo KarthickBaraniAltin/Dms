@@ -24,7 +24,8 @@ export default function View({ id, metadata, initialValues }) {
 
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
-    const { inputs, files, handleInputChange } = useInputs({initialValues: convertedData})
+    const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
+    console.log("Inputs = ", inputs)
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
@@ -99,6 +100,7 @@ export default function View({ id, metadata, initialValues }) {
                                 metadata={metadata} 
                                 inputs={inputs} 
                                 handleInputChange={handleInputChange} 
+                                assignValuesNested={assignValuesNested}
                                 errors={errors} 
                             />
                             <div className='flex justify-content-center mt-5'>

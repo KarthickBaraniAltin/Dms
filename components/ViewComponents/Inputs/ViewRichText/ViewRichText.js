@@ -9,7 +9,7 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 
 import styles from '../ViewRichText/ViewRichText.module.css'
 
-export default function ViewRichText({ metadata, value, onChange, errors }) {
+export default function ViewRichText({ metadata, value, assignValuesNested, errors }) {
     const { name, label, subtitle, guid, id, page } = metadata
 
     return (
@@ -18,7 +18,7 @@ export default function ViewRichText({ metadata, value, onChange, errors }) {
                 <Label label={label} />
             </LabelContainer>
             <InputsContainer className={styles.inputsContainer}>
-                <LexicalEditor name={name} value={value} onChange={onChange} /> 
+                <LexicalEditor name={name} value={value} onChange={assignValuesNested} /> 
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
             </InputsContainer>

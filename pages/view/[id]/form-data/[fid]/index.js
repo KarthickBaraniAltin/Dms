@@ -25,7 +25,7 @@ export default function FormDataView({ id, metadata, savedData }) {
     const { convertData } = useConvertFormData()
     const convertedData = convertData(savedData.data)
     
-    const { inputs, handleInputChange } = useInputs({ initialValues: convertedData })
+    const { inputs, handleInputChange, assignValuesNested } = useInputs({ initialValues: convertedData })
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -114,7 +114,13 @@ export default function FormDataView({ id, metadata, savedData }) {
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <form>
                             <div className='grid formgrid'>
-                                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
+                                <ViewComponents 
+                                    metadata={metadata} 
+                                    inputs={inputs} 
+                                    handleInputChange={handleInputChange} 
+                                    errors={errors}
+                                    assignValuesNested={assignValuesNested}    
+                                />
                             </div>
                             {/* <div className='field md:col-6 col-offset-3'>
                                 <Button label="Submit" onClick={submitFormData} loading={loading} />

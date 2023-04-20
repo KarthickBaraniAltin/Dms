@@ -17,7 +17,7 @@ import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 import ViewImage from '../Inputs/ViewImage/ViewImage'
 import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
 
-export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
+export default function ViewComponents({ metadata, inputs, handleInputChange, assignValuesNested, errors }) {
 
     const componentMapper = {
         'header': ViewHeader,
@@ -51,6 +51,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                                 value: inputs[name],
                                 onChange: handleInputChange,
                                 errors: errors[name],
+                                assignValuesNested: assignValuesNested
                             }
                         )}
                     </div>
