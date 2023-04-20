@@ -119,7 +119,7 @@ export default function Update({ id, data }) {
                         <div style={{'width': '5%'}} />
                         <Card className='mt-5' style={{'width': '60%'}}>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                                <PreviewButton metadata={metadata} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
+                                <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
                                 <ShareButton formDefinition={formDefinition} /> 
                                 <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition}  /> 

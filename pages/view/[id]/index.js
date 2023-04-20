@@ -25,7 +25,6 @@ export default function View({ id, metadata, initialValues }) {
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
-    console.log("Inputs = ", inputs)
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
@@ -95,18 +94,16 @@ export default function View({ id, metadata, initialValues }) {
                 <Toast ref={toast}/>                
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <form>
-                            <ViewComponents 
-                                metadata={metadata} 
-                                inputs={inputs} 
-                                handleInputChange={handleInputChange} 
-                                assignValuesNested={assignValuesNested}
-                                errors={errors} 
-                            />
-                            <div className='flex justify-content-center mt-5'>
-                                <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
-                            </div>
-                        </form>
+                        <ViewComponents 
+                            metadata={metadata} 
+                            inputs={inputs} 
+                            handleInputChange={handleInputChange} 
+                            assignValuesNested={assignValuesNested}
+                            errors={errors} 
+                        />
+                        <div className='flex justify-content-center mt-5'>
+                            <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                        </div>
                     </Card>
                 </div>
             </AuthenticatedTemplate>
