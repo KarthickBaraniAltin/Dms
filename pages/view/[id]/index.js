@@ -26,6 +26,8 @@ export default function View({ id, metadata, initialValues }) {
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
 
+    console.log("files = ", files)
+
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors } = useValidation({ metadata, inputs })
 
@@ -79,9 +81,12 @@ export default function View({ id, metadata, initialValues }) {
         }
 
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
-        if (res) {
+        if (Object.keys(res).length !== 0) {
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Submitted', life: 2500 })
+            return
         }
+
+        toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
     }
 
     return (

@@ -112,20 +112,16 @@ export default function FormDataView({ id, metadata, savedData }) {
             <AuthenticatedTemplate>                   
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <form>
-                            <div className='grid formgrid'>
-                                <ViewComponents 
-                                    metadata={metadata} 
-                                    inputs={inputs} 
-                                    handleInputChange={handleInputChange} 
-                                    errors={errors}
-                                    assignValuesNested={assignValuesNested}    
-                                />
-                            </div>
+                        <ViewComponents 
+                            metadata={metadata} 
+                            inputs={inputs} 
+                            handleInputChange={handleInputChange} 
+                            errors={errors}
+                            assignValuesNested={assignValuesNested}    
+                        />
                             {/* <div className='field md:col-6 col-offset-3'>
                                 <Button label="Submit" onClick={submitFormData} loading={loading} />
                             </div> */}
-                        </form>
                     </Card>
                 </div>
             </AuthenticatedTemplate>
