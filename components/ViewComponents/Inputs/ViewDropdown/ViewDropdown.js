@@ -22,7 +22,7 @@ export default function ViewDropdown({ metadata, value, onChange, errors }) {
                 <Dropdown 
                     name={name} 
                     className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
-                    value={value ?? defaultValue} 
+                    value={value.toString() ?? defaultValue} 
                     onChange={onChange}
                     options={options} 
                 />
