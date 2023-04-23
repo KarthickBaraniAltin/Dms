@@ -1,0 +1,56 @@
+.header {
+    color: white;
+    padding: 1rem;
+}
+
+.accordion {
+    background-color: #F7F7F7;
+}
+
+.accordionTitle {
+    text-align: center;
+    border-bottom: 2px solid red;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #808A98;
+    padding: 16px 0;
+}
+
+.accordionContent {
+    background-color: rgba(0, 133, 255, 0.84);
+    padding: 1.5rem;
+}
+
+.accordionContentLabel {
+    color: #F7F7F7;
+}
+
+.accordionContentInput {
+    background-color: #48A1F3;
+    border-radius: 100px;
+    border: 0;
+    height: 2rem;
+}
+
+.settingsMenu {
+    width: 25%;
+    background-color: rgba(0, 133, 255, 0.84);
+    padding: 0;
+}
+
+.beforeSlide {
+    margin-right: -400px;
+    transition: margin-right 0.5s ease-out;
+}
+
+.afterSlide {
+    margin-right: 0;
+}
+
+.advanceMenuLabel {
+    display: block;
+    color: #F7F7F7;
+}
+
+.advanceMenuInput {
+    width: 100%;
+}

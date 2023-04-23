@@ -26,6 +26,8 @@ import CreateComponents from '../../../components/CreationComponents/CreateCompo
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Toast } from 'primereact/toast'
+import SettingsStyles from '../../../components/Settings/SettingsContainer/SettingsContainer.module.css'
+import clsx from 'clsx'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
@@ -38,7 +40,7 @@ export default function Update({ id, data }) {
     const { errors } = useValidation({ metadata, inputs })
 
     const [ mainFormIds, setMainFormIds ] = useState([])
-    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata, deleteField })
+    const { renderDialog, openDialog, showDialog } = useDialogs({ metadata, setMetadata, deleteField })
 
     const { showPreviewDialog, handlePreview } = useShowPreview()
     const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
@@ -51,9 +53,19 @@ export default function Update({ id, data }) {
     const { loading, callApiFetch } = useApi()
     const { instance } = useMsal()
 
-     // These variables are for pagination
-     const [pageNumber, setPageNumber] = useState(1)
-     const [currentPage, setCurrentPage] = useState(pageNumber)
+    // These variables are for pagination
+    const [pageNumber, setPageNumber] = useState(1)
+    const [currentPage, setCurrentPage] = useState(pageNumber)
+
+    const settingsMenuClass = clsx(
+        'col-3',
+        'mt-2',
+        SettingsStyles.settingsMenu,
+        SettingsStyles.beforeSlide,
+        {
+            [SettingsStyles.afterSlide]: showDialog
+        }
+    )
 
     useEffect(() => {
         setMainFormIds(Object.keys(metadata).map(data => data))        
@@ -115,10 +127,8 @@ export default function Update({ id, data }) {
                     {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult : data} /> : null}
                     {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
                     <div className='grid'>
-                        {renderDialog()}
                         <ComponentPanel />
-                        <div style={{'width': '5%'}} />
-                        <Card className='mt-5' style={{'width': '60%'}}>
+                        <Card className='mt-5 col-6' >
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                                 <div>
                                     <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
@@ -150,6 +160,9 @@ export default function Update({ id, data }) {
                                 </SortableContext>
                             </Droppable>
                         </Card>
+                        <div className={settingsMenuClass}>
+                            {renderDialog()}
+                        </div>
                     </div>
                 </DndContext>
             </AuthenticatedTemplate>

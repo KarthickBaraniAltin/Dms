@@ -10,8 +10,8 @@ export default function ColumnSizeDropdowm({name, columnSizeOptions, inputs, onC
 
   return (
       <>
-          <label>Change Column Width</label>
-          <Dropdown name={name} value={inputs?.[name] ?? ''} options={columnSizes} onChange={onChange} placeholder='Select a column size' />
+          <label style={{display: 'block', color: '#F7F7F7'}}>Change Column Width</label>
+          <Dropdown style={{width: '100%'}} name={name} value={inputs?.[name] ?? ''} options={columnSizes} onChange={onChange} placeholder='Select a column size' />
       </>
   )
 }

@@ -21,7 +21,6 @@ const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 export default function View({ id, metadata, initialValues }) {
     
     const toast = useRef(null)
-
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange } = useInputs({initialValues: convertedData})

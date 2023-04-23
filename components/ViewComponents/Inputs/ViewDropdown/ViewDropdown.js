@@ -12,7 +12,7 @@ import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css
 
 export default function ViewDropdown({ metadata, value, onChange, errors }) {
     const { name, label, subtitle, className, options, validations, defaultValue } = metadata
-
+    console.log('value:', value)
     return (
         <ComponenentContainer> 
             <LabelContainer>
@@ -22,7 +22,7 @@ export default function ViewDropdown({ metadata, value, onChange, errors }) {
                 <Dropdown 
                     name={name} 
                     className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
-                    value={value.toString() ?? defaultValue} 
+                    value={value?.toString() ?? defaultValue} 
                     onChange={onChange}
                     options={options} 
                 />
