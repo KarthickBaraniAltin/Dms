@@ -114,10 +114,8 @@ export default function Update({ id, data }) {
                         onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
                 >
                     <div className='grid'>
-                        {renderDialog()}
                         <ComponentPanel />
-                        <div style={{'width': '5%'}} />
-                        <Card className='mt-5' style={{'width': '60%'}}>
+                        <Card className='mt-5 col-6' >
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                                 <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
@@ -141,6 +139,9 @@ export default function Update({ id, data }) {
                                 </SortableContext>
                             </Droppable>
                         </Card>
+                        <div className={settingsMenuClass}>
+                            {renderDialog()}
+                        </div>
                     </div>
                 </DndContext>
             </AuthenticatedTemplate>

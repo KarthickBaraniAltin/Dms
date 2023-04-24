@@ -21,15 +21,12 @@ const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 export default function View({ id, metadata, initialValues }) {
     
     const toast = useRef(null)
-
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
 
-    console.log("files = ", files)
-
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
-    const { errors } = useValidation({ metadata, inputs, files })
+    const { isDisabled, setIsDisabled, checkErrors, scrollToComponent } = usePreventSubmit({metadata, inputs})
+    const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
@@ -38,13 +35,13 @@ export default function View({ id, metadata, initialValues }) {
     const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    const disableSubmitButton = useMemo(() => {
-        return checkErrors(errors)
-    }, [errors])
+    // const disableSubmitButton = useMemo(() => {
+    //     return checkErrors(errors)
+    // }, [errors])
       
-    useMemo(() => {
-        setIsDisabled(disableSubmitButton)
-    }, [disableSubmitButton])
+    // useMemo(() => {
+    //     setIsDisabled(disableSubmitButton)
+    // }, [disableSubmitButton])
 
     const submitFormData = async (event) => {
         event.preventDefault()
@@ -87,6 +84,17 @@ export default function View({ id, metadata, initialValues }) {
         }
 
         toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
+    }
+
+    const checkValidations = (e) => {
+        e.preventDefault()
+        const errorFound = checkErrors(errors)
+
+        if (errorFound === false) {
+            return submitFormData(e)
+        } else {
+            scrollToComponent(errorFound)
+        }
     }
 
     return (
