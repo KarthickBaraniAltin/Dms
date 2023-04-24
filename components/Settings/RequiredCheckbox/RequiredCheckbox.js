@@ -20,8 +20,11 @@ export default function RequiredCheckbox({inputs, onChange}) {
         <>
             <div className='mb-2'>
                 <label className='mr-2'>Required</label>
-                <Checkbox name='validations.required.isRequired' value={inputs?.validations?.required?.isRequired ?? false} onChange={(e) => handleCheckboxChange(e)} 
-                checked={checked}
+                <Checkbox 
+                    name='validations.required.isRequired' 
+                    value={inputs?.validations?.required?.isRequired ?? false} 
+                    onChange={(e) => handleCheckboxChange(e)} 
+                    checked={checked}
                 />
             </div>
             <label>Optional Message</label>

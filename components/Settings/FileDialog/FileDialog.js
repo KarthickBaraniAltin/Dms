@@ -17,6 +17,8 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
     {label: '.jpeg', value: 'image/jpeg' }
   ]
 
+  console.log("Inputs = ", inputs)
+
   return (
     <div>
       <Dialog header='File Component Dialog Header' visible={visible} style={{ width: '60vw' }} onHide={hideDialog} footer={<Footer handleUpdate={handleUpdate} />}>
@@ -41,11 +43,16 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
             <Checkbox name='multiple' checked={inputs?.multiple} className='ml-2' value={inputs?.multiple ?? false} onChange={e => assignValuesNested('multiple', e.checked)} />
           </div>
           <h4 className='field col-12 md:col-12'>Validations</h4>
-          <div className='field col-12 md:col-12'>
-            <RequiredCheckbox inputs={inputs} onChange={handleInputChange} />
+          <div className='field col-6 grid-nogutter'>
+            <label className='col-12'>Required</label>
+            <Checkbox className='col-12' checked={inputs?.validations?.fileRequired?.isFileRequired ?? false} onChange={e => assignValuesNested('validations.fileRequired.isFileRequired', e.checked)} />
+          </div>
+          <div className='field col-6'>
+            <label>Optional Message</label>
+            <InputText name='validations.fileRequired.message' value={inputs?.validations?.fileRequired?.message ?? ''} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Min File Size</label>
+            <label>Min File Size in bytes</label>
             <InputNumber name='validations.minFile.fileSize' value={inputs?.validations?.minFile?.fileSize ?? 0} onChange={handleInputChange} format={false}/>
           </div>
           <div className='field col-6 md:col-6'>
@@ -53,7 +60,7 @@ export default function FileDialog({ visible, hideDialog, inputs, assignValuesNe
             <InputText name='validations.minFile.message' value={inputs?.validations?.minFile?.message ?? ''} onChange={handleInputChange} />
           </div>
           <div className='field col-6 md:col-6'>
-            <label>Max File Size</label>
+            <label>Max File Size in bytes</label>
             <InputNumber name='validations.maxFile.fileSize' value={inputs?.validations?.maxFile?.fileSize ?? 0} onChange={handleInputChange} format={false}/>
           </div>
           <div className='field col-6 md:col-6'>

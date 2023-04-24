@@ -1,6 +1,6 @@
 export const useConvertFormData = () => {
     const convertData = (data) => {
-        return Object.keys(data).reduce((accumulator, key) => {
+        return Object.keys(data ?? {}).reduce((accumulator, key) => {
             if (key.startsWith('calendar') || key.startsWith('time')) { 
             // Converts data inputs for calendar and time components
                 accumulator[key] = new Date(data[key])

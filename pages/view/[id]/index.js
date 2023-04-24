@@ -29,7 +29,7 @@ export default function View({ id, metadata, initialValues }) {
     console.log("files = ", files)
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
-    const { errors } = useValidation({ metadata, inputs })
+    const { errors } = useValidation({ metadata, inputs, files })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()

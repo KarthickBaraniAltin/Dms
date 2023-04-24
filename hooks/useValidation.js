@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from "react"
 
-export const useValidation = ({ metadata, inputs }) => {
+export const useValidation = ({ metadata, inputs, files }) => {
     const [validations, setValidations] = useState({})
     const [errors, setErrors] = useState({})
     const validate = useCallback(() => {
-
         const validationMapper = {
             minLength: (minLength, currentLength) => {
                 if (!minLength || !currentLength) {
@@ -95,29 +94,35 @@ export const useValidation = ({ metadata, inputs }) => {
             setMask: (mask, maskGuid) => {
                 metadata[maskGuid].mask = mask
             },
-            minFile: (minFileSize, fileTypes) => {
-                if (!minFileSize || !fileTypes) return true
-                
-                return fileTypes.some(file => {
-                    if (file.size < minFileSize) return false
-                    if (fileTypes.indexOf(file) === fileTypes.length - 1) return true
-                })
-            },
-            maxFile: (maxFileSize, fileTypes) => {
-                if (!maxFileSize || !fileTypes) {
-                    return true
+            minFile: (minFileSize, files) => {
+                if (!minFileSize || !files) return true
+
+                for (const file of files) {
+                    if (minFileSize > file.size) {
+                      return false
+                    }
                 }
 
-                return fileTypes.some(file => {
-                    if (file.size > maxFileSize) return false
-                    if (fileTypes.indexOf(file) === fileTypes.length - 1) return true
-                })
+
+                return true
             },
-            fileTypes: (validFileTypes, fileTypes) => {
-                if (validFileTypes === undefined || fileTypes === undefined) return
+            maxFile: (maxFileSize, files) => {
+                if (!maxFileSize || !files) return true
+                
+                for (const file of files) {
+                    if (maxFileSize < file.size) {
+                      return false
+                    }
+                }
+
+                return true
+            },
+            fileType: (validFileTypes, files) => {
+                if (!validFileTypes || !files) return true
+
                 return validFileTypes.some(validFileType => {
-                    return fileTypes.some(fileType => {
-                        if (validFileType !== fileType.type) {
+                    return files.some(file => {
+                        if (validFileType !== file.type) {
                             return false
                         } else {
                             return true
@@ -136,6 +141,7 @@ export const useValidation = ({ metadata, inputs }) => {
             for (const [key, element] of Object.entries(metadata)) {
                 const { validations, name, guid } = element
                 const inputValue = inputs[name]
+                const currentFiles = files?.[name]
                 const currentErrors = []
 
                 if (validations) {
@@ -146,6 +152,16 @@ export const useValidation = ({ metadata, inputs }) => {
                                 if ((inputValue === '' || (Array.isArray(inputValue) && inputValue.length === 0)) && isRequired) {
                                     // The reason I used inputValue === '' is so that the required validation doesn't
                                     // activate until the user actually changes the input and leaves it blank.
+                                    currentErrors.push(message ?? `This field is required`)
+                                }
+                                break
+                            }
+                            case 'fileRequired': {
+                                console.log("Value = ", value)
+                                const { message, isFileRequired } = value
+                                console.log("file = ", isFileRequired)
+                                if ((Array.isArray(currentFiles) && currentFiles.length === 0) && isFileRequired) {
+                                    console.log("file 2")
                                     currentErrors.push(message ?? `This field is required`)
                                 }
                                 break
@@ -237,21 +253,21 @@ export const useValidation = ({ metadata, inputs }) => {
                             }
                             case 'minFile': {
                                 const { fileSize, message } = value
-                                if (!validationMapper.minFile(fileSize, inputValue)) {
+                                if (!validationMapper.minFile(fileSize, currentFiles)) {
                                     currentErrors.push(message ?? `File(s) size must be larger than ${fileSize} bits`)
                                 }
                                 break
                             }
                             case 'maxFile': {
                                 const { fileSize, message } = value
-                                if (!validationMapper.maxFile(fileSize, inputValue)) {
+                                if (!validationMapper.maxFile(fileSize, currentFiles)) {
                                     currentErrors.push(message ?? `File(s) size must be smaller than ${fileSize} bits`)
                                 }
                                 break
                             }
                             case 'fileTypes': {
                                 const { fileTypes, message } = value
-                                if (!validationMapper.fileTypes(fileTypes, inputValue)) {
+                                if (!validationMapper.fileType(fileTypes, currentFiles)) {
                                     const validFileTypes = fileTypes.map((fileType, index) => {
                                         return <li key={index}>{fileType.split('/')[1]}</li>
                                     })
@@ -286,7 +302,7 @@ export const useValidation = ({ metadata, inputs }) => {
 
             setErrors({...errorMessages})
         }
-    }, [metadata, inputs])
+    }, [metadata, inputs, files])
 
     useEffect(() => {
         validate()
