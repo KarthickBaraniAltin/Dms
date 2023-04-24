@@ -7,9 +7,6 @@ import { Checkbox } from 'primereact/checkbox'
 import LexicalEditor from '../../LexicalEditor/LexicalEditor'
 import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
-import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
-import SettingsContainer from '../SettingsContainer/SettingsContainer'
-import SettingsStyle from '../SettingsContainer/SettingsContainer.module.css'
 
 export default function FileDialog({ visible, hideDialog, inputs, assignValuesNested, handleInputChange, handleUpdate }) {
   
