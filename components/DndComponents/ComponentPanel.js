@@ -388,7 +388,10 @@ export default function ComponentPanel() {
     })
 
     return (
-        <Card className='mt-2 col-3' style={{backgroundColor: 'rgba(0, 133, 255, 0.84)'}}>
+        <Card className='card ml-3 mt-5' style={{'width': '30%'}}>
+            <Card style={{'background': '#004990', 'color': 'white', marginBottom: '0.5rem'}}>
+                <h1 style={{textAlign: 'center'}}>Components</h1>
+            </Card>
             {draggableItems}
         </Card>
     )

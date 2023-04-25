@@ -6,15 +6,15 @@
 trigger:
  branches:
    include:
-     - dev
+     - uat
 
 variables:
   projectName: 'form-builder-studio'
-  websiteName: 'dev'
-  appPoolName: 'From-Builder-Studio'
+  websiteName: 'test'
+  appPoolName: 'Form-Builder-Studio'
   appName: 'form-builder-studio'
   distDirectory: '$(System.DefaultWorkingDirectory)/dist'
-  websitePhysicalPath: 'E:\inetpub\Dev\$(appName)'
+  websitePhysicalPath: 'E:\inetpub\Test\$(appName)'
 
 stages:
 - stage: 'Build'
@@ -63,12 +63,12 @@ stages:
 - stage: 'Deplot'
   displayName: 'Deploy'
   dependsOn: 'Build'
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/uat'))
   jobs:
-   - deployment: DEV
-     displayName: DEV
+   - deployment: UAT
+     displayName: UAT
      environment: 
-       name: 'Dev Server'    
+       name: 'UAT Server Form Builder Studio'    
        resourceType: VirtualMachine
 
      strategy:

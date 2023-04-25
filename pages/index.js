@@ -16,7 +16,7 @@ import { callMsGraph } from '../src/MsGraphApiCall'
 import { useRouter } from 'next/router'
 
 export default function Home() {
-  const { instance, inProgress, accounts } = useMsal()
+  const { accounts } = useMsal()
   const account = useAccount(accounts[0] ?? {})
   const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
   const { loading, callApi } = useApi()
@@ -28,7 +28,6 @@ export default function Home() {
   const [description, setDescription] = useState('')
   const [selectedValue, setSelectedValue] = useState({})
   const [totalRecords, setTotalRecords] = useState(0)
-  const [userData, setUserData] = useState(undefined)
   const router = useRouter()
   const [lazyParams, setLazyParams] = useState({
       first: 0,
@@ -40,14 +39,6 @@ export default function Home() {
           'global': {value: '', matchMode: 'contains'}
       }
   })
-
-  useEffect(() => {
-    if (!userData && account) {
-        callMsGraph().then(response => setUserData(response)).catch((e) => {
-            console.log("Error while getting the user data = ", e)
-        })
-    }
-  }, [inProgress, instance, account, userData])     
 
   const lazyParamsToQueryString = (lazyParams) => {
       let queryString = "?";
@@ -129,7 +120,6 @@ export default function Home() {
 
   const createForm = async (event) => {
     event.preventDefault()
-    if (!userData) return
 
     const { accessToken } = await acquireToken()
     const params = {
@@ -142,10 +132,10 @@ export default function Home() {
         data: {
             name: name,
             description: description,
-            authorDisplayName: userData.displayName,
-            authorLegalName: userData.givenName + " " + userData.surname,
-            authorId: userData.id,
-            authorEmail: userData.mail,
+            authorDisplayName: account.name,
+            authorLegalName: account.name,
+            authorId: account.localAccountId,
+            authorEmail: account.username,
             metadata: {
                 metadata: []
             }
@@ -204,11 +194,11 @@ export default function Home() {
                             </div>
                             <div className='flex flex-column mt-2'>
                                 <label>User Name</label>
-                                <InputText value={userData?.givenName + " " + userData?.surname} disabled />
+                                <InputText value={account?.name} disabled />
                             </div>
                             <div className='flex flex-column mt-2'>
                                 <label>User Email</label>
-                                <InputText value={userData?.mail} disabled />
+                                <InputText value={account?.username} disabled />
                             </div>
                         </div>
                         <Button className='mt-3' label='Create' style={{width: '100px'}} loading={createFormLoading} onClick={createForm} />

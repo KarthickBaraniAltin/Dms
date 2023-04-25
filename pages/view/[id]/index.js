@@ -21,28 +21,30 @@ const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 export default function View({ id, metadata, initialValues }) {
     
     const toast = useRef(null)
+
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
-    const { inputs, files, handleInputChange } = useInputs({initialValues: convertedData})
+    const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
 
-    const { isDisabled, setIsDisabled, checkErrors, scrollToComponent } = usePreventSubmit({metadata, inputs})
-    const { errors } = useValidation({ metadata, inputs })
+    console.log("files = ", files)
+
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
+    const { errors } = useValidation({ metadata, inputs, files })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
 
     const { startViewTime } = useTimeControl()    
-    const [ userData, setUserData ] = useState(undefined)
-    const { instance, inProgress, accounts } = useMsal()
+    const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    // const disableSubmitButton = useMemo(() => {
-    //     return checkErrors(errors)
-    // }, [errors])
+    const disableSubmitButton = useMemo(() => {
+        return checkErrors(errors)
+    }, [errors])
       
-    // useMemo(() => {
-    //     setIsDisabled(disableSubmitButton)
-    // }, [disableSubmitButton])
+    useMemo(() => {
+        setIsDisabled(disableSubmitButton)
+    }, [disableSubmitButton])
 
     const submitFormData = async (event) => {
         event.preventDefault()
@@ -51,17 +53,14 @@ export default function View({ id, metadata, initialValues }) {
         const formData = new FormData()
         let info = {}
         if (account) {
-            callMsGraph().then(response => {
-                    const { givenName, surname, mail } = response
-                    info = {
-                        startViewTime: startViewTime,
-                        fullLegalName: givenName + ' ' + surname,
-                        email: mail,
-                        securityLevel: "Email, Account Authentication(None)"
-                    }
-                }).catch((e) => {
-                console.log("Error while getting the user data = ", e)
-            })
+            const { name, username } = account
+
+            info = {
+                startViewTime: startViewTime,
+                fullLegalName: name,
+                email: username,
+                securityLevel: "Email, Account Authentication(None)"
+            }
         }
         
         Object.keys(files).forEach((fieldName) => {
@@ -81,20 +80,12 @@ export default function View({ id, metadata, initialValues }) {
         }
 
         const res = await callApiFetch(`${api}/FormData/${id}`, fetchParams)
-        if (res) {
+        if (Object.keys(res).length !== 0) {
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Submitted', life: 2500 })
+            return
         }
-    }
 
-    const checkValidations = (e) => {
-        e.preventDefault()
-        const errorFound = checkErrors(errors)
-
-        if (errorFound === false) {
-            return submitFormData(e)
-        } else {
-            scrollToComponent(errorFound)
-        }
+        toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
     }
 
     return (
@@ -107,17 +98,16 @@ export default function View({ id, metadata, initialValues }) {
                 <Toast ref={toast}/>                
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <form>
-                            <ViewComponents 
-                                metadata={metadata} 
-                                inputs={inputs} 
-                                handleInputChange={handleInputChange} 
-                                errors={errors} 
-                            />
-                            <div className='flex justify-content-center mt-5'>
-                                <Button className='col-2' label="Submit" onClick={(e) => checkValidations(e)} loading={loading} />
-                            </div>
-                        </form>
+                        <ViewComponents 
+                            metadata={metadata} 
+                            inputs={inputs} 
+                            handleInputChange={handleInputChange} 
+                            assignValuesNested={assignValuesNested}
+                            errors={errors} 
+                        />
+                        <div className='flex justify-content-center mt-5'>
+                            <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                        </div>
                     </Card>
                 </div>
             </AuthenticatedTemplate>

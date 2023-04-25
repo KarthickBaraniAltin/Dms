@@ -17,7 +17,7 @@ import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 import ViewImage from '../Inputs/ViewImage/ViewImage'
 import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
 
-export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
+export default function ViewComponents({ metadata, inputs, handleInputChange, assignValuesNested, errors }) {
 
     const componentMapper = {
         'header': ViewHeader,
@@ -41,9 +41,9 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
     return (
         <div className='grid grid-nogutter'>
             {metadata && Object.keys(metadata).map(guid => {
-                const { name, type, id, divClassName } = metadata[guid]
+                const { name, type, divClassName } = metadata[guid]
                 return (
-                    <div id={id} key={guid} className={clsx(divClassName ?? 'field col-6')}>
+                    <div key={guid} className={clsx(divClassName ?? 'field col-6')}>
                         { createElement( 
                             componentMapper[type],
                             {
@@ -51,6 +51,7 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
                                 value: inputs[name],
                                 onChange: handleInputChange,
                                 errors: errors[name],
+                                assignValuesNested: assignValuesNested
                             }
                         )}
                     </div>

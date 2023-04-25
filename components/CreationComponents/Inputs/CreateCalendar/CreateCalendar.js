@@ -12,7 +12,7 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import clsx from 'clsx'
 
 export default function CreateCalendar({metadata, value, onChange, openDialog, errors}) {
-  const { name, label, subtitle, defaultValue, validations, guid, id, page } = metadata
+  const { name, label, subtitle, defaultValue, validations } = metadata
   const convertDataFormat = defaultValue ? new Date(defaultValue) : null
   
   return (

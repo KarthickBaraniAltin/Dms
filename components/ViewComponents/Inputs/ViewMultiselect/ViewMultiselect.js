@@ -22,7 +22,7 @@ export default function ViewMultiselect({ metadata, value, onChange, errors }) {
                 <MultiSelect 
                     className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
                     name={name} 
-                    value={typeof value !== 'object' ? defaultValue : value} 
+                    value={value ?? defaultValue} 
                     onChange={onChange}
                     options={options} 
                     display='chip' 

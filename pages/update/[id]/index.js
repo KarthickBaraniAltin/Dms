@@ -1,72 +1,48 @@
 import Head from 'next/head'
 import { useEffect, useState, useRef } from 'react'
 import { Card } from 'primereact/card'
-import { Button } from 'primereact/button'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal } from "@azure/msal-react"
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal, useAccount } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
 import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
-import { useHeaderImage } from '../../../hooks/useHeaderImage'
-import { useShowPreview } from '../../../hooks/useShowPreview'
 import { useInputs } from '../../../hooks/useInput'
 import { useValidation } from '../../../hooks/useValidation'
 import useDialogs from '../../../hooks/useDialogs'
 import useDnd from '../../../hooks/useDnd'
 import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
-import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
+import PreviewButton from '../../../components/Settings/PreviewButton/PreviewButton'
 import { DndContext } from '@dnd-kit/core'
-import { useShare } from '../../../hooks/useShare'
-import ShareDialog from '../../../components/Settings/ShareDialog/ShareDialog'
-import { useSave } from '../../../hooks/useSave'
-import SaveDialog from '../../../components/Settings/SaveDialog/SaveDialog'
-import { useStatus } from '../../../hooks/useStatus'
-import StatusDialog from '../../../components/Settings/StatusDialog/StatusDialog'
+import ShareButton from '../../../components/Settings/ShareButton/ShareButton'
+import SaveButton from '../../../components/Settings/SaveButton/SaveButton'
+import StatusButton from '../../../components/Settings/StatusButton/StatusButton'
 import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Toast } from 'primereact/toast'
-import SettingsStyles from '../../../components/Settings/SettingsContainer/SettingsContainer.module.css'
-import clsx from 'clsx'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function Update({ id, data }) {
+    
     const toast = useRef(null)
-    const { headerImage, handleHeaderImage } = useHeaderImage()
+    const [formDefinition, setFormDefinition] = useState(data)
+    const [metadata, setMetadata] = useState(data?.metadata?.metadata ?? {}) 
+    const [mainFormIds, setMainFormIds] = useState([])
+    const [files, setFiles] = useState({})
+    const [pageNumber, setPageNumber] = useState(1)
+    const [currentPage, setCurrentPage] = useState(pageNumber)
+
     const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
-    const [ files, setFiles ] = useState({})
-    const [ metadata, setMetadata ] = useState(data?.metadata?.metadata ?? {}) 
     const { errors } = useValidation({ metadata, inputs })
-
-    const [ mainFormIds, setMainFormIds ] = useState([])
-    const { renderDialog, openDialog, showDialog } = useDialogs({ metadata, setMetadata, deleteField })
-
-    const { showPreviewDialog, handlePreview } = useShowPreview()
-    const { showShareDialog, handleShare, formSubmitResult, setFormSubmitResult } = useShare()
-    const { showSaveDialog, handleSave, name, setName, desc, setDesc } = useSave(data)
-    const { showStatusDialog, handleStatus } = useStatus()
-
+    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata, deleteField })
     const { handleDragEnd } = useDnd()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
-    const { instance } = useMsal()
-
-    // These variables are for pagination
-    const [pageNumber, setPageNumber] = useState(1)
-    const [currentPage, setCurrentPage] = useState(pageNumber)
-
-    const settingsMenuClass = clsx(
-        'col-3',
-        'mt-2',
-        SettingsStyles.settingsMenu,
-        SettingsStyles.beforeSlide,
-        {
-            [SettingsStyles.afterSlide]: showDialog
-        }
-    )
-
+    const { accounts } = useMsal()
+    const account = useAccount(accounts[0] ?? {})
+    
     useEffect(() => {
         setMainFormIds(Object.keys(metadata).map(data => data))        
     }, [metadata])
@@ -75,24 +51,36 @@ export default function Update({ id, data }) {
         setMetadata((prevObj) => ({...prevObj, [data.guid]: data}))
     }
 
-    const updateForm = async (event, formName, description) => {
+    const updateForm = async (event) => {
         event.preventDefault()
         const { accessToken } = await acquireToken()
-        const { name, username, localAccountId } = instance.getActiveAccount()
-
         const formData = new FormData()
-        formData.append("info", JSON.stringify({
-            name: formName,
-            description: description,
-            authorFullName: name,
-            authorId: localAccountId,
-            authorEmail: username,
-        }))
+
+        let info = {
+            name: formDefinition.name,
+            description: formDefinition.description,
+            authorFullName: '',
+            authorId: '',
+            authorEmail: '',
+        }
+
+        if (account) {
+            const { name, username, localAccountId } = account
+
+            info = {
+                ...info,
+                authorDisplayName: name,
+                authorFullName: name,
+                authorId: localAccountId,
+                authorEmail: username,
+            }
+        }
+        
+        formData.append("info", JSON.stringify(info))
         formData.append("metadata", JSON.stringify(metadata))
         
-        // Add files to request
         Object.keys(files).forEach((fieldName) => {
-            formData.append(fieldName, files[fieldName]);
+            formData.append(fieldName, files[fieldName])
         })
 
         const fetchParams = {
@@ -102,12 +90,16 @@ export default function Update({ id, data }) {
             },
             body: formData
         }
-
+        
         const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
-        if (res) {
+        if (Object.keys(res).length !== 0) {
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Updated', life: 2500 })
-            setFormSubmitResult(res)
-        }
+            setFormDefinition(res)
+            return true
+        } 
+
+        toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
+        return false
     }
 
     return (
@@ -121,27 +113,16 @@ export default function Update({ id, data }) {
                 <DndContext
                         onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
                 >
-                    {showPreviewDialog ? <PreviewDialog showDialog={showPreviewDialog} handlePreview={handlePreview} metadata={metadata} setMetadata={setMetadata}
-                    inputs={inputs} handleInputChange={handleInputChange} errors={errors} headerImage={headerImage} handleHeaderImage={handleHeaderImage} /> : null}
-                    {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} metadata={metadata} /> : null}
-                    {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult : data} /> : null}
-                    {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
                     <div className='grid'>
+                        {renderDialog()}
                         <ComponentPanel />
-                        <Card className='mt-5 col-6' >
+                        <div style={{'width': '5%'}} />
+                        <Card className='mt-5' style={{'width': '60%'}}>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                                <div>
-                                    <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />
-                                </div>
-                                <div>
-                                    <Button label='Save' style={{width: '90px'}} onClick={handleSave} />
-                                </div>
-                                <div>
-                                    <Button label='Share' style={{width: '90px'}} onClick={handleShare} />
-                                </div>
-                                <div>
-                                    <Button label='Status' style={{width: '90px'}} onClick={handleStatus} />
-                                </div>
+                                <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
+                                <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
+                                <ShareButton formDefinition={formDefinition} /> 
+                                <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition}  /> 
                             </div>
                             <Droppable id='droppable-container-form'>
                                 <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
@@ -160,9 +141,6 @@ export default function Update({ id, data }) {
                                 </SortableContext>
                             </Droppable>
                         </Card>
-                        <div className={settingsMenuClass}>
-                            {renderDialog()}
-                        </div>
                     </div>
                 </DndContext>
             </AuthenticatedTemplate>

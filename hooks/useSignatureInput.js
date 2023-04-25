@@ -4,7 +4,6 @@ export const useSignatureInputs = () => {
     const [fontInputs, setFontInputs] = useState([])
 
     const handleSignatureChange = (event, guid, metadata) => {
-        console.log('metadata:', metadata)
         const checkSameSignature = fontInputs.some(obj => obj.guid === guid)
         const sameSignatureIndex = fontInputs.findIndex(obj => obj.guid === guid)
 

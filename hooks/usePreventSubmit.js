@@ -6,18 +6,14 @@ export const usePreventSubmit = ({metadata, inputs}) => {
     const checkErrors = (errors) => {
         for (const property in errors) {
             if (errors[property].length > 0) {
-                for (const guid in metadata) {
-                    if (property === metadata[guid].name) {
-                        return metadata[guid].id
-                    }
-                }
+                return true
             }
 
             for (const guid in metadata) {
                 if (property === metadata[guid].name) {
                     if (metadata[guid]?.validations?.required) {
                         if (!inputs?.[property] || inputs?.[property].length < 1) {
-                            return metadata[guid].id
+                            return true
                         }
                     }
                 }
@@ -27,10 +23,5 @@ export const usePreventSubmit = ({metadata, inputs}) => {
         return false
     }
 
-    const scrollToComponent = (id) => {
-        const component = document.getElementById(id)
-        component.scrollIntoView({ behavior: 'smooth' })
-    }
-
-    return { isDisabled, setIsDisabled, checkErrors, scrollToComponent }
+    return { isDisabled, setIsDisabled, checkErrors }
 }

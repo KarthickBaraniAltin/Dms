@@ -7,7 +7,7 @@ import { getFormData, getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../../../hooks/useApi'
 import { callMsGraph } from '../../../../../src/MsGraphApiCall'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useInputs } from '../../../../../hooks/useInput'
 import { useValidation } from '../../../../../hooks/useValidation'
 import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
@@ -18,13 +18,14 @@ import { usePreventSubmit } from '../../../../../hooks/usePreventSubmit'
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function FormDataView({ id, metadata, savedData }) {
+    
     // This part is displaying the form
     // const { headerImage, handleHeaderImage } = useHeaderImage()
     
     const { convertData } = useConvertFormData()
     const convertedData = convertData(savedData.data)
     
-    const { inputs, handleInputChange } = useInputs({ initialValues: convertedData })
+    const { inputs, handleInputChange, assignValuesNested } = useInputs({ initialValues: convertedData })
     const { errors } = useValidation({ metadata, inputs })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -35,7 +36,7 @@ export default function FormDataView({ id, metadata, savedData }) {
     const { instance, inProgress, accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit()
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const disableSubmitButton = useMemo(() => {
         return checkErrors(errors)
     }, [errors])
@@ -111,14 +112,16 @@ export default function FormDataView({ id, metadata, savedData }) {
             <AuthenticatedTemplate>                   
                 <div className='grid'>
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <form>
-                            <div className='grid formgrid'>
-                                <ViewComponents metadata={metadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
-                            </div>
-                            <div className='field md:col-6 col-offset-3'>
+                        <ViewComponents 
+                            metadata={metadata} 
+                            inputs={inputs} 
+                            handleInputChange={handleInputChange} 
+                            errors={errors}
+                            assignValuesNested={assignValuesNested}    
+                        />
+                            {/* <div className='field md:col-6 col-offset-3'>
                                 <Button label="Submit" onClick={submitFormData} loading={loading} />
-                            </div>
-                        </form>
+                            </div> */}
                     </Card>
                 </div>
             </AuthenticatedTemplate>

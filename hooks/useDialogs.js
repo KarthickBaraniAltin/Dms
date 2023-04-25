@@ -16,7 +16,6 @@ import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDia
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
-import SettingsStyles from '../components/Settings/SettingsContainer/SettingsContainer.module.css'
 
 const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -129,7 +128,7 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         )
     }
 
-    return { renderDialog, openDialog, hideDialog, showDialog }
+    return { renderDialog, openDialog, hideDialog }
 }
 
 export default useDialogs

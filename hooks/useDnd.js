@@ -11,7 +11,6 @@ const useDnd = () => {
 
         updatedData.guid = guid
         updatedData.name = `${updatedData.name}_${Object.keys(metadata).length + 1}`
-        updatedData.id = Object.keys(metadata).length + 1
 
         addMetadata(updatedData)
     }

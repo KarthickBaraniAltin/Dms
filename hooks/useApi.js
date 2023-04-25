@@ -71,5 +71,5 @@ export const useApi = () => {
         setValidationErrors(errors)
     }
 
-    return { response, error, loading, validationErrors, callApi, callApiFetch }
+    return { response, error, loading, validationErrors, callApi, callApiFetch, setLoading }
 }
