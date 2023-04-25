@@ -40,7 +40,7 @@ export default function TimeDialog({ visible, hideDialog, assignValuesNested, in
         </div>
         <div>
           <label className={SettingsStyle.advanceMenuLabel}>Max Time</label>
-          <Calendar className={SettingsStyle.advanceMenuInput} name='validations.maxTime.time' value={inputs?.validations?.maxTime?.time ?? undefined} onChange={handleInputChange} />
+          <Calendar className={SettingsStyle.advanceMenuInput} showTime timeOnly hourFormat='12' name='validations.maxTime.time' value={inputs?.validations?.maxTime?.time ?? undefined} onChange={handleInputChange} />
         </div>
         <div>
           <label className={SettingsStyle.advanceMenuLabel}>Max Time Message</label>
