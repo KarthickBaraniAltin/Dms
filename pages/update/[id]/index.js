@@ -13,7 +13,7 @@ import { useInputs } from '../../../hooks/useInput'
 import { useValidation } from '../../../hooks/useValidation'
 import useDialogs from '../../../hooks/useDialogs'
 import useDnd from '../../../hooks/useDnd'
-import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
+import ComponentPanel from '../../../components/DndComponents/ComponentPanel/ComponentPanel'
 import PreviewDialog from '../../../components/Settings/PreviewDialog/PreviewDialog'
 import { DndContext } from '@dnd-kit/core'
 import { useShare } from '../../../hooks/useShare'
@@ -126,9 +126,9 @@ export default function Update({ id, data }) {
                     {showSaveDialog ? <SaveDialog showDialog={showSaveDialog} handleSave={handleSave} updateForm={updateForm} loading={loading} name={name} setName={setName} desc={desc} setDesc={setDesc} metadata={metadata} /> : null}
                     {showShareDialog ? <ShareDialog showDialog={showShareDialog} handleShare={handleShare} id={formSubmitResult ? formSubmitResult.id : data.id} formSubmitResult={formSubmitResult ? formSubmitResult : data} /> : null}
                     {showStatusDialog ? <StatusDialog showDialog={showStatusDialog} handleStatus={handleStatus} updateForm={updateForm} loading={loading} /> : null}
-                    <div className='grid'>
+                    <div className='grid' style={{height: '728px'}}>
                         <ComponentPanel />
-                        <Card className='mt-5 col-6' >
+                        <Card className='mt-5 col-6'>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                                 <div>
                                     <Button label='Preview' style={{width: '90px'}} onClick={handlePreview} />

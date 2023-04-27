@@ -1,0 +1,22 @@
+.draggable {
+    color: white;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.draggable:hover {
+    background-color: #F7F7F7;
+    color: rgba(0, 133, 255, 0.84);
+    transition: background-color 0.3s ease-out;
+}
+
+.draggable:active {
+    background-color: rgba(0, 133, 255, 0.84);
+    color: #F7F7F7;
+}
