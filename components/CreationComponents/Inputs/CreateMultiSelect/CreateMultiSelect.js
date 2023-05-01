@@ -9,12 +9,12 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
-export default function CreateMultiSelect({metadata, openDialog, value, onChange, errors}) {
+export default function CreateMultiSelect({metadata, openDialog, value, onChange, errors, setMetadata}) {
   const { name, validations, label, subtitle, options, defaultValue } = metadata
 
   return (
     <ComponenentContainer>
-        <SettingsButton openDialog={openDialog} componentData={metadata} />
+        <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
         <LabelContainer>
           <Label label={label} validations={validations} />
         </LabelContainer>

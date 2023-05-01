@@ -10,12 +10,12 @@ import clsx from 'clsx'
 
 import sharedStyles from '../../../SharedComponents/File/File.module.css'
 
-export default function CreateFileInput({ metadata, openDialog, onChange, errors }) {
+export default function CreateFileInput({ metadata, openDialog, onChange, errors, setMetadata }) {
     const { name, label, multiple, subtitle, validations, guid, id, page } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer className={sharedStyles.labelContainer}>
                 <Label label={label} validations={validations} />
             </LabelContainer>

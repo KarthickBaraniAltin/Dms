@@ -9,12 +9,12 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Signature/Signature.module.css'
 
-export default function CreateSignature({ metadata, openDialog, value, onChange, errors }) {
+export default function CreateSignature({ metadata, openDialog, value, onChange, errors, setMetadata }) {
     const { name, label, subtitle, validations, fontStyle, guid, id, page } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton componentData={metadata} openDialog={openDialog} />
+            <SettingsButton componentData={metadata} openDialog={openDialog} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>

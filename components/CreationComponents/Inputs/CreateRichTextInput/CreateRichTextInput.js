@@ -10,12 +10,12 @@ import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContai
 
 import styles from '../CreateRichTextInput/CreateRichTextInput.module.css'
 
-export default function CreateRichTextInput({ metadata, openDialog, value, onChange, errors }) {
+export default function CreateRichTextInput({ metadata, openDialog, value, onChange, errors, setMetadata }) {
     const { name, label, subtitle, guid, id, page } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer className={`${styles.labelContainer} mr-2`}>
                 <Label label={label} />
             </LabelContainer>

@@ -11,12 +11,12 @@ import clsx from 'clsx'
 
 import sharedStyles from '../../../SharedComponents/Mask/Mask.module.css'
 
-export default function CreateMask({ metadata, value, onChange, openDialog, errors}) {
+export default function CreateMask({ metadata, value, onChange, openDialog, errors, setMetadata}) {
     const { name, label, subtitle, mask, validations, guid, id, page } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>

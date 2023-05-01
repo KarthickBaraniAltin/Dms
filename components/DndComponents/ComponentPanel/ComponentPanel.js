@@ -128,7 +128,7 @@ export default function ComponentPanel() {
                 <div>
                     <div className={ComponentPanelStyles.accordion}>
                         <label className={ComponentPanelStyles.accordionField}>{'Choice Field'}</label>
-                        <span className={ComponentPanelStyles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '-' : '+'}</span>
+                        <span className={ComponentPanelStyles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '\u2304' : '\u203A'}</span>
                     </div>
                     {isVisible && component === 'dropdown' ? choiceComponents : ''}
                 </div>
@@ -167,9 +167,14 @@ export default function ComponentPanel() {
                 <div style={{width: '100%'}}>
                     {componentList}
                 </div>
-                <Button label='X' style={{alignSelf: 'center', backgroundColor: 'red', marginLeft: '0.5rem'}} onClick={() => setMenuVisible(prev => !prev)} />
+                <Button icon={<i className='pi pi-angle-left' style={{fontSize: '2rem', fontWeight: '600'}} />}
+                style={{alignSelf: 'center', backgroundColor: '#2999FF', border: 0, marginLeft: '0.5rem'}}
+                onClick={() => setMenuVisible(prev => !prev)}
+                />
             </div>
-            {!menuVisible && <Button icon={<i className='pi pi-angle-right' style={{fontSize: '2rem', fontWeight: '600'}} />} style={{alignSelf: 'center', backgroundColor: 'rgba(0, 133, 255, 0.84)'}} onClick={() => setMenuVisible(prev => !prev)} />}
+            {!menuVisible && <Button icon={<i className='pi pi-angle-right' style={{fontSize: '2rem', fontWeight: '600'}} />}
+            style={{alignSelf: 'center', backgroundColor: 'rgba(0, 133, 255, 0.84)'}} onClick={() => setMenuVisible(prev => !prev)}
+            />}
         </div>
     )
 }

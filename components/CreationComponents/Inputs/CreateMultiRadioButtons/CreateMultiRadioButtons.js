@@ -9,7 +9,7 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
-export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors }) {
+export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors, setMetadata }) {
     const { name, label, subtitle, options, otherOptions, validations, defaultValue } = metadata
     
     const [checkedValue, setCheckedValue] = useState()
@@ -37,7 +37,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>

@@ -12,12 +12,12 @@ import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContai
 import sharedStyles from '../../../SharedComponents/Textarea/Textarea.module.css'
 import styles from '../CreateTextarea/CreateTextares.module.css'
 
-export default function CreateTextarea({metadata, value, onChange, openDialog, errors}) {
+export default function CreateTextarea({metadata, value, onChange, openDialog, errors, setMetadata}) {
   const { name, validations, label, subtitle, defaultValue, options, guid, id, page } = metadata
 
   return (
     <ComponenentContainer>
-      <SettingsButton openDialog={openDialog} componentData={metadata} />
+      <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
       <LabelContainer className={`${sharedStyles.textareaLabel} ${styles.labelWidthContainer}`}>
         <Label label={label} validations={validations} />
       </LabelContainer>
