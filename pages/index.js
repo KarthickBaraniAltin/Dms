@@ -1,276 +1,231 @@
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react"
 import Head from 'next/head'
-import Link from "next/link"
-import { Button } from "primereact/button"
+import Link from 'next/link'
+import { AuthenticatedTemplate, useAccount, useMsal, useMsalAuthentication } from '@azure/msal-react'
+import { InteractionType } from '@azure/msal-browser'
+import React, { useState, useEffect } from 'react'
+import { formBuilderApiRequest } from '../src/msalConfig'
+import { useApi } from '../hooks/useApi'
 import { Card } from 'primereact/card'
-import { Calendar } from 'primereact/calendar'
-import { InputMask } from 'primereact/inputmask'
-import { InputNumber } from 'primereact/inputnumber'
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
-import Input from "../components/Input/Input"
-import { useApi } from "../hooks/useApi"
-import { useAccessToken } from "../hooks/useAccessToken"
-import { loginRequest } from '../src/msalConfig';
-import { useInputs } from "../hooks/useInput"
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+import { InputText } from "primereact/inputtext"
+import { Dialog } from 'primereact/dialog'
+import { InputTextarea } from 'primereact/inputtextarea'
+import { Button } from 'primereact/button'
+import { callMsGraph } from '../src/MsGraphApiCall'
+import { useRouter } from 'next/router'
 
-export default function Home({cities}) {
+export default function Home() {
+    const { accounts } = useMsal()
+    const account = useAccount(accounts[0] ?? {})
+    const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
+    const { loading, callApi } = useApi()
+    const { loading: createFormLoading, callApi: callCreateFormApi } = useApi()
+    const headerStyle = { fontWeight: '600', fontSize: '15.5px', color: '#000' }
+    const [formDefinitions, setFormDefinitions] = useState(null)
+    const [isVisible, setIsVisible] = useState(false)
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [selectedValue, setSelectedValue] = useState({})
+    const [totalRecords, setTotalRecords] = useState(0)
+    const router = useRouter()
+    const [lazyParams, setLazyParams] = useState({
+        first: 0,
+        page: 0,
+        rows: 10,
+        sortField: 'dateCreated',
+        sortOrder: -1,
+        filters: {
+            'global': { value: '', matchMode: 'contains' }
+        }
+    })
 
-  const { response, error, loading, callApi } = useApi()
-  const { getAccessToken } = useAccessToken()
-  const { handleInputChange, inputs } = useInputs()
-
-  const callApiTest = async () => {
-    const accessToken = await getAccessToken(loginRequest)
-
-    console.log("Access Token = ", accessToken)
-
-    const params = {
-        method: 'GET',
-        url: 'https://connect2.csn.edu/snap/api/department',
-        headers: { // no need to stringify
-            accept: '*/*'
-        },
+    const lazyParamsToQueryString = (lazyParams) => {
+        let queryString = "?";
+        for (const key in lazyParams) {
+            if (key !== 'filters') {
+                if (lazyParams[key] !== null && lazyParams[key] !== undefined) {
+                    if (key === 'first') continue
+                    queryString += `${key}=${lazyParams[key]}&`
+                }
+            } else if (lazyParams.filters.global.value) {
+                queryString += `global=${lazyParams.filters.global.value}&`
+            }
+        }
+        return queryString.slice(0, -1)
     }
 
-    await callApi(params)
-  }
+    let loadLazyTimeout = null
+    useEffect(() => {
+        const loadLazyData = async () => {
+            if (loadLazyTimeout) {
+                clearTimeout(loadLazyTimeout)
+            }
 
-  return (
-    <>
-      <Head>
-        <title>SNAP Component Library</title>
-        <link rel='icon' sizes='32x32' href='/logo.png' />
-      </Head>
-      <div>
-        <AuthenticatedTemplate>
-          <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-            <div className='grid p-fluid form-grid'>
-              
-              <div className='field col-4 md:col-4'>
-                <h5>Basic Text</h5>
-                <Input 
-                  type='text'
-                  inputProps={{
-                    name: 'text', 
-                    onChange: handleInputChange, 
-                    value: inputs.text ? inputs.text : '',
-                  }}
-                  label='Label'
-                  subtitleComponent={<Link href='http://localhost:3000' className='block'>localhost</Link>} 
-                />
-              </div>  
+            const { accessToken } = await acquireToken()
 
-              <div className='field col-4 md:col-4'>
-                <h5>Test 1</h5>
-                <Input
-                  type='text'
-                  inputProps={{
-                    name: 'text1',
-                    onChange: handleInputChange,
-                    value: inputs.text1 ? inputs.text1 : 'default'
-                  }}
-                  label='Text 1'
-                  subtitle='Test Subtitle'
-                />
-              </div>
+            const queryString = lazyParamsToQueryString(lazyParams)
+            const params = {
+                method: 'POST',
+                url: `/form-builder-studio/api/formDefinition`,
+                headers: {
+                    Accept: '*/*',
+                    Authorization: `Bearer ${accessToken}`
+                },
+                data: {
+                    query: queryString
+                }
+            }
 
-              <div className='field col-4 md:col-4'>
-                <h5>Number</h5>
-                <Input 
-                  type='number' 
-                  inputProps={{
-                    name: 'number',
-                    onChange: handleInputChange,
-                    value: inputs.number ? inputs.number : undefined,
-                    useGrouping: false
-                  }}  
-                  label='Label'
-                  subtitle='Subtitle'
-                />
-              </div>
+            const res = await callApi(params)
+            setFormDefinitions(res?.data?.formDefinitions)
+            setTotalRecords(res?.data?.count)
+        }
 
-              <div className='field col-4 md:col-4'>
-                <h5>Mask</h5>
-                <Input
-                  type='mask'
-                  inputProps={{
-                    name: 'mask',
-                    onChange: handleInputChange,
-                    value: inputs.mask ? inputs.mask: '',
-                    mask: '(999) 999-9999'
-                  }}
-                  label='Label'
-                  subtitle='subtitle'
-                />
-              </div>
-
-              <div className='field col-4 md:col-4'>
-                <h5>Calendar</h5>
-                <Input
-                  type='calendar'
-                  inputProps={{
-                    name: 'date',
-                    onChange: handleInputChange,
-                    value: inputs.date ? inputs.date : new Date(),
-                    dateFormat: 'dd-mm-yy'                
-                  }}
-                  label='Label'
-                  subtitle='Subtitle'
-                />
-              </div>  
-
-              <div className='field col-4 md:col-4'>
-                <h5>Time</h5>
-                <Input
-                  type='calendar'
-                  inputProps={{
-                    name: 'time',
-                    onChange: handleInputChange,
-                    value: inputs.time ? inputs.time : new Date(),
-                    timeOnly: true,
-                    hourFormat: '12'              
-                  }}
-                  label='Label'
-                  subtitle='Subtitle'
-                />
-              </div>  
-
-              <div className='field col-12 md:col-12'>
-                <h5>Text Area</h5>
-                <Input
-                  type='textarea'
-                  inputProps={{
-                    name: 'textarea',
-                    onChange: handleInputChange,
-                    value: inputs.textarea ? inputs.textarea : '',
-                  }}
-                  label='Label'
-                  subtitle='subtitle'
-                />
-              </div>
-
-              <div className='field col-4 md:col-4'>
-                <h5>Dropdown</h5>
-                <Input
-                  type='dropdown'
-                  inputProps={{
-                    name: 'dropdown',
-                    options: cities,
-                    onChange: handleInputChange,
-                    value: inputs.dropdown ? inputs.dropdown : '',
-                  }}
-                  label='Label'
-                  subtitle='subtitle'
-                />
-              </div>
-
-              <div className='field col-4 md:col-4'>
-                <h5>Multiselect</h5>
-                <Input
-                  type='multiselect'
-                  inputProps={{
-                    name: 'multiselect',
-                    options: cities,
-                    onChange: handleInputChange,
-                    value: inputs.multiselect ? inputs.multiselect : '',
-                    display: 'chip'
-                  }}
-                  label='Label'
-                />
-              </div> 
- 
+        if (account) {
+            loadLazyData()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lazyParams, loadLazyTimeout, acquireToken, account])
 
 
+    const renderHeader = () => {
+        return (
+            <>
+                <div className='table-header'>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <span className='pi pi-plus' style={{ alignSelf: 'center', cursor: 'pointer' }} onClick={() => setIsVisible(true)} />
+                        <span className="p-input-icon-left" style={{ marginLeft: '1rem' }}>
+                            <i className="pi pi-search" />
+                            <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
+                        </span>
+                    </div>
+                </div>
+            </>
+        )
+    }
 
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Disabled</h5>
-                <Input subtitle='subtitle' label='Label' disabled />
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <Input header='Invalid' label='Label' errorMessages={['error message 1', 'error message 2']}/>
-              </div>  
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <span>
+                <Link href='/view/[id]' as={`/view/${rowData.id}`} rel='noopener noreferrer' style={{ marginRight: '0.2rem' }}>
+                    <span className='pi pi-eye' style={{ cursor: 'pointer', color: '#034692' }} />
+                </Link>
+                <Link href='/update/[id]' as={`/update/${rowData.id}`} rel='noopener noreferrer'>
+                    <span className='material-icons' style={{ cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px' }}>edit_square</span>
+                </Link>
+            </span>
+        )
+    }
 
-              <div className='field col-3 md:col-12'>
-                <Input header='Test' label='Input Field' />
-              </div> */}
+    const createForm = async (event) => {
+        event.preventDefault()
 
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Phone</h5>
-                <InputMask mask="(999) 999-9999" placeholder="(999) 999-9999" label='label' />
-              </div>   */}
+        const { accessToken } = await acquireToken()
+        const params = {
+            method: 'POST',
+            url: `/form-builder-studio/api/form-definition`,
+            headers: {
+                Accept: '*/*',
+                Authorization: `Bearer ${accessToken}`
+            },
+            data: {
+                name: name,
+                description: description,
+                authorDisplayName: account.name,
+                authorLegalName: account.name,
+                authorId: account.localAccountId,
+                authorEmail: account.username,
+                metadata: {
+                    metadata: []
+                }
+            }
+        }
 
-              {/* <div className='field col-12 md:col-12'>
-                <h5>Text Area</h5>
-                <InputTextarea rows={5} cols={30} />
-              </div>   */}
+        const res = await callCreateFormApi(params)
+        if (res) {
+            router.push(`/update/${res.data.id}`)
+        }
+    }
 
-              {/* <div className='field col-4 md:col-12'>
-                <h5>Dropdown</h5>
-                <Dropdown options={cities} optionLabel="name" placeholder="Select a City" />
-              </div> 
-              <div className='field col-4 md:col-12'>
-                <h5>Disabled</h5>
-                <Dropdown options={cities} disabled optionLabel="name" placeholder="Select a City" />
-                <small className='block'>subtitle</small>
-              </div> 
-              <div className='field col-4 md:col-12'>
-                <h5>Invalid</h5>
-                <Dropdown className='p-invalid' disabled options={cities} optionLabel="name" placeholder="Select a City" />
-                <small className='p-error block'>error message</small> 
-              </div>  
+    const onPage = (event) => {
+        setLazyParams(event)
+    }
 
-              <div className='field col-4 md:col-12'>
-                <h5>Number</h5>
-                <InputNumber />
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <h5>(0 - 100)</h5>
-                <InputNumber min={0} max={100} />
-                <small className='block'>Please give a number between 0 and 100 included</small>
-              </div>  
-              <div className='field col-4 md:col-12'>
-                <h5>Number</h5>
-                <InputNumber className='p-invalid' />
-                <small className='p-error block'>Invalid input</small> 
-              </div>   */}
-            </div> 
-            
+    const onSort = (event) => {
+        setLazyParams(event)
+    }
 
+    const onFilter = (event) => {
+        event['first'] = 0
+        setLazyParams(event)
+    }
 
-            <div className='field'>
-              <Button label='Text Hook' loading={loading} onClick={async () => callApiTest()} />
-            </div>
+    const onSelectionChange = (event) => {
+        const { value } = event
+        setSelectedValue(value)
+    }
 
-          </Card>
-        </AuthenticatedTemplate>
-        <UnauthenticatedTemplate>
-          <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
-            <div className='card-body'>
-              <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
-            </div>
-          </div>
-        </UnauthenticatedTemplate>
-      </div>
-    </>
-  )
-} 
+    const onGlobalFilterChange = (e) => {
+        const value = e.target.value
+        let _filters = { ...lazyParams.filters }
+        _filters['global'].value = value
 
-export async function getStaticProps() {
-   
-  const cities = [
-    { label: 'Las Vegas', value: 'LV'},
-    { label: 'Toronto', value: 'TO'},
-    { label: 'New York', value: 'NY' },
-    { label: 'Rome', value: 'RM' },
-    { label: 'London', value: 'LDN' },
-    { label: 'Istanbul', value: 'IST' },
-    { label: 'Paris', value: 'PRS' }
-  ]
+        setLazyParams({ ...lazyParams })
+    }
 
-  return {
-      props: {
-          cities
-      }
-  }
+    // console.log('test', process.env.NEXT_PUBLIC_FORM_BUILDER_API)
+
+    return (
+        <>
+            <Head>
+                <title>Form Definition Dashboard</title>
+                <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
+            </Head>
+            <AuthenticatedTemplate>
+                <Dialog header='Create New Form' style={{ width: '50%' }} visible={isVisible} onHide={() => setIsVisible(false)}>
+                    <div className='flex flex-column'>
+                        <div className='mt-1'>
+                            <div className='flex flex-column mt-2'>
+                                <label>Form Definition Name</label>
+                                <InputText value={name} onChange={e => setName(e.target.value)} />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>Form Definition Description</label>
+                                <InputTextarea value={description} onChange={e => setDescription(e.target.value)} autoResize />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>User Name</label>
+                                <InputText value={account?.name} disabled />
+                            </div>
+                            <div className='flex flex-column mt-2'>
+                                <label>User Email</label>
+                                <InputText value={account?.username} disabled />
+                            </div>
+                        </div>
+                        <Button className='mt-3' label='Create' style={{ width: '100px' }} loading={createFormLoading} onClick={createForm} />
+                    </div>
+                </Dialog>
+                <Card className='card mt-5 form-horizontal' style={{ width: '80%' }}>
+                    <DataTable
+                        value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
+                        dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
+                        totalRecords={totalRecords} onPage={onPage} onSort={onSort}
+                        sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                        onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
+                        size='small' loading={loading} onSelectionChange={onSelectionChange}
+                        selection={selectedValue} globalFilterFields={[]}
+                    >
+                        <Column field='action' headerStyle={{ ...headerStyle, width: '6%' }} header='Action' body={actionBodyTemplate} />
+                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        <Column className='dashboardTitle' field='status' header='Status' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                    </DataTable>
+                </Card>
+            </AuthenticatedTemplate>
+        </>
+    )
 }

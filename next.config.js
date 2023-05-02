@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '/component-library'
+  basePath: '/form-builder-studio'
 }
+
+const withFonts = require('next-fonts');
+module.exports = withFonts();
 
 module.exports = nextConfig
