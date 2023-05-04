@@ -16,6 +16,7 @@ import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 import ViewImage from '../Inputs/ViewImage/ViewImage'
 import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
+import ViewAddress from '../Inputs/ViewAddress/ViewAddress'
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, errors }) {
 
@@ -35,7 +36,8 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, er
         'subtitle': ViewReadonlySubtitle,
         'signature': ViewSignature,
         'radiobutton': ViewMultiRadioButtons,
-        'checkbox': ViewCheckbox
+        'checkbox': ViewCheckbox,
+        'address': ViewAddress
     }
 
     return (

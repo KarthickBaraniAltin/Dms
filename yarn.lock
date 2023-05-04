@@ -692,6 +692,20 @@
   "resolved" "https://registry.npmjs.org/axe-core/-/axe-core-4.4.1.tgz"
   "version" "4.4.1"
 
+"axios-retry@3.2.0":
+  "integrity" "sha512-RK2cLMgIsAQBDhlIsJR5dOhODPigvel18XUv1dDXW+4k1FzebyfRk+C+orot6WPZOYFKSfhLwHPwVmTVOODQ5w=="
+  "resolved" "https://registry.npmjs.org/axios-retry/-/axios-retry-3.2.0.tgz"
+  "version" "3.2.0"
+  dependencies:
+    "is-retry-allowed" "^1.1.0"
+
+"axios@^0.26.1":
+  "integrity" "sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.26.1.tgz"
+  "version" "0.26.1"
+  dependencies:
+    "follow-redirects" "^1.14.8"
+
 "axios@^0.27.0":
   "integrity" "sha512-XV/WrPxXfzgZ8j4lcB5i6LyaXmi90yetmV/Fem0kmglGx+mpY06CiweL3YxU6wOTNLmqLUePW4G8h45nGZ/+pA=="
   "resolved" "https://registry.npmjs.org/axios/-/axios-0.27.0.tgz"
@@ -1345,7 +1359,7 @@
   "resolved" "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   "version" "3.2.7"
 
-"follow-redirects@^1.14.9":
+"follow-redirects@^1.14.8", "follow-redirects@^1.14.9":
   "integrity" "sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w=="
   "resolved" "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.9.tgz"
   "version" "1.14.9"
@@ -1628,6 +1642,11 @@
   dependencies:
     "call-bind" "^1.0.2"
     "has-tostringtag" "^1.0.0"
+
+"is-retry-allowed@^1.1.0":
+  "integrity" "sha512-RUbUeKwvm3XG2VYamhJL1xFktgjvPzL0Hq8C+6yrWIswDy3BIXGqCxhxkc30N9jqK311gVU137K8Ei55/zVJRg=="
+  "resolved" "https://registry.npmjs.org/is-retry-allowed/-/is-retry-allowed-1.2.0.tgz"
+  "version" "1.2.0"
 
 "is-shared-array-buffer@^1.0.1":
   "integrity" "sha512-IU0NmyknYZN0rChcKhRO1X8LYz5Isj/Fsqh8NJOSf+N/hCOTwy29F32Ik7a+QszE63IdvmwdTPDd6cZ5pg4cwA=="
@@ -2387,6 +2406,14 @@
   "integrity" "sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q=="
   "resolved" "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz"
   "version" "3.0.0"
+
+"smartystreets-javascript-sdk@^2.1.2":
+  "integrity" "sha512-F4mmyTfkDHYmsW8O2mGGztkMRyg+utQcXEYLxrKYWoWcyEfY65El876E7YoltL+CwoYSxcNUEQkJifUi1tEaLQ=="
+  "resolved" "https://registry.npmjs.org/smartystreets-javascript-sdk/-/smartystreets-javascript-sdk-2.1.2.tgz"
+  "version" "2.1.2"
+  dependencies:
+    "axios" "^0.26.1"
+    "axios-retry" "3.2.0"
 
 "source-map-js@^1.0.2", "source-map-js@>=0.6.2 <2.0.0":
   "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="

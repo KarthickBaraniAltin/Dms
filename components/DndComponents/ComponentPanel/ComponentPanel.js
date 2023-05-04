@@ -30,6 +30,7 @@ export default function ComponentPanel() {
         'mask',
         'subtitle',
         'signature',
+        'address'
     ]
 
     const textfields = ['text', 'textarea', 'richText']
@@ -52,13 +53,14 @@ export default function ComponentPanel() {
         'Mask',
         'Paragraph',
         'Signature',
+        'Address',
     ]
 
     const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
     
     const createOption = (component, index) => {
         const divSize = component === 'header' || component === 'textarea' || component === 'richText' 
-        || component === 'image' || component === 'subtitle' ? fullSizeClassName : halfSizeClassName
+        || component === 'image' || component === 'subtitle' || component === 'address' ? fullSizeClassName : halfSizeClassName
 
         const label = component === 'header' ? defaultSubtitle : component.charAt(0).toUpperCase() + component.slice(1)
         const subtitle = component === 'header' ? null : defaultSubtitle

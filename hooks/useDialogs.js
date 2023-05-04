@@ -16,7 +16,7 @@ import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDia
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
-import SettingsStyles from '../components/Settings/SettingsContainer/SettingsContainer.module.css'
+import AddressDialog from '../components/Settings/AddressDialog/AddressDialog'
 
 const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const [ showDialog, setShowDialog ] = useState(false)
@@ -40,7 +40,8 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         'radiobutton': MultiRadioButtonsDialog,
         'dropdown': DropdownDialog,
         'multiselect': DropdownDialog,
-        'checkbox': CheckboxDialog
+        'checkbox': CheckboxDialog,
+        'address': AddressDialog
     } 
 
     const hideDialog = () => {

@@ -106,7 +106,7 @@ export default function View({ id, metadata, initialValues }) {
             <AuthenticatedTemplate>   
                 <Toast ref={toast}/>                
                 <div className='grid'>
-                    <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
+                    <Card className='card form-horizontal mt-5' style={{'width': '57%'}}>
                         <form>
                             <ViewComponents 
                                 metadata={metadata} 
