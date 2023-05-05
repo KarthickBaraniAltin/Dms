@@ -11,7 +11,7 @@ import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
 export default function ViewMultiselect({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, options, validations, defaultValue } = metadata
+    const { name, label, subtitle, disabled, options, validations, defaultValue } = metadata
 
     return (
         <ComponenentContainer> 
@@ -26,6 +26,7 @@ export default function ViewMultiselect({ metadata, value, onChange, errors }) {
                     onChange={onChange}
                     options={options} 
                     display='chip' 
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

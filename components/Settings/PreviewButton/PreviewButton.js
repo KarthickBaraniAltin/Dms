@@ -3,7 +3,7 @@ import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 import { Button } from "primereact/button"
 import { useState } from "react"
 
-export default function PreviewButton({ metadata, handleInputChange, inputs, errors, assignValuesNested }) {
+export default function PreviewButton({ metadata, conditions, conditionMapper, handleInputChange, inputs, errors, assignValuesNested, validationMapper }) {
     const [showDialog, setShowDialog] = useState(false)
 
     function handlePreview() {
@@ -17,6 +17,9 @@ export default function PreviewButton({ metadata, handleInputChange, inputs, err
                 <Dialog header='Preview Form Page' visible={showDialog} onHide={() => handlePreview()} style={{width: '60%'}}>
                     <ViewComponents 
                         metadata={metadata} 
+                        conditions={conditions}
+                        conditionMapper={conditionMapper}
+                        validationMapper={validationMapper}
                         inputs={inputs} 
                         handleInputChange={handleInputChange} 
                         errors={errors}

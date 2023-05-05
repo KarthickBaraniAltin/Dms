@@ -7,29 +7,27 @@ import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
-import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useState, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 import { useConvertFormData } from '../../../hooks/useConvertFormData'
 import { Toast } from 'primereact/toast'
+import { useCondition } from '../../../hooks/useCondition'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function View({ id, metadata, initialValues }) {
     
     const toast = useRef(null)
-
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
 
-    console.log("files = ", files)
-
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
-    const { errors } = useValidation({ metadata, inputs, files })
+    const { errors, validationMapper } = useValidation({ metadata, inputs, files })
+    const { conditionMapper } = useCondition({ validationMapper })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()

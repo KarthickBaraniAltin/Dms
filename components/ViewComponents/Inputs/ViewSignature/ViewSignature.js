@@ -11,7 +11,7 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Signature/Signature.module.css'
 
 export default function ViewSignature ({metadata, value, onChange, errors }) {
-    const { name, label, subtitle, guid, fontStyle, validations } = metadata
+    const { name, label, subtitle, disabled, fontStyle, validations } = metadata
 
     return (
         <ComponenentContainer>
@@ -25,6 +25,7 @@ export default function ViewSignature ({metadata, value, onChange, errors }) {
                     value={value} 
                     onChange={onChange} 
                     style={{fontFamily: fontStyle}}
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

@@ -12,7 +12,7 @@ import sharedStyles from '../../../SharedComponents/File/File.module.css'
 import styles from '../ViewFileInput/ViewFileInput.module.css'
 
 export default function ViewFileInput({ metadata, value, onChange, errors }) {
-  const { name, label, subtitle, multiple, validations } = metadata
+  const { name, label, subtitle, disabled, multiple, validations } = metadata
 
   const downloadFile = async (file, fileName) => {
     try {
@@ -42,6 +42,7 @@ export default function ViewFileInput({ metadata, value, onChange, errors }) {
             type='file' 
             onChange={onChange}
             multiple={multiple}
+            disabled={disabled}
         />
         <Subtitle subtitle={subtitle} />
         <Errors errors={errors} />

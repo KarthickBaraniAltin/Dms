@@ -13,7 +13,7 @@ import styles from '../ViewTextarea/ViewTextarea.module.css'
 
 
 export default function ViewTextarea({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, defaultValue, validations } = metadata
+    const { name, label, subtitle, disabled, defaultValue, validations } = metadata
 
     return (
         <ComponenentContainer> 
@@ -27,6 +27,7 @@ export default function ViewTextarea({ metadata, value, onChange, errors }) {
                     value={value ?? defaultValue} 
                     autoResize 
                     onChange={onChange} 
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

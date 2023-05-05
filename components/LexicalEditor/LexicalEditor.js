@@ -23,12 +23,13 @@ import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin/CodeHighlightPlug
 import AutoLinkPlugin from "./Plugins/AutoLinkPlugin/AutoLinkPlugin";
 
 import styles from './LexicalEditor.module.css'
+import clsx from "clsx";
 
 function Placeholder() {
   return <div className={styles['editor-placeholder']}>Enter some rich text...</div>
 }
 
-export default function Editor({value, name, onChange}) {
+export default function Editor({value, name, onChange, className}) {
 
   const initialValue = value ?? JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
 
@@ -65,7 +66,7 @@ export default function Editor({value, name, onChange}) {
 
   return (
     <>
-      <div className={styles['lexical-body']}>
+      <div className={clsx(styles['lexical-body'], className)}>
           <LexicalComposer initialConfig={editorConfig}>
               <div className={styles['editor-container']}>
                   <ToolbarPlugin />

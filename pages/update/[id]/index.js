@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { Card } from 'primereact/card'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal, useAccount } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
@@ -15,16 +15,18 @@ import PreviewButton from '../../../components/Settings/PreviewButton/PreviewBut
 import { DndContext } from '@dnd-kit/core'
 import ShareButton from '../../../components/Settings/ShareButton/ShareButton'
 import SaveButton from '../../../components/Settings/SaveButton/SaveButton'
-import StatusButton from '../../../components/Settings/StatusButton/StatusButton'
+import StatusButton from '../../../components/Settings/StatusDialog/StatusButton'
 import CreateComponents from '../../../components/CreationComponents/CreateComponents/CreateComponents'
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Toast } from 'primereact/toast'
+import ConditionDialog from '../../../components/Settings/ConditionDialog/ConditionDialog'
+import { useCondition } from '../../../hooks/useCondition'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function Update({ id, data }) {
-    
+
     const toast = useRef(null)
     const [formDefinition, setFormDefinition] = useState(data)
     const [metadata, setMetadata] = useState(data?.metadata?.metadata ?? {}) 
@@ -34,7 +36,8 @@ export default function Update({ id, data }) {
     const [currentPage, setCurrentPage] = useState(pageNumber)
 
     const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
-    const { errors } = useValidation({ metadata, inputs })
+    const { errors, validationMapper } = useValidation({ metadata, inputs })
+    const { conditionMapper, conditions, setConditions, addCondition, deleteCondition } = useCondition({ validationMapper })
     const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata, deleteField })
     const { handleDragEnd } = useDnd()
 
@@ -119,10 +122,11 @@ export default function Update({ id, data }) {
                         <div style={{'width': '5%'}} />
                         <Card className='mt-5' style={{'width': '60%'}}>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                                <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
+                                <PreviewButton metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
                                 <ShareButton formDefinition={formDefinition} /> 
                                 <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition}  /> 
+                                <ConditionDialog metadata={metadata} addCondition={addCondition} deleteCondition={deleteCondition} conditionMapper={conditionMapper} conditions={conditions} setConditions={setConditions} validationMapper={validationMapper} />
                             </div>
                             <Droppable id='droppable-container-form'>
                                 <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>

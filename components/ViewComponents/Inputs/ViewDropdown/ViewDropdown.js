@@ -11,7 +11,7 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
 
 export default function ViewDropdown({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, className, options, validations, defaultValue } = metadata
+    const { name, label, subtitle, disabled, options, validations, defaultValue } = metadata
 
     return (
         <ComponenentContainer> 
@@ -25,6 +25,7 @@ export default function ViewDropdown({ metadata, value, onChange, errors }) {
                     value={value ?? defaultValue} 
                     onChange={onChange}
                     options={options} 
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

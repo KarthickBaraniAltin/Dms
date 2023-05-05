@@ -11,7 +11,7 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Mask/Mask.module.css'
 
 export default function ViewMask({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, defaultValue, mask, validations } = metadata
+    const { name, label, subtitle, defaultValue, disabled, mask, validations } = metadata
 
     return (
         <ComponenentContainer> 
@@ -25,6 +25,7 @@ export default function ViewMask({ metadata, value, onChange, errors }) {
                     value={value ?? defaultValue}
                     onChange={onChange}
                     mask={mask} 
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

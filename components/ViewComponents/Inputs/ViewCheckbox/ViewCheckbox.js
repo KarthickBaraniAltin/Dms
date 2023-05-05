@@ -1,5 +1,5 @@
 import { Checkbox } from 'primereact/checkbox'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Errors from '../../../SharedComponents/Errors/Errors'
 import Label from '../../../SharedComponents/Label/Label'
 import Subtitle from '../../../SharedComponents/Subtitle/Subtitle'
@@ -8,7 +8,7 @@ import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContai
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
 export default function ViewCheckbox({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, validations, defaultValue } = metadata 
+    const { name, label, subtitle, disabled, validations, defaultValue } = metadata 
     const defaultValueIds = metadata?.options
         .map((option, index) => {
             if (option.value === defaultValue?.[index]) {
@@ -57,6 +57,7 @@ export default function ViewCheckbox({ metadata, value, onChange, errors }) {
                                         value={checkboxes.value} 
                                         onChange={(e) => onChange(onCheckboxChange(e))}
                                         checked={checkedIds.some(id => id === index)} 
+                                        disabled={disabled}
                                     />
                                     <label>{checkboxes.value}</label>
                                 </div>

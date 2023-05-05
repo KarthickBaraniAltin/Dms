@@ -18,7 +18,6 @@ export const useApi = () => {
             const { data } = result
 
             if (data.statusCode == 400) {
-                // set validation errors
                 if (data.value.errors) {
                     assignValidationErrors(data.value.errors)
                 }
