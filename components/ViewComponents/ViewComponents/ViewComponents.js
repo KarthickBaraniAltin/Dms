@@ -108,6 +108,11 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, as
                                 delete viewMetadata[field]
                             })
                             break
+                        case 'Show':
+                            fields.forEach((field) => {
+                                viewMetadata[field] = metadata[field]
+                            })
+                            break
                         case 'Disable':
                             fields.forEach((field) => {
                                 viewMetadata[field].disabled = true
@@ -124,6 +129,11 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, as
                         case 'Show':
                             fields.forEach((field) => {
                                 delete viewMetadata[field]
+                            })
+                            break
+                        case 'Hide':
+                            fields.forEach((field) => {
+                                viewMetadata[field] = metadata[field]
                             })
                             break
                         case 'Enable':

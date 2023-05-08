@@ -27,7 +27,7 @@ export default function View({ id, metadata, initialValues }) {
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors, validationMapper } = useValidation({ metadata, inputs, files })
-    const { conditionMapper } = useCondition({ validationMapper })
+    const { conditionMapper, conditions, setConditions, addCondition, deleteCondition } = useCondition({ validationMapper })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
@@ -98,6 +98,9 @@ export default function View({ id, metadata, initialValues }) {
                     <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
                         <ViewComponents 
                             metadata={metadata} 
+                            conditions={conditions}
+                            conditionMapper={conditionMapper}
+                            validationMapper={validationMapper}
                             inputs={inputs} 
                             handleInputChange={handleInputChange} 
                             assignValuesNested={assignValuesNested}
