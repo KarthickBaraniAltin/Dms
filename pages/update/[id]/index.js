@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Card } from 'primereact/card'
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsalAuthentication, useMsal, useAccount } from "@azure/msal-react"
 import { formBuilderApiRequest } from '../../../src/msalConfig'
@@ -22,6 +22,9 @@ import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Toast } from 'primereact/toast'
 import ConditionDialog from '../../../components/Settings/ConditionDialog/ConditionDialog'
 import { useCondition } from '../../../hooks/useCondition'
+import clsx from 'clsx'
+
+import SettingsStyles from '../../../components/Settings/SettingsContainer/SettingsContainer.module.css'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
@@ -38,7 +41,7 @@ export default function Update({ id, data }) {
     const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
     const { errors, validationMapper } = useValidation({ metadata, inputs })
     const { conditionMapper, conditions, setConditions, addCondition, deleteCondition } = useCondition({ validationMapper })
-    const { renderDialog, openDialog } = useDialogs({ metadata, setMetadata, deleteField })
+    const { renderDialog, openDialog, showDialog } = useDialogs({ metadata, setMetadata, deleteField })
     const { handleDragEnd } = useDnd()
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
@@ -46,6 +49,16 @@ export default function Update({ id, data }) {
     const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
     
+    const settingsMenuClass = clsx(
+        'col-3',
+        'mt-2',
+        SettingsStyles.settingsMenu,
+        SettingsStyles.beforeSlide,
+        {
+            [SettingsStyles.afterSlide]: showDialog
+        }
+    )
+
     useEffect(() => {
         setMainFormIds(Object.keys(metadata).map(data => data))        
     }, [metadata])
@@ -142,6 +155,9 @@ export default function Update({ id, data }) {
                                     />
                                 </SortableContext>
                             </Droppable>
+                            <div className={settingsMenuClass}>
+                                {renderDialog()}
+                            </div>
                         </Card>
                     </div>
                 </DndContext>

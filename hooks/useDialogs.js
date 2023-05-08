@@ -130,7 +130,7 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         )
     }
 
-    return { renderDialog, openDialog, hideDialog }
+    return { renderDialog, openDialog, hideDialog, showDialog }
 }
 
 export default useDialogs

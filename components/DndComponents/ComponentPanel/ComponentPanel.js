@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Button } from 'primereact/button'
 import clsx from 'clsx'
 import ComponentPanelStyles from './ComponentPanel.module.css'
-import RightArrow from '../../../public/images/icons/right-arrow.png'
 
 export const fullSizeClassName = 'col-11 mlr-05'
 export const halfSizeClassName = 'col-5 mlr-05'
@@ -181,4 +180,3 @@ export default function ComponentPanel() {
     )
 }
 
-// icon={<img src={RightArrow} alt="right arrow" />}

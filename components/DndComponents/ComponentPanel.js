@@ -1,5 +1,6 @@
 import { Card } from 'primereact/card'
-import { Draggable } from './Draggable'
+import { Draggable } from './Draggable/Draggable'
+
 
 export const fullSizeClassName = 'col-11 mlr-05'
 export const halfSizeClassName = 'col-5 mlr-05'

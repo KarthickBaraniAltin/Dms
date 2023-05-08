@@ -16,15 +16,10 @@ import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 import ViewImage from '../Inputs/ViewImage/ViewImage'
 import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
-<<<<<<< HEAD
 import ViewComponentContainer from './ViewComponentContainer/ViewComponentContainer'
-=======
 import ViewAddress from '../Inputs/ViewAddress/ViewAddress'
->>>>>>> temp
 
-export default function ViewComponents({ metadata, inputs, handleInputChange, assignValuesNested, errors, conditions, validationMapper, conditionMapper }) {
-
-    console.log("Metadata = ", metadata)
+export default function ViewComponents({ metadata, inputs, handleInputChange, assignValuesNested, errors, conditions, validationMapper }) {
 
     const componentMapper = {
         'header': ViewHeader,
@@ -216,7 +211,6 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, as
     }
 
     const viewMetadata = updateMetadataWithConditions()
-    console.log('View Metadata = ', viewMetadata)
 
     return (
         <div className='grid grid-nogutter'>

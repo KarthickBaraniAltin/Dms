@@ -34,6 +34,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-resizable": "^3.0.5",
+    "sharp": "^0.32.1",
     "smartystreets-javascript-sdk": "^2.1.2"
   },
   "devDependencies": {
