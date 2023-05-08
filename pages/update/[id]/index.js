@@ -116,11 +116,9 @@ export default function Update({ id, data }) {
                 <DndContext
                         onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
                 >
-                    <div className='grid'>
-                        {renderDialog()}
+                    <div className='grid' style={{height: '728px'}}>
                         <ComponentPanel />
-                        <div style={{'width': '5%'}} />
-                        <Card className='mt-5' style={{'width': '60%'}}>
+                        <Card className='mt-5 col-6'>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                                 <PreviewButton metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 

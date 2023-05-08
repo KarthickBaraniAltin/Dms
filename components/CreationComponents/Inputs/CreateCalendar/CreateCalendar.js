@@ -11,13 +11,13 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
 import clsx from 'clsx'
 
-export default function CreateCalendar({metadata, value, onChange, openDialog, errors}) {
+export default function CreateCalendar({metadata, value, onChange, openDialog, errors, setMetadata}) {
   const { name, label, subtitle, defaultValue, validations } = metadata
   const convertDataFormat = defaultValue ? new Date(defaultValue) : null
   
   return (
     <ComponenentContainer>
-      <SettingsButton openDialog={openDialog} componentData={metadata} />
+      <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
       <LabelContainer>
         <Label label={label} validations={validations}/>
       </LabelContainer>

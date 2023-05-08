@@ -17,6 +17,7 @@ import CreateTime from '../Inputs/CreateTime/CreateTime'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileInput'
 import CreateImage from '../Inputs/CreateImage/CreateImage'
 import CreateHeader from '../Inputs/CreateHeader/CreateHeader'
+import CreateAddress from '../Inputs/CreateAddress/CreateAddress'
 
 export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
     const objectKeysArray = Object.keys(metadata)
@@ -37,7 +38,8 @@ export default function CreateComponents ({ metadata, assignValuesNested, openDi
         'subtitle': CreateReadonlySubtitle,
         'signature': CreateSignature,
         'radiobutton': CreateMultiRadioButtons,
-        'checkbox': CreateCheckbox
+        'checkbox': CreateCheckbox,
+        'address': CreateAddress
     }
 
     return (

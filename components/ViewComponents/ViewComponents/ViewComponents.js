@@ -16,7 +16,11 @@ import clsx from 'clsx'
 import ViewFileInput from '../Inputs/ViewFileInput/ViewFileInput'
 import ViewImage from '../Inputs/ViewImage/ViewImage'
 import ViewHeader from '../Inputs/ViewHeader/ViewHeader'
+<<<<<<< HEAD
 import ViewComponentContainer from './ViewComponentContainer/ViewComponentContainer'
+=======
+import ViewAddress from '../Inputs/ViewAddress/ViewAddress'
+>>>>>>> temp
 
 export default function ViewComponents({ metadata, inputs, handleInputChange, assignValuesNested, errors, conditions, validationMapper, conditionMapper }) {
 
@@ -38,7 +42,8 @@ export default function ViewComponents({ metadata, inputs, handleInputChange, as
         'subtitle': ViewReadonlySubtitle,
         'signature': ViewSignature,
         'radiobutton': ViewMultiRadioButtons,
-        'checkbox': ViewCheckbox
+        'checkbox': ViewCheckbox,
+        'address': ViewAddress
     }
 
     // const expressionsValidator = () => {

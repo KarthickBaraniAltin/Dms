@@ -8,7 +8,7 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 
-export default function CreateCheckbox({ metadata, onChange, openDialog, errors }) {
+export default function CreateCheckbox({ metadata, onChange, openDialog, errors, setMetadata }) {
     const { name, label, subtitle, validations, defaultValue } = metadata 
     const defaultValueIds = metadata?.options
         .map((option, index) => {
@@ -52,7 +52,7 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations}/>
             </LabelContainer>

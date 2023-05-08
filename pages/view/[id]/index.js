@@ -27,7 +27,7 @@ export default function View({ id, metadata, initialValues }) {
 
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
     const { errors, validationMapper } = useValidation({ metadata, inputs, files })
-    const { conditionMapper, conditions, setConditions, addCondition, deleteCondition } = useCondition({ validationMapper })
+    const { conditionMapper, conditions } = useCondition({ validationMapper })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
