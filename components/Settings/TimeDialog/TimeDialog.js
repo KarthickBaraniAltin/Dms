@@ -1,15 +1,10 @@
 import React from 'react'
-import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
-import { Button } from 'primereact/button'
 import { Calendar } from 'primereact/calendar'
-import LexicalEditor from '../../LexicalEditor/LexicalEditor';
-import { Dropdown } from 'primereact/dropdown'
-import Footer from '../Footer/Footer'
 import ColumnSizeDropdowm from '../ColumnSizeDropdown/ColumnSizeDropdowm'
-import RequiredCheckbox from '../RequiredCheckbox/RequiredCheckbox'
+import SettingsContainer from '../SettingsContainer/SettingsContainer'
 
-export default function TimeDialog({ visible, hideDialog, assignValuesNested, inputs, handleInputChange, handleUpdate }) {
+export default function TimeDialog({ hideDialog, inputs, handleInputChange, handleUpdate }) {
   return (
     <SettingsContainer inputs={inputs} handleInputChange={handleInputChange} hideMenu={hideDialog} handleUpdate={handleUpdate}>
       <div className={SettingsStyle.accordionContent} style={{display: 'flex', flexDirection: 'column', rowGap: '1rem'}}>
@@ -17,10 +12,6 @@ export default function TimeDialog({ visible, hideDialog, assignValuesNested, in
           <label className={SettingsStyle.advanceMenuLabel}>Name</label>
           <InputText className={SettingsStyle.advanceMenuInput} name='name' autoComplete='off' value={inputs?.name ?? ''} onChange={handleInputChange} />
         </div>
-        {/* <div>
-        <label className={SettingsStyle.accordionContentLabel}>Subtitle: </label>
-        <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
-        </div> */}
         <div>
           <label className={SettingsStyle.advanceMenuLabel}>Default Value</label>
           <Calendar className={SettingsStyle.advanceMenuInput} showTime timeOnly hourFormat='12' name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />
@@ -44,7 +35,7 @@ export default function TimeDialog({ visible, hideDialog, assignValuesNested, in
           <label className={SettingsStyle.advanceMenuLabel}>Max Time Message</label>
           <InputText className={SettingsStyle.advanceMenuInput} name='validations.maxTime.message' value={inputs?.validations?.maxTime?.message ?? ''} onChange={handleInputChange} />
         </div>
-      </Dialog>
-    </div>
+      </div>
+    </SettingsContainer>
   )
 }
