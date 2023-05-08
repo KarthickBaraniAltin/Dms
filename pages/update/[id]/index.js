@@ -10,7 +10,6 @@ import { useInputs } from '../../../hooks/useInput'
 import { useValidation } from '../../../hooks/useValidation'
 import useDialogs from '../../../hooks/useDialogs'
 import useDnd from '../../../hooks/useDnd'
-import ComponentPanel from '../../../components/DndComponents/ComponentPanel'
 import PreviewButton from '../../../components/Settings/PreviewButton/PreviewButton'
 import { DndContext } from '@dnd-kit/core'
 import ShareButton from '../../../components/Settings/ShareButton/ShareButton'
@@ -25,6 +24,7 @@ import { useCondition } from '../../../hooks/useCondition'
 import clsx from 'clsx'
 
 import SettingsStyles from '../../../components/Settings/SettingsContainer/SettingsContainer.module.css'
+import ComponentPanel from '../../../components/DndComponents/ComponentPanel/ComponentPanel'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
@@ -131,7 +131,7 @@ export default function Update({ id, data }) {
                 >
                     <div className='grid' style={{height: '728px'}}>
                         <ComponentPanel />
-                        <Card className='mt-5 col-6'>
+                        <Card className='col-6'>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
                                 <PreviewButton metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
@@ -155,10 +155,10 @@ export default function Update({ id, data }) {
                                     />
                                 </SortableContext>
                             </Droppable>
-                            <div className={settingsMenuClass}>
-                                {renderDialog()}
-                            </div>
                         </Card>
+                        <div className={settingsMenuClass}>
+                            {renderDialog()}
+                        </div>
                     </div>
                 </DndContext>
             </AuthenticatedTemplate>

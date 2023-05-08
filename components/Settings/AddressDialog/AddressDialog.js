@@ -14,10 +14,10 @@ export default function AddressDialog({ visible, hideDialog, inputs, assignValue
           <label className={SettingsStyle.advanceMenuLabel}>Name</label>
           <InputText className={SettingsStyle.advanceMenuInput} name='name' autoComplete='off' value={inputs?.name ?? ''} onChange={handleInputChange} />
         </div>
-        {/* <div>
-        <label className={SettingsStyle.accordionContentLabel}>Subtitle: </label>
-        <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
-        </div> */}
+        <div>
+          <label className={SettingsStyle.accordionContentLabel}>Subtitle: </label>
+          <LexicalEditor name='subtitle' value={inputs?.subtitle ?? ''} onChange={assignValuesNested} />
+        </div>
         <div>
           <label className={SettingsStyle.advanceMenuLabel}>Default Value</label>
           <InputText className={SettingsStyle.advanceMenuInput} name='defaultValue' value={inputs?.defaultValue ?? ''} onChange={handleInputChange} />

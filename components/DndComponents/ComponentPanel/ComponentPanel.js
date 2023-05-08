@@ -2,7 +2,8 @@ import { Draggable } from '../Draggable/Draggable'
 import { useState } from 'react'
 import { Button } from 'primereact/button'
 import clsx from 'clsx'
-import ComponentPanelStyles from './ComponentPanel.module.css'
+
+import styles from './ComponentPanel.module.css'
 
 export const fullSizeClassName = 'col-11 mlr-05'
 export const halfSizeClassName = 'col-5 mlr-05'
@@ -107,9 +108,9 @@ export default function ComponentPanel() {
 
             return (
                 <div>
-                    <div className={ComponentPanelStyles.accordion}>
-                        <label className={ComponentPanelStyles.accordionField}>{'Text Field'}</label>
-                        <span className={ComponentPanelStyles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '\u2304' : '\u203A'}</span>
+                    <div className={styles.accordion}>
+                        <label className={styles.accordionField}>{'Text Field'}</label>
+                        <span className={styles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '\u2304' : '\u203A'}</span>
                     </div>
                     {isVisible && component === 'text' ? textComponents : ''}
                 </div>
@@ -127,9 +128,9 @@ export default function ComponentPanel() {
 
             return (
                 <div>
-                    <div className={ComponentPanelStyles.accordion}>
-                        <label className={ComponentPanelStyles.accordionField}>{'Choice Field'}</label>
-                        <span className={ComponentPanelStyles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '\u2304' : '\u203A'}</span>
+                    <div className={styles.accordion}>
+                        <label className={styles.accordionField}>{'Choice Field'}</label>
+                        <span className={styles.accordionButton} onClick={() => setIsVisible(prev => !prev)}>{isVisible ? '\u2304' : '\u203A'}</span>
                     </div>
                     {isVisible && component === 'dropdown' ? choiceComponents : ''}
                 </div>
@@ -154,13 +155,13 @@ export default function ComponentPanel() {
     })
 
     return (
-        <div className={ComponentPanelStyles.slideMenuContainer}>
+        <div className={styles.slideMenuContainer}>
             <div className={clsx(
                 'mt-2',
                 'col-3',
-                ComponentPanelStyles.slideMenu,
+                styles.slideMenu,
                 {
-                [ComponentPanelStyles.active]: menuVisible,
+                [styles.active]: menuVisible,
                 }
             )}
             style={{backgroundColor: 'rgba(0, 133, 255, 0.84)', display: 'flex'}}
