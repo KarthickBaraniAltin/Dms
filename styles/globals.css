@@ -16,6 +16,10 @@ body {
   height: 100%;
 }
 
+.padding-input-text {
+  padding: 0.5rem 0.5rem !important;
+}
+
 .mlr-05 {
   margin-left: calc(100% / 24);
   margin-right: calc(100% / 24);

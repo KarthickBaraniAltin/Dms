@@ -75,7 +75,9 @@ export default function Update({ id, data }) {
         let info = {
             name: formDefinition.name,
             description: formDefinition.description,
-            authorFullName: '',
+            footer: formDefinition.footer,
+            authorDisplayName: '',
+            authorLegalName: '',
             authorId: '',
             authorEmail: '',
         }
@@ -86,7 +88,7 @@ export default function Update({ id, data }) {
             info = {
                 ...info,
                 authorDisplayName: name,
-                authorFullName: name,
+                authorLegalName: name,
                 authorId: localAccountId,
                 authorEmail: username,
             }
@@ -133,7 +135,7 @@ export default function Update({ id, data }) {
                         <ComponentPanel />
                         <Card className='mt-2 col-6'>
                             <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                                <PreviewButton metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
+                                <PreviewButton footer={formDefinition?.footer} metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
                                 <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
                                 <ShareButton formDefinition={formDefinition} /> 
                                 <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition}  /> 
@@ -155,6 +157,9 @@ export default function Update({ id, data }) {
                                     />
                                 </SortableContext>
                             </Droppable>
+                            <div className='flex justify-content-end mt-1'>
+                                <label>{formDefinition.footer}</label>
+                            </div>
                         </Card>
                         <div className={settingsMenuClass}>
                             {renderDialog()}

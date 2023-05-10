@@ -219,10 +219,11 @@ export default function Home() {
                   >
                       <Column field='action' headerStyle={{...headerStyle, width: '8%'}} header='Action' body={actionBodyTemplate} />
                       <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '18%'}} sortable />
-                      <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                      <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                      <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
-                      <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                      <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '16%'}} sortable />
+                      <Column className='dashboardTitle' field='footer' header='Footer' headerStyle={{...headerStyle, width: '16%'}} sortable />
+                      <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{...headerStyle, width: '16%'}} sortable />
+                      <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '16%'}} sortable />
+                      <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{...headerStyle, width: '16%'}} sortable />
                       <Column className='dashboardTitle' field='status' header='Status' headerStyle={{...headerStyle, width: '20%'}} sortable />
                   </DataTable>
               </Card>

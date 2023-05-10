@@ -18,7 +18,7 @@ import { useCondition } from '../../../hooks/useCondition'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
-export default function View({ id, metadata, initialValues }) {
+export default function View({ id, metadata, initialValues, footer }) {
     
     const toast = useRef(null)
     const { convertData } = useConvertFormData()
@@ -109,6 +109,9 @@ export default function View({ id, metadata, initialValues }) {
                         <div className='flex justify-content-center mt-5'>
                             <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
                         </div>
+                        <div className='flex justify-content-end mt-1'>
+                            <label>{footer}</label>
+                        </div>
                     </Card>
                 </div>
             </AuthenticatedTemplate>
@@ -144,6 +147,7 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 metadata: res.data.metadata.metadata,
+                footer: res.data.footer,
                 initialValues,
             }
         }

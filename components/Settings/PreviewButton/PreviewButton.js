@@ -3,7 +3,7 @@ import ViewComponents from "../../ViewComponents/ViewComponents/ViewComponents"
 import { Button } from "primereact/button"
 import { useState } from "react"
 
-export default function PreviewButton({ metadata, conditions, conditionMapper, handleInputChange, inputs, errors, assignValuesNested, validationMapper }) {
+export default function PreviewButton({ metadata, footer, conditions, conditionMapper, handleInputChange, inputs, errors, assignValuesNested, validationMapper }) {
     const [showDialog, setShowDialog] = useState(false)
 
     function handlePreview() {
@@ -25,6 +25,9 @@ export default function PreviewButton({ metadata, conditions, conditionMapper, h
                         errors={errors}
                         assignValuesNested={assignValuesNested} 
                     />
+                    <div className='flex justify-content-end mt-1'>
+                        <label>{footer}</label>
+                    </div>
                 </Dialog>
             }
         </>
