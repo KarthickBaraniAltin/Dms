@@ -7,11 +7,8 @@ import { getFormDefinition } from "../../../api/apiCalls"
 import { useApi } from "../../../hooks/useApi"
 import { formBuilderApiRequest } from "../../../src/msalConfig"
 import Head from "next/head"
-import Link from "next/link"
 import { Column } from "primereact/column"
 import { Card } from "primereact/card"
-
-
 
 export default function Home({ data }) {
 
@@ -29,7 +26,7 @@ export default function Home({ data }) {
         sortField: null,
         sortOrder: null,
         filters: {
-            'global': {value: 'asdasd', matchMode: 'contains'}
+            'global': {value: '', matchMode: 'contains'}
         }
     })
 
@@ -57,6 +54,7 @@ export default function Home({ data }) {
             }
 
             const res = await callApi(params)
+            console.log('Res = ', res)
             setValues(res?.data?.formDataRecords)
             setTotalRecords(res?.data?.count)
         }
@@ -129,8 +127,15 @@ export default function Home({ data }) {
     }
 
     const createDataTableColumns = () => {
+        console.log("Data = ", data)
         return (
-            data.metadata.metadata.map(({label, name}) => {
+            Object.values(data.metadata.metadata).map((value) => {
+                const { name, label, type } = value
+                
+                if (type === 'header' || type ==='subtitle' || type === 'file' || type === 'image'){
+                    return <></>
+                }
+
                 return (
                     <Column key={name} field={"data." + name} header={label} sortable />
                 )
@@ -146,7 +151,7 @@ export default function Home({ data }) {
             </Head>
             <div>
                 <AuthenticatedTemplate>
-                    <div>
+                    <div className="mt-5">
                         <Card className='card w-75 form-horizontal mt-2 mb-3' style={{'width': '90%'}} >
                             <div className='card-body'>
                                 <DataTable 
@@ -159,7 +164,6 @@ export default function Home({ data }) {
                                     selection={selectedValue} globalFilterFields={[]}
                                 >
                                     { createDataTableColumns() }
-                                    {/* <Column field='text_1924b9c2-9616-41ab-b93d-16379b95ed2c' header='Label' sortable /> */}
                                 </DataTable>
                             </div>
                         </Card>

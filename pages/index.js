@@ -108,11 +108,14 @@ export default function Home() {
   const actionBodyTemplate = (rowData) => {
       return (
           <span>
-              <Link href='/view/[id]' as={`/view/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.2rem'}}>
-                  <span className='pi pi-eye' style={{cursor: 'pointer', color: '#034692'}} />
+              <Link passHref href='/view/[id]' as={`/view/${rowData.id}`} rel='noopener noreferrer' style={{marginRight: '0.1rem'}}>
+                <i className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px', justifyContent: 'center'}}>visibility</i>
               </Link>
-              <Link href='/update/[id]' as={`/update/${rowData.id}`} rel='noopener noreferrer'>
-                  <span className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px'}}>edit_square</span>
+              <Link passHref href='/update/[id]' as={`/update/${rowData.id}`} rel='noopener noreferrer' style={{}}>
+                <i className='material-icons' style={{cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px', justifyContent: 'center'}}>edit_square</i>
+              </Link>
+              <Link passHref href={`/test/form-data-dashboard/${rowData.id}`} rel='noopener noreferrer'>
+                <i className='material-icons' style={{cursor: 'pointer', fontWeight: '200',color: '#034692', fontSize: '18px', paddingRight: '3px', justifyContent: 'center'}}>view_list</i>
               </Link>
           </span>
       )
@@ -214,8 +217,8 @@ export default function Home() {
                       size='small' loading={loading} onSelectionChange={onSelectionChange}
                       selection={selectedValue} globalFilterFields={[]}
                   >
-                      <Column field='action' headerStyle={{...headerStyle, width: '6%'}} header='Action' body={actionBodyTemplate} />
-                      <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
+                      <Column field='action' headerStyle={{...headerStyle, width: '8%'}} header='Action' body={actionBodyTemplate} />
+                      <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{...headerStyle, width: '18%'}} sortable />
                       <Column className='dashboardTitle' field='description' header='Description' headerStyle={{...headerStyle, width: '20%'}} sortable />
                       <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{...headerStyle, width: '20%'}} sortable />
                       <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{...headerStyle, width: '20%'}} sortable />
