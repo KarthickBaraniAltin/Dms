@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps, ...appProps }) {
     return (
       <>
         <MsalProvider instance={msalInstance}>
-          <Navbar/>
+          <Navbar />
           <Component {...pageProps} />
         </MsalProvider>
       </>

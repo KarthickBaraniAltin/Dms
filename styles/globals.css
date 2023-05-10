@@ -43,9 +43,9 @@ body {
   border: 1px solid white;
 }
 
-.form-horizontal{
+.form-horizontal {
   /* display:block; */
-  margin:0 auto;
+  margin: 0 auto;
 }
 
 .footer-bs {
@@ -60,13 +60,13 @@ body {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 
-.label-with-asteriks > label {
+.label-with-asteriks>label {
   padding-right: 10px;
   padding-right: 1ch;
   position: relative;
 }
 
-.label-with-asteriks.required > label::before {
+.label-with-asteriks.required>label::before {
   color: red;
   content: "*";
   position: absolute;
@@ -74,10 +74,10 @@ body {
 }
 
 .alert {
-  height:51%;    
+  height: 51%;
 }
 
-.rmsc  {
+.rmsc {
   --rmsc-border: rgb(0, 0, 0) !important;
 }
 
@@ -103,15 +103,18 @@ body {
   border: 2px solid #F7D117 !important;
   color: #034692 !important;
 }
+
 .btn:focus {
   border-color: 0 !important;
   box-shadow: 0 0 0 2px #fff, 0 0 0 4px #F7D117, 0 1px 2px 0 #000;
   outline: none;
 }
+
 .btn.btn-teritery {
   border: 2px solid #361c51;
   color: #333;
 }
+
 .btn.btn-teritery:hover {
   background-color: #361c51;
   border: 2px solid #361c51;
@@ -137,7 +140,7 @@ body {
   font-size: 20px;
 }
 
-.myTable [class~="p-datatable"] .p-datatable-thead > tr > th {
+.myTable [class~="p-datatable"] .p-datatable-thead>tr>th {
   text-align: left;
   padding: 0.4rem 0 0.5rem 0;
   border: 1px solid #004990;
@@ -148,7 +151,7 @@ body {
   font-weight: 700;
 }
 
-.myTable [class~="p-datatable"] .p-datatable-tbody > tr > td {
+.myTable [class~="p-datatable"] .p-datatable-tbody>tr>td {
   padding: 0.9rem 0 1rem 0;
   font-size: 0.9375rem;
   color: #4F4F4F;
@@ -171,73 +174,95 @@ body {
 .myTable [class~="p-datatable"] .p-sortable-column:not(.p-highlight):hover {
   background-color: transparent;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column .p-sortable-column-icon {
   margin-left: 2px;
   color: #004990;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column.p-highlight {
   background: transparent;
   color: #034692;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column.p-highlight:hover {
   background: transparent;
   color: #034692;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column.p-highlight:hover .p-sortable-column-icon {
   color: #034692;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column.p-highlight .p-sortable-column-icon {
   color: #034692;
 }
+
 .myTable [class~="p-datatable"] .p-sortable-column:focus {
   border-color: #004990;
   box-shadow: #004990 0px 0px 0px 1px inset;
   outline: none;
 }
+
 .myTable [class~="p-datatable"] .p-paginator {
   justify-content: end;
   padding-right: 0;
   font-size: 13px;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-first {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.myTable [class~="p-datatable"] .p-paginator .p-paginator-first, .myTable [class~="p-datatable"] .p-paginator .p-paginator-last, .myTable [class~="p-datatable"] .p-paginator .p-paginator-next, .myTable [class~="p-datatable"] .p-paginator .p-paginator-prev {
+
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-first,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-last,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-next,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-prev {
   background-color: #E2ECFB;
   color: #333;
   height: 1.8rem;
   min-width: 2.5rem;
   font-size: 1rem;
 }
-.myTable [class~="p-datatable"] .p-paginator .p-paginator-first:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-last:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-next:focus, .myTable [class~="p-datatable"] .p-paginator .p-paginator-prev:focus {
+
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-first:focus,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-last:focus,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-next:focus,
+.myTable [class~="p-datatable"] .p-paginator .p-paginator-prev:focus {
   border-color: #004990 !important;
   box-shadow: #004990 0px 0px 0px 1px inset !important;
   outline: none;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page {
   height: 1.8rem;
   min-width: 2rem;
   font-size: 1rem;
   background-color: #E2ECFB;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: #004990;
   border-color: #004990;
   color: #fff;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page.p-highlight:hover {
   background-color: #F7D117;
   color: #333;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-pages .p-paginator-page:focus {
   border-color: #004990 !important;
   box-shadow: #004990 0px 0px 0px 1px inset !important;
   outline: none;
 }
+
 .myTable [class~="p-datatable"] .p-paginator .p-paginator-current {
   color: #333;
 }
+
 .myTable [class~="p-datatable"] .p-paginator-bottom {
   border-width: 0;
 }
@@ -276,4 +301,29 @@ pre::-webkit-scrollbar-thumb {
 
 .emoji.happysmile {
   background-image: url(../public/images/emoji/1F642.png);
+}
+
+
+.bgPrimary {
+  background-color: #004990
+}
+
+.bgPrimaryLight {
+  background-color: #f7f9fc
+}
+
+.bgSecondary {
+  background-color: #ffd200
+}
+
+.bgSecondaryLight {
+  background-color: #fffbe5;
+}
+
+.colorPrimary {
+  color: #004990;
+}
+
+.colorSecondary {
+  color: #ffd200;
 }

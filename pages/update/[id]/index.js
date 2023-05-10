@@ -20,18 +20,28 @@ import CreateComponents from '../../../components/CreationComponents/CreateCompo
 import { Droppable } from '../../../components/DndComponents/Droppable'
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import { Toast } from 'primereact/toast'
+//
+import Flex from '../../../components/Layout/Flex'
+import { Button } from 'primereact/button'
+import { Toolbar } from 'primereact/toolbar'
+import { TabMenu } from 'primereact/tabmenu'
+import Workflow from '../../workflow'
+
+
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export default function Update({ id, data }) {
-    
+
     const toast = useRef(null)
     const [formDefinition, setFormDefinition] = useState(data)
-    const [metadata, setMetadata] = useState(data?.metadata?.metadata ?? {}) 
+    const [metadata, setMetadata] = useState(data?.metadata?.metadata ?? {})
     const [mainFormIds, setMainFormIds] = useState([])
     const [files, setFiles] = useState({})
     const [pageNumber, setPageNumber] = useState(1)
     const [currentPage, setCurrentPage] = useState(pageNumber)
+    //
+    const [currentTabIndex, setCurrentTabIndex] = useState(0)
 
     const { handleInputChange, assignValuesNested, setInputs, deleteField, inputs } = useInputs({ initialValues: {} })
     const { errors } = useValidation({ metadata, inputs })
@@ -42,13 +52,13 @@ export default function Update({ id, data }) {
     const { loading, callApiFetch } = useApi()
     const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
-    
+
     useEffect(() => {
-        setMainFormIds(Object.keys(metadata).map(data => data))        
+        setMainFormIds(Object.keys(metadata).map(data => data))
     }, [metadata])
 
     const addMetadata = (data) => {
-        setMetadata((prevObj) => ({...prevObj, [data.guid]: data}))
+        setMetadata((prevObj) => ({ ...prevObj, [data.guid]: data }))
     }
 
     const updateForm = async (event) => {
@@ -75,10 +85,10 @@ export default function Update({ id, data }) {
                 authorEmail: username,
             }
         }
-        
+
         formData.append("info", JSON.stringify(info))
         formData.append("metadata", JSON.stringify(metadata))
-        
+
         Object.keys(files).forEach((fieldName) => {
             formData.append(fieldName, files[fieldName])
         })
@@ -90,17 +100,34 @@ export default function Update({ id, data }) {
             },
             body: formData
         }
-        
+
         const res = await callApiFetch(`${api}/FormDefinition/${id}`, fetchParams)
         if (Object.keys(res).length !== 0) {
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Form Updated', life: 2500 })
             setFormDefinition(res)
             return true
-        } 
+        }
 
-        toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500 })
         return false
     }
+
+    const FormHeader = () => {
+
+        const items = [
+            { label: 'Form builder', icon: 'pi pi-fw pi-home' },
+            { label: 'Workflow builder', icon: 'pi pi-fw pi-calendar' },
+            // pi-th-large
+        ];
+
+        return (
+            <div className='mt-2' >
+                <TabMenu className='border-round' model={items} activeIndex={currentTabIndex} onTabChange={(e) => setCurrentTabIndex(e.index)} />
+            </div>
+        )
+    }
+
+    console.log(formDefinition)
 
     return (
         <>
@@ -108,44 +135,51 @@ export default function Update({ id, data }) {
                 <title>Update Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
-            <AuthenticatedTemplate>    
-                <Toast ref={toast} />           
-                <DndContext
-                        onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
-                >
-                    <div className='grid'>
-                        {renderDialog()}
-                        <ComponentPanel />
-                        <div style={{'width': '5%'}} />
-                        <Card className='mt-5' style={{'width': '60%'}}>
-                            <div className='flex justify-content-center' style={{gap: '0.5rem', marginBottom: '1rem'}}>
-                                <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} /> 
-                                <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} /> 
-                                <ShareButton formDefinition={formDefinition} /> 
-                                <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition}  /> 
+            <AuthenticatedTemplate>
+                <Toast ref={toast} />
+                <FormHeader />
+                {
+                    currentTabIndex === 0
+                        ?
+                        <DndContext
+                            onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
+                        >
+                            <div className='grid'>
+                                {renderDialog()}
+                                <ComponentPanel />
+                                <div style={{ 'width': '5%' }} />
+                                <Card className='mt-5' style={{ 'width': '60%' }}>
+                                    <div className='flex justify-content-center' style={{ gap: '0.5rem', marginBottom: '1rem' }}>
+                                        <PreviewButton metadata={metadata} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
+                                        <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} />
+                                        <ShareButton formDefinition={formDefinition} />
+                                        <StatusButton api={api} formDefinition={formDefinition} setFormDefinition={setFormDefinition} />
+                                    </div>
+                                    <Droppable id='droppable-container-form'>
+                                        <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
+                                            <CreateComponents
+                                                metadata={metadata}
+                                                setMetadata={setMetadata}
+                                                openDialog={openDialog}
+                                                inputs={inputs}
+                                                handleInputChange={handleInputChange}
+                                                assignValuesNested={assignValuesNested}
+                                                errors={errors}
+                                                files={files}
+                                                setFiles={setFiles}
+                                                setInputs={setInputs}
+                                            />
+                                        </SortableContext>
+                                    </Droppable>
+                                </Card>
                             </div>
-                            <Droppable id='droppable-container-form'>
-                                <SortableContext items={mainFormIds} strategy={rectSortingStrategy}>
-                                    <CreateComponents 
-                                        metadata={metadata} 
-                                        setMetadata={setMetadata}
-                                        openDialog={openDialog} 
-                                        inputs={inputs} 
-                                        handleInputChange={handleInputChange} 
-                                        assignValuesNested={assignValuesNested}
-                                        errors={errors}
-                                        files={files}
-                                        setFiles={setFiles}
-                                        setInputs={setInputs}
-                                    />
-                                </SortableContext>
-                            </Droppable>
-                        </Card>
-                    </div>
-                </DndContext>
+                        </DndContext>
+                        :
+                        <Workflow formName={formDefinition.name} formId={formDefinition.id} />
+                }
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
+                <div className='card form-horizontal mt-3' style={{ 'width': '55rem' }}>
                     <div className='card-body'>
                         <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
                     </div>
@@ -176,4 +210,4 @@ export async function getServerSideProps(context) {
             }
         }
     }
-  }
+}

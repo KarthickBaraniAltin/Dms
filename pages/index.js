@@ -12,8 +12,17 @@ import { InputText } from "primereact/inputtext"
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { Button } from 'primereact/button'
-import { callMsGraph } from '../src/MsGraphApiCall'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
+import Flex from '../components/Layout/Flex'
+import Header from '../components/Header/Header'
+import avatar from '../images/avatar.webp'
+import TextInput from '../components/Input/TextInput'
+import { PanelMenu } from 'primereact/panelmenu'
+import { Approval } from '../components/WorkflowNode/Approval/Approval'
+
+
+
 
 export default function Home() {
     const { accounts } = useMsal()
@@ -176,6 +185,69 @@ export default function Home() {
 
     // console.log('test', process.env.NEXT_PUBLIC_FORM_BUILDER_API)
 
+    const modulesItems = [
+        {
+            label: 'My Dashboard',
+            icon: 'pi  pi-th-large',
+        },
+        {
+            label: 'Form builder',
+            items: [
+                {
+                    label: 'My Forms',
+                },
+                {
+                    label: 'Templates',
+                }
+            ]
+        },
+        // {
+        //     label: 'Workflow Builder',
+        //     items: [
+        //         {
+        //             label: 'My Flows',
+        //         },
+        //         {
+        //             label: 'Templates',
+        //         }
+        //     ]
+        // },
+    ]
+
+    const formItems = [
+        {
+            label: 'Form Data',
+        },
+        {
+            label: 'Drafts',
+        },
+        {
+            label: 'In Progress',
+        },
+        {
+            label: 'Awaiting For Me',
+        },
+        {
+            label: 'Approved',
+        },
+        {
+            label: 'Rejected',
+        }
+    ]
+    const documentItems = [
+
+        {
+            label: 'Awaiting For Me',
+        },
+        {
+            label: 'Previously Submitted',
+        },
+        {
+            label: 'Document Repo',
+        }
+    ]
+
+
     return (
         <>
             <Head>
@@ -206,25 +278,65 @@ export default function Home() {
                         <Button className='mt-3' label='Create' style={{ width: '100px' }} loading={createFormLoading} onClick={createForm} />
                     </div>
                 </Dialog>
-                <Card className='card mt-5 form-horizontal' style={{ width: '80%' }}>
-                    <DataTable
-                        value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
-                        dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
-                        totalRecords={totalRecords} onPage={onPage} onSort={onSort}
-                        sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
-                        onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
-                        size='small' loading={loading} onSelectionChange={onSelectionChange}
-                        selection={selectedValue} globalFilterFields={[]}
-                    >
-                        <Column field='action' headerStyle={{ ...headerStyle, width: '6%' }} header='Action' body={actionBodyTemplate} />
-                        <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                        <Column className='dashboardTitle' field='description' header='Description' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                        <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                        <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                        <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                        <Column className='dashboardTitle' field='status' header='Status' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
-                    </DataTable>
-                </Card>
+                <Flex className={'h-full gap-2'}>
+                    <aside className={`bgPrimaryLight my-5 border-round`}>
+                        <Flex direction={'column'} >
+                            <Flex className={'justify-content-center'} >
+                                <Header size={2}>Peda Docs</Header>
+                            </Flex>
+                            <Flex className={'align-items-center justify-content-around gap-2'} >
+                                <Flex direction={'column'} >
+                                    <Header size={4} >Jhon Smith</Header>
+                                    <small>Senior developer</small>
+                                </Flex>
+                                <Flex className={'align-items-center gap-2'}>
+                                    <Image src={avatar.src} width={50} height={50} alt={'Avatar'} />
+                                    <Flex direction={'column'} >
+                                        <Button icon="pi pi-cog" rounded text severity="info" aria-label="User" />
+                                        <Button icon="pi pi-share-alt" rounded text severity="info" aria-label="User" />
+                                    </Flex>
+                                </Flex>
+                            </Flex>
+                            <Flex className={'justify-content-center'} >
+                                <div>
+                                    <TextInput label='Quick Search' />
+                                </div>
+                            </Flex>
+                            <Header size={4} className={'mx-2'} >Modules</Header>
+                            <Flex>
+                                <PanelMenu model={modulesItems} className="w-full md:w-25rem" />
+                            </Flex>
+                            <Header size={4} className={'mx-2'} >Forms</Header>
+                            <Flex>
+                                <PanelMenu model={formItems} className="w-full md:w-25rem" />
+                            </Flex>
+                            <Header size={4} className={'mx-2'} >Documents</Header>
+                            <Flex>
+                                <PanelMenu model={documentItems} className="w-full md:w-25rem" />
+                            </Flex>
+                        </Flex>
+                    </aside>
+                    <Card className='card my-5 form-horizontal' style={{ width: '100%' }}>
+                        {/* <Approval /> */}
+                        <DataTable
+                            value={formDefinitions} lazy responsiveLayout='scroll' columnResizeMode='expand'
+                            dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
+                            totalRecords={totalRecords} onPage={onPage} onSort={onSort}
+                            sortField={lazyParams.sortField} sortOrder={lazyParams.sortOrder}
+                            onFilter={onFilter} filters={lazyParams.filters} header={renderHeader}
+                            size='small' loading={loading} onSelectionChange={onSelectionChange}
+                            selection={selectedValue} globalFilterFields={[]}
+                        >
+                            <Column field='action' headerStyle={{ ...headerStyle, width: '6%' }} header='Action' body={actionBodyTemplate} />
+                            <Column className='dashboardTitle' field='name' header='Form Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                            <Column className='dashboardTitle' field='description' header='Description' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                            <Column className='dashboardTitle' field='authorLegalName' header='Author Legal Name' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                            <Column className='dashboardTitle' field='authorId' header='Author Id' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                            <Column className='dashboardTitle' field='dateCreated' header='Date Created' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                            <Column className='dashboardTitle' field='status' header='Status' headerStyle={{ ...headerStyle, width: '20%' }} sortable />
+                        </DataTable>
+                    </Card>
+                </Flex>
             </AuthenticatedTemplate>
         </>
     )
