@@ -62,27 +62,21 @@ function SideNavbar() {
     console.log('sideRerender')
 
     return (
-        <Col className={`${sideNavOpen ? 'col-2' : 'col-1'}  h-full`} >
+        <Col className={` transition-all transition-duration-500 ${sideNavOpen ? 'col-2' : 'col-1'} h-full`} >
             <aside className="p-3 bg-white border-round shadow-3 h-full" >
                 <Flex direction={'column'} >
                     <Flex className={'justify-content-end'} >
                         <Button className="w-100 bg-white border-none outline-none" onClick={() => setSideNavOpen(prev => !prev)} >
                             {
-                                <div className={`${sideNavOpen ? '' : 'rotate-180 animation-duration-500'}`} >
+                                <div className={`transition-all transition-duration-500 ${sideNavOpen ? '' : '-rotate-180'}`} >
                                     <Image src={backArrowIcon} alt={'BackIcon'} />
                                 </div>
                             }
                         </Button>
                     </Flex>
-                    {
-                        sideNavOpen
-                            ?
-                            <div>
-                                <Header size={4} style={{ color: '#004990' }} className='font-semi' >Custom Node</Header>
-                            </div>
-                            :
-                            null
-                    }
+                    <div>
+                        <Header size={4} style={{ color: '#004990' }} className='font-semi' >{sideNavOpen ? 'Custom Node' : 'C'}</Header>
+                    </div>
                     <div >
                         {
                             fields.map(field => (<Field key={field.nodeId} nodeName={field.nodeName} nodeType={field.nodeType} />))

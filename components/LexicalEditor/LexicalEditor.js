@@ -23,14 +23,15 @@ import CodeHighlightPlugin from "./Plugins/CodeHighlightPlugin/CodeHighlightPlug
 import AutoLinkPlugin from "./Plugins/AutoLinkPlugin/AutoLinkPlugin";
 
 import styles from './LexicalEditor.module.css'
+import clsx from "clsx";
 
 function Placeholder() {
   return <div className={styles['editor-placeholder']}>Enter some rich text...</div>
 }
 
-export default function Editor({value, name, onChange}) {
+export default function Editor({ value, name, onChange, className }) {
 
-  const initialValue = value ?? JSON.stringify({"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
+  const initialValue = value ?? JSON.stringify({ "root": { "children": [{ "children": [{ "detail": 0, "format": 0, "mode": "normal", "style": "", "text": "", "type": "text", "version": 1 }], "direction": "ltr", "format": "", "indent": 0, "type": "paragraph", "version": 1 }], "direction": "ltr", "format": "", "indent": 0, "type": "root", "version": 1 } })
 
   const editorConfig = {
     // The editor theme
@@ -65,28 +66,28 @@ export default function Editor({value, name, onChange}) {
 
   return (
     <>
-      <div className={styles['lexical-body']}>
-          <LexicalComposer initialConfig={editorConfig}>
-              <div className={styles['editor-container']}>
-                  <ToolbarPlugin />
-                  <div className={styles['editor-inner']}>
-                      <RichTextPlugin
-                          contentEditable={<ContentEditable className={styles['editor-input']} />}
-                          placeholder={<Placeholder />}
-                          ErrorBoundary={LexicalErrorBoundary}
-                      />
-                      <HistoryPlugin />
-                      <OnChangePlugin onChange={(editorState, editor) => handleChange(editorState, editor)} />
-                      <AutoFocusPlugin />
-                      <CodeHighlightPlugin />
-                      <ListPlugin />
-                      <LinkPlugin />
-                      <AutoLinkPlugin />
-                      <ListMaxIndentLevelPlugin maxDepth={7} />
-                      <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-                  </div>
-              </div>
-          </LexicalComposer>
+      <div className={clsx(styles['lexical-body'], className)}>
+        <LexicalComposer initialConfig={editorConfig}>
+          <div className={styles['editor-container']}>
+            <ToolbarPlugin />
+            <div className={styles['editor-inner']}>
+              <RichTextPlugin
+                contentEditable={<ContentEditable className={styles['editor-input']} />}
+                placeholder={<Placeholder />}
+                ErrorBoundary={LexicalErrorBoundary}
+              />
+              <HistoryPlugin />
+              <OnChangePlugin onChange={(editorState, editor) => handleChange(editorState, editor)} />
+              <AutoFocusPlugin />
+              <CodeHighlightPlugin />
+              <ListPlugin />
+              <LinkPlugin />
+              <AutoLinkPlugin />
+              <ListMaxIndentLevelPlugin maxDepth={7} />
+              <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+            </div>
+          </div>
+        </LexicalComposer>
       </div>
     </>
   );

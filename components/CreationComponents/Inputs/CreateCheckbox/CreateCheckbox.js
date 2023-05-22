@@ -8,8 +8,8 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 
-export default function CreateCheckbox({ metadata, onChange, openDialog, errors }) {
-    const { name, label, subtitle, validations, defaultValue } = metadata 
+export default function CreateCheckbox({ metadata, onChange, openDialog, errors, setMetadata }) {
+    const { name, label, subtitle, validations, defaultValue } = metadata
     const defaultValueIds = metadata?.options
         .map((option, index) => {
             if (option.value === defaultValue?.[index]) {
@@ -19,7 +19,7 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
         .filter(id => id !== undefined)
     const [checkedValues, setCheckedValues] = useState(metadata?.options)
     const [checkedIds, setCheckedIds] = useState([])
-    const [eventObject, setEventObject] = useState({target: {name: name, value: []}})
+    const [eventObject, setEventObject] = useState({ target: { name: name, value: [] } })
 
     useEffect(() => {
         setCheckedIds(defaultValueIds)
@@ -29,7 +29,7 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
         let selectedCheckbox = [...checkedValues]
         let selectedId = [...checkedIds]
 
-        if(e.checked) {
+        if (e.checked) {
             selectedCheckbox.push(e.value)
             selectedId.push(e.target.id)
         }
@@ -47,28 +47,28 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
             return tempState
         })
 
-        return { ...eventObject, target: {...eventObject.target, value: selectedCheckbox} }
+        return { ...eventObject, target: { ...eventObject.target, value: selectedCheckbox } }
     }
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
-                <Label label={label} validations={validations}/>
+                <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                {metadata.options.length > 0 ? 
+                {metadata.options.length > 0 ?
                     <>
                         {metadata.options.map((checkboxes, index) => {
                             return (
                                 <div className='mb-1' key={index}>
-                                    <Checkbox 
+                                    <Checkbox
                                         className='mr-1'
-                                        key={index} 
-                                        id={index} 
-                                        value={checkboxes.value} 
-                                        onChange={(e) => onChange(onCheckboxChange(e))} 
-                                        checked={checkedIds.some(id => id === index)} 
+                                        key={index}
+                                        id={index}
+                                        value={checkboxes.value}
+                                        onChange={(e) => onChange(onCheckboxChange(e))}
+                                        checked={checkedIds.some(id => id === index)}
                                     />
                                     <label>{checkboxes.value}</label>
                                 </div>
@@ -80,6 +80,6 @@ export default function CreateCheckbox({ metadata, onChange, openDialog, errors 
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
             </InputsContainer>
-        </ComponenentContainer>
+        </ComponenentContainer >
     )
 }

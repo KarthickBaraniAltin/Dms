@@ -11,20 +11,21 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Mask/Mask.module.css'
 
 export default function ViewMask({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, defaultValue, mask, validations } = metadata
+    const { name, label, subtitle, defaultValue, disabled, mask, validations } = metadata
 
     return (
-        <ComponenentContainer> 
+        <ComponenentContainer>
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <InputMask 
-                    className={clsx('col-12', sharedStyles.mask, errors?.length > 0 && 'p-invalid')} 
-                    name={name} 
+                <InputMask
+                    className={clsx('col-12', sharedStyles.mask, errors?.length > 0 && 'p-invalid')}
+                    name={name}
                     value={value ?? defaultValue}
                     onChange={onChange}
-                    mask={mask} 
+                    mask={mask}
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

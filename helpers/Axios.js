@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 
-
-
-const baseUrl = 'https://formworkflowbuilder.azurewebsites.net/api/'
+const baseUrl = process.env.NODE_ENV
 
 export const axiosGet = (url) => {
 
@@ -57,5 +55,9 @@ export const axiosDelete = (url) => {
   return axios.delete(baseUrl + url, config)
 }
 
-
+async function fetch() {
+  const res = await fetch('https://.../posts');
+  const data = await res.json()
+  return data
+}
 

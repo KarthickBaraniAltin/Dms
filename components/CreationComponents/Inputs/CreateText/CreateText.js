@@ -11,22 +11,21 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 import ComponenentContainer from '../../../SharedComponents/ComponentContainer/ComponentContainer'
 import clsx from 'clsx'
 
-export default function CreateText({metadata, value, onChange, openDialog, errors}) {  
+export default function CreateText({ metadata, value, onChange, openDialog, errors, setMetadata }) {
   const { name, className, label, subtitle, defaultValue, validations, guid, id, page } = metadata
-
   return (
     <ComponenentContainer>
-      <SettingsButton openDialog={openDialog} componentData={metadata} />
+      <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
       <LabelContainer>
-        <Label label={label} validations={validations}/>       
+        <Label label={label} validations={validations} />
       </LabelContainer>
       <InputsContainer>
-        <InputText 
-          name={name} 
-          className={clsx('col-12', styles.input, errors?.length > 0 && 'p-invalid')} 
-          autoComplete='off' 
-          value={value ?? defaultValue} 
-          onChange={onChange} 
+        <InputText
+          name={name}
+          className={clsx('col-12', styles.input, errors?.length > 0 && 'p-invalid')}
+          autoComplete='off'
+          value={value ?? defaultValue}
+          onChange={onChange}
         />
         <Subtitle subtitle={subtitle} />
         <Errors errors={errors} />

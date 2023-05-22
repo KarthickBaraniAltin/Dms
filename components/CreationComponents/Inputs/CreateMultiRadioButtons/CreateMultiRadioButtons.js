@@ -9,9 +9,9 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
-export default function CreateMultiRadioButtons ({ metadata, openDialog, value, onChange, errors }) {
+export default function CreateMultiRadioButtons({ metadata, openDialog, value, onChange, errors, setMetadata }) {
     const { name, label, subtitle, options, otherOptions, validations, defaultValue } = metadata
-    
+
     const [checkedValue, setCheckedValue] = useState()
     const [otherChecked, setOtherChecked] = useState()
     const [otherOptionInputValue, setOtherOptionInputValue] = useState('')
@@ -37,26 +37,26 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                {options.length > 0 || otherOptions.length > 0 ? 
+                {options.length > 0 || otherOptions.length > 0 ?
                     <>
                         {options.map((radioButton, index) => {
                             return (
                                 <div className='mt-1' key={index}>
                                     <RadioButton
-                                        value={radioButton.value} 
-                                        name={name} 
+                                        value={radioButton.value}
+                                        name={name}
                                         onChange={(e) => {
                                             setCheckedValue(radioButton.value)
                                             setOtherChecked(null)
                                             onChange(e)
-                                        }} 
+                                        }}
                                         checked={checkedValue ? checkedValue === radioButton.value : defaultValue === radioButton.value}
-                                        style={{marginRight: '0.5rem'}}
+                                        style={{ marginRight: '0.5rem' }}
                                     />
                                     <label>{radioButton.value}</label>
                                 </div>
@@ -72,7 +72,7 @@ export default function CreateMultiRadioButtons ({ metadata, openDialog, value, 
                                 />
                                 <label> Other:</label>
                                 {otherChecked &&
-                                    <InputText className='col-12 mt-2' value={otherOptionInputValue} onChange={(e) => handleOtherOptionInputValueChange(e.target.value)}  />
+                                    <InputText className='col-12 mt-2' value={otherOptionInputValue} onChange={(e) => handleOtherOptionInputValueChange(e.target.value)} />
                                 }
                             </div>
                         }

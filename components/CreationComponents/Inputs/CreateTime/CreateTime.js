@@ -11,25 +11,25 @@ import clsx from 'clsx'
 
 import sharedStyles from '../../../SharedComponents/Calendar/Calendar.module.css'
 
-export default function CreateTime({metadata, value, onChange, openDialog, errors}) {  
+export default function CreateTime({ metadata, value, onChange, openDialog, errors, setMetadata }) {
   const { name, className, label, subtitle, defaultValue, validations, guid, id, page } = metadata
   const convertDataFormat = defaultValue ? new Date(defaultValue) : null
 
   return (
     <ComponenentContainer>
-      <SettingsButton openDialog={openDialog} componentData={metadata} />
+      <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
       <LabelContainer>
-        <Label label={label} validations={validations}/>       
+        <Label label={label} validations={validations} />
       </LabelContainer>
       <InputsContainer>
-        <Calendar 
+        <Calendar
           name={name}
-          className={clsx('col-12', sharedStyles.calendar , errors?.length > 0 && 'p-invalid')} 
-          timeOnly 
-          showTime 
-          hourFormat='12' 
-          value={value ?? convertDataFormat} 
-          onChange={onChange} 
+          className={clsx('col-12', sharedStyles.calendar, errors?.length > 0 && 'p-invalid')}
+          timeOnly
+          showTime
+          hourFormat='12'
+          value={value ?? convertDataFormat}
+          onChange={onChange}
         />
         <Subtitle subtitle={subtitle} />
         <Errors errors={errors} />

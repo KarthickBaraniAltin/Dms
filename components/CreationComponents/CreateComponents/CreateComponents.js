@@ -17,8 +17,9 @@ import CreateTime from '../Inputs/CreateTime/CreateTime'
 import CreateFileInput from '../Inputs/CreateFileInput/CreateFileInput'
 import CreateImage from '../Inputs/CreateImage/CreateImage'
 import CreateHeader from '../Inputs/CreateHeader/CreateHeader'
+import CreateAddress from '../Inputs/CreateAddress/CreateAddress'
 
-export default function CreateComponents ({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
+export default function CreateComponents({ metadata, assignValuesNested, openDialog, inputs, setMetadata, handleInputChange, errors, setFiles, setInputs }) {
     const objectKeysArray = Object.keys(metadata)
 
     const componentMapper = {
@@ -37,31 +38,32 @@ export default function CreateComponents ({ metadata, assignValuesNested, openDi
         'subtitle': CreateReadonlySubtitle,
         'signature': CreateSignature,
         'radiobutton': CreateMultiRadioButtons,
-        'checkbox': CreateCheckbox
+        'checkbox': CreateCheckbox,
+        'address': CreateAddress
     }
 
     return (
         <>
-            {objectKeysArray?.length === 0 && <h5 style={{margin: '0 auto'}}>Drop field here</h5>}
+            {objectKeysArray?.length === 0 && <h5 style={{ margin: '0 auto' }}>Drop field here</h5>}
             {objectKeysArray?.map(guid => {
                 const { type, name, divClassName } = metadata[guid]
                 return (
                     <div className={clsx(divClassName, 'mt-4')} key={guid}>
                         <Sortable key={guid} id={guid}>
-                                {createElement(componentMapper[type],
-                                    {
-                                        guid: guid,
-                                        setMetadata: setMetadata,
-                                        metadata: metadata[guid],
-                                        openDialog: openDialog,
-                                        value: inputs[name],
-                                        onChange: handleInputChange,
-                                        assignValuesNested: assignValuesNested,
-                                        errors: errors[name],
-                                        setFiles: setFiles,
-                                        setInputs: setInputs
-                                    }
-                                )}
+                            {createElement(componentMapper[type],
+                                {
+                                    guid: guid,
+                                    setMetadata: setMetadata,
+                                    metadata: metadata[guid],
+                                    openDialog: openDialog,
+                                    value: inputs[name],
+                                    onChange: handleInputChange,
+                                    assignValuesNested: assignValuesNested,
+                                    errors: errors[name],
+                                    setFiles: setFiles,
+                                    setInputs: setInputs
+                                }
+                            )}
                         </Sortable>
                     </div>
                 )

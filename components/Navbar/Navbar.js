@@ -13,32 +13,35 @@ function Navbar({ formName, formId, setNodes, setEdges, nodes, edges, toast }) {
     }
 
     const onSave = () => {
-        const stringifyData = JSON.stringify({ nodes: nodes, edges: edges })
-        const postData = {
-            id: self.crypto.randomUUID(),
-            form_Id: formId,
-            form_Name: formName,
-            definition: stringifyData,
-            created_By: 'Admin',
-            created_On: "2023-04-19T11:08:20.453Z",
-            modified_By: 'Admin',
-            modified_On: "2023-04-19T11:08:20.453Z"
-        }
-        console.log(postData)
-        axiosPost('WorkflowBuilder', postData)
-            .then(() => show())
-            .catch(err => console.log('err', err))
+        console.log({ nodes: nodes, edges: edges })
+        // const stringifyData = JSON.stringify({ nodes: nodes, edges: edges })
+        // const postData = {
+        //     id: self.crypto.randomUUID(),
+        //     form_Id: formId,
+        //     form_Name: formName,
+        //     definition: stringifyData,
+        //     created_By: 'Admin',
+        //     created_On: "2023-04-19T11:08:20.453Z",
+        //     modified_By: 'Admin',
+        //     modified_On: "2023-04-19T11:08:20.453Z"
+        // }
+        // console.log(postData)
+        // axiosPost('WorkflowBuilder', postData)
+        //     .then(() => show())
+        //     .catch(err => console.log('err', err))
     }
 
     const onReset = () => {
-        setNodes([...defaultNode, { ...defaultNode[0], data: { ...defaultNode[0].data, label: formName } }])
+        let node = [...defaultNode]
+        node[0].data.label = formName
+        setNodes(node)
         setEdges(defaultEdge)
         localStorage.setItem('dndId', 0)
     }
 
     return (
         <div className='flex justify-content-between align-items-center p-1 bg-white shadow-1'>
-            <img src={csnLogo.src} alt={'CSN Logo'} width={'80px'} height={'25px'} />
+            {/* <img src={csnLogo.src} alt={'CSN Logo'} width={'80px'} height={'25px'} /> */}
             <h2 style={{ color: '#004990' }} >{`Workflow Builder - ${formName}`}</h2>
             <div className='flex gap-2'>
                 <Button size={'small'} label='Reset' onClick={onReset} style={{ backgroundColor: '#fffbe5', color: '#ffd200', borderStyle: 'none' }} />

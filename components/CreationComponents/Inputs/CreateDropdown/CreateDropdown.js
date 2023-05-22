@@ -10,22 +10,22 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
 
-export default function CreateDropdown({ metadata, openDialog, value, onChange, errors }) {
+export default function CreateDropdown({ metadata, openDialog, value, onChange, errors, setMetadata }) {
     const { name, className, validations, label, subtitle, options, defaultValue } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <Dropdown 
-                    name={name} 
-                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
-                    value={value ?? defaultValue} 
-                    onChange={onChange} 
-                    options={options} 
+                <Dropdown
+                    name={name}
+                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')}
+                    value={value ?? defaultValue}
+                    onChange={onChange}
+                    options={options}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

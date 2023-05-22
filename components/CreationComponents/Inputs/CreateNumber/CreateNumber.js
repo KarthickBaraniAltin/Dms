@@ -11,24 +11,24 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 
 import sharedStyles from '../../../SharedComponents/Number/Number.module.css'
 
-export default function CreateNumber({metadata, value, onChange, openDialog, errors}) {
+export default function CreateNumber({ metadata, value, onChange, openDialog, errors, setMetadata }) {
     const { name, validations, label, subtitle, defaultValue, guid, id, page } = metadata
 
     return (
         <ComponenentContainer>
-            <SettingsButton openDialog={openDialog} componentData={metadata} />
+            <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
             <LabelContainer>
-                <Label label={label} validations={validations}/>
+                <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <InputNumber 
-                    name={name} 
+                <InputNumber
+                    name={name}
                     className={clsx('col-12', sharedStyles.number, errors?.length > 0 && 'p-invalid')}
-                    value={value ?? defaultValue} 
+                    value={value ?? defaultValue}
                     onChange={onChange}
-                    useGrouping={false} 
-                /> 
-                <Subtitle subtitle={subtitle}/>
+                    useGrouping={false}
+                />
+                <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />
             </InputsContainer>
         </ComponenentContainer>

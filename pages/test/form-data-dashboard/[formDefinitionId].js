@@ -7,11 +7,8 @@ import { getFormDefinition } from "../../../api/apiCalls"
 import { useApi } from "../../../hooks/useApi"
 import { formBuilderApiRequest } from "../../../src/msalConfig"
 import Head from "next/head"
-import Link from "next/link"
 import { Column } from "primereact/column"
 import { Card } from "primereact/card"
-
-
 
 export default function Home({ data }) {
 
@@ -21,7 +18,7 @@ export default function Home({ data }) {
     // Below code is for dashboard, we can movi it into useDashboard
     const [selectedValue, setSelectedValue] = useState({})
     const [values, setValues] = useState(false)
-    const [totalRecords, setTotalRecords] = useState(0) 
+    const [totalRecords, setTotalRecords] = useState(0)
     const [lazyParams, setLazyParams] = useState({
         first: 0,
         page: 0,
@@ -29,7 +26,7 @@ export default function Home({ data }) {
         sortField: null,
         sortOrder: null,
         filters: {
-            'global': {value: 'asdasd', matchMode: 'contains'}
+            'global': { value: '', matchMode: 'contains' }
         }
     })
 
@@ -57,12 +54,13 @@ export default function Home({ data }) {
             }
 
             const res = await callApi(params)
+            console.log('Res = ', res)
             setValues(res?.data?.formDataRecords)
             setTotalRecords(res?.data?.count)
         }
 
         loadLazyData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lazyParams, loadLazyTimeout, acquireToken])
 
 
@@ -79,11 +77,11 @@ export default function Home({ data }) {
         for (const key in lazyParams) {
             if (key !== 'filters') {
                 if (lazyParams[key] !== null && lazyParams[key] !== undefined) {
-                queryString += `${key}=${lazyParams[key]}&`;
-            }
-          } else if (lazyParams.filters.global.value) {
+                    queryString += `${key}=${lazyParams[key]}&`;
+                }
+            } else if (lazyParams.filters.global.value) {
                 queryString += `global=${lazyParams.filters.global.value}&`;
-          }
+            }
         }
         return queryString.slice(0, -1);
     }
@@ -110,27 +108,34 @@ export default function Home({ data }) {
         const value = e.target.value
         let _filters = { ...lazyParams.filters }
         _filters['global'].value = value
-    
+
         setLazyParams({ ...lazyParams })
     }
 
     const renderHeader = () => {
         return (
-          <>
-            <div className='flex justify-content-between'>
-              Form Data
-              <span className="p-input-icon-left" >
-                  <i className="pi pi-search" />
-                  <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
-              </span>
-            </div>
-          </> 
+            <>
+                <div className='flex justify-content-between'>
+                    Form Data
+                    <span className="p-input-icon-left" >
+                        <i className="pi pi-search" />
+                        <InputText value={lazyParams.filters.global.value ?? ''} onChange={onGlobalFilterChange} placeholder="Search" />
+                    </span>
+                </div>
+            </>
         )
     }
 
     const createDataTableColumns = () => {
+        console.log("Data = ", data)
         return (
-            data.metadata.metadata.map(({label, name}) => {
+            Object.values(data.metadata.metadata).map((value) => {
+                const { name, label, type } = value
+
+                if (type === 'header' || type === 'subtitle' || type === 'file' || type === 'image') {
+                    return <></>
+                }
+
                 return (
                     <Column key={name} field={"data." + name} header={label} sortable />
                 )
@@ -146,10 +151,10 @@ export default function Home({ data }) {
             </Head>
             <div>
                 <AuthenticatedTemplate>
-                    <div>
-                        <Card className='card w-75 form-horizontal mt-2 mb-3' style={{'width': '90%'}} >
+                    <div className="mt-5">
+                        <Card className='card w-75 form-horizontal mt-2 mb-3' style={{ 'width': '90%' }} >
                             <div className='card-body'>
-                                <DataTable 
+                                <DataTable
                                     value={values} lazy responsiveLayout='scroll' columnResizeMode='expand'
                                     dataKey='id' paginator first={lazyParams.first} rows={lazyParams.rows}
                                     totalRecords={totalRecords} onPage={onPage} onSort={onSort}
@@ -158,19 +163,18 @@ export default function Home({ data }) {
                                     size='small' loading={loading} onSelectionChange={onSelectionChange}
                                     selection={selectedValue} globalFilterFields={[]}
                                 >
-                                    { createDataTableColumns() }
-                                    {/* <Column field='text_1924b9c2-9616-41ab-b93d-16379b95ed2c' header='Label' sortable /> */}
-                                </DataTable>
-                            </div>
-                        </Card>
-                    </div>
-                </AuthenticatedTemplate>
-            </div>
+                                    {createDataTableColumns()}
+                                </DataTable >
+                            </div >
+                        </Card >
+                    </div >
+                </AuthenticatedTemplate >
+            </div >
         </>
     )
 }
 
-export async function getStaticPaths({  }) {
+export async function getStaticPaths({ }) {
     return {
         paths: [], //indicates that no page needs be created at build time
         fallback: 'blocking' //indicates the type of fallback
@@ -198,4 +202,4 @@ export async function getStaticProps(context) {
             }
         }
     }
-  }
+}

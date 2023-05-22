@@ -7,7 +7,11 @@ import '../styles/globals.css'
 import Navbar from '../components/Navbar'
 import { PublicClientApplication, EventType } from '@azure/msal-browser'
 import { msalConfig } from '../src/msalConfig'
-import { MsalProvider } from '@azure/msal-react'
+import { AuthenticatedTemplate, MsalProvider } from '@azure/msal-react'
+import SideNavbar from '../components/SideNavbar/SideNavbar'
+import Flex from '../components/Layout/Flex'
+import { useState } from 'react'
+import Head from 'next/head'
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -26,6 +30,8 @@ msalInstance.addEventCallback((event) => {
 
 function MyApp({ Component, pageProps, ...appProps }) {
 
+  const [toggleSideNav, setToggleSideNav] = useState(false)
+
   const getContent = () => {
 
     if (appProps.router.pathname == '/blank') { // update with /blank
@@ -34,9 +40,20 @@ function MyApp({ Component, pageProps, ...appProps }) {
 
     return (
       <>
+        <Head>
+          <title>Form Definition Dashboard</title>
+          <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
+        </Head>
         <MsalProvider instance={msalInstance}>
-          <Navbar />
-          <Component {...pageProps} />
+          <Navbar setToggleSideNav={setToggleSideNav} />
+          <AuthenticatedTemplate>
+            <Flex className={'h-full gap-2'}>
+              <SideNavbar toggleSideNav={toggleSideNav} />
+              <div className='w-12 h-10' >
+                <Component {...pageProps} />
+              </div>
+            </Flex>
+          </AuthenticatedTemplate>
         </MsalProvider>
       </>
     )

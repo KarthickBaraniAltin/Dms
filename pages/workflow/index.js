@@ -65,12 +65,38 @@ export default function Workflow({ formName, formId }) {
 
   const onConnect = useCallback((params) => {
     console.log(params)
+
+    if (params.source === '1') {
+      setNodes(nodes => {
+        return nodes.map(node => {
+          if (node.id === params.target && node.type === 'approver') {
+            node.data = { ...node.data, level: 1 }
+          }
+          return node
+        })
+      })
+    }
+
+    if (params.source !== '1') {
+      setNodes(nodes => {
+        const nodeIndex = nodes.findIndex(node => node.id === params.source)
+        console.log('find Node', nodeIndex)
+        return nodes.map(node => {
+          if (node.id === params.target && node.type === 'approver') {
+            node.data = { ...node.data, level: nodes[nodeIndex].data.level + 1 }
+            console.log('now', node.data)
+          }
+          return node
+        })
+      })
+    }
     if (params.sourceHandle === 's-1') {
       return setEdges((eds) => addEdge({ ...params, type: 'smoothstep', label: 'Approved' }, eds))
     }
     if (params.sourceHandle === 's-2') {
       return setEdges((eds) => addEdge({ ...params, type: 'smoothstep', label: 'Rejected' }, eds))
     }
+
     return setEdges((eds) => addEdge({ ...params, type: 'smoothstep', type: 'smoothstep' }, eds))
   }, [])
 
@@ -150,7 +176,9 @@ export default function Workflow({ formName, formId }) {
         setLastNodeId(getId)
       })
       .catch(err => {
-        setNodes([...defaultNode, { ...defaultNode[0], data: { ...defaultNode[0].data, label: formName } }])
+        let node = [...defaultNode]
+        node[0].data.label = formName
+        setNodes(node)
         setEdges(defaultEdge)
         console.log('err', err)
       })

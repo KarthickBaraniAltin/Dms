@@ -1,10 +1,46 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 
+// This useValidation will get updated and needs to be checked by Alex
+// Please look at the comments
 export const useValidation = ({ metadata, inputs, files }) => {
     const [validations, setValidations] = useState({})
     const [errors, setErrors] = useState({})
-    const validate = useCallback(() => {
-        const validationMapper = {
+
+    const validationMapper = useMemo(() => {
+        return {
+            isFilled: (value) => {
+                if (typeof value === 'undefined') {
+                    return true
+                }
+
+                if (value === null) {
+                    return false
+                }
+
+                if (typeof value === 'object') {
+                    if (Array.isArray(value) && value.length > 0) {
+                        return true
+                    }
+
+                    if (!Array.isArray(value) && Object.keys(value).length > 0) {
+                        return true
+                    }
+
+                    if (value instanceof Date) {
+                        return true
+                    }
+                }
+
+                if (typeof value === 'string' && value.length > 0) {
+                    return true
+                }
+
+                return false
+            },
+            stringContains: (mainString, searchString) => {
+                return mainString.includes(searchString)
+            },
+            // Below two functions can become one function 
             minLength: (minLength, currentLength) => {
                 if (!minLength || !currentLength) {
                     return true
@@ -22,6 +58,7 @@ export const useValidation = ({ metadata, inputs, files }) => {
             intBiggerThan: (value1, value2) => {
                 return value1 > value2
             },
+            // Below two functions can become one function 
             minNum: (minNum, currentNum) => { // The minNum variable is a number because of the onValueChange attribute set in the NumberDialog while currentNum is a string.
                 if (!minNum || !currentNum) {
                     return true
@@ -36,10 +73,12 @@ export const useValidation = ({ metadata, inputs, files }) => {
 
                 return maxNum >= currentNum
             },
-            minDate: (minDate, inputValue, calendarGuid) => {
+            // Below two functions can become one function 
+            minDate: (minDate, inputValue) => {
                 if (minDate === undefined) return
-                metadata[calendarGuid].minDate = minDate      
-                  
+                // why we have access to metadata
+                // metadata[calendarGuid].minDate = minDate      
+
 
                 if (minDate.getFullYear() >= inputValue?.getFullYear()) {
                     if (minDate.getMonth() >= inputValue?.getMonth()) {
@@ -51,12 +90,13 @@ export const useValidation = ({ metadata, inputs, files }) => {
                     return false
                 }
             },
-            maxDate: (maxDate, inputValue, calendarGuid) => {
+            maxDate: (maxDate, inputValue) => {
                 if (maxDate === undefined) return
-                metadata[calendarGuid].maxDate = maxDate
+                // why we have access to metadata
+                // metadata[calendarGuid].maxDate = maxDate
 
                 if (maxDate.getFullYear() <= inputValue?.getFullYear()) {
-                    if (maxDate.getMonth() <= inputValue?. getMonth()) {
+                    if (maxDate.getMonth() <= inputValue?.getMonth()) {
                         if (maxDate.getDate() < inputValue?.getDate()) {
                             return true
                         }
@@ -65,6 +105,7 @@ export const useValidation = ({ metadata, inputs, files }) => {
                     return false
                 }
             },
+            // Below two functions can become one function 
             minTime: (minTime, currentTime) => {
                 if (minTime === undefined) return
 
@@ -91,27 +132,28 @@ export const useValidation = ({ metadata, inputs, files }) => {
                     return false
                 }
             },
-            setMask: (mask, maskGuid) => {
-                metadata[maskGuid].mask = mask
-            },
+            // What is this doing in here this is not a validation
+            // setMask: (mask, maskGuid) => {
+            //     metadata[maskGuid].mask = mask
+            // },
+            // Below two functions can become one function 
             minFile: (minFileSize, files) => {
                 if (!minFileSize || !files) return true
 
                 for (const file of files) {
                     if (minFileSize > file.size) {
-                      return false
+                        return false
                     }
                 }
-
 
                 return true
             },
             maxFile: (maxFileSize, files) => {
                 if (!maxFileSize || !files) return true
-                
+
                 for (const file of files) {
                     if (maxFileSize < file.size) {
-                      return false
+                        return false
                     }
                 }
 
@@ -130,11 +172,14 @@ export const useValidation = ({ metadata, inputs, files }) => {
                     })
                 })
             },
-            fonts: (font, guid) => {               
-                metadata[guid].fontStyle = font
-            }
+            // What is this doing in here this is not a validation
+            // fonts: (font, guid) => {               
+            //     metadata[guid].fontStyle = font
+            // }
         }
+    }, [])
 
+    const validate = useCallback(() => {
         if (metadata && Object.keys(metadata).length > 0) {
             const errorMessages = {}
 
@@ -146,22 +191,17 @@ export const useValidation = ({ metadata, inputs, files }) => {
 
                 if (validations) {
                     for (const [key, value] of Object.entries(validations)) {
-                        switch(key) {
+                        switch (key) {
                             case 'required': {
                                 const { message, isRequired } = value
-                                if ((inputValue === '' || (Array.isArray(inputValue) && inputValue.length === 0)) && isRequired) {
-                                    // The reason I used inputValue === '' is so that the required validation doesn't
-                                    // activate until the user actually changes the input and leaves it blank.
+                                if (!validationMapper.isFilled(inputValue) && isRequired) {
                                     currentErrors.push(message ?? `This field is required`)
                                 }
                                 break
                             }
                             case 'fileRequired': {
-                                console.log("Value = ", value)
                                 const { message, isFileRequired } = value
-                                console.log("file = ", isFileRequired)
                                 if ((Array.isArray(currentFiles) && currentFiles.length === 0) && isFileRequired) {
-                                    console.log("file 2")
                                     currentErrors.push(message ?? `This field is required`)
                                 }
                                 break
@@ -273,8 +313,8 @@ export const useValidation = ({ metadata, inputs, files }) => {
                                     })
                                     const finalFileTypeMessage = (
                                         <div>
-                                            <p style={{margin: 0}}>Accepted file types:</p>
-                                            <ul style={{margin: 0, padding: '0 1rem'}}>{validFileTypes}</ul>
+                                            <p style={{ margin: 0 }}>Accepted file types:</p>
+                                            <ul style={{ margin: 0, padding: '0 1rem' }}>{validFileTypes}</ul>
                                         </div>
                                     )
                                     currentErrors.push(message ?? finalFileTypeMessage)
@@ -300,13 +340,13 @@ export const useValidation = ({ metadata, inputs, files }) => {
             // metadata.forEach(element => {
             // })
 
-            setErrors({...errorMessages})
+            setErrors({ ...errorMessages })
         }
-    }, [metadata, inputs, files])
+    }, [metadata, inputs, files, validationMapper])
 
     useEffect(() => {
         validate()
     }, [metadata, validate])
-    
-    return { errors }
+
+    return { errors, validationMapper }
 }

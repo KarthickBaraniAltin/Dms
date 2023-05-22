@@ -10,8 +10,8 @@ import InputsContainer from '../../../SharedComponents/InputsContainer/InputsCon
 import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Signature/Signature.module.css'
 
-export default function ViewSignature ({metadata, value, onChange, errors }) {
-    const { name, label, subtitle, guid, fontStyle, validations } = metadata
+export default function ViewSignature({ metadata, value, onChange, errors }) {
+    const { name, label, subtitle, disabled, fontStyle, validations } = metadata
 
     return (
         <ComponenentContainer>
@@ -19,12 +19,13 @@ export default function ViewSignature ({metadata, value, onChange, errors }) {
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <InputText 
-                    className={clsx('col-12', sharedStyles.signature, errors?.length > 0 && 'p-invalid')} 
-                    name={name} 
-                    value={value} 
-                    onChange={onChange} 
-                    style={{fontFamily: fontStyle}}
+                <InputText
+                    className={clsx('col-12', sharedStyles.signature, errors?.length > 0 && 'p-invalid')}
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    style={{ fontFamily: fontStyle }}
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

@@ -11,20 +11,21 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Number/Number.module.css'
 
 export default function ViewNumber({ metadata, value, onChange, errors, invalidStyle }) {
-    const { name, label, subtitle, defaultValue, validations } = metadata
+    const { name, label, subtitle, disabled, defaultValue, validations } = metadata
 
     return (
-        <ComponenentContainer> 
+        <ComponenentContainer>
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <InputNumber 
-                    className={clsx('col-12', sharedStyles.number, errors?.length > 0 && 'p-invalid')} 
-                    name={name} 
-                    value={value ?? defaultValue} 
-                    onChange={onChange} 
-                    useGrouping={false} 
+                <InputNumber
+                    className={clsx('col-12', sharedStyles.number, errors?.length > 0 && 'p-invalid')}
+                    name={name}
+                    value={value ?? defaultValue}
+                    onChange={onChange}
+                    useGrouping={false}
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

@@ -11,20 +11,21 @@ import clsx from 'clsx'
 import sharedStyles from '../../../SharedComponents/Dropdown/Dropdown.module.css'
 
 export default function ViewDropdown({ metadata, value, onChange, errors }) {
-    const { name, label, subtitle, className, options, validations, defaultValue } = metadata
+    const { name, label, subtitle, disabled, options, validations, defaultValue } = metadata
 
     return (
-        <ComponenentContainer> 
+        <ComponenentContainer>
             <LabelContainer>
                 <Label label={label} validations={validations} />
             </LabelContainer>
             <InputsContainer>
-                <Dropdown 
-                    name={name} 
-                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')} 
-                    value={value ?? defaultValue} 
+                <Dropdown
+                    name={name}
+                    className={clsx('col-12', sharedStyles.dropdown, errors?.length > 0 && 'p-invalid')}
+                    value={value ?? defaultValue}
                     onChange={onChange}
-                    options={options} 
+                    options={options}
+                    disabled={disabled}
                 />
                 <Subtitle subtitle={subtitle} />
                 <Errors errors={errors} />

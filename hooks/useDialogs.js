@@ -16,13 +16,14 @@ import MultiRadioButtonsDialog from '../components/Settings/MultiRadioButtonsDia
 import CheckboxDialog from "../components/Settings/CheckboxDialog/CheckboxDialog"
 import TimeDialog from "../components/Settings/TimeDialog/TimeDialog"
 import ImageDialog from "../components/Settings/ImageDialog/ImageDialog"
+import AddressDialog from '../components/Settings/AddressDialog/AddressDialog'
 
 const useDialogs = ({ metadata, setMetadata, deleteField }) => {
-    const [ showDialog, setShowDialog ] = useState(false)
-    const [ dialogData, setDialogData ] = useState(undefined)
+    const [showDialog, setShowDialog] = useState(false)
+    const [dialogData, setDialogData] = useState(undefined)
     const { inputs, handleInputChange, assignValuesNested, setInputs } = useInputs({ initialValues: {} })
 
-    const dialogMapper = { 
+    const dialogMapper = {
         'section': SectionPanelDialog,
         'text': TextDialog,
         'number': NumberDialog,
@@ -39,8 +40,9 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
         'radiobutton': MultiRadioButtonsDialog,
         'dropdown': DropdownDialog,
         'multiselect': DropdownDialog,
-        'checkbox': CheckboxDialog
-    } 
+        'checkbox': CheckboxDialog,
+        'address': AddressDialog
+    }
 
     const hideDialog = () => {
         setDialogData(undefined)
@@ -108,7 +110,7 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
                 deleteField(dialogData.name)
             }
         } else {
-            metadata[dialogData.guid] = {...metadata[dialogData.guid], ...inputs}
+            metadata[dialogData.guid] = { ...metadata[dialogData.guid], ...inputs }
         }
 
         setMetadata(metadata)
@@ -118,17 +120,17 @@ const useDialogs = ({ metadata, setMetadata, deleteField }) => {
     const renderDialog = () => {
         return (
             <>
-                { showDialog && dialogMapper[dialogData.type] &&
+                {showDialog && dialogMapper[dialogData.type] &&
                     createElement(
                         dialogMapper[dialogData.type],
-                        {inputs: inputs, handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate}
+                        { inputs: inputs, handleInputChange, assignValuesNested, visible: showDialog, hideDialog, handleUpdate }
                     )
                 }
             </>
         )
     }
 
-    return { renderDialog, openDialog, hideDialog }
+    return { renderDialog, openDialog, hideDialog, showDialog }
 }
 
 export default useDialogs

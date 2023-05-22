@@ -7,41 +7,39 @@ import { getFormDefinition } from '../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../hooks/useApi'
 import useTimeControl from '../../../hooks/useTimeControl'
-import { callMsGraph } from '../../../src/MsGraphApiCall'
-import { useState, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useInputs } from '../../../hooks/useInput'
 import ViewComponents from '../../../components/ViewComponents/ViewComponents/ViewComponents'
 import { useValidation } from '../../../hooks/useValidation'
 import { usePreventSubmit } from '../../../hooks/usePreventSubmit'
 import { useConvertFormData } from '../../../hooks/useConvertFormData'
 import { Toast } from 'primereact/toast'
+import { useCondition } from '../../../hooks/useCondition'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
-export default function View({ id, metadata, initialValues }) {
-    
-    const toast = useRef(null)
+export default function View({ id, metadata, initialValues, footer }) {
 
+    const toast = useRef(null)
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
-    const { inputs, files, handleInputChange, assignValuesNested } = useInputs({initialValues: convertedData})
+    const { inputs, files, handleInputChange, assignValuesNested } = useInputs({ initialValues: convertedData })
 
-    console.log("files = ", files)
-
-    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({metadata, inputs})
-    const { errors } = useValidation({ metadata, inputs, files })
+    const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({ metadata, inputs })
+    const { errors, validationMapper } = useValidation({ metadata, inputs, files })
+    const { conditionMapper, conditions } = useCondition({ validationMapper })
 
     const { acquireToken } = useMsalAuthentication(InteractionType.Silent, formBuilderApiRequest)
     const { loading, callApiFetch } = useApi()
 
-    const { startViewTime } = useTimeControl()    
+    const { startViewTime } = useTimeControl()
     const { accounts } = useMsal()
     const account = useAccount(accounts[0] ?? {})
 
     const disableSubmitButton = useMemo(() => {
         return checkErrors(errors)
     }, [errors])
-      
+
     useMemo(() => {
         setIsDisabled(disableSubmitButton)
     }, [disableSubmitButton])
@@ -62,10 +60,10 @@ export default function View({ id, metadata, initialValues }) {
                 securityLevel: "Email, Account Authentication(None)"
             }
         }
-        
+
         Object.keys(files).forEach((fieldName) => {
             files[fieldName].forEach((file) => {
-                formData.append(fieldName, file)    
+                formData.append(fieldName, file)
             })
         })
 
@@ -85,7 +83,7 @@ export default function View({ id, metadata, initialValues }) {
             return
         }
 
-        toast.current.show( {severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500})
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Error while updating the form', life: 2500 })
     }
 
     return (
@@ -94,25 +92,31 @@ export default function View({ id, metadata, initialValues }) {
                 <title>View Form</title>
                 <link rel='icon' sizes='32x32' href='/form-builder-studio/logo.png' />
             </Head>
-            <AuthenticatedTemplate>   
-                <Toast ref={toast}/>                
+            <AuthenticatedTemplate>
+                <Toast ref={toast} />
                 <div className='grid'>
-                    <Card className='card form-horizontal mt-5' style={{'width': '70%'}}>
-                        <ViewComponents 
-                            metadata={metadata} 
-                            inputs={inputs} 
-                            handleInputChange={handleInputChange} 
+                    <Card className='card form-horizontal mt-5' style={{ 'width': '70%' }}>
+                        <ViewComponents
+                            metadata={metadata}
+                            conditions={conditions}
+                            conditionMapper={conditionMapper}
+                            validationMapper={validationMapper}
+                            inputs={inputs}
+                            handleInputChange={handleInputChange}
                             assignValuesNested={assignValuesNested}
-                            errors={errors} 
+                            errors={errors}
                         />
                         <div className='flex justify-content-center mt-5'>
-                            <Button  className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                            <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                        </div>
+                        <div className='flex justify-content-end mt-1'>
+                            <label>{footer}</label>
                         </div>
                     </Card>
                 </div>
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
-                <div className='card form-horizontal mt-3' style={{'width': '55rem'}}>
+                <div className='card form-horizontal mt-3' style={{ 'width': '55rem' }}>
                     <div className='card-body'>
                         <h2 className='text-center text-primary card-title mb-2'>Please Sign In</h2>
                     </div>
@@ -127,8 +131,8 @@ export async function getServerSideProps(context) {
 
     try {
         const res = await getFormDefinition(id)
-        
-        const initialValues = {}    
+
+        const initialValues = {}
         if (res.data?.metadata?.metadata) {
             const metadata = res.data.metadata.metadata;
             Object.keys(metadata).forEach((key) => {
@@ -143,6 +147,7 @@ export async function getServerSideProps(context) {
             props: {
                 id,
                 metadata: res.data.metadata.metadata,
+                footer: res.data.footer,
                 initialValues,
             }
         }

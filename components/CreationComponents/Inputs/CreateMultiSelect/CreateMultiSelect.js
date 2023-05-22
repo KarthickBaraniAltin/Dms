@@ -9,27 +9,27 @@ import ComponenentContainer from '../../../SharedComponents/ComponentContainer/C
 import LabelContainer from '../../../SharedComponents/LabelContainer/LabelContainer'
 import InputsContainer from '../../../SharedComponents/InputsContainer/InputsContainer'
 
-export default function CreateMultiSelect({metadata, openDialog, value, onChange, errors}) {
+export default function CreateMultiSelect({ metadata, openDialog, value, onChange, errors, setMetadata }) {
   const { name, validations, label, subtitle, options, defaultValue } = metadata
 
   return (
     <ComponenentContainer>
-        <SettingsButton openDialog={openDialog} componentData={metadata} />
-        <LabelContainer>
-          <Label label={label} validations={validations} />
-        </LabelContainer>
-        <InputsContainer>
-          <MultiSelect 
-            name={name} 
-            className={`col-12 ${sharedStyles.dropdown}`} 
-            value={value ?? defaultValue} 
-            onChange={onChange} 
-            options={options} 
-            display='chip' 
-          />        
-          <Subtitle subtitle={subtitle} />
-          <Errors errors={errors} />
-        </InputsContainer>
+      <SettingsButton openDialog={openDialog} componentData={metadata} setMetadata={setMetadata} />
+      <LabelContainer>
+        <Label label={label} validations={validations} />
+      </LabelContainer>
+      <InputsContainer>
+        <MultiSelect
+          name={name}
+          className={`col-12 ${sharedStyles.dropdown}`}
+          value={value ?? defaultValue}
+          onChange={onChange}
+          options={options}
+          display='chip'
+        />
+        <Subtitle subtitle={subtitle} />
+        <Errors errors={errors} />
+      </InputsContainer>
     </ComponenentContainer>
   )
 }
