@@ -151,8 +151,8 @@ export default function Home({ data }) {
             </Head>
             <div>
                 <AuthenticatedTemplate>
-                    <div className="mt-5">
-                        <Card className='card w-75 form-horizontal mt-2 mb-3' style={{ 'width': '90%' }} >
+                    <div className="mt-4">
+                        <Card className='card w-75 form-horizontal mt-2 mb-3' style={{ 'width': '100%' }} >
                             <div className='card-body'>
                                 <DataTable
                                     value={values} lazy responsiveLayout='scroll' columnResizeMode='expand'

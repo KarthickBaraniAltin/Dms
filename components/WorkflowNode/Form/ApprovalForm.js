@@ -4,45 +4,40 @@ import Header from '../../Header/Header'
 import { Button } from 'primereact/button'
 import TextareaInput from '../../Input/TextareaInput'
 import { Toast } from 'primereact/toast';
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { axiosPost } from '../../../helpers/Axios'
 
 
-function ApprovalForm({ formName, onHide, showSuccess }) {
+function ApprovalForm({ formId, metaDataId, type, onHide, showSuccess }) {
 
+    const defaultValue = {
+        type,
+        comments: '',
+        notes: ''
+    }
+
+    const [formData, setFormData] = useState(defaultValue)
+
+
+
+    const changeHandler = (e) => {
+        const { value, name } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
+
+    const showError = () => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3000 });
+    }
 
 
     return (
         <>
             <form >
                 <div className={'flex flex-column gap-2'} ></div>
-                <Header size={1} ><small> You are {formName} this form</small></Header>
+                <Header size={1} ><small> You are {type} this form</small></Header>
                 <Header size={3} >Review :</Header>
-                <TextareaInput label={'Reason unable to use Clearinghouse'} autoResize cols={75} />
-                <TextareaInput label={'Additional notes'} autoResize cols={75} />
-                {/* <TextInput label={'Reason unable to use Clearinghouse'} />
-                <TextInput label={'Additional notes'} /> */}
-                <div className="flex justify-content-around" >
-                    <div className="flex flex-column" >
-                        <label>Received by:</label>
-                        <Header size={5} >Guna</Header>
-                        <Header size={5} >Peter</Header>
-                        <Header size={5} >chandra</Header>
-                    </div>
-                    <div className="flex flex-column" >
-                        <label>Date Received:</label>
-                        <Header size={4} >3/16/23</Header>
-                    </div>
-                </div>
-                <div className="flex justify-content-around" >
-                    <div className="flex flex-column" >
-                        <label>Date send:</label>
-                        <Header size={5} >TBD</Header>
-                    </div>
-                    <div className="flex flex-column" >
-                        <label>By:</label>
-                        <Header size={4} >3/16/23</Header>
-                    </div>
-                </div>
+                <TextareaInput label={'Reason unable to use Clearinghouse'} name={'comments'} value={formData.comments} onChange={changeHandler} autoResize cols={75} />
+                <TextareaInput label={'Additional notes'} name={'notes'} value={formData.notes} onChange={changeHandler} autoResize cols={75} />
                 <div className="flex justify-content-around" >
                     <div className="flex flex-column"  >
                         <TextInput label={'Signature'} style={{ fontFamily: ['Zeyada', 'cursive'] }} value={'Guna'} />
@@ -51,12 +46,35 @@ function ApprovalForm({ formName, onHide, showSuccess }) {
                         {null}
                     </div>
                 </div>
-                <Flex className={'justify-content-around'} >
-                    <Button type='button' label={'Cancel'} onClick={() => {
+                <Flex className={'justify-content-end mt-3 gap-2'} >
+                    <Button type='button' severity='secondary' label={'Cancel'} onClick={() => {
                         onHide()
                     }} ></Button>
                     <Button type='button' label={'Submit'} onClick={() => {
-                        showSuccess()
+
+                        const postData = {
+                            formMetadataId: metaDataId,
+                            formDefinitionId: formId,
+                            authorDisplayName: '',
+                            workflowDefinitionId: '',
+                            authorLegalName: '',
+                            authorEmail: '',
+                            authorId: '',
+                            isApproved: true,
+                            status: 0,
+                            statusText: type,
+                            comments: formData.comments
+                        }
+
+                        axiosPost('FormApproval', postData)
+                            .then(res => {
+                                showSuccess(res.status)
+                            })
+                            .catch(err => {
+                                // showError()
+                            })
+
+                        console.log(postData)
                         onHide()
                     }} ></Button>
                 </Flex>

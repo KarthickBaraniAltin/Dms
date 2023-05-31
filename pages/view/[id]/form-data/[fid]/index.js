@@ -7,7 +7,7 @@ import { getFormData, getFormDefinition } from '../../../../../api/apiCalls'
 import { InteractionType } from '@azure/msal-browser'
 import { useApi } from '../../../../../hooks/useApi'
 import { callMsGraph } from '../../../../../src/MsGraphApiCall'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useInputs } from '../../../../../hooks/useInput'
 import { useValidation } from '../../../../../hooks/useValidation'
 import { useConvertFormData } from '../../../../../hooks/useConvertFormData'
@@ -20,6 +20,10 @@ import ApprovalForm from '../../../../../components/WorkflowNode/Form/ApprovalFo
 import Modal from '../../../../../components/Modal/Modal'
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react'
+import { useRouter } from 'next/router'
+import { axiosGet } from '../../../../../helpers/Axios'
+import Datagrid from '../../../../../components/WorkflowNode/Datagrid/Datagrid'
+import Header from '../../../../../components/Header/Header'
 
 const api = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
@@ -29,8 +33,14 @@ export default function FormDataView({ id, metadata, savedData }) {
     // const { headerImage, handleHeaderImage } = useHeaderImage()
 
     //
+
+    const router = useRouter()
+    console.log(router.query.fid)
+
     const [isVisible, setIsVisible] = useState(false)
-    const [formName, setFormName] = useState('APPROVING')
+    const [type, setType] = useState('APPROVING')
+    const [formHistory, setFormHistory] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const onHide = () => {
         setIsVisible(prev => !prev)
@@ -120,7 +130,29 @@ export default function FormDataView({ id, metadata, savedData }) {
     const toast = useRef(null)
 
     const showSuccess = () => {
-        toast.current.show({ severity: `${formName === 'APPROVING' ? 'success' : 'warn'}`, summary: `${formName === 'APPROVING' ? 'Approved' : 'Rejected'}`, life: 3000 })
+        toast.current.show({ severity: `${type === 'APPROVING' ? 'success' : 'warn'}`, summary: `${type === 'APPROVING' ? 'Approved' : 'Rejected'}`, life: 3000 })
+    }
+
+
+    useEffect(() => {
+        axiosGet(`FormDataHistory/${router.query.fid}`)
+            .then(res => {
+                setFormHistory(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            }).finally(() => setIsLoading(false))
+    }, [])
+
+
+    const columns = [
+        { field: 'approver', header: 'Approver Name' },
+        { field: 'statusText', header: 'Status' },
+        { field: 'stageComments', header: 'Comments' }
+    ]
+
+    const showError = () => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Message Content', life: 3000 });
     }
 
     return (
@@ -131,30 +163,32 @@ export default function FormDataView({ id, metadata, savedData }) {
             </Head>
             <AuthenticatedTemplate>
                 <Card className='card form-horizontal mt-4' style={{ 'width': '100%' }}>
-                    <ApproverStatus formId={id} />
-                    <ViewComponents
-                        metadata={metadata}
-                        inputs={inputs}
-                        handleInputChange={handleInputChange}
-                        errors={errors}
-                        assignValuesNested={assignValuesNested}
-                    />
-                    <Flex className={'justify-content-end mt-5'} >
+                    <ApproverStatus formId={id} metaDataId={router.query.fid}>
+                        <ViewComponents
+                            metadata={metadata}
+                            inputs={inputs}
+                            handleInputChange={handleInputChange}
+                            errors={errors}
+                            assignValuesNested={assignValuesNested}
+                        />
+                    </ApproverStatus>
+                    {/* <Flex className={'justify-content-end my-5'} >
                         <Flex className={'gap-3'}>
                             <Button severity={'danger'} label={'Reject'} rounded onClick={() => {
-                                setFormName('REJECTING')
+                                setType('REJECTING')
                                 onHide()
                             }} />
                             <Button severity={'success'} label={'Approve'} rounded onClick={() => {
-                                setFormName('APPROVING')
+                                setType('APPROVING')
                                 onHide()
                             }} />
                         </Flex>
-                    </Flex>
+                    </Flex> */}
+                    <Header size={3} >Form History</Header>
+                    <Datagrid loading={isLoading} data={formHistory} columns={columns} sortable={true} />
                 </Card>
                 <Modal header={'Approver'} visible={isVisible} onHide={onHide} style={{ width: '50wv' }}  >
-                    {/* <ApproverForm node={node} setIsVisible={setIsVisible} setApproverData={node.data.setApproverData} /> */}
-                    <ApprovalForm formName={formName} onHide={onHide} showSuccess={showSuccess} />
+                    <ApprovalForm type={type} formId={id} metaDataId={router.query.fid} onHide={onHide} showSuccess={showSuccess} />
                 </Modal>
                 <Toast ref={toast} />
             </AuthenticatedTemplate>

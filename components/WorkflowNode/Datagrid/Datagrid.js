@@ -7,7 +7,7 @@ import TextInput from "../../Input/TextInput";
 import { FilterMatchMode } from 'primereact/api';
 
 
-export default function Datagrid({ data, columns, sortable, customColumn }) {
+export default function Datagrid({ data, columns, sortable, customColumn, loading }) {
 
     const router = useRouter()
     const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -42,16 +42,18 @@ export default function Datagrid({ data, columns, sortable, customColumn }) {
         const cols = columns.map((col) => (
             <Column key={col.field} field={col.field} header={col.header} sortable={sortable} />
         ))
-
-        cols.push(<Column body={customColumn} header={'Action'} />)
-
-        console.log(cols)
+        {
+            customColumn ?
+                cols.push(<Column body={customColumn} header={'Action'} />)
+                :
+                null
+        }
 
         return cols
     }
 
     return (
-        <DataTable value={currentData} tableStyle={{ minWidth: '50rem' }} header={header} filters={filters} globalFilterFields={['formName', 'submitedBy', 'submitedOn', 'status']} >
+        <DataTable loading={loading} value={data} tableStyle={{ minWidth: '50rem' }} header={header} filters={filters} globalFilterFields={['formName', 'submitedBy', 'submitedOn', 'status']} >
             {Currentcolumn(columns)}
         </DataTable>
     )

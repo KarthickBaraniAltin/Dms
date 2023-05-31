@@ -124,6 +124,9 @@ export default function Home() {
                 <Link href='/update/[id]' as={`/update/${rowData.id}`} rel='noopener noreferrer'>
                     <span className='material-icons' style={{ cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px' }}>edit_square</span>
                 </Link>
+                <Link href='/test/form-data-dashboard/[id]' as={`/test/form-data-dashboard/${rowData.id}`} rel='noopener noreferrer'>
+                    <span className='pi pi-bookmark-fill' style={{ cursor: 'pointer', color: '#034692', fontSize: '18px', paddingRight: '3px' }}></span>
+                </Link>
             </span>
         )
     }
@@ -183,9 +186,6 @@ export default function Home() {
 
         setLazyParams({ ...lazyParams })
     }
-
-    // console.log('test', process.env.NEXT_PUBLIC_FORM_BUILDER_API)
-
 
 
 

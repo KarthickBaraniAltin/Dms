@@ -142,7 +142,6 @@ export default function Workflow({ formName, formId }) {
     setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId))
   }
 
-
   const onEdgeUpdateStart = useCallback(() => {
     edgeUpdateSuccessful.current = false
   }, [])
@@ -162,9 +161,10 @@ export default function Workflow({ formName, formId }) {
 
   useEffect(() => {
     setLoading(true)
-    axiosGet(`WorkflowBuilder/${formName}`)
+    axiosGet(`WorkflowDefinition/${formId}`)
       .then(res => {
-        const data = JSON.parse(res.data.responseData.definition)
+        const data = res.data.metadata.metadata
+        console.log('data', data)
         setNodes(() => {
           return data.nodes.map(
             node => ({ ...node, data: { ...node.data, onRemoveNode, setCurrentNodeId, setApproverData } })
@@ -180,7 +180,7 @@ export default function Workflow({ formName, formId }) {
         node[0].data.label = formName
         setNodes(node)
         setEdges(defaultEdge)
-        console.log('err', err)
+        console.log(err)
       })
       .finally(() => setLoading(false))
 

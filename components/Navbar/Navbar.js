@@ -3,10 +3,12 @@ import { memo } from "react"
 import { defaultNode, defaultEdge } from '../WorkflowNode/Elements/Elements'
 import { axiosPost } from '../../helpers/Axios'
 import csnLogo from '../../images/csn.png'
+import { useMsal } from "@azure/msal-react"
 
 function Navbar({ formName, formId, setNodes, setEdges, nodes, edges, toast }) {
 
-    console.log(csnLogo)
+    const { accounts } = useMsal()
+    const account = accounts[0] ? accounts[0] : {}
 
     const show = () => {
         toast.current.show({ severity: 'success', summary: 'Saved', life: 3000 })
@@ -14,21 +16,29 @@ function Navbar({ formName, formId, setNodes, setEdges, nodes, edges, toast }) {
 
     const onSave = () => {
         console.log({ nodes: nodes, edges: edges })
-        // const stringifyData = JSON.stringify({ nodes: nodes, edges: edges })
-        // const postData = {
-        //     id: self.crypto.randomUUID(),
-        //     form_Id: formId,
-        //     form_Name: formName,
-        //     definition: stringifyData,
-        //     created_By: 'Admin',
-        //     created_On: "2023-04-19T11:08:20.453Z",
-        //     modified_By: 'Admin',
-        //     modified_On: "2023-04-19T11:08:20.453Z"
-        // }
-        // console.log(postData)
-        // axiosPost('WorkflowBuilder', postData)
-        //     .then(() => show())
-        //     .catch(err => console.log('err', err))
+        const stringifyData = JSON.stringify({ nodes: nodes, edges: edges })
+        const postData = {
+            workflowDefinitionId: self.crypto.randomUUID(),
+            formDefinitionId: formId,
+            workflowName: formName,
+            metadataId: '',
+            createdBy: account.username,
+            createdOn: new Date(),
+            modifiedBy: account.username,
+            modifiedOn: new Date(),
+            metadata: {
+                id: '',
+                createdAtUtc: new Date(),
+                metadata: stringifyData
+            }
+        }
+        console.log(postData)
+        axiosPost('WorkflowDefinition', postData)
+            .then((res) => {
+                show()
+                console.log(res)
+            })
+            .catch(err => console.log('err', err))
     }
 
     const onReset = () => {

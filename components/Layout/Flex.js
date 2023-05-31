@@ -1,9 +1,9 @@
 import { memo } from "react"
 
-function Flex({ direction = 'row', className, children }) {
-
+function Flex(props) {
+    const { direction = 'row', className, children } = props
     return (
-        <div className={`flex p-0 m-0 flex-${direction} ${className}`} >
+        <div {...props} className={`flex p-0 m-0 flex-${direction} ${className}`} >
             {children}
         </div>
 

@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps, ...appProps }) {
           <AuthenticatedTemplate>
             <Flex className={'h-full gap-2'}>
               <SideNavbar toggleSideNav={toggleSideNav} />
-              <div className='w-12 h-10' >
+              <div className='w-12 h-12' >
                 <Component {...pageProps} />
               </div>
             </Flex>

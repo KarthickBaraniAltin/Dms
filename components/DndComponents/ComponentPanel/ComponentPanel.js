@@ -56,17 +56,17 @@ export default function ComponentPanel() {
         'Address',
     ]
 
-    const defaultSubtitle = JSON.stringify({"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}})
-    
+    const defaultSubtitle = JSON.stringify({ "root": { "children": [{ "children": [], "direction": null, "format": "", "indent": 0, "type": "paragraph", "version": 1 }], "direction": "ltr", "format": "", "indent": 0, "type": "root", "version": 1 } })
+
     const createOption = (component, index) => {
-        const divSize = component === 'header' || component === 'textarea' || component === 'richText' 
-        || component === 'image' || component === 'subtitle' || component === 'address' ? fullSizeClassName : halfSizeClassName
+        const divSize = component === 'header' || component === 'textarea' || component === 'richText'
+            || component === 'image' || component === 'subtitle' || component === 'address' ? fullSizeClassName : halfSizeClassName
 
         const label = component === 'header' ? defaultSubtitle : component.charAt(0).toUpperCase() + component.slice(1)
         const subtitle = component === 'header' ? null : defaultSubtitle
 
         const options = component === 'dropdown' || component === 'multiselect' || component === 'radiobutton'
-        || component === 'checkbox' ? [] : null
+            || component === 'checkbox' ? [] : null
 
         return (
             <Draggable
@@ -161,21 +161,21 @@ export default function ComponentPanel() {
                 'col-3',
                 styles.slideMenu,
                 {
-                [styles.active]: menuVisible,
+                    [styles.active]: menuVisible,
                 }
             )}
-            style={{backgroundColor: 'rgba(0, 133, 255, 0.84)', display: 'flex'}}
+                style={{ backgroundColor: 'rgba(0, 133, 255, 0.84)', display: 'flex' }}
             >
-                <div style={{width: '100%'}}>
+                <div style={{ width: '50%' }}>
                     {componentList}
                 </div>
-                <Button icon={<i className='pi pi-angle-left' style={{fontSize: '2rem', fontWeight: '600'}} />}
-                style={{alignSelf: 'center', backgroundColor: '#2999FF', border: 0, marginLeft: '0.5rem'}}
-                onClick={() => setMenuVisible(prev => !prev)}
+                <Button icon={<i className='pi pi-angle-left' style={{ fontSize: '2rem', fontWeight: '600' }} />}
+                    style={{ alignSelf: 'center', backgroundColor: '#2999FF', border: 0, marginLeft: '0.5rem' }}
+                    onClick={() => setMenuVisible(prev => !prev)}
                 />
             </div>
-            {!menuVisible && <Button icon={<i className='pi pi-angle-right' style={{fontSize: '2rem', fontWeight: '600'}} />}
-            style={{alignSelf: 'center', backgroundColor: 'rgba(0, 133, 255, 0.84)'}} onClick={() => setMenuVisible(prev => !prev)}
+            {!menuVisible && <Button icon={<i className='pi pi-angle-right' style={{ fontSize: '2rem', fontWeight: '600' }} />}
+                style={{ alignSelf: 'center', backgroundColor: 'rgba(0, 133, 255, 0.84)' }} onClick={() => setMenuVisible(prev => !prev)}
             />}
         </div>
     )

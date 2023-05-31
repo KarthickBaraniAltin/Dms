@@ -56,6 +56,7 @@ export default function Update({ id, data }) {
     const account = useAccount(accounts[0] ?? {})
 
     const [currentTabIndex, setCurrentTabIndex] = useState(0)
+    const [menuVisible, setMenuVisible] = useState(false)
 
     const settingsMenuClass = clsx(
         'col-3',
@@ -160,9 +161,8 @@ export default function Update({ id, data }) {
                             <DndContext
                                 onDragEnd={(event) => handleDragEnd(event, metadata, addMetadata, setMetadata, setMainFormIds)}
                             >
-                                <div className='grid' style={{ height: '728px' }}>
-                                    <ComponentPanel />
-                                    <Card className='mt-2 col-6'>
+                                <Flex>
+                                    <Card className='w-10' >
                                         <div className='flex justify-content-center' style={{ gap: '0.5rem', marginBottom: '1rem' }}>
                                             <PreviewButton footer={formDefinition?.footer} metadata={metadata} conditions={conditions} conditionMapper={conditionMapper} validationMapper={validationMapper} assignValuesNested={assignValuesNested} setMetadata={setMetadata} inputs={inputs} handleInputChange={handleInputChange} errors={errors} />
                                             <SaveButton formDefinition={formDefinition} updateForm={updateForm} setFormDefinition={setFormDefinition} loading={loading} metadata={metadata} />
@@ -190,10 +190,18 @@ export default function Update({ id, data }) {
                                             <label>{formDefinition.footer}</label>
                                         </div>
                                     </Card>
-                                    <div className={settingsMenuClass}>
-                                        {renderDialog()}
+                                    <div className='w-2'>
+                                        {
+                                            showDialog && menuVisible
+                                                ?
+                                                <div className={settingsMenuClass}>
+                                                    {renderDialog()}
+                                                </div>
+                                                :
+                                                <ComponentPanel menuVisible={menuVisible} setMenuVisible={setMenuVisible} />
+                                        }
                                     </div>
-                                </div>
+                                </Flex>
                             </DndContext>
                             :
                             <Workflow formName={formDefinition.name} formId={formDefinition.id} />

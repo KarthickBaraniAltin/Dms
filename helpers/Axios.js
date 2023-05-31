@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-
-const baseUrl = process.env.NODE_ENV
+const baseUrl = process.env.NEXT_PUBLIC_FORM_BUILDER_API
 
 export const axiosGet = (url) => {
+
+  console.log('api now', baseUrl + url)
 
   const config = {
     headers: {
@@ -15,6 +16,8 @@ export const axiosGet = (url) => {
 }
 
 export const axiosPost = (url, data) => {
+
+  console.log('api now', baseUrl)
 
   const config = {
     headers: {
@@ -34,7 +37,6 @@ export const axiosPatch = (url, data) => {
 }
 
 export const axiosPut = (url, data) => {
-
 
   const config = {
     headers: {

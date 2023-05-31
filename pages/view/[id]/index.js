@@ -24,7 +24,6 @@ export default function View({ id, metadata, initialValues, footer }) {
     const { convertData } = useConvertFormData()
     const convertedData = convertData(initialValues)
     const { inputs, files, handleInputChange, assignValuesNested } = useInputs({ initialValues: convertedData })
-
     const { isDisabled, setIsDisabled, checkErrors } = usePreventSubmit({ metadata, inputs })
     const { errors, validationMapper } = useValidation({ metadata, inputs, files })
     const { conditionMapper, conditions } = useCondition({ validationMapper })
@@ -94,26 +93,26 @@ export default function View({ id, metadata, initialValues, footer }) {
             </Head>
             <AuthenticatedTemplate>
                 <Toast ref={toast} />
-                <div className='grid'>
-                    <Card className='card form-horizontal mt-5' style={{ 'width': '70%' }}>
-                        <ViewComponents
-                            metadata={metadata}
-                            conditions={conditions}
-                            conditionMapper={conditionMapper}
-                            validationMapper={validationMapper}
-                            inputs={inputs}
-                            handleInputChange={handleInputChange}
-                            assignValuesNested={assignValuesNested}
-                            errors={errors}
-                        />
-                        <div className='flex justify-content-center mt-5'>
-                            <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
-                        </div>
-                        <div className='flex justify-content-end mt-1'>
-                            <label>{footer}</label>
-                        </div>
-                    </Card>
-                </div>
+                <Card className='card form-horizontal mt-4' style={{ 'width': '100%' }}>
+                    <ViewComponents
+                        metadata={metadata}
+                        conditions={conditions}
+                        conditionMapper={conditionMapper}
+                        validationMapper={validationMapper}
+                        inputs={inputs}
+                        handleInputChange={handleInputChange}
+                        assignValuesNested={assignValuesNested}
+                        errors={errors}
+                    />
+                    <div className='flex justify-content-center mt-5'>
+                        <Button className='col-2' label="Submit" onClick={submitFormData} loading={loading} />
+                    </div>
+                    <div className='flex justify-content-end mt-1'>
+                        <label>{footer}</label>
+                    </div>
+                </Card>
+                {/* <div className='grid'>
+                </div> */}
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
                 <div className='card form-horizontal mt-3' style={{ 'width': '55rem' }}>
