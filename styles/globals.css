@@ -333,3 +333,34 @@ pre::-webkit-scrollbar-thumb {
 .colorSecondary {
   color: #ffd200;
 }
+
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #dee2e6 !important;
+  border-width: 0 0 1px 0 !important;
+  font-weight: 700 !important;
+  color: #343a40 !important;
+  background: #bbceda !important;
+  transition: box-shadow 0.2s !important;
+  
+}
+.p-button.p-button-outlined {
+  background-color: transparent !important;
+  color: #00b9ff !important;
+  border: 1px solid !important;
+}
+.p-datatable .p-datatable-tbody > tr {
+  background: #eaf5fa !important;
+  color: #495057 !important;
+  transition: box-shadow 0.2s;
+}
+
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
+  background: #f7f5ed !important;
+}
+.p-inputtext {
+  margin: 0;
+  width: 225px;
+}

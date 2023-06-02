@@ -12,6 +12,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from "primereact/inputtext";
 import { Tooltip } from 'primereact/tooltip';
 import { RadioButton } from "primereact/radiobutton";
+import { InputTextarea } from 'primereact/inputtextarea';
+
 
 
 export default function Home() {
@@ -19,7 +21,10 @@ export default function Home() {
     const toast = useRef(null);
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
-    
+  
+
+
+
     const onTemplateSelect = (e) => {
         let _totalSize = totalSize;
         let files = e.files;
@@ -417,8 +422,8 @@ visible ?
 
                       <div style={{display:'flex'}}>
                       <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Description</p>
-                       <p style={{ marginLeft: 'auto'  }}> 
-                       <InputText tooltip="string" placeholder="" style={{height:'35px',width:'220px'}}/> </p>
+                       <p style={{ marginLeft: 'auto',eidth:'20px'  }}> 
+                       <InputTextarea value={value}  onChange={(e) => setValue(e.target.value)} rows={5} cols={30} /> </p>
                     </div>
                    </Card>
 
