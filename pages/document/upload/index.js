@@ -16,6 +16,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 
 
 
+
+
 export default function Home() {
     const [value, setValue] = useState('');
     const toast = useRef(null);
@@ -70,6 +72,16 @@ export default function Home() {
   </div>
 );
 };
+
+
+const [products, setProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [metaKey, setMetaKey] = useState(true);
+
+    const [customers, setCustomers] = useState([]);
+
+     
+
 
 
 const getUploadFiles = (file,props) => {
@@ -147,7 +159,7 @@ const [show, setShow] = useState(false);
 const [visible, setVisible] = useState(false);
 
 
-const products = [
+const productsss = [
 {
 title: 'sample document(0)',
 currentdocument: 'add relevent files to the document',
@@ -200,7 +212,62 @@ id: "12kb",
 image: "12/12/2023",
 inventoryStatus: "awaiting index",
 },
-
+{
+  title: '4',
+  currentdocument: 'png',
+  currentdate: 'sample.png',
+  id: "12kb",
+  image: "12/12/2023",
+  inventoryStatus: "awaiting index",
+  },
+  {
+    title: '4',
+    currentdocument: 'png',
+    currentdate: 'sample.png',
+    id: "12kb",
+    image: "12/12/2023",
+    inventoryStatus: "awaiting index",
+    },
+    {
+      title: '4',
+      currentdocument: 'png',
+      currentdate: 'sample.png',
+      id: "12kb",
+      image: "12/12/2023",
+      inventoryStatus: "awaiting index",
+      },
+      {
+        title: '4',
+        currentdocument: 'png',
+        currentdate: 'sample.png',
+        id: "12kb",
+        image: "12/12/2023",
+        inventoryStatus: "awaiting index",
+        },
+        {
+          title: '4',
+          currentdocument: 'png',
+          currentdate: 'sample.png',
+          id: "12kb",
+          image: "12/12/2023",
+          inventoryStatus: "awaiting index",
+          },
+          {
+            title: '4',
+            currentdocument: 'png',
+            currentdate: 'sample.png',
+            id: "12kb",
+            image: "12/12/2023",
+            inventoryStatus: "awaiting index",
+            }, {
+              title: '4',
+              currentdocument: 'png',
+              currentdate: 'sample.png',
+              id: "12kb",
+              image: "12/12/2023",
+              inventoryStatus: "awaiting index",
+              },
+                        
 ];
 
 const productss = [
@@ -428,15 +495,19 @@ visible ?
                    </Card>
 
    <Card className="card" title=" Quick upload" style={{ backgroundColor: '#eaf5fa',width:'70%'}}>
-  <DataTable value={product}  size="small"  stripedRows tableStyle={{ minWidth: "30rem", backgroundColor: '#f7f5ed' }}>
+  <DataTable value={product} scrollable scrollHeight="300px"  size="small"  stripedRows tableStyle={{ minWidth: "30rem", backgroundColor: '#f7f5ed',overflow:'scroll' }}
+  selectionMode="single"  selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id" metaKeySelection={metaKey} >
       <Column field="title"           header="S.no"    style={{border:'none'}}></Column>
       <Column field="currentdocument" header="File type" style={{border:'none'}}></Column>
       <Column field="currentdate"      header="File name" style={{border:'none'}}></Column>
       <Column field="id"            header="Size "         style={{border:'none',}}></Column>
       <Column field="image"         header="Scan date "    style={{border:'none'}}></Column>
       <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column>
-  </DataTable>
-  </Card>
+    
+
+      </DataTable>
+      
+</Card>
 
 
 </div>

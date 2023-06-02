@@ -335,6 +335,7 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .p-datatable .p-datatable-thead > tr > th {
+
   text-align: left;
   padding: 1rem 1rem;
   border: 1px solid #dee2e6 !important;
@@ -363,4 +364,16 @@ pre::-webkit-scrollbar-thumb {
 .p-inputtext {
   margin: 0;
   width: 225px;
+}
+
+
+.p-datatable .p-datatable-tbody > tr.p-highlight {
+  background: #FFCDD2;
+  color: #4338CA ;
+}
+
+.p-datatable.p-datatable-selectable .p-datatable-tbody > tr.p-selectable-row:focus {
+  outline: #00b9ff !important;
+  background-color: #004990 !important;
+  color:white !important ;
 }
