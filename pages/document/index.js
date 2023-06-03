@@ -9,7 +9,7 @@ import form1 from '../../svg/form1.svg';
 import batch1 from '../../svg/batch1.svg';
 import Image from 'next/image';
 
-         
+
 export default function Home() {
 
     const router = useRouter()
@@ -17,10 +17,10 @@ export default function Home() {
 
     return (
         <>
-         <div className="card flex justify-content-center">
-        
-            
-        </div>
+            <div className="card flex justify-content-center">
+
+
+            </div>
             <Flex direction={'column'} className={'my-4 h-full w-full bg-white justify-content-start border-round'} >
                 <Flex className={'px-3 py-2'} >
                     <Header size={2}>Document</Header>
@@ -32,7 +32,8 @@ export default function Home() {
                             <Image src={batch1} height={550}width={550} />
                 </Flex>
             </Flex>
-            
+
+
 
         </>
     )

@@ -84,6 +84,13 @@ export default function SideNavbar({ toggleSideNav }) {
                 router.push('/document')
             }
         },
+        {
+            label: `${toggleSideNav ? 'Documents Search' : ''}`,
+            icon: 'pi pi-search',
+            command: () => {
+                router.push('/document/search')
+            }
+        },
         // {
         //     label: `${toggleSideNav ? 'Awaiting For Me' : ''}`,
         //     icon: 'pi pi-history',
