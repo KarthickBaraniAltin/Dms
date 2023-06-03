@@ -5,15 +5,15 @@ import Header from "../../components/Header/Header"
 import TextInput from "../../components/Input/TextInput"
 import { useRouter } from "next/router"
 
-import Forms from '../../svg/Forms.svg';
-import batch from '../../svg/batch.svg';
+import form1 from '../../svg/form1.svg';
+import batch1 from '../../svg/batch1.svg';
 import Image from 'next/image';
 
          
 export default function Home() {
 
     const router = useRouter()
-   console.log(Forms)
+   console.log(form1)
 
     return (
         <>
@@ -27,9 +27,9 @@ export default function Home() {
                 </Flex>
                 <Flex direction={'column'} className={'justify-content-between align-items-center h-30rem '} >
                 <Header size={2} className={'text-left text-primary'} >Would You Like To...</Header>
-                         <Image src={Forms} height={550}width={550} onClick={() => {
+                         <Image src={form1} height={550}width={550} onClick={() => {
                             router.push('document/upload')}} ></Image>
-                            <Image src={batch} height={550}width={550} />
+                            <Image src={batch1} height={550}width={550} />
                 </Flex>
             </Flex>
             
