@@ -334,7 +334,7 @@ pre::-webkit-scrollbar-thumb {
   color: #ffd200;
 }
 
-.p-datatable .p-datatable-thead > tr > th {
+.p-datatable .p-datatable-thead>tr>th {
   text-align: left;
   padding: 1rem 1rem;
   border: 1px solid #dee2e6 !important;
@@ -343,40 +343,41 @@ pre::-webkit-scrollbar-thumb {
   color: #343a40 !important;
   background: #bbceda !important;
   transition: box-shadow 0.2s !important;
-
 }
+
 .p-button.p-button-outlined {
   background-color: transparent !important;
   color: #00b9ff !important;
   border: 1px solid !important;
 }
-.p-datatable .p-datatable-tbody > tr {
+
+.p-datatable .p-datatable-tbody>tr {
   background: #eaf5fa !important;
   color: #495057 !important;
   transition: box-shadow 0.2s;
 }
 
 
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
+.p-datatable.p-datatable-striped .p-datatable-tbody>tr.p-row-odd {
   background: #f7f5ed !important;
 }
+
 .p-inputtext {
   margin: 0;
   width: 225px;
 }
 
-.p-datatable .p-datatable-tbody > tr.p-highlight {
+.p-datatable .p-datatable-tbody>tr.p-highlight {
   background: #FFCDD2;
-  color: #4338CA ;
+  color: #4338CA;
 }
 
-
-.p-datatable.p-datatable-selectable .p-datatable-tbody > tr.p-selectable-row:focus {
+.p-datatable.p-datatable-selectable .p-datatable-tbody>tr.p-selectable-row:focus {
   outline: #00b9ff !important;
   background-color: #004990 !important;
-  color:white !important ;
+  color: white !important;
 }
 
 .text-whit:hover {
-  color:white !important;
-} 
+  color: white !important;
+}
