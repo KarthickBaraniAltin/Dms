@@ -67,18 +67,22 @@ export default function AdvancedDemo() {
     );
 
     return (
-        <div className="my-4 w-full h-screen" >
-            <Card title={'Dashboard'} className="h-full" >
-                <Flex className={'h-full justify-content-center align-items-center'}>
+        <div className="my-4 w-full h-full" >
+            <Flex direction={'column'} className={'my-4 h-full w-full bg-white justify-content-start border-round'} >
+           <Flex direction={'column'} className={'justify-content-between align-items-center h-30rem '} >
+            <Datagrid data={filesList} columns={gridColumns} sortable={true} />
+         
+            
+                 {/* <Flex className={'h-full justify-content-center align-items-center'}>
                     <div className="card flex justify-content-center ">
                         <Card title="" subTitle="Subtitle" footer={footer} className="md:w-25rem " style={{ marginTop: '50px', backgroundColor: '#eaf5fa' }}>
                             <InputText value={value} onChange={(e) => setValue(e.target.value)} />
                         </Card>
                     </div>
-                </Flex>
-            </Card>
-
-            <Datagrid data={filesList} columns={gridColumns} sortable={true} />
-        </div>
+                </Flex>  */}
+            
+            </Flex>
+            </Flex>
+         </div>
     )
 }

@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react';
 import Flex from "../Layout/Flex"
 import Header from "../Header/Header"
 import { Button } from "primereact/button"
@@ -8,6 +9,10 @@ import { PanelMenu } from "primereact/panelmenu"
 import { useRouter } from "next/router"
 import { Transition } from "@headlessui/react"
 import { useMsal } from "@azure/msal-react"
+import { Tree } from 'primereact/tree';
+
+
+
 
 
 export default function SideNavbar({ toggleSideNav }) {
@@ -91,7 +96,7 @@ export default function SideNavbar({ toggleSideNav }) {
                 router.push('/document/search')
             }
         },
-        // {
+         // {
         //     label: `${toggleSideNav ? 'Awaiting For Me' : ''}`,
         //     icon: 'pi pi-history',
 
@@ -105,6 +110,76 @@ export default function SideNavbar({ toggleSideNav }) {
         //     icon: 'pi pi-times-circle',
         // }
     ]
+    const node = [
+        {
+          key: "0",
+          label: " Upload Documents",
+          data: "Documents Folder",
+          icon: "pi pi-upload",
+          children: [
+            {
+              key: "0-0",
+              label: "Document type",
+              data: "Work Folder",
+              icon: "pi pi-fw pi-cog",
+              children: [
+                {
+                  key: "0-0-0",
+                  label: "Department",
+                  icon: "pi pi-fw pi-file",
+                  data: "Expenses Document"
+                },
+                {
+                  key: "0-0-1",
+                  label: "description",
+                  icon: "pi pi-fw pi-file",
+                  data: "Resume Document"
+                }
+              ]
+            },
+            
+          ]
+        },
+        {
+          key: "1",
+          label: "Acdemic affairs",
+          data: "Events Folder",
+          icon: "pi pi-fw pi-calendar",
+          children: [
+            {
+                key: "0-0",
+                label: "ID",
+                data: "Work Folder",
+                icon: "pi pi-fw pi-cog",
+                children: [
+                  {
+                    key: "0-0-0",
+                    label: "Driving License",
+                    icon: "pi pi-fw pi-file",
+                    data: "Expenses Document"
+                  },
+                  {
+                    key: "0-0-1",
+                    label: "Passport",
+                    icon: "pi pi-fw pi-file",
+                    data: "Resume Document"
+                  }
+                ]
+              },
+          ]
+        },
+      ];
+    
+      let selectedKey = {};
+      let setSelectedKey;
+    
+      [selectedKey, setSelectedKey] = useState({});
+
+  const [nodes, setNodes] = useState([]);
+
+  
+
+   
 
 
     return (
@@ -152,9 +227,11 @@ export default function SideNavbar({ toggleSideNav }) {
                     <PanelMenu model={formItems} className="w-full" />
                 </Flex>
                 <Header size={4} className={'mx-2'} >{toggleSideNav ? 'Documents' : 'D'}</Header>
+                 
                 <Flex>
                     <PanelMenu model={documentItems} className="w-full" />
                 </Flex>
+                <Tree value={node} selectionMode="single" selectionKeys={selectedKey} onSelectionChange={(e) => {setSelectedKey(e); console.log(e)}} className="w-full md:w-20rem" />
             </Flex>
         </aside>
     )

@@ -31,9 +31,13 @@ export default function Home() {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
+  const [src, setSrc] = useState(null);
+  const [tableData, setTableData]= useState();
+  const [showModel, setShowModel] = useState(false);
 
   const onFileSelect = (e) => {
     setFileItem(e.files);
+    setSrc(URL.createObjectURL(e.files[0]));
   }
 
   const onTemplateSelect = (e) => {
@@ -90,18 +94,29 @@ export default function Home() {
 
   const getUploadFiles = (file, props) => {
     const url = URL.createObjectURL(file);
-    console.log(file.name)
+    console.log(file);
+
+//const docs = ['docx','pdf'];
+  //const docType = file.name.split('.')[1];
+  //docs.includes(docType) ? pdf.src :
+
     return (
       <>
         <div style={{ textAlign: 'left', display: 'flex' }} onClick={() => setShow(true)}>
-          <img src={url} style={{ marginRight: 0 }} width={'40%'} height={'10%'} />
+         <img src={ url} style={{ marginRight: 0 }} width={'40%'} height={'10%'}
+           /> 
+           <embed type=""
+       src={src} 
+       width="250"
+          height="240"/>
+
           <p style={{ paddingLeft: '10px' }}>{file.name}</p>
           {/* <Button style={{ paddingLeft: "25px", marginRight: '5px' ,marginLeft:'auto',width:"165px",height:'40px',justifyContent:'center'}} label="Add Document" onClick={() => setVisible(true)} />*/}
           <Button type="button" icon="pi pi-times" className="p-button-outlined p-button-rounded p-button-danger ml-auto" style={{ marginLeft: 'auto' }} onClick={() => onTemplateRemove(file, props.onRemove)} />
         </div>
-        <Dialog header="Header" visible={show} style={{ width: '80vw' }} onHide={() => setShow(false)}>
+        {/* <Dialog header="Header" visible={show} style={{ width: '80vw' }} onHide={() => setShow(false)}>
           <Image src={url} alt="Image" width="100%" />
-        </Dialog>
+        </Dialog> */}
       </>
     );
   };
@@ -162,211 +177,12 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
 
 
-  const products = [
-    {
-      title: 'sample document(0)',
-      currentdocument: 'add relevent files to the document',
-      currentdate: '14 days ago',
-      id: "1000",
-      image: "bamboo-watch.jpg",
-      inventoryStatus: "INSTOCK",
-      name: "Bamboo Watch",
-      price: 65,
-      quantity: 24,
-      rating: 5,
-    },
-  ];
-
-  const product = [
-    {
-      title: '1',
-      currentdocument: 'png',
-      currentdate: 'sample.png',
-      id: "12kb",
-      image: "12/12/2023",
-      inventoryStatus: "awaiting index",
-      name: "Bamboo Watch",
-      price: 65,
-      quantity: 24,
-      rating: 5,
-    },
-
-    {
-      title: '2',
-      currentdocument: 'png',
-      currentdate: 'sample.png',
-      id: "12kb",
-      image: "12/12/2023",
-      inventoryStatus: "awaiting index",
-    },
-    {
-      title: '3',
-      currentdocument: 'png',
-      currentdate: 'sample.png',
-      id: "12kb",
-      image: "12/12/2023",
-      inventoryStatus: "awaiting index",
-    },
-    {
-      title: '4',
-      currentdocument: 'png',
-      currentdate: 'sample.png',
-      id: "12kb",
-      image: "12/12/2023",
-      inventoryStatus: "awaiting index",
-    },
-
-  ];
-
-  const productss = [
-    {
-      title: '1',
-      currentdocument: 'Apartmentrental',
-      id: "pdf",
-      image: "justification",
-      status: "xyz",
-      name: "icon",
-    },
-    {
-      title: '2',
-      currentdocument: 'student id',
-      id: "JPEG",
-      image: "ID",
-      status: "abc",
-      name: "icon",
-    },
-    {
-      title: '3',
-      currentdocument: 'Enrolment',
-      id: "pdf",
-      image: "Course proof",
-      status: "efg",
-      name: "icon",
-    },
-  ];
-
-  const node = [
-    {
-      key: "0",
-      label: "Documents",
-      data: "Documents Folder",
-      icon: "pi pi-fw pi-inbox",
-      children: [
-        {
-          key: "0-0",
-          label: "student document",
-          data: "Work Folder",
-          icon: "pi pi-fw pi-cog",
-          children: [
-            {
-              key: "0-0-0",
-              label: "Expenses.doc",
-              icon: "pi pi-fw pi-file",
-              data: "Expenses Document"
-            },
-            {
-              key: "0-0-1",
-              label: "Resume.doc",
-              icon: "pi pi-fw pi-file",
-              data: "Resume Document"
-            }
-          ]
-        },
-        {
-          key: "0-1",
-          label: "Demo",
-          data: "Home Folder",
-          icon: "pi pi-fw pi-home",
-          children: [
-            {
-              key: "0-1-0",
-              label: "Invoices.txt",
-              icon: "pi pi-fw pi-file",
-              data: "Invoices for this month"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      key: "1",
-      label: "sample document",
-      data: "Events Folder",
-      icon: "pi pi-fw pi-calendar",
-      children: [
-        {
-          key: "1-0",
-          label: "invoice",
-          icon: "pi pi-fw pi-calendar-plus",
-          data: "Meeting"
-        },
-        {
-          key: "1-1",
-          label: "demo",
-          icon: "pi pi-fw pi-calendar-plus",
-          data: "Product Launch"
-        },
-        {
-          key: "1-2",
-          label: "Report Review",
-          icon: "pi pi-fw pi-calendar-plus",
-          data: "Report Review"
-        }
-      ]
-    },
-    {
-      key: "2",
-      label: "Movies",
-      data: "Movies Folder",
-      icon: "pi pi-fw pi-star-fill",
-      children: [
-        {
-          key: "2-0",
-          icon: "pi pi-fw pi-star-fill",
-          label: "Al Pacino",
-          data: "Pacino Movies",
-          children: [
-            {
-              key: "2-0-0",
-              label: "Scarface",
-              icon: "pi pi-fw pi-video",
-              data: "Scarface Movie"
-            },
-            {
-              key: "2-0-1",
-              label: "Serpico",
-              icon: "pi pi-fw pi-video",
-              data: "Serpico Movie"
-            }
-          ]
-        },
-        {
-          key: "2-1",
-          label: "Robert De Niro",
-          icon: "pi pi-fw pi-star-fill",
-          data: "De Niro Movies",
-          children: [
-            {
-              key: "2-1-0",
-              label: "Goodfellas",
-              icon: "pi pi-fw pi-video",
-              data: "Goodfellas Movie"
-            },
-            {
-              key: "2-1-1",
-              label: "Untouchables",
-              icon: "pi pi-fw pi-video",
-              data: "Untouchables Movie"
-            }
-          ]
-        }
-      ]
-    }
-  ];
+  
   let selectedKey = {};
   let setSelectedKey;
   [selectedKey, setSelectedKey] = useState({});
   const [state, setState] = useState(false)
+  const [linkurl, setLinkurl] = useState(null)
 
   useEffect(() => {
     setNsheID('');
@@ -416,19 +232,20 @@ export default function Home() {
       // console.log('response 1 : ' + response);
       console.log('response 1 : ' + response1.json().then((token) => {
         console.log('_1 : ', token.files);
+        token.files.forEach((res) => res['showModel'] = false)
         setFilesList(token.files);
-        fileUploadRef?.current.clear();
-        {
-          token.files.length > 0 ?
-            fetch(`http://localhost:8101/docs-web/api/file/` + token.files[4].id + `/data`,
-              {
-                method: 'GET',
-                headers: myHeaders,
-                credentials: 'include'
-              }).then((response3) => {
-                console.log('File_Data', response3);
-              }) : null
-        }
+        fileUploadRef?.current?.clear();
+        // {
+        //   token != undefined && token != null && token.files != undefined && token.files != null && token.files.length > 0 ?
+        //     fetch(`http://localhost:8101/docs-web/api/file/` + token.files[4].id + `/data`,
+        //       {
+        //         method: 'GET',
+        //         headers: myHeaders,
+        //         credentials: 'include'
+        //       }).then((response3) => {
+        //         console.log('File_Data', response3);
+        //       }) : null
+        // }
       }));
 
     });
@@ -442,9 +259,54 @@ export default function Home() {
   };
 
   const fileNameAction = (file) => {
+    
     let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-    return <a className='text-whit' href={link} target='_blank'>{file.name}</a>
+   console.log('F_ID : ' + file.id);
+   // const objURL = URL.createObjectURL(file);
+    return ( 
+        <>
+          <div>
+              <a onClick={() => rowColumnClick(file)}>{file.name}</a>
+              {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
+              {/* <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}> */}
+              <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => setShowModel(false)}>
+                <embed type=""
+                  src={link}
+                  width="1250"
+                  height="1500" />
+
+              </Dialog>
+          </div>
+        </>
+        )
   };
+
+  const rowColumnClick = (file) => {
+    console.log(file)
+    // setTableData(true);
+    // file.showModel = true;
+    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    setLinkurl(link);
+    setShowModel(true);
+    // return (
+    //   <>
+    //    {/* <a className='text-whit' href={link} target='_blank'>{file.name}</a> */}
+    //    {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
+    //    {/* <Dialog header="Header" visible={tableData} style={{ width: '80vw' }} onHide={() => setTableData(false)}> */}
+    //     {/* <p>Hi</p> */}
+    //   {/* <iframe src={objURL} style="width:600px; height:500px;" frameborder="0"></iframe> */}
+    //     {/* </Dialog>  */}
+    //     <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}>
+    //       {/* <Image src={url} alt="Image" width="100%" /> */}
+    //        <embed type=""
+    //    src={link} 
+    //    width="1250"
+    //       height="1500"/>
+    //     {/* <p>haii</p> */}
+    //     </Dialog>
+    // </>
+    // )
+  }
 
   const viewAction = (file) => {
     return (
@@ -658,20 +520,7 @@ export default function Home() {
       <Toast ref={toast} />
       {/* <NavLink to={'/'} /> */}
       {
-        visible ?
-          <>
-            <>
-              {
-                <>
-                  <Card className="card" header={header} style={{ marginTop: '5px', backgroundColor: '#EEEEFD', display: 'flex', flexDirection: 'column', paddingTop: '5px' }}>
-                    <Details ingredient={ingredient} value={value} setValue={setValue} checked={checked} setChecked={setChecked} selectedCity={selectedCity} setSelectedCity={setSelectedCity} productss={productss} />
-                  </Card>
-
-                </>
-              }
-            </>
-          </>
-          :
+        
           <>
             <div style={{ marginTop: '20px' }}>
               <div className=" flex-wrap justify-content-center  ">
@@ -743,7 +592,7 @@ export default function Home() {
                     chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} 
                     uploadHandler={invoiceUploadHandler}
                     /> */}
-                      <FileUpload name="demo[]" ref={fileUploadRef} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} customUpload={true} chooseOptions={chooseOptions} uploadOptions={uploadOptions}
+                      <FileUpload name="demo[]" ref={fileUploadRef} multiple webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} customUpload={true} chooseOptions={chooseOptions} uploadOptions={uploadOptions}
                         cancelOptions={cancelOptions} uploadHandler={invoiceUploadHandler} emptyTemplate={emptyTemplate}
                         onSelect={onFileSelect}
                         onError={onTemplateClear} onClear={onTemplateClear} onUpload={onTemplateUpload}
@@ -762,7 +611,7 @@ export default function Home() {
    
 </Card> */}
                   <Card className="card" title=" Quick upload" style={{ backgroundColor: '#eaf5fa', width: '100%', marginBottom: '25px', height: '440px' }}>
-                    {filesList.length > 0 ?
+                    {filesList != undefined && filesList != null && filesList.length > 0 ?
 
                       <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
                         tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#f7f5ed' }}
@@ -819,11 +668,9 @@ export default function Home() {
                 </div>
               </div>
             </Card>
-
-          </>
+         </>
       }
-
-    </>
+ </>
 
   )
 }
