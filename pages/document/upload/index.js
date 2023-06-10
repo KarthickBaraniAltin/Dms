@@ -20,6 +20,7 @@ import moment from 'moment';
 
 export default function Home() {
   const [value, setValue] = useState('');
+  const [title, setTitle] = useState('');
   const toast = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
   const fileUploadRef = useRef(null);
@@ -32,12 +33,15 @@ export default function Home() {
   const [lastName, setLastName] = useState(null);
   const [middleName, setMiddleName] = useState(null);
   const [src, setSrc] = useState(null);
-  const [tableData, setTableData]= useState();
+  const [tableData, setTableData] = useState();
+  const [preview, setPreview] = useState(false);
   const [showModel, setShowModel] = useState(false);
+  const [showSave, setShowSave] = useState(false);
 
   const onFileSelect = (e) => {
-    setFileItem(e.files);
+    setFileItem(e.files[0]);
     setSrc(URL.createObjectURL(e.files[0]));
+    // console.log('FileRef : ' + fileUploadRef.current.files);
   }
 
   const onTemplateSelect = (e) => {
@@ -73,14 +77,15 @@ export default function Home() {
   };
 
   const headerTemplate = (options) => {
-    const { className, chooseButton, uploadButton, cancelButton } = options;
+    const { className, chooseButton, cancelButton } = options;
+    // uploadButton,
     const value = totalSize / 10000;
     const formatedValue = fileUploadRef && fileUploadRef.current ? fileUploadRef.current.formatSize(totalSize) : '0 B';
 
+    // {uploadButton}
     return (
       <div className={className} style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center' }}>
         {chooseButton}
-        {uploadButton}
         {cancelButton}
 
       </div>
@@ -96,20 +101,18 @@ export default function Home() {
     const url = URL.createObjectURL(file);
     console.log(file);
 
-//const docs = ['docx','pdf'];
-  //const docType = file.name.split('.')[1];
-  //docs.includes(docType) ? pdf.src :
+    //const docs = ['docx','pdf'];
+    //const docType = file.name.split('.')[1];
+    //docs.includes(docType) ? pdf.src :
 
     return (
       <>
         <div style={{ textAlign: 'left', display: 'flex' }} onClick={() => setShow(true)}>
-         <img src={ url} style={{ marginRight: 0 }} width={'40%'} height={'10%'}
-           /> 
-           <embed type=""
-       src={src} 
-       width="250"
-          height="240"/>
-
+          {/* <img src={ url} style={{ marginRight: 0 }} width={'40%'} height={'10%'} />  */}
+          <embed type=""
+            src={src}
+            width="250"
+            height="240" />
           <p style={{ paddingLeft: '10px' }}>{file.name}</p>
           {/* <Button style={{ paddingLeft: "25px", marginRight: '5px' ,marginLeft:'auto',width:"165px",height:'40px',justifyContent:'center'}} label="Add Document" onClick={() => setVisible(true)} />*/}
           <Button type="button" icon="pi pi-times" className="p-button-outlined p-button-rounded p-button-danger ml-auto" style={{ marginLeft: 'auto' }} onClick={() => onTemplateRemove(file, props.onRemove)} />
@@ -177,7 +180,7 @@ export default function Home() {
   const [visible, setVisible] = useState(false);
 
 
-  
+
   let selectedKey = {};
   let setSelectedKey;
   [selectedKey, setSelectedKey] = useState({});
@@ -189,6 +192,7 @@ export default function Home() {
     setFirstName('');
     setLastName('');
     setMiddleName('');
+    setShowSave(false);
     var urlencoded = new URLSearchParams();
     urlencoded.append("username", "admin");
     urlencoded.append("password", "admin");
@@ -206,7 +210,7 @@ export default function Home() {
         console.log('Token : ' + token.auth_token);
         // authToken = token.auth_token;
         localStorage.setItem('authTok', token.auth_token);
-        getFiles();
+        // getFiles();
         getTags();
       });
     });
@@ -218,8 +222,8 @@ export default function Home() {
 
     document.cookie = "auth_token=" + authToken;
 
-    fetch(`http://localhost:8101/docs-web/api/file/list`,
-      // orders/${orderId}/uploadInvoiceFile
+    let docId = localStorage.getItem('docID');
+    fetch(`http://localhost:8101/docs-web/api/file/list?id=` + docId,
       {
         method: 'GET',
         headers: myHeaders,
@@ -228,29 +232,15 @@ export default function Home() {
         // },
         credentials: 'include'
       },
-    ).then((response1) => {
-      // console.log('response 1 : ' + response);
-      console.log('response 1 : ' + response1.json().then((token) => {
-        console.log('_1 : ', token.files);
-        token.files.forEach((res) => res['showModel'] = false)
-        setFilesList(token.files);
+    ).then((response_list) => {
+      console.log('response_list_1 : ' + response_list.json().then((lists) => {
+        console.log('response_list : ', lists.files);
+        lists.files?.forEach((res) => res['showModel'] = false)
+        setFilesList(lists.files);
         fileUploadRef?.current?.clear();
-        // {
-        //   token != undefined && token != null && token.files != undefined && token.files != null && token.files.length > 0 ?
-        //     fetch(`http://localhost:8101/docs-web/api/file/` + token.files[4].id + `/data`,
-        //       {
-        //         method: 'GET',
-        //         headers: myHeaders,
-        //         credentials: 'include'
-        //       }).then((response3) => {
-        //         console.log('File_Data', response3);
-        //       }) : null
-        // }
       }));
 
     });
-
-    // setFilesList(response1.files);
   };
 
   const subStringId = (file, index) => {
@@ -259,34 +249,57 @@ export default function Home() {
   };
 
   const fileNameAction = (file) => {
-    
-    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-   console.log('F_ID : ' + file.id);
-   // const objURL = URL.createObjectURL(file);
-    return ( 
-        <>
-          <div>
-              <a onClick={() => rowColumnClick(file)}>{file.name}</a>
-              {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
-              {/* <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}> */}
-              <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => setShowModel(false)}>
-                <embed type=""
-                  src={link}
-                  width="1250"
-                  height="1500" />
 
-              </Dialog>
-          </div>
-        </>
-        )
+    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    console.log('F_ID : ' + file.id);
+    // const objURL = URL.createObjectURL(file);
+    return (
+      <>
+        <div>
+          <a onClick={() => rowColumnClick(file)}>{file.name}</a>
+          {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
+          {/* <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}> */}
+          <Dialog header="Header" visible={preview} style={{ width: '80vw' }} onHide={() => {
+            // setShowModel(false);
+            setPreview(false);
+            // file.showModel = false;
+          }
+          }>
+            <embed type=""
+              src={linkurl}
+              width="100%"
+              height="650" />
+
+          </Dialog>
+        </div>
+      </>
+    )
   };
+
+  const dialogOpen = () => {
+    console.log(linkurl);
+    return (
+      <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => {
+        setShowModel(false);
+        // file.showModel = false;
+      }
+      }>
+        <embed type=""
+          src={linkurl}
+          width="100%"
+          height="650" />
+
+      </Dialog>
+    )
+  }
 
   const rowColumnClick = (file) => {
     console.log(file)
     // setTableData(true);
-    // file.showModel = true;
     let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
     setLinkurl(link);
+    file.showModel = true;
+    setPreview(true);
     setShowModel(true);
     // return (
     //   <>
@@ -308,13 +321,40 @@ export default function Home() {
     // )
   }
 
-  const viewAction = (file) => {
+  const viewIndex = (file, index) => {
+    let indexes = index.rowIndex + 1;
     return (
       <>
-        <span className='pi pi-eye' style={{ cursor: 'pointer' }} onClick={() => viewTagsName(file)} autoFocus />
+        <span style={{ cursor: 'pointer' }} onClick={() => viewTagsName(file)} autoFocus>
+          {indexes}
+        </span>
       </>
     )
   };
+
+  const viewAction = (file) => {
+    return (
+      <>
+        <span className='pi pi-trash' style={{ cursor: 'pointer' }} onClick={() => {
+          // (file)
+          toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
+        }
+        } autoFocus />
+      </>
+    )
+  };
+
+  const saveInvoice = () => {
+    toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document Updated Successfully.!' });
+    setFilesList([]);
+    setTitle('');
+    setValue('');
+    setNsheID('');
+    setFirstName('');
+    setLastName('');
+    setMiddleName('');
+    setShowModel(false);
+  }
 
   const viewTagsName = (file) => {
     let authToken = localStorage.getItem('authTok');
@@ -334,6 +374,7 @@ export default function Home() {
     setFirstName('');
     setLastName('');
     setMiddleName('');
+    // setShowSave(false);
 
     if (file.name == 'Request to Change Personal Info.pdf') {
       setFirstName('Cristan');
@@ -429,79 +470,74 @@ export default function Home() {
     const fileReader = new FileReader();
     // console.log('files.name : ', files[0].name);
     fileReader.onload = (e) => {
-      uploadInvoice(e.target.result, files[0]);
+      // uploadInvoice(e.target.result, files[0]);
+      uploadInvoice();
     };
     fileReader.readAsDataURL(file);
   };
 
-  const uploadInvoice = async (invoiceFile, file) => {
-    let formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', file.name);
-    console.log('FName : ' + file.name);
+  // const uploadInvoice = async (invoiceFile, file) => {
+  const uploadInvoice = async () => {
     let authToken = localStorage.getItem('authTok');
     let myHeaders = { 'Cookie': 'auth_token=' + authToken }
-
+    let myHeaders1 = { 'Cookie': 'auth_token=' + authToken, 'Content-Type': 'application/x-www-form-urlencoded' }
     document.cookie = "auth_token=" + authToken;
-    const response = await fetch(`http://localhost:8101/docs-web/api/file`,
-      // orders/${orderId}/uploadInvoiceFile
+    // let updatedTime = moment().format('LTS');
+    let updatedTime = new Date().getTime();
+    setTitle(childTag.name + ' - ' + fileItem.name);
+    let docTitle = childTag.name + ' - ' + fileItem.name;
+    console.log('Title : ' + docTitle + ' : ' + title);
+    // fileItem.name = docTitle;
+
+    let docURL = 'http://localhost:8101/docs-web/api/document?create_date=' + updatedTime + '&description=' + value + ''
+      + '&language=eng&tags=' + childTag?.id + '&title=' + docTitle;
+    fetch(docURL,
       {
         method: 'PUT',
-        body: formData,
-        headers: myHeaders,
-        // headers: {
-        //   'Cookie' : 'auth_token=' + authToken
-        // },
+        headers: myHeaders1,
         credentials: 'include'
       },
-    );
+    ).then((response_1) => {
+      console.log('Response_Doc : ' + response_1);
+      response_1.json().then((resp) => {
+        console.log('DOC_ID : ' + resp.id);
+        localStorage.setItem('docID', resp.id);
 
-    // const response1 = await fetch(`http://localhost:8101/docs-web/api/file/list`,
-    // // orders/${orderId}/uploadInvoiceFile
-    //     {
-    //         method: 'GET',
-    //         headers: myHeaders,
-    //         // headers: {
-    //         //   'Cookie' : 'auth_token=' + authToken
-    //         // },
-    //         credentials: 'include'
-    //     },
-    // );
-    // console.log('response 1 : ' + response1);
-    // setFilesList(response1.files);
-    getFiles();
+        let formData = new FormData();
+        formData.append('file', fileItem);
+        // formData.append('name', file.name);
+        formData.append('id', resp.id);
+        // console.log('FName : ' + file.name);
+
+        fetch(`http://localhost:8101/docs-web/api/file`,
+          {
+            method: 'PUT',
+            body: formData,
+            headers: myHeaders,
+            credentials: 'include'
+          },
+        ).then((respon_2) => {
+          getFiles();
+          setShowSave(true);
+          // respon_2.json().then((resp) => {
+          //   console.log('Name : ' + resp.name);
+          //   setTitle(childTag.name + ' - ' + resp.name);
+          // })
+          toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document ' + title + ' Saved Successfully.!' });
+        })
+      });
+    });
 
   };
 
   const [fileItem, setFileItem] = useState('');
+
   const handleUpdate = () => {
-    // let authToken = localStorage.getItem('authTok');
-    // let myHeaders = { 'Cookie': 'auth_token=' + authToken }
+    let authToken = localStorage.getItem('authTok');
+    let myHeaders = { 'Cookie': 'auth_token=' + authToken }
 
     // document.cookie = "auth_token=" + authToken;
-
     // // parentTag,    childTag, cities,  value
-    // let updatedTime = moment().format('LTS');
-
-    // let docURL = 'http://localhost:8101/api/document?create_date=' + updatedTime + '&description=' + value + ''
-    //   + '&language=eng&tags=' + childTag + '&title=' + '';
-    // fetch(docURL,
-    //   {
-    //     method: 'PUT',
-    //     headers: myHeaders,
-    //     credentials: 'include'
-    //   },
-    // ).then((response_1) => {
-    //   console.log('Response : ' + response_1);
-    //   response.json().then((resp) => {
-    //     console.log('Token : ' + resp.id);
-    //     localStorage.setItem('docID', resp.id);
-
-    //   });
-    // });
-
-    toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document Saved Successfully.!' });
-
   }
 
   const gridColumns = [
@@ -512,7 +548,7 @@ export default function Home() {
     { field: 'mimetype', header: 'File Type' }
   ];
 
-  console.log('filesList : ' + filesList);
+  // console.log('filesList : ' + filesList);
   // ===========================================================
 
   return (
@@ -520,22 +556,22 @@ export default function Home() {
       <Toast ref={toast} />
       {/* <NavLink to={'/'} /> */}
       {
-        
-          <>
-            <div style={{ marginTop: '20px' }}>
-              <div className=" flex-wrap justify-content-center  ">
-                <span className="p-input-icon-right">
-                  <i className="pi pi-search" />
-                  <InputText placeholder=" Quick Search " />
-                </span>
-              </div>
+
+        <>
+          <div style={{ marginTop: '20px' }}>
+            <div className=" flex-wrap justify-content-center  ">
+              <span className="p-input-icon-right">
+                <i className="pi pi-search" />
+                <InputText placeholder=" Quick Search " />
+              </span>
             </div>
-            <Card style={{ backgroundColor: "#f7f8fa", marginTop: '30px' }}>
-              <p className="m-0">
-                <div style={{ display: 'flex' }}>
+          </div>
+          <Card style={{ backgroundColor: "#f7f8fa", marginTop: '30px' }}>
+            <p className="m-0">
+              <div style={{ display: 'flex' }}>
 
 
-                  {/*<div style={{gap:'20px',display:'flex'}}>
+                {/*<div style={{gap:'20px',display:'flex'}}>
  <Button label="Department"onClick={() => setVisible(true)} icon="pi pi-angle-up" iconPos="right" style={{height:'50px',marginLeft:'800px',backgroundColor:'#00b9ff',borderColor:'Background',marginBottom:'10px'}} />
  <div className=" flex-wrap justify-content-center ">
  <span className="p-input-icon-right">
@@ -544,133 +580,176 @@ export default function Home() {
   </span>
   </div>
   </div>*/}
-                </div>
-              </p>
-              <div className="grid">
-                <div style={{ display: 'flex', gap: '20px' }} className='col-6'>
+              </div>
+            </p>
+            <div className="grid">
+              <div style={{ display: 'flex', gap: '20px', width: '20%' }}>
 
-                  <Card className="card" title="Add Document" style={{ backgroundColor: '#f7f5ed', width: '95%', }}>
+                <Card className={'card justify-content-center'} title="Add Document" style={{ backgroundColor: '#F7F8FA' }}>
 
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, marginRight: 'auto' }}>Department</p>
-                      <p style={{ marginLeft: 'auto' }}>
+                  <div classname={'card pt-0'}>
+                    <div classname={'field pt-0'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Department</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText value="Academic Affairs" placeholder="" readOnly />
+                      </p>
+                    </div>
+
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Type </p>
+                      <p style={{ marginTop: '0px' }}>
                         <Dropdown value={parentTag} onChange={(e) => setParentTag(e.value)} options={parentTagList} optionLabel="name"
-                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /></p>
+                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center' }} /></p>
                     </div>
 
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Sub Category </p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
-                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /> </p>
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document</p>
+                      <p style={{ marginTop: '0px' }}>
+                        {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
+                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /> </p> */}
+                        < Dropdown value={childTag} onChange={(e) => { setChildTag(e.value); console.log('child : ' + e.value.id) }} options={childTagList} optionLabel="name"
+                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center' }} /> </p>
                     </div>
 
-                    <div style={{ display: 'flex', paddingTop: '1px' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Document Type</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        < Dropdown value={childTag} onChange={(e) => setChildTag(e.value)} options={childTagList} optionLabel="name"
-                          placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /> </p>
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Title</p>
+                      <p style={{ marginTop: '0px', width: '20px' }}>
+                        <InputText value={title} tooltip="string" placeholder="" onChange={(e) => setTitle(e.target.value)} />
+                      </p>
                     </div>
 
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Description</p>
-                      <p style={{ marginLeft: 'auto', eidth: '20px' }}>
-                        <InputTextarea value={value} onChange={(e) => setValue(e.target.value)} rows={5} cols={30} /> </p>
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Description</p>
+                      <p style={{ marginTop: '0px', width: '20px' }}>
+                        <InputTextarea value={value} onChange={(e) => setValue(e.target.value)} rows={3} cols={30} />
+                      </p>
                     </div>
-                    <hr></hr>
-                    <div style={{ marginTop: 'auto' }}>
-                      <h3>Add Files</h3>
-                      <Toast ref={toast}></Toast>
+                  </div>
 
-                      <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
-                      <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
-                      <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
+                  <div style={{ display: 'flex' }}>
+                    <h3>Tags</h3>
+                    {/* <Button label='Reset' icon='pi pi-pencil' onClick={() => handleReset()} autoFocus /> */}
+                    <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: 'auto' }} label='Upload' icon='pi pi-check' onClick={() => uploadInvoice()} autoFocus />
+                    <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: 'auto' }} label='Save' icon='pi pi-check' onClick={() => saveInvoice()} autoFocus />
+                  </div>
 
-                      {/* <FileUpload ref={fileUploadRef} name="demo[]" multiple webkitdirectory maxFileSize={1000000}
+                  <div classname={'card'}>
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}> NSHE ID</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText value={nsheID} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /></p>
+                    </div>
+
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>First Name</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText value={firstName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /> </p>
+                    </div>
+
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Last Name</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText value={lastName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /> </p>
+                    </div>
+
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Middle Name</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText value={middleName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} />  </p>
+                    </div>
+
+                    <div classname={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Visa Number</p>
+                      <p style={{ marginTop: '0px' }}>
+                        <InputText keyfilter="int" placeholder="" className="text-success" style={{ color: 'limegreen', height: '40px' }} /> </p>
+                    </div>
+                  </div>
+                </Card>
+
+
+              </div>
+              <div className='mr-3' style={{ display: 'flex', flexDirection: 'column', columnGap: '20px', width: '44%' }}>
+                {/* <Card className="card" title=" Document view" style={{ backgroundColor: '#f7f5ed',width:'75%'}}>
+   
+</Card> */}
+
+                <Card className="card pt-0" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '0px' }}>
+                  <div className='pt-0' style={{ marginTop: '0px' }}>
+                    <h3 className='pt-0'>Upload from Computer</h3>
+                    <Toast ref={toast}></Toast>
+
+                    <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
+                    {/* <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" /> */}
+                    <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
+
+                    {/* <FileUpload ref={fileUploadRef} name="demo[]" multiple webkitdirectory maxFileSize={1000000}
                     onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                     headerTemplate={headerTemplate} itemTemplate={getUploadFiles} emptyTemplate={emptyTemplate}
                     chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} 
                     uploadHandler={invoiceUploadHandler}
                     /> */}
-                      <FileUpload name="demo[]" ref={fileUploadRef} multiple webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} customUpload={true} chooseOptions={chooseOptions} uploadOptions={uploadOptions}
-                        cancelOptions={cancelOptions} uploadHandler={invoiceUploadHandler} emptyTemplate={emptyTemplate}
-                        onSelect={onFileSelect}
-                        onError={onTemplateClear} onClear={onTemplateClear} onUpload={onTemplateUpload}
-                      />
+                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} chooseOptions={chooseOptions}
+                      cancelOptions={cancelOptions} emptyTemplate={emptyTemplate} customUpload={true}
+                      onSelect={onFileSelect} onUpload={onTemplateUpload} uploadOptions={uploadOptions}
+                      onError={onTemplateClear} onClear={onTemplateClear}
+                    />
+                    {/* uploadHandler={invoiceUploadHandler}  */}
+                  </div>
+                </Card>
 
-                      <div style={{}}>
-                        <Button label='Reset' icon='pi pi-pencil' onClick={() => handleReset()} autoFocus />
-                        <Button label='Save' icon='pi pi-check' onClick={() => handleUpdate()} autoFocus />
-                      </div>
-                    </div>
-                  </Card>
+                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' }}>
+                  <span className='pi pi-refresh px-4 pb-2' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => getFiles()} autoFocus />
+                  {filesList != undefined && filesList != null && filesList.length > 0 ?
 
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', columnGap: '20px', marginTop: 'auto' }} className='col-6'>
-                  {/* <Card className="card" title=" Document view" style={{ backgroundColor: '#f7f5ed',width:'75%'}}>
-   
-</Card> */}
-                  <Card className="card" title=" Quick upload" style={{ backgroundColor: '#eaf5fa', width: '100%', marginBottom: '25px', height: '440px' }}>
-                    {filesList != undefined && filesList != null && filesList.length > 0 ?
+                    <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
+                      tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C' }}
+                      selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id"
+                      metaKeySelection={metaKey}>
+                      <Column body={viewIndex} header="ID" style={{ border: 'none', width: '25px' }}></Column>
+                      <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
+                      <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
+                      <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
+                      <Column body={convertDate} header="Created Date " style={{ border: 'none', width: '120px' }}></Column>
+                      <Column body={(e) => e.processing ? 'Awaiting Index' : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
+                      <Column body={viewAction} header="Delete" style={{ border: 'none', width: '80px' }}></Column>
+                      {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
 
-                      <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
-                        tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#f7f5ed' }}
-                        selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id"
-                        metaKeySelection={metaKey}>
-                        <Column body={subStringId} header="ID" style={{ border: 'none', width: '25px' }}></Column>
-                        <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
-                        <Column body={viewAction} header="File Type" style={{ border: 'none', width: '100px' }}></Column>
-                        <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
-                        <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
-                        <Column body={convertDate} header="Created Date " style={{ border: 'none', width: '120px' }}></Column>
-                        <Column body={(e) => e.processing ? 'Awaiting Index' : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
-                        {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
-
-                        {/* {gridColumns.map((col, i) => {
+                      {/* {gridColumns.map((col, i) => {
           <Column key={col.field} field={col.field} header={col.header} />
       })} */}
-                      </DataTable> : <p>No Data</p>}
+                    </DataTable> : <p>No Data</p>}
 
-                  </Card>
+                </Card>
 
 
-                  <Card className="card" title="Tags" style={{ backgroundColor: '#eaf5fa', width: '100%' }}>
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, marginRight: 'auto' }}> NSHE ID</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <InputText value={nsheID} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px', width: '250px' }} /></p>
-                    </div>
 
-                    <div style={{ display: 'flex', paddingTop: '1px' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>First Name</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <InputText value={firstName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px', width: '250px' }} /> </p>
-                    </div>
-
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Last Name</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <InputText value={lastName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px', width: '250px' }} /> </p>
-                    </div>
-
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Middle Name</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <InputText value={middleName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px', width: '250px' }} />  </p>
-                    </div>
-
-                    <div style={{ display: 'flex' }}>
-                      <p style={{ fontWeight: 600, paddingRight: 'auto' }}>Visa Number</p>
-                      <p style={{ marginLeft: 'auto' }}>
-                        <InputText keyfilter="int" placeholder="" className="text-success" style={{ color: 'limegreen', height: '40px', width: '250px' }} /> </p>
-                    </div>
-                  </Card>
+              </div>
+              <div className={'mb-4 bg-white justify-content-start border-round'} style={{ width: '34%' }}>
+                <h4 className={'mt-4 pt-2 ml-3'} onClick={() => {
+                  setPreview(true);
+                  dialogOpen();
+                }}>Document Preview</h4>
+                <div className={'px-3 py-2'} onClick={() => {
+                  setPreview(true);
+                  dialogOpen();
+                }}>
+                  {
+                    showModel &&
+                    <embed type=""
+                      src={linkurl}
+                      width="100%"
+                      height="550" onClick={() => {
+                        setPreview(true);
+                        dialogOpen();
+                      }} />
+                  }
                 </div>
               </div>
-            </Card>
-         </>
+            </div>
+          </Card>
+        </>
       }
- </>
+    </>
 
   )
 }

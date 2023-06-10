@@ -12,9 +12,6 @@ import { useMsal } from "@azure/msal-react"
 import { Tree } from 'primereact/tree';
 
 
-
-
-
 export default function SideNavbar({ toggleSideNav }) {
 
     const router = useRouter()
@@ -86,17 +83,98 @@ export default function SideNavbar({ toggleSideNav }) {
             label: `${toggleSideNav ? 'My Uploads' : ''}`,
             icon: 'pi pi-upload',
             command: () => {
-                router.push('/document')
+                router.push({
+                    pathname: '/document/upload'
+                })
             }
         },
-        {
-            label: `${toggleSideNav ? 'Documents Search' : ''}`,
-            icon: 'pi pi-search',
-            command: () => {
-                router.push('/document/search')
-            }
-        },
-         // {
+
+        // {
+        //     key: "1",
+        //     label: `${toggleSideNav ? 'Acdemic Affairs' : ''}`,
+        //     data: "Work Folder",
+        //     icon: "pi pi-fw pi-calendar",
+        //     items: [
+        //         {
+        //             key: "0-0",
+        //             label: `${toggleSideNav ? 'ID' : ''}`,
+        //             data: "Emergency Folder",
+        //             icon: "pi pi-fw pi-cog",
+        //             command: () => {
+        //                 router.push({
+        //                     pathname: '/document/search',
+        //                     query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
+        //                     // '/document/search'
+        //                 });
+        //             },
+        //             items: [
+        //                 {
+        //                     key: "0-0-0",
+        //                     label: `${toggleSideNav ? 'Driving License' : ''}`,
+        //                     icon: "pi pi-fw pi-file",
+        //                     data: "Expenses Document",
+        //                     command: () => {
+        //                         router.push({
+        //                             pathname: '/document/search',
+        //                             query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
+        //                             // '/document/search'
+        //                         });
+        //                     }
+        //                 },
+        //                 {
+        //                     key: "0-0-1",
+        //                     label: `${toggleSideNav ? 'Passport' : ''}`,
+        //                     icon: "pi pi-fw pi-file",
+        //                     data: "Resume Document",
+        //                     command: () => {
+        //                         router.push({
+        //                             pathname: '/document/search',
+        //                             query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
+        //                             // '/document/search'
+        //                         });
+        //                     }
+        //                 },
+        //                 {
+        //                     key: "0-0-2",
+        //                     label: `${toggleSideNav ? 'Social Security Card' : ''}`,
+        //                     icon: "pi pi-fw pi-file",
+        //                     data: "Security Document",
+        //                     command: () => {
+        //                         router.push({
+        //                             pathname: '/document/search',
+        //                             query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
+        //                             // '/document/search'
+        //                         });
+        //                     }
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // },
+
+
+        // {
+        //     key: "1",
+        //     label: "Acdemic affairs",
+        //     data: "Events Folder",
+        //     icon: "pi pi-fw pi-calendar",
+        //     children: [
+        //         {
+        //             key: "0-0",
+        //             label: "ID",
+        //             data: "Work Folder",
+        //             icon: "pi pi-fw pi-cog"
+        //         }
+        //     ]
+        // }
+        // {
+        //     label: `${toggleSideNav ? 'Documents Search' : ''}`,
+        //     icon: 'pi pi-search',
+        //     command: () => {
+        //         router.push('/document/search')
+        //     }
+        // },
+        // {
         //     label: `${toggleSideNav ? 'Awaiting For Me' : ''}`,
         //     icon: 'pi pi-history',
 
@@ -111,75 +189,130 @@ export default function SideNavbar({ toggleSideNav }) {
         // }
     ]
     const node = [
+        // {
+        //   key: "0",
+        //   label: " Upload Documents",
+        //   data: "Documents Folder",
+        //   icon: "pi pi-upload",
+        //   children: [
+        //     {
+        //       key: "0-0",
+        //       label: "Document type",
+        //       data: "Work Folder",
+        //       icon: "pi pi-fw pi-cog",
+        //       children: [
+        //         {
+        //           key: "0-0-0",
+        //           label: "Department",
+        //           icon: "pi pi-fw pi-file",
+        //           data: "Expenses Document"
+        //         },
+        //         {
+        //           key: "0-0-1",
+        //           label: "description",
+        //           icon: "pi pi-fw pi-file",
+        //           data: "Resume Document"
+        //         }
+        //       ]
+        //     },
+
+        //   ]
+        // },
         {
-          key: "0",
-          label: " Upload Documents",
-          data: "Documents Folder",
-          icon: "pi pi-upload",
-          children: [
-            {
-              key: "0-0",
-              label: "Document type",
-              data: "Work Folder",
-              icon: "pi pi-fw pi-cog",
-              children: [
+            key: "1",
+            label: `${toggleSideNav ? 'Academic affairs' : ''}`,
+            data: "Events Folder",
+            icon: "pi pi-fw pi-calendar",
+            children: [
                 {
-                  key: "0-0-0",
-                  label: "Department",
-                  icon: "pi pi-fw pi-file",
-                  data: "Expenses Document"
+                    key: "0-0",
+                    label: `${toggleSideNav ? 'ID' : ''}`,
+                    data: "Work Folder",
+                    icon: "pi pi-fw pi-cog",
+                    command: () => {
+                        router.push({
+                            pathname: '/document/search',
+                            query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
+                            // '/document/search'
+                        });
+                    },
+                    children: [
+                        {
+                            key: "0-0-0",
+                            label: `${toggleSideNav ? 'Driving License' : ''}`,
+                            icon: "pi pi-fw pi-file",
+                            data: "Expenses Document",
+                            command: () => {
+                                router.push({
+                                    pathname: '/document/search',
+                                    query: { data: '68769c9e-c9df-4a47-a0b7-606ce9ce8445' }
+                                    // '/document/search'
+                                });
+                            }
+                        },
+                        {
+                            key: "0-0-1",
+                            label: `${toggleSideNav ? 'Passport' : ''}`,
+                            icon: "pi pi-fw pi-file",
+                            data: "Resume Document",
+                            command: () => {
+                                router.push({
+                                    pathname: '/document/search',
+                                    query: { data: 'd7044ae4-5cf4-43fc-8699-2bdd31f2de0c' }
+                                    // '/document/search'
+                                });
+                            }
+                        },
+                        {
+                            key: "0-0-2",
+                            label: `${toggleSideNav ? 'Social Security Card' : ''}`,
+                            icon: "pi pi-fw pi-file",
+                            data: "Security Document",
+                            command: () => {
+                                router.push({
+                                    pathname: '/document/search',
+                                    query: { data: '4504d06b-2358-41cf-a642-9a1928f1497b' }
+                                    // '/document/search'
+                                });
+                            }
+                        }
+                    ]
                 },
-                {
-                  key: "0-0-1",
-                  label: "description",
-                  icon: "pi pi-fw pi-file",
-                  data: "Resume Document"
-                }
-              ]
-            },
-            
-          ]
+            ]
         },
-        {
-          key: "1",
-          label: "Acdemic affairs",
-          data: "Events Folder",
-          icon: "pi pi-fw pi-calendar",
-          children: [
-            {
-                key: "0-0",
-                label: "ID",
-                data: "Work Folder",
-                icon: "pi pi-fw pi-cog",
-                children: [
-                  {
-                    key: "0-0-0",
-                    label: "Driving License",
-                    icon: "pi pi-fw pi-file",
-                    data: "Expenses Document"
-                  },
-                  {
-                    key: "0-0-1",
-                    label: "Passport",
-                    icon: "pi pi-fw pi-file",
-                    data: "Resume Document"
-                  }
-                ]
-              },
-          ]
-        },
-      ];
-    
-      let selectedKey = {};
-      let setSelectedKey;
-    
-      [selectedKey, setSelectedKey] = useState({});
+    ];
 
-  const [nodes, setNodes] = useState([]);
+    let selectedKey = {};
+    let setSelectedKey;
 
-  
+    [selectedKey, setSelectedKey] = useState({});
 
-   
+    const [nodes, setNodes] = useState([]);
+
+    const documentMenuClick = ((e) => {
+        console.log('Event : ' + e.value);
+
+        let data = "";
+        if (e.value == "1") {
+            data = "5628c245-8622-4842-9785-347c3bcd81ff-1";
+        } else if (e.value == "0-0") {
+            data = "5628c245-8622-4842-9785-347c3bcd81ff";
+        } else if (e.value == "0-0-0") {
+            data = "68769c9e-c9df-4a47-a0b7-606ce9ce8445";
+        } else if (e.value == "0-0-1") {
+            data = "d7044ae4-5cf4-43fc-8699-2bdd31f2de0c";
+        } else if (e.value == "0-0-2") {
+            data = "4504d06b-2358-41cf-a642-9a1928f1497b";
+        }
+
+        router.push({
+            pathname: '/document/search/' + data,
+            // query: { data: data }
+            // '/document/search'
+        });
+    })
+
+
 
 
     return (
@@ -227,11 +360,13 @@ export default function SideNavbar({ toggleSideNav }) {
                     <PanelMenu model={formItems} className="w-full" />
                 </Flex>
                 <Header size={4} className={'mx-2'} >{toggleSideNav ? 'Documents' : 'D'}</Header>
-                 
+
                 <Flex>
                     <PanelMenu model={documentItems} className="w-full" />
                 </Flex>
-                <Tree value={node} selectionMode="single" selectionKeys={selectedKey} onSelectionChange={(e) => {setSelectedKey(e); console.log(e)}} className="w-full md:w-20rem" />
+                <Tree value={node} selectionMode="single" selectionKeys={selectedKey}
+                    onSelectionChange={(e) => { documentMenuClick(e); }}
+                    className="w-full md:w-20rem" />
             </Flex>
         </aside>
     )
