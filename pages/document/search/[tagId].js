@@ -212,11 +212,12 @@ export default function AdvancedDemos() {
                     <h6 className={'w-max'} style={{ marginTop: '4px' }}>
                         <BreadCrumb model={items} home={home} className={'justify-content-start border-round border-none'} style={{ fontSize: '12px', height: '14px', backgroundColor: '#F7F8FA', display: 'contents' }} />
                     </h6>
-                    <div className={'my-4 h-auto bg-white justify-content-start border-round-sm'}
-                        style={{ shadowColor: 'black', elevation: 20 }}>
+                    <div className={'my-4 h-auto bg-white justify-content-start '}
+                        style={{ shadowColor: 'black', elevation: 20,height:'73%',borderRadius:'10px',fontSize:'14px',overflow:'auto', }}>
                         <div className={'pl-3 pt-2 pr-3 pb-8'}>
-                            <h4 className={'mt-0'}>Document Details</h4>
-                            <div className={'flex py-2'} style={{ backgroundColor: '#CCD6DE', fontFamily: 'sans-serif', fontWeight: 'bold' }}>
+                            <h4 className={'mt-0'}></h4>
+                            <div className={'flex py-2'} style={{ backgroundColor: '#CCD6DE', fontFamily: 'WorkSans-Medium', fontWeight: 'bold',fontWeight: '600',
+                        fontSize: '14px',color:'#024f7c' }}>
                                 <div className={'col-1'}>Doc ID</div>
                                 <div className={'col-3'}>Doc Title</div>
                                 <div className={'col-3'}>File Name</div>
@@ -236,7 +237,7 @@ export default function AdvancedDemos() {
                                             setSelectedRow(index);
                                         }}
                                             style={selectedRow === index ? { backgroundColor: '#024F7C', color: 'white' } :
-                                                index % 2 === 0 ? { color: '#002138', backgroundColor: '#FFFFFF', fontFamily: 'sans-serif', fontWeight: 'normal' } : { color: '#002138', backgroundColor: '#E5F8FF', fontFamily: 'sans-serif', fontWeight: 'normal' }}>
+                                                index % 2 === 0 ? { color: '#002138', backgroundColor: '#FFFFFF', fontFamily: 'WorkSans-Medium', fontWeight: 'normal' } : { color: '#002138', backgroundColor: '#E5F8FF', fontFamily: 'WorkSans-Medium', fontWeight: 'normal' }}>
                                             <div className={'col-1'}>{'AA - ' + index + 1}</div>
                                             <div className={'col-3'}>{file.title}</div>
                                             <div className={'col-3'}>{file.name}</div>
@@ -253,17 +254,20 @@ export default function AdvancedDemos() {
                 <div className={'col-4 mb-4 justify-content-start'} style={{ marginTop: '4px' }}>
                     <div style={{ display: 'flex', marginTop: '0px' }}>
                         <p style={{ marginRight: 'auto', marginTop: '0px', marginBottom: '4px' }}>
-                            <InputText value={searchTxt} tooltip="string" placeholder="Search here" onChange={(e) => {
+                        <i className="pi pi-search"style={{color:'#024f7c',marginLeft: '185px',position:'absolute',marginTop:'9px',
+                                }} />
+                            <InputText value={searchTxt} tooltip="string" placeholder="Search here" icon='pi pi-search' onChange={(e) => {
                                 setSearchTxt(e.target.value)
                                 setFilesList(filesListTemp.filter((file) => file.title.toLowerCase().includes(searchTxt.toLowerCase())));
                                 if (e.target.value.length == 0) {
                                     setFilesList(filesListTemp);
                                 }
                             }
-                            } />
+                            }  />
                         </p>
                     </div>
-                    <div className={'mb-4 bg-white justify-content-start border-round'}>
+                    <div className={'mb-4 bg-white justify-content-start'} style={{height:'73%',marginRight: '16px',
+    borderRadius: '10px'}}>
                         <h4 className={'mt-4 pt-2 ml-3'}>Document Preview</h4>
                         <div className={'px-3 py-2'}>
                             {showPreview &&

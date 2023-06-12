@@ -5,7 +5,7 @@ import { FileUpload } from 'primereact/fileupload';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from 'primereact/dialog';
-import { Image } from 'primereact/image';
+// import { Image } from 'primereact/image';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
@@ -16,6 +16,9 @@ import Moment from "moment";
 import { InputTextarea } from 'primereact/inputtextarea';
 // import { Description } from '@headlessui/react/dist/components/description/description';
 import moment from 'moment';
+import Bin from '../../../svg/Bin.svg';
+import Image from 'next/image';
+
 
 
 export default function Home() {
@@ -43,6 +46,11 @@ export default function Home() {
     setSrc(URL.createObjectURL(e.files[0]));
     // console.log('FileRef : ' + fileUploadRef.current.files);
   }
+
+
+  
+
+  console.log(Bin)
 
   const onTemplateSelect = (e) => {
     let _totalSize = totalSize;
@@ -123,12 +131,12 @@ export default function Home() {
       </>
     );
   };
-
+  
   const emptyTemplate = () => {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', }}>
-        <i className="pi pi-image  mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)', }}></i>
-        <span style={{ fontSize: '1.2em', color: 'var(--text-color-secondary)', }} className="my-5">  Drag and Drop Image Here
+        <i className="  mt-3 p-5" style={{ fontSize: '5em', borderRadius: '50%', backgroundColor: 'var(--surface-b)', color: 'var(--surface-d)', }}></i>
+        <span style={{ fontSize: '1em', color: '#104063',fontweight: '500' }} className="my-5">  Drag and Drop Image Here
         </span>
       </div>
     );
@@ -335,7 +343,7 @@ export default function Home() {
   const viewAction = (file) => {
     return (
       <>
-        <span className='pi pi-trash' style={{ cursor: 'pointer' }} onClick={() => {
+         <Image src={Bin}  style={{ cursor: 'pointer' }} onClick={() => {
           // (file)
           toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
         }
@@ -558,17 +566,17 @@ export default function Home() {
       {
 
         <>
-          <div style={{ marginTop: '20px' }}>
+          {/* <div style={{ marginTop: '20px' }}>
             <div className=" flex-wrap justify-content-center  ">
               <span className="p-input-icon-right">
                 <i className="pi pi-search" />
                 <InputText placeholder=" Quick Search " />
               </span>
             </div>
-          </div>
-          <Card style={{ backgroundColor: "#f7f8fa", marginTop: '30px' }}>
+          </div> */}
+          <div style={{ backgroundColor: "#f6f7f9", marginTop: '20px' ,overflow:'auto'}}>
             <p className="m-0">
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex',padding:'0px' }}>
 
 
                 {/*<div style={{gap:'20px',display:'flex'}}>
@@ -583,28 +591,28 @@ export default function Home() {
               </div>
             </p>
             <div className="grid">
-              <div style={{ display: 'flex', gap: '20px', width: '20%' }}>
+              <div style={{ display: 'flex', gap: '20px', width: '20%',marginLeft:'2px',marginTop:'8px' }}>
 
-                <Card className={'card justify-content-center'} title="Add Document" style={{ backgroundColor: '#F7F8FA' }}>
+                <Card className={'card justify-content-center'} title="" style={{ backgroundColor: '#eff2f6' ,alignItems:'center',justifyContent:'center',width:'280px',}}>
 
                   <div classname={'card pt-0'}>
-                    <div classname={'field pt-0'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Department</p>
-                      <p style={{ marginTop: '0px' }}>
+                    <div classname={'field pt-0'} style={{ marginBottom: '24px',paddingLeft:'12px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'3px',color:'#104063' ,fontSize: '14px'}}>Department</p>
+                      <p style={{ marginTop: '0px',fontSize:'0.9em', color: '#09547f ' }}>
                         <InputText value="Academic Affairs" placeholder="" readOnly />
                       </p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Type </p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '14px' }}>Document Type </p>
+                      <p style={{ marginTop: '0px',paddingLeft:'12px',fontSize:'0.8em' }}>
                         <Dropdown value={parentTag} onChange={(e) => setParentTag(e.value)} options={parentTagList} optionLabel="name"
                           placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center' }} /></p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '14px' }}>Document</p>
+                      <p style={{ marginTop: '0px' ,paddingLeft:'12px',fontSize:'0.8em'}}>
                         {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
                           placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /> </p> */}
                         < Dropdown value={childTag} onChange={(e) => { setChildTag(e.value); console.log('child : ' + e.value.id) }} options={childTagList} optionLabel="name"
@@ -612,55 +620,55 @@ export default function Home() {
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Title</p>
-                      <p style={{ marginTop: '0px', width: '20px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '14px' }}>Document Title</p>
+                      <p style={{ marginTop: '0px', width: '20px',paddingLeft:'12px' ,fontSize:'0.9em'}}>
                         <InputText value={title} tooltip="string" placeholder="" onChange={(e) => setTitle(e.target.value)} />
                       </p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Document Description</p>
-                      <p style={{ marginTop: '0px', width: '20px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px' ,color:'#104063' ,fontSize: '14px'}}>Document Description</p>
+                      <p style={{ marginTop: '0px', width: '20px',paddingLeft:'12px',fontSize:'0.9em' }}>
                         <InputTextarea value={value} onChange={(e) => setValue(e.target.value)} rows={3} cols={30} />
                       </p>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex' }}>
+                  <div style={{ display: 'flex' ,paddingLeft:'10px',marginTop:'10px',color:'#104063'}}>
                     <h3>Tags</h3>
                     {/* <Button label='Reset' icon='pi pi-pencil' onClick={() => handleReset()} autoFocus /> */}
-                    <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: 'auto' }} label='Upload' icon='pi pi-check' onClick={() => uploadInvoice()} autoFocus />
-                    <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: 'auto' }} label='Save' icon='pi pi-check' onClick={() => saveInvoice()} autoFocus />
+                    <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '140px',borderColor:'none',marginTop:'10px' ,position:'absolute'}} label='Upload'  onClick={() => uploadInvoice()} autoFocus />
+                    <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '150px',borderColor:'none' ,marginTop:'10px',position:'absolute'  }} label='Save'  onClick={() => saveInvoice()} autoFocus />
                   </div>
 
                   <div classname={'card'}>
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}> NSHE ID</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px' ,paddingLeft:'12px',color:'#104063' ,fontSize: '14px'}}> NSHE ID</p>
+                      <p style={{ marginTop: '0px' ,paddingLeft:'12px',fontSize:'14px'}}>
                         <InputText value={nsheID} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /></p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>First Name</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px' ,color:'#104063' ,fontSize: '14px'}}>First Name</p>
+                      <p style={{ marginTop: '0px',paddingLeft:'12px' ,fontSize:'14px'}}>
                         <InputText value={firstName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /> </p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Last Name</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '14px' }}>Last Name</p>
+                      <p style={{ marginTop: '0px',paddingLeft:'12px',fontSize:'0.9em' }}>
                         <InputText value={lastName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} /> </p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Middle Name</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '14px' }}>Middle Name</p>
+                      <p style={{ marginTop: '0px',paddingLeft:'12px',fontSize:'0.9em' }}>
                         <InputText value={middleName} tooltip="string" className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }} />  </p>
                     </div>
 
                     <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px' }}>Visa Number</p>
-                      <p style={{ marginTop: '0px' }}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px',paddingLeft:'12px',color:'#104063' ,fontSize: '1em' }}>Visa Number</p>
+                      <p style={{ marginTop: '0px' ,paddingLeft:'12px',fontSize:'0.9em'}}>
                         <InputText keyfilter="int" placeholder="" className="text-success" style={{ color: 'limegreen', height: '40px' }} /> </p>
                     </div>
                   </div>
@@ -673,13 +681,13 @@ export default function Home() {
    
 </Card> */}
 
-                <Card className="card pt-0" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '0px' }}>
-                  <div className='pt-0' style={{ marginTop: '0px' }}>
-                    <h3 className='pt-0'>Upload from Computer</h3>
+                <Card className="card pt-0" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '50px' ,borderRadius:'16px',marginLeft:'10px',boxshadow: 'none'}}>
+                  <div className='pt-0' style={{ margintop:' 50px', marginleft: '10px',borderradius: '16px',color:'#104063' }}>
+                    <h3 className='pt-0 mt-0'>Upload from Computer</h3>
                     <Toast ref={toast}></Toast>
 
-                    <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
-                    {/* <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" /> */}
+                    {/* <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" /> */}
+                      {/* <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />   */}
                     <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
 
                     {/* <FileUpload ref={fileUploadRef} name="demo[]" multiple webkitdirectory maxFileSize={1000000}
@@ -688,16 +696,25 @@ export default function Home() {
                     chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} 
                     uploadHandler={invoiceUploadHandler}
                     /> */}
-                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} chooseOptions={chooseOptions}
+
+            
+
+                   
+                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000}  itemTemplate={getUploadFiles} headerTemplate={headerTemplate} chooseOptions={chooseOptions}
                       cancelOptions={cancelOptions} emptyTemplate={emptyTemplate} customUpload={true}
                       onSelect={onFileSelect} onUpload={onTemplateUpload} uploadOptions={uploadOptions}
                       onError={onTemplateClear} onClear={onTemplateClear}
                     />
                     {/* uploadHandler={invoiceUploadHandler}  */}
+                    <Button label="Add Files" style={{marginLeft:'500px',marginTop:'15px',backgroundColor: '#024F7C'}} /> 
+                    {/* <Toast ref={toast}></Toast>
+            <FileUpload mode="basic" name="demo[]"  style={{marginLeft:'500px',marginTop:'15px',backgroundColor: '#024F7C'}} 
+         ref={fileUploadRef} webkitdirectory  maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Add Files"  /> */}
+         
                   </div>
                 </Card>
 
-                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' }}>
+                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' ,borderRadius:'16px',marginLeft:'10px',color:'#104063'}}>
                   <span className='pi pi-refresh px-4 pb-2' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => getFiles()} autoFocus />
                   {filesList != undefined && filesList != null && filesList.length > 0 ?
 
@@ -705,13 +722,13 @@ export default function Home() {
                       tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C' }}
                       selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id"
                       metaKeySelection={metaKey}>
-                      <Column body={viewIndex} header="ID" style={{ border: 'none', width: '25px' }}></Column>
+                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '25px', }}></Column>
                       <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
                       <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
                       <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
-                      <Column body={convertDate} header="Created Date " style={{ border: 'none', width: '120px' }}></Column>
-                      <Column body={(e) => e.processing ? 'Awaiting Index' : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
-                      <Column body={viewAction} header="Delete" style={{ border: 'none', width: '80px' }}></Column>
+                      <Column body={convertDate} header="Scan Date " style={{ border: 'none', width: '120px' }}></Column>
+                      <Column body={(e) => e.processing ? 'Status' : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
+                      <Column body={viewAction} header="" style={{ border: 'none', width: '80px' }}></Column>
                       {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
 
                       {/* {gridColumns.map((col, i) => {
@@ -724,11 +741,12 @@ export default function Home() {
 
 
               </div>
-              <div className={'mb-4 bg-white justify-content-start border-round'} style={{ width: '34%' }}>
-                <h4 className={'mt-4 pt-2 ml-3'} onClick={() => {
+              <div className={'mb-4 bg-white justify-content-start '} style={{ width: '32%',borderRadius: '16px',
+    marginTop: '51px',    marginLeft: '14px' ,color:'#104063'}}>
+                <h3 className={'mt-4 pt-2 ml-3'} onClick={() => {
                   setPreview(true);
                   dialogOpen();
-                }}>Document Preview</h4>
+                }}>Document Preview</h3>
                 <div className={'px-3 py-2'} onClick={() => {
                   setPreview(true);
                   dialogOpen();
@@ -746,7 +764,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         </>
       }
     </>

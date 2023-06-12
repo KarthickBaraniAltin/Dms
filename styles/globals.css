@@ -1,5 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Zeyada&display=swap');
 
+
+ @font-face {
+
+  font-family: "WorkSans-Medium";
+
+  src: url("../fonts/WorkSans-Medium.eot");
+
+  src: url("../fonts/WorkSans-Medium.eot?#iefix")
+
+      format("embedded-opentype"),
+
+    url("../fonts/WorkSans-Medium.woff2") format("woff2"),
+
+    url("../fonts/WorkSans-Medium.woff") format("woff"),
+
+    url("../fonts/WorkSans-Medium.ttf") format("truetype"),
+
+    url("../fonts/WorkSans-Medium.svg#WorkSans-Medium") format("svg"),
+
+    url("../fonts/WorkSans-Medium.otf") format("otf");
+
+} 
 html,
 body {
   /* padding: 0;
@@ -10,7 +32,7 @@ body {
   background-color: #cccccc;
   background-repeat: no-repeat, repeat;
   background-size: cover; */
-  background-image: url("../images/bg2.png");
+  /* background-image: url("../images/bg2.png"); */
   background-attachment: fixed;
   background-position: 50%;
   background-repeat: no-repeat;
@@ -340,7 +362,7 @@ pre::-webkit-scrollbar-thumb {
   border: 1px solid #dee2e6 !important;
   border-width: 0 0 1px 0 !important;
   font-weight: 700 !important;
-  color: #343a40 !important;
+  color: #104063 !important;
   background: #bbceda !important;
   transition: box-shadow 0.2s !important;
 }
@@ -353,7 +375,7 @@ pre::-webkit-scrollbar-thumb {
 
 .p-datatable .p-datatable-tbody>tr {
   background: #eaf5fa !important;
-  color: #495057 !important;
+  color: #104063 !important;
   transition: box-shadow 0.2s;
 }
 
@@ -365,6 +387,7 @@ pre::-webkit-scrollbar-thumb {
 .p-inputtext {
   margin: 0;
   width: 225px;
+ color: #09547f !important;
 }
 
 .p-datatable .p-datatable-tbody>tr.p-highlight {
@@ -374,10 +397,92 @@ pre::-webkit-scrollbar-thumb {
 
 .p-datatable.p-datatable-selectable .p-datatable-tbody>tr.p-selectable-row:focus {
   outline: #00b9ff !important;
-  background-color: #004990 !important;
+  background-color: #003459 !important;
   color: white !important;
+  font-size: 0.9em !important;
 }
 
 .text-whit:hover {
   color: white !important;
+}
+.p-panelmenu .p-panelmenu-header > a {
+  padding: 1rem;
+  border: 1px solid #024F7C !important;
+  color:white !important;
+  background:#024F7C !important;
+  
+  font-size: 0.9em !important;
+}
+.side-title{
+background-color: #024F7C;
+color: white;
+}
+.p-fileupload .p-fileupload-content {
+  background: #ffffff  !important;
+  padding: 2rem 1rem;
+  border: 2px dashed #a1a1a1  !important;
+  color: #495057  !important;
+  /* border-bottom-right-radius: 3px; */
+  /* border-bottom-left-radius: 3px; */
+  border-radius: 14px  !important;
+  height: 180px  !important;
+}
+.p-fileupload .p-fileupload-buttonbar {
+   border: none !important;
+  }
+.p-card .p-card-title{
+  font-size: 1.17em !important;
+}
+.p-dropdown .p-dropdown-label {
+  background: transparent;
+  border: 0 none;
+  font-size: 0.8em !important;
+  color: #09547f !important;
+}
+.p-component, .p-component * {
+  box-sizing: border-box;
+  box-shadow: none !important;
+}
+.p-fileupload .p-fileupload-buttonbar .p-button {
+  margin-right: 0.5rem;
+   display: none !important; 
+}
+.p-button.p-fileupload-choose {
+  position: relative;
+  overflow: hidden;
+  background-color: #024f7c !important;
+  width: 122px !important;
+  margin-left: -17px;
+}
+.p-button .p-button-icon-left {
+  margin-right: 0.5rem;
+  display: none !important;
+}
+.p-inputtext {
+  font-size: 0.8rem !important;
+}
+.p-tree-container {
+  overflow: hidden !important;
+}
+.p-tree .p-tree-container .p-treenode .p-treenode-content .p-tree-toggler {
+  margin-right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  color: #ffffff !important;
+  border: 0 none;
+  background: transparent;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.pi:before {
+  --webkit-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  /* color: white   !important; */
+}
+.p-treenode-label{
+  color: white;
+}
+.p-tree .p-tree-container .p-treenode .p-treenode-content.p-treenode-selectable:not(.p-highlight):hover {
+  background: none;
 }

@@ -174,7 +174,7 @@ export default function SideNavbar({ toggleSideNav }) {
         //         router.push('/document/search')
         //     }
         // },
-        // {
+         // {
         //     label: `${toggleSideNav ? 'Awaiting For Me' : ''}`,
         //     icon: 'pi pi-history',
 
@@ -215,20 +215,20 @@ export default function SideNavbar({ toggleSideNav }) {
         //         }
         //       ]
         //     },
-
+            
         //   ]
         // },
         {
-            key: "1",
+          key: "1",
             label: `${toggleSideNav ? 'Academic affairs' : ''}`,
-            data: "Events Folder",
-            icon: "pi pi-fw pi-calendar",
-            children: [
-                {
-                    key: "0-0",
+          data: "Events Folder",
+          icon: "pi pi-fw pi-calendar",
+          children: [
+            {
+                key: "0-0",
                     label: `${toggleSideNav ? 'ID' : ''}`,
-                    data: "Work Folder",
-                    icon: "pi pi-fw pi-cog",
+                data: "Work Folder",
+                icon: "pi pi-fw pi-cog",
                     command: () => {
                         router.push({
                             pathname: '/document/search',
@@ -236,11 +236,11 @@ export default function SideNavbar({ toggleSideNav }) {
                             // '/document/search'
                         });
                     },
-                    children: [
-                        {
-                            key: "0-0-0",
+                children: [
+                  {
+                    key: "0-0-0",
                             label: `${toggleSideNav ? 'Driving License' : ''}`,
-                            icon: "pi pi-fw pi-file",
+                    icon: "pi pi-fw pi-file",
                             data: "Expenses Document",
                             command: () => {
                                 router.push({
@@ -249,11 +249,11 @@ export default function SideNavbar({ toggleSideNav }) {
                                     // '/document/search'
                                 });
                             }
-                        },
-                        {
-                            key: "0-0-1",
+                  },
+                  {
+                    key: "0-0-1",
                             label: `${toggleSideNav ? 'Passport' : ''}`,
-                            icon: "pi pi-fw pi-file",
+                    icon: "pi pi-fw pi-file",
                             data: "Resume Document",
                             command: () => {
                                 router.push({
@@ -275,20 +275,20 @@ export default function SideNavbar({ toggleSideNav }) {
                                     // '/document/search'
                                 });
                             }
-                        }
-                    ]
-                },
-            ]
+                  }
+                ]
+              },
+          ]
         },
-    ];
+      ];
+    
+      let selectedKey = {};
+      let setSelectedKey;
+    
+      [selectedKey, setSelectedKey] = useState({});
 
-    let selectedKey = {};
-    let setSelectedKey;
-
-    [selectedKey, setSelectedKey] = useState({});
-
-    const [nodes, setNodes] = useState([]);
-
+  const [nodes, setNodes] = useState([]);
+  
     const documentMenuClick = ((e) => {
         console.log('Event : ' + e.value);
 
@@ -304,7 +304,7 @@ export default function SideNavbar({ toggleSideNav }) {
         } else if (e.value == "0-0-2") {
             data = "4504d06b-2358-41cf-a642-9a1928f1497b";
         }
-
+ 
         router.push({
             pathname: '/document/search/' + data,
             // query: { data: data }
@@ -312,11 +312,11 @@ export default function SideNavbar({ toggleSideNav }) {
         });
     })
 
-
+   
 
 
     return (
-        <aside className={`bgPrimaryLight my-4 border-round transition-all transition-duration-300 ${toggleSideNav ? 'w-3' : 'w-4rem'}`}>
+        <aside className={` my-4 border-round transition-all transition-duration-300 ${toggleSideNav ? 'w-3' : 'w-4rem'}`} style={{ backgroundColor: '#024F7C', borderStyle: 'none' }}>
             <Flex direction={'column'} >
                 <Flex className={'align-items-center justify-content-around gap-2 p-2 h-5rem'} >
                     <Transition
@@ -328,12 +328,12 @@ export default function SideNavbar({ toggleSideNav }) {
                         leaveFrom="opacity-100 "
                         leaveTo="opacity-0 "
                     >
-                        <Flex direction={'column'} >
+                        <Flex direction={'column'} style={{color:'white'}}>
                             <strong >{account?.name}</strong>
                             <small>developer</small>
                         </Flex>
                     </Transition>
-                    <Flex className={'align-items-center gap-2'}>
+                    <Flex className={'align-items-center gap-2 bg-#024f7c'}>
                         <Image src={avatar.src} width={50} height={50} alt={'Avatar'} />
                         <Transition
                             show={toggleSideNav}
@@ -345,28 +345,28 @@ export default function SideNavbar({ toggleSideNav }) {
                             leaveTo="opacity-0 "
                         >
                             <Flex direction={'column'} >
-                                <Button icon="pi pi-cog" rounded text severity="info" aria-label="User" />
+                                <Button icon="pi pi-cog" rounded text severity="info" aria-label="User"  />
                                 <Button icon="pi pi-share-alt" rounded text severity="info" aria-label="User" />
                             </Flex>
                         </Transition>
                     </Flex>
                 </Flex>
-                <Header size={4} className={'mx-2'} >{toggleSideNav ? 'Modules' : 'M'}</Header>
+                <Header size={4} className={'ml-3 side-title'}>{toggleSideNav ? 'Modules' : 'M'} </Header>
                 <Flex>
                     <PanelMenu model={modulesItems} className="w-full" />
                 </Flex>
-                <Header size={4} className={'mx-2'} >{toggleSideNav ? 'Forms' : 'F'}</Header>
+                <Header size={4} className={'ml-3 side-title'} >{toggleSideNav ? 'Forms' : 'F'}</Header>
                 <Flex>
                     <PanelMenu model={formItems} className="w-full" />
                 </Flex>
-                <Header size={4} className={'mx-2'} >{toggleSideNav ? 'Documents' : 'D'}</Header>
-
+                <Header size={4} className={'ml-3 side-title'} >{toggleSideNav ? 'Documents' : 'D'}</Header>
+                 
                 <Flex>
-                    <PanelMenu model={documentItems} className="w-full" />
+                    <PanelMenu model={documentItems} className="w-full"/>
                 </Flex>
                 <Tree value={node} selectionMode="single" selectionKeys={selectedKey}
                     onSelectionChange={(e) => { documentMenuClick(e); }}
-                    className="w-full md:w-20rem" />
+                    className="w-full md:w-20rem" style={{backgroundColor:'#024f7c'}} />
             </Flex>
         </aside>
     )
