@@ -343,7 +343,7 @@ export default function Home() {
   const viewAction = (file) => {
     return (
       <>
-         <Image src={Bin}  style={{ cursor: 'pointer' }} onClick={() => {
+         <Image src={Bin}  style={{ cursor: 'pointer',marginleft:'16px',marginRight:'1px' }} onClick={() => {
           // (file)
           toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
         }
@@ -591,9 +591,9 @@ export default function Home() {
               </div>
             </p>
             <div className="grid">
-              <div style={{ display: 'flex', gap: '20px', width: '20%',marginLeft:'2px',marginTop:'8px' }}>
+              <div className={"col-3"} style={{ display: 'flex', gap: '20px',marginLeft:'2px',marginTop:'8px' }}>
 
-                <Card className={'card justify-content-center'} title="" style={{ backgroundColor: '#eff2f6' ,alignItems:'center',justifyContent:'center',width:'280px',}}>
+                <Card className={'card justify-content-center'} title="" style={{ backgroundColor: '#eff2f6' ,alignItems:'center'}}>
 
                   <div classname={'card pt-0'}>
                     <div classname={'field pt-0'} style={{ marginBottom: '24px',paddingLeft:'12px' }}>
@@ -676,12 +676,12 @@ export default function Home() {
 
 
               </div>
-              <div className='mr-3' style={{ display: 'flex', flexDirection: 'column', columnGap: '20px', width: '44%' }}>
+              <div className='col-6  mr-3' style={{ display: 'flex', flexDirection: 'column', columnGap: '20px'  }}>
                 {/* <Card className="card" title=" Document view" style={{ backgroundColor: '#f7f5ed',width:'75%'}}>
    
 </Card> */}
 
-                <Card className="card pt-0" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '50px' ,borderRadius:'16px',marginLeft:'10px',boxshadow: 'none'}}>
+                <Card className="card pt-0 pb-5" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '50px' ,borderRadius:'16px',marginLeft:'10px',boxshadow: 'none'}}>
                   <div className='pt-0' style={{ margintop:' 50px', marginleft: '10px',borderradius: '16px',color:'#104063' }}>
                     <h3 className='pt-0 mt-0'>Upload from Computer</h3>
                     <Toast ref={toast}></Toast>
@@ -706,7 +706,7 @@ export default function Home() {
                       onError={onTemplateClear} onClear={onTemplateClear}
                     />
                     {/* uploadHandler={invoiceUploadHandler}  */}
-                    <Button label="Add Files" style={{marginLeft:'500px',marginTop:'15px',backgroundColor: '#024F7C'}} /> 
+                    <Button label="Add Files" style={{marginLeft:'0px',marginTop:'15px',backgroundColor: '#024F7C',position:'relative',float:'right'}} /> 
                     {/* <Toast ref={toast}></Toast>
             <FileUpload mode="basic" name="demo[]"  style={{marginLeft:'500px',marginTop:'15px',backgroundColor: '#024F7C'}} 
          ref={fileUploadRef} webkitdirectory  maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Add Files"  /> */}
@@ -715,6 +715,7 @@ export default function Home() {
                 </Card>
 
                 <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' ,borderRadius:'16px',marginLeft:'10px',color:'#104063'}}>
+                
                   <span className='pi pi-refresh px-4 pb-2' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => getFiles()} autoFocus />
                   {filesList != undefined && filesList != null && filesList.length > 0 ?
 
@@ -727,7 +728,7 @@ export default function Home() {
                       <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
                       <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
                       <Column body={convertDate} header="Scan Date " style={{ border: 'none', width: '120px' }}></Column>
-                      <Column body={(e) => e.processing ? 'Status' : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
+                      <Column body={(e) => e.processing ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
                       <Column body={viewAction} header="" style={{ border: 'none', width: '80px' }}></Column>
                       {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
 
@@ -735,14 +736,12 @@ export default function Home() {
           <Column key={col.field} field={col.field} header={col.header} />
       })} */}
                     </DataTable> : <p>No Data</p>}
-
-                </Card>
+                     </Card>
 
 
 
               </div>
-              <div className={'mb-4 bg-white justify-content-start '} style={{ width: '32%',borderRadius: '16px',
-    marginTop: '51px',    marginLeft: '14px' ,color:'#104063'}}>
+              <div className={'col-3 mb-4 bg-white justify-content-start '} style={{ borderRadius: '16px',marginTop: '51px',marginLeft: '14px' ,color:'#104063'}}>
                 <h3 className={'mt-4 pt-2 ml-3'} onClick={() => {
                   setPreview(true);
                   dialogOpen();
