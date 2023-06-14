@@ -92,9 +92,9 @@ export default function Home() {
 
     // {uploadButton}
     return (
-      <div className={className} style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center' }}>
+      <div className={className} style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center' ,justifyContent:'end'}}>
         {chooseButton}
-        {cancelButton}
+        {/* {cancelButton} */}
 
       </div>
     );
@@ -117,10 +117,10 @@ export default function Home() {
       <>
         <div style={{ textAlign: 'left', display: 'flex' }} onClick={() => setShow(true)}>
           {/* <img src={ url} style={{ marginRight: 0 }} width={'40%'} height={'10%'} />  */}
-          <embed type=""
+          <embed style={{ overflow: 'hidden ' }} type=""
             src={src}
-            width="250"
-            height="240" />
+            width="100"
+            height="100" />
           <p style={{ paddingLeft: '10px' }}>{file.name}</p>
           {/* <Button style={{ paddingLeft: "25px", marginRight: '5px' ,marginLeft:'auto',width:"165px",height:'40px',justifyContent:'center'}} label="Add Document" onClick={() => setVisible(true)} />*/}
           <Button type="button" icon="pi pi-times" className="p-button-outlined p-button-rounded p-button-danger ml-auto" style={{ marginLeft: 'auto' }} onClick={() => onTemplateRemove(file, props.onRemove)} />
@@ -142,7 +142,7 @@ export default function Home() {
     );
   };
 
-  const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
+  const chooseOptions = { icon: 'pi pi-fw pi-images', label:"Add Files" ,className: 'bgPrimary p-2 border-round' };
   const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined' };
   const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
 
@@ -706,7 +706,7 @@ export default function Home() {
                       onError={onTemplateClear} onClear={onTemplateClear}
                     />
                     {/* uploadHandler={invoiceUploadHandler}  */}
-                    <Button label="Add Files" style={{ marginLeft: '0px', marginTop: '15px', backgroundColor: '#024F7C', position: 'relative', float: 'right' }} />
+                    {/* <Button label="Add Files" style={{ marginLeft: '0px', marginTop: '15px', backgroundColor: '#024F7C', position: 'relative', float: 'right' }} /> */}
                     {/* <Toast ref={toast}></Toast>
             <FileUpload mode="basic" name="demo[]"  style={{marginLeft:'500px',marginTop:'15px',backgroundColor: '#024F7C'}} 
          ref={fileUploadRef} webkitdirectory  maxFileSize={1000000} onUpload={onUpload} auto chooseLabel="Add Files"  /> */}
@@ -715,19 +715,19 @@ export default function Home() {
                 </Card>
                   
                 <Card className="card" title="Document Details"   style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' ,borderRadius:'16px',marginLeft:'10px',color:'#104063'}}>
-                <span className='pi pi-refresh px-3 pb-6' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto',marginTop:'-46px' }} onClick={() => getFiles()} autoFocus />
+                {/* <span className='pi pi-refresh px-3 pb-6' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto',marginTop:'-46px' }} onClick={() => getFiles()} autoFocus /> */}
                   {filesList != undefined && filesList != null && filesList.length > 0 ?
 
                     <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
                       tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C',fontSize: '14px' }}
                       selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id"
                       metaKeySelection={metaKey}>
-                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '60px', }}></Column>
+                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '70px', }}></Column>
                       <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
                       <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
                       <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
                       <Column body={convertDate} header="Scan Date " style={{ border: 'none', width: '120px' }}></Column>
-                      <Column body={(e) => e.processing ? <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div> : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
+                      <Column body={(e) => e.processing ? <div class="lds-dual-ring"></div> : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
                       <Column body={viewAction} header="" style={{ border: 'none', width: '80px' }}></Column>
                       {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
 
