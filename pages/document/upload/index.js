@@ -40,10 +40,29 @@ export default function Home() {
   const [preview, setPreview] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const [showSave, setShowSave] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  let fileSelected;
 
   const onFileSelect = (e) => {
-    setFileItem(e.files[0]);
-    setSrc(URL.createObjectURL(e.files[0]));
+    console.log('EF Name : ' + e.files[0].name);
+
+    if (parentTag != null && parentTag != undefined && parentTag.name != null) {
+      if (childTag != null && childTag != undefined && childTag.name != null) {
+
+        setFileItem(e.files[0]);
+        fileSelected = e.files[0];
+        setSrc(URL.createObjectURL(e.files[0]));
+        uploadInvoice(e.files[0]);
+
+      } else {
+        toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please Choose Document and then try adding files.' });
+        fileUploadRef?.current?.clear();
+      }
+    } else {
+      toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please Choose Document Type and then try adding files.' });
+      fileUploadRef?.current?.clear();
+    }
+
     // console.log('FileRef : ' + fileUploadRef.current.files);
   }
 
@@ -213,13 +232,16 @@ export default function Home() {
       body: urlencoded,
       credentials: 'include'
     }).then((response) => {
-      console.log('Response : ' + response);
+      // console.log('Response : ' + response);
       response.json().then((token) => {
-        console.log('Token : ' + token.auth_token);
+        // console.log('Token : ' + token.auth_token);
         // authToken = token.auth_token;
         localStorage.setItem('authTok', token.auth_token);
-        // getFiles();
+        getFiles();
         getTags();
+        setInterval(() => {
+          getFiles();
+        }, 30000);
       });
     });
   }, []);
@@ -231,7 +253,7 @@ export default function Home() {
     document.cookie = "auth_token=" + authToken;
 
     let docId = localStorage.getItem('docID');
-    fetch(`http://localhost:8101/docs-web/api/file/list?id=` + docId,
+    fetch(`http://localhost:8101/docs-web/api/file/filelist`,
       {
         method: 'GET',
         headers: myHeaders,
@@ -241,13 +263,14 @@ export default function Home() {
         credentials: 'include'
       },
     ).then((response_list) => {
-      console.log('response_list_1 : ' + response_list.json().then((lists) => {
-        console.log('response_list : ', lists.files);
+
+      response_list.json().then((lists) => {
+        // console.log('response_list : ', lists.files);
         lists.files?.forEach((res) => res['showModel'] = false)
         setFilesList(lists.files);
         fileUploadRef?.current?.clear();
-      }));
 
+      });
     });
   };
 
@@ -259,7 +282,7 @@ export default function Home() {
   const fileNameAction = (file) => {
 
     let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-    console.log('F_ID : ' + file.id);
+    // console.log('F_ID : ' + file.id);
     // const objURL = URL.createObjectURL(file);
     return (
       <>
@@ -267,17 +290,20 @@ export default function Home() {
           <a onClick={() => rowColumnClick(file)}>{file.name}</a>
           {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
           {/* <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}> */}
-          <Dialog header="Header" visible={preview} style={{ width: '80vw' }} onHide={() => {
-            // setShowModel(false);
-            setPreview(false);
+          {/* file.showModel = false;
+          setShowModel(false); */}
+          <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => {
             // file.showModel = false;
+            setShowModel(false);
           }
           }>
-            <embed type=""
-              src={linkurl}
-              width="100%"
-              height="650" />
-
+            {
+              showModel &&
+              <embed type=""
+                src={linkurl}
+                width="100%"
+                height="650" />
+            }
           </Dialog>
         </div>
       </>
@@ -287,8 +313,8 @@ export default function Home() {
   const dialogOpen = () => {
     console.log(linkurl);
     return (
-      <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => {
-        setShowModel(false);
+      <Dialog header="Header" visible={showPopup} style={{ width: '80vw' }} onHide={() => {
+        setShowPopup(false);
         // file.showModel = false;
       }
       }>
@@ -306,9 +332,9 @@ export default function Home() {
     // setTableData(true);
     let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
     setLinkurl(link);
-    file.showModel = true;
+    // file.showModel = true;
     setPreview(true);
-    setShowModel(true);
+    // setShowModel(true);
     // return (
     //   <>
     //    {/* <a className='text-whit' href={link} target='_blank'>{file.name}</a> */}
@@ -485,15 +511,15 @@ export default function Home() {
   };
 
   // const uploadInvoice = async (invoiceFile, file) => {
-  const uploadInvoice = async () => {
+  const uploadInvoice = async (file) => {
     let authToken = localStorage.getItem('authTok');
     let myHeaders = { 'Cookie': 'auth_token=' + authToken }
     let myHeaders1 = { 'Cookie': 'auth_token=' + authToken, 'Content-Type': 'application/x-www-form-urlencoded' }
     document.cookie = "auth_token=" + authToken;
     // let updatedTime = moment().format('LTS');
     let updatedTime = new Date().getTime();
-    setTitle(childTag.name + ' - ' + fileItem.name);
-    let docTitle = childTag.name + ' - ' + fileItem.name;
+    setTitle(childTag.name + ' - ' + file.name);
+    let docTitle = childTag.name + ' - ' + file.name;
     console.log('Title : ' + docTitle + ' : ' + title);
     // fileItem.name = docTitle;
 
@@ -512,7 +538,7 @@ export default function Home() {
         localStorage.setItem('docID', resp.id);
 
         let formData = new FormData();
-        formData.append('file', fileItem);
+        formData.append('file', file);
         // formData.append('name', file.name);
         formData.append('id', resp.id);
         // console.log('FName : ' + file.name);
@@ -526,7 +552,6 @@ export default function Home() {
           },
         ).then((respon_2) => {
           getFiles();
-          setShowSave(true);
           // respon_2.json().then((resp) => {
           //   console.log('Name : ' + resp.name);
           //   setTitle(childTag.name + ' - ' + resp.name);
@@ -637,7 +662,7 @@ export default function Home() {
                   <div style={{ display: 'flex', paddingLeft: '10px', marginTop: '10px', color: '#104063' }}>
                     <h3>Tags</h3>
                     {/* <Button label='Reset' icon='pi pi-pencil' onClick={() => handleReset()} autoFocus /> */}
-                    <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '140px', borderColor: 'none', marginTop: '10px', position: 'absolute' }} label='Upload' onClick={() => uploadInvoice()} autoFocus />
+                    {/* <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '140px', borderColor: 'none', marginTop: '10px', position: 'absolute' }} label='Upload' onClick={() => uploadInvoice()} autoFocus /> */}
                     <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '150px', borderColor: 'none', marginTop: '10px', position: 'absolute' }} label='Save' onClick={() => saveInvoice()} autoFocus />
                   </div>
 
@@ -700,7 +725,8 @@ export default function Home() {
 
 
 
-                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles} headerTemplate={headerTemplate} chooseOptions={chooseOptions}
+                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles}
+                      headerTemplate={headerTemplate} chooseOptions={chooseOptions}
                       cancelOptions={cancelOptions} emptyTemplate={emptyTemplate} customUpload={true}
                       onSelect={onFileSelect} onUpload={onTemplateUpload} uploadOptions={uploadOptions}
                       onError={onTemplateClear} onClear={onTemplateClear}
@@ -742,22 +768,27 @@ export default function Home() {
               </div>
               <div className={'mb-4 bg-white justify-content-start '} style={{ borderRadius: '16px', marginTop: '51px', marginRight: '14px', marginLeft: '14px', color: '#104063', width: '30%' }}>
                 <h3 className={'mt-4 pt-2 ml-3'} onClick={() => {
-                  setPreview(true);
+                  setShowPopup(true);
                   dialogOpen();
-                }}>Document Preview</h3>
+                }}>Document Preview
+                  <i className="pi pi-eye ml-3" style={{ cursor: 'pointer', marginleft: '16px', marginRight: '1px' }} onClick={() => {
+                    // setPreview(true);
+                    // file.showModel = true;
+                    setShowModel(true);
+                    dialogOpen();
+                  }} autoFocus />
+                </h3>
+
                 <div className={'px-3 py-2'} onClick={() => {
-                  setPreview(true);
+                  setShowPopup(true);
                   dialogOpen();
                 }}>
                   {
-                    showModel &&
+                    preview &&
                     <embed type=""
                       src={linkurl}
                       width="100%"
-                      height="550" onClick={() => {
-                        setPreview(true);
-                        dialogOpen();
-                      }} />
+                      height="550" />
                   }
                 </div>
               </div>

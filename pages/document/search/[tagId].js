@@ -25,6 +25,8 @@ export default function AdvancedDemos() {
     const [filterArray, setFilterArray] = useState([]);
     const [searchTxt, setSearchTxt] = useState('');
     const [pageTitle, setPageTitle] = useState('');
+    const [showDepartment, setShowDepartment] = useState(false);
+    const [showDocument, setShowDocument] = useState(false);
 
     const router = useRouter();
     const [tagId, setTagId] = useState(router.query.tagId);
@@ -34,7 +36,7 @@ export default function AdvancedDemos() {
     const [items, setItems] = useState([{ label: 'Academic Affair' }, { label: 'ID' }]);
     // items.push({label: 'Driving License'});
     // setItems(items);
-    const home = { icon: 'pi pi-home', label: 'CSN', url: '' }
+    const home = { icon: () => { return (<span style={{ fontSize: '12px', height: '14px', color: '#495057', alignItems: 'center' }}><i className='pi pi-home'>&nbsp;<span style={{ fontSize: '12px', height: '14px' }}>CSN</span></i></span>) }, label: 'CSN' }
 
     const [link1, setLink1] = useState(null);
     const [showPreview, setShowPreview] = useState(false);
@@ -57,28 +59,46 @@ export default function AdvancedDemos() {
 
     const getBasics = (tagsId) => {
         console.log('Tag_Id : ', tagsId);
-        if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff-1") {
+        if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff-0") {
+            setPageTitle("CSN");
+            setItems([]);
+            setShowDepartment(true);
+            setShowDocument(true);
+            // setItems([{ icon: () => { return (<i className='pi pi-home'>&nbsp;CSN</i>) }, label: 'CSN' }]);
+            // items.push({label: 'Academic Affairs'});
+            // setItems(items);
+        } else if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff-1") {
             setPageTitle("Academic Affairs");
             setItems([]);
             setItems([{ label: 'Academic Affairs' }]);
+            setShowDepartment(false);
+            setShowDocument(true);
             // items.push({label: 'Academic Affairs'});
             // setItems(items);
         } else if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff") {
             setPageTitle("ID");
             setItems([]);
             setItems([{ label: 'Academic Affairs' }, { label: 'ID' }]);
+            setShowDepartment(false);
+            setShowDocument(false);
         } else if (tagsId == "68769c9e-c9df-4a47-a0b7-606ce9ce8445") {
             setPageTitle("Driving License");
             setItems([]);
             setItems([{ label: 'Academic Affairs' }, { label: 'ID' }, { label: 'Driving License' }]);
+            setShowDepartment(false);
+            setShowDocument(false);
         } else if (tagsId == "d7044ae4-5cf4-43fc-8699-2bdd31f2de0c") {
             setPageTitle("Passport");
             setItems([]);
             setItems([{ label: 'Academic Affairs' }, { label: 'ID' }, { label: 'Passport' }]);
+            setShowDepartment(false);
+            setShowDocument(false);
         } else if (tagsId == "4504d06b-2358-41cf-a642-9a1928f1497b") {
             setPageTitle("Social Security Card");
             setItems([]);
             setItems([{ label: 'Academic Affairs' }, { label: 'ID' }, { label: 'Social Security Card' }]);
+            setShowDepartment(false);
+            setShowDocument(false);
         }
     }
 
@@ -89,7 +109,7 @@ export default function AdvancedDemos() {
         document.cookie = "auth_token=" + authToken;
 
         let qTagId = null;
-        if (tagId == '5628c245-8622-4842-9785-347c3bcd81ff-1') {
+        if (tagId == '5628c245-8622-4842-9785-347c3bcd81ff-1' || tagId == '5628c245-8622-4842-9785-347c3bcd81ff-0') {
             qTagId = '5628c245-8622-4842-9785-347c3bcd81ff';
         } else {
             qTagId = tagId;
@@ -198,9 +218,25 @@ export default function AdvancedDemos() {
     const convertDate = (file) => {
         return Moment(file.create_date).format('MM/DD/YY hh:mm');
     }
+    // convert local time to another timezone
+    function convertLocalToTimezone(localDt, localDtFormat, timezone) {
+        return Moment(localDt, localDtFormat).tz(timezone).format('DD-MMM-YY hh:mm');
+    }
 
     const convertDated = (date) => {
-        return Moment(date).format('MM/DD/YY hh:mm');
+        return Moment(date).format('DD-MMM-YY hh:mm');
+        // Local date "2020-05-20 10:12:44 PM" to "America/Los_Angeles" timezone date:
+        // convertLocalToTimezone(date, null, 'America/Los_Angeles'); // Output: 2020-05-20 09:42:44 AM
+    }
+
+    const generateID = (tagId, index) => {
+        if (tagId != null && tagId == '68769c9e-c9df-4a47-a0b7-606ce9ce8445') {
+            return 'DL - ' + index + 1;
+        } else if (tagId != null && tagId == 'd7044ae4-5cf4-43fc-8699-2bdd31f2de0c') {
+            return 'PP - ' + index + 1;
+        } else if (tagId != null && tagId == '4504d06b-2358-41cf-a642-9a1928f1497b') {
+            return 'SC - ' + index + 1;
+        }
     }
 
     return (
@@ -213,16 +249,19 @@ export default function AdvancedDemos() {
                         <BreadCrumb model={items} home={home} className={'justify-content-start border-round border-none'} style={{ fontSize: '12px', height: '14px', backgroundColor: '#F7F8FA', display: 'contents' }} />
                     </h6>
                     <div className={'my-4 h-auto bg-white justify-content-start '}
-                        style={{ shadowColor: 'black', elevation: 20,height:'73%',borderRadius:'10px',fontSize:'13px',overflow:'auto', }}>
+                        style={{ shadowColor: 'black', elevation: 20, height: '73%', borderRadius: '10px', fontSize: '13px', overflow: 'auto', }}>
                         <div className={'pl-3 pt-2 pr-3 pb-8'}>
                             <h4 className={'mt-0'}></h4>
-                            <div className={'flex py-2'} style={{ backgroundColor: '#CCD6DE', fontFamily: 'WorkSans-Medium', fontWeight: 'bold',fontWeight: '600',
-                        fontSize: '14px',color:'#024f7c' }}>
-                                <div className={'col-1'}>Doc ID</div>
-                                <div className={'col-3'}>Doc Title</div>
-                                <div className={'col-3'}>File Name</div>
-                                <div className={'col-2'}>Department</div>
-                                <div className={'col-3'}>Upload Date</div>
+                            <div className={'flex py-2'} style={{
+                                backgroundColor: '#CCD6DE', fontFamily: 'WorkSans-Medium', fontWeight: 'bold', fontWeight: '600',
+                                fontSize: '14px', color: '#024f7c'
+                            }}>
+                                {showDepartment ? <div className={'col-1'}>Doc ID</div> : <div className={'col-2'}>Doc ID</div>}
+                                {showDepartment ? <div className={'col-3'}>Doc Title</div> : <div className={'col-5'}>Doc Title</div>}
+                                {showDepartment ? <div className={'col-2'}>Department</div> : ''}
+                                {showDocument ? <div className={'col-2'}>Document Type</div> : ''}
+                                <div className={'col-2'}>Upload Date</div>
+                                <div className={'col-2'}>Uploaded By</div>
                             </div>
 
                             {
@@ -238,11 +277,12 @@ export default function AdvancedDemos() {
                                         }}
                                             style={selectedRow === index ? { backgroundColor: '#024F7C', color: 'white' } :
                                                 index % 2 === 0 ? { color: '#002138', backgroundColor: '#FFFFFF', fontFamily: 'WorkSans-Medium', fontWeight: 'normal' } : { color: '#002138', backgroundColor: '#E5F8FF', fontFamily: 'WorkSans-Medium', fontWeight: 'normal' }}>
-                                            <div className={'col-1'}>{'AA - ' + index + 1}</div>
-                                            <div className={'col-3'}>{file.title}</div>
-                                            <div className={'col-3'}>{file.name}</div>
-                                            <div className={'col-2'}>{pageTitle}</div>
-                                            <div className={'col-3'}>{convertDated(file.create_date)}</div>
+                                            {showDepartment ? <div className={'col-1'}>{generateID(file.tagId, index)}</div> : <div className={'col-2'}>{generateID(file.tagId, index)}</div>}
+                                            {showDepartment ? <div className={'col-3'}>{file.title}</div> : <div className={'col-5'}>{file.title}</div>}
+                                            {showDepartment ? <div className={'col-2'} >Academic Affairs</div> : ''}
+                                            {showDocument ? <div className={'col-2'} >ID</div> : ''}
+                                            <div className={'col-2'}>{convertDated(file.create_date)}</div>
+                                            <div className={'col-2'}>ADMIN</div>
                                         </div>
                                     )
                                 })
@@ -254,8 +294,9 @@ export default function AdvancedDemos() {
                 <div className={'col-4 mb-4 justify-content-start'} style={{ marginTop: '4px' }}>
                     <div style={{ display: 'flex', marginTop: '0px' }}>
                         <p style={{ marginRight: 'auto', marginTop: '0px', marginBottom: '4px' }}>
-                        <i className="pi pi-search"style={{color:'#024f7c',marginLeft: '185px',position:'absolute',marginTop:'9px',
-                                }} />
+                            <i className="pi pi-search" style={{
+                                color: '#024f7c', marginLeft: '185px', position: 'absolute', marginTop: '9px',
+                            }} />
                             <InputText value={searchTxt} tooltip="string" placeholder="Search here" icon='pi pi-search' onChange={(e) => {
                                 setSearchTxt(e.target.value)
                                 setFilesList(filesListTemp.filter((file) => file.title.toLowerCase().includes(searchTxt.toLowerCase())));
@@ -263,11 +304,13 @@ export default function AdvancedDemos() {
                                     setFilesList(filesListTemp);
                                 }
                             }
-                            }  />
+                            } />
                         </p>
                     </div>
-                    <div className={'mb-4 bg-white justify-content-start'} style={{height:'73%',marginRight: '16px',
-    borderRadius: '10px'}}>
+                    <div className={'mb-4 bg-white justify-content-start'} style={{
+                        height: '73%', marginRight: '16px',
+                        borderRadius: '10px'
+                    }}>
                         <h4 className={'mt-4 pt-2 ml-3'}>Document Preview</h4>
                         <div className={'px-3 py-2'}>
                             {showPreview &&

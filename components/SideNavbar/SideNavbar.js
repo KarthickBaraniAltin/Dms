@@ -174,7 +174,7 @@ export default function SideNavbar({ toggleSideNav }) {
         //         router.push('/document/search')
         //     }
         // },
-         // {
+        // {
         //     label: `${toggleSideNav ? 'Awaiting For Me' : ''}`,
         //     icon: 'pi pi-history',
 
@@ -215,85 +215,95 @@ export default function SideNavbar({ toggleSideNav }) {
         //         }
         //       ]
         //     },
-            
+
         //   ]
         // },
         {
-          key: "1",
-            label: `${toggleSideNav ? 'Academic affairs' : ''}`,
-          data: "Events Folder",
-          icon: "pi pi-fw pi-calendar",
-          children: [
-            {
-                key: "0-0",
-                    label: `${toggleSideNav ? 'ID' : ''}`,
-                data: "Work Folder",
-                icon: "pi pi-fw pi-cog",
-                    command: () => {
-                        router.push({
-                            pathname: '/document/search',
-                            query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
-                            // '/document/search'
-                        });
-                    },
-                children: [
-                  {
-                    key: "0-0-0",
-                            label: `${toggleSideNav ? 'Driving License' : ''}`,
-                    icon: "pi pi-fw pi-file",
-                            data: "Expenses Document",
-                            command: () => {
-                                router.push({
-                                    pathname: '/document/search',
-                                    query: { data: '68769c9e-c9df-4a47-a0b7-606ce9ce8445' }
-                                    // '/document/search'
-                                });
-                            }
-                  },
-                  {
-                    key: "0-0-1",
-                            label: `${toggleSideNav ? 'Passport' : ''}`,
-                    icon: "pi pi-fw pi-file",
-                            data: "Resume Document",
-                            command: () => {
-                                router.push({
-                                    pathname: '/document/search',
-                                    query: { data: 'd7044ae4-5cf4-43fc-8699-2bdd31f2de0c' }
-                                    // '/document/search'
-                                });
-                            }
-                        },
+            key: "0",
+            label: `${toggleSideNav ? 'Doc Repository' : ''}`,
+            data: "Events Folder",
+            icon: "pi pi-fw pi-home",
+            children: [
+                {
+                    key: "1",
+                    label: `${toggleSideNav ? 'Academic affairs' : ''}`,
+                    data: "Events Folder",
+                    icon: "pi pi-fw pi-sitemap",
+                    children: [
                         {
-                            key: "0-0-2",
-                            label: `${toggleSideNav ? 'Social Security Card' : ''}`,
-                            icon: "pi pi-fw pi-file",
-                            data: "Security Document",
+                            key: "0-0",
+                            label: `${toggleSideNav ? 'ID' : ''}`,
+                            data: "Work Folder",
+                            icon: "pi pi-fw pi-inbox",
                             command: () => {
                                 router.push({
                                     pathname: '/document/search',
-                                    query: { data: '4504d06b-2358-41cf-a642-9a1928f1497b' }
+                                    query: { data: '5628c245-8622-4842-9785-347c3bcd81ff' }
                                     // '/document/search'
                                 });
-                            }
-                  }
-                ]
-              },
-          ]
-        },
-      ];
-    
-      let selectedKey = {};
-      let setSelectedKey;
-    
-      [selectedKey, setSelectedKey] = useState({});
+                            },
+                            children: [
+                                {
+                                    key: "0-0-0",
+                                    label: `${toggleSideNav ? 'Driving License' : ''}`,
+                                    icon: "pi pi-fw pi-file",
+                                    data: "Expenses Document",
+                                    command: () => {
+                                        router.push({
+                                            pathname: '/document/search',
+                                            query: { data: '68769c9e-c9df-4a47-a0b7-606ce9ce8445' }
+                                            // '/document/search'
+                                        });
+                                    }
+                                },
+                                {
+                                    key: "0-0-1",
+                                    label: `${toggleSideNav ? 'Passport' : ''}`,
+                                    icon: "pi pi-fw pi-file",
+                                    data: "Resume Document",
+                                    command: () => {
+                                        router.push({
+                                            pathname: '/document/search',
+                                            query: { data: 'd7044ae4-5cf4-43fc-8699-2bdd31f2de0c' }
+                                            // '/document/search'
+                                        });
+                                    }
+                                },
+                                {
+                                    key: "0-0-2",
+                                    label: `${toggleSideNav ? 'Social Security Card' : ''}`,
+                                    icon: "pi pi-fw pi-file",
+                                    data: "Security Document",
+                                    command: () => {
+                                        router.push({
+                                            pathname: '/document/search',
+                                            query: { data: '4504d06b-2358-41cf-a642-9a1928f1497b' }
+                                            // '/document/search'
+                                        });
+                                    }
+                                }
+                            ]
+                        },
+                    ]
+                },
+            ]
+        }
+    ];
 
-  const [nodes, setNodes] = useState([]);
-  
+    let selectedKey = {};
+    let setSelectedKey;
+
+    [selectedKey, setSelectedKey] = useState({});
+
+    const [nodes, setNodes] = useState([]);
+
     const documentMenuClick = ((e) => {
         console.log('Event : ' + e.value);
 
         let data = "";
-        if (e.value == "1") {
+        if (e.value == "0") {
+            data = "5628c245-8622-4842-9785-347c3bcd81ff-0";
+        } else if (e.value == "1") {
             data = "5628c245-8622-4842-9785-347c3bcd81ff-1";
         } else if (e.value == "0-0") {
             data = "5628c245-8622-4842-9785-347c3bcd81ff";
@@ -304,7 +314,7 @@ export default function SideNavbar({ toggleSideNav }) {
         } else if (e.value == "0-0-2") {
             data = "4504d06b-2358-41cf-a642-9a1928f1497b";
         }
- 
+
         router.push({
             pathname: '/document/search/' + data,
             // query: { data: data }
@@ -312,7 +322,7 @@ export default function SideNavbar({ toggleSideNav }) {
         });
     })
 
-   
+
 
 
     return (
@@ -328,7 +338,7 @@ export default function SideNavbar({ toggleSideNav }) {
                         leaveFrom="opacity-100 "
                         leaveTo="opacity-0 "
                     >
-                        <Flex direction={'column'} style={{color:'white'}}>
+                        <Flex direction={'column'} style={{ color: 'white' }}>
                             <strong >{account?.name}</strong>
                             <small>developer</small>
                         </Flex>
@@ -345,7 +355,7 @@ export default function SideNavbar({ toggleSideNav }) {
                             leaveTo="opacity-0 "
                         >
                             <Flex direction={'column'} >
-                                <Button icon="pi pi-cog" rounded text severity="info" aria-label="User"  />
+                                <Button icon="pi pi-cog" rounded text severity="info" aria-label="User" />
                                 <Button icon="pi pi-share-alt" rounded text severity="info" aria-label="User" />
                             </Flex>
                         </Transition>
@@ -360,13 +370,13 @@ export default function SideNavbar({ toggleSideNav }) {
                     <PanelMenu model={formItems} className="w-full" />
                 </Flex>
                 <Header size={4} className={'ml-3 side-title'} >{toggleSideNav ? 'Documents' : 'D'}</Header>
-                 
+
                 <Flex>
-                    <PanelMenu model={documentItems} className="w-full"/>
+                    <PanelMenu model={documentItems} className="w-full" />
                 </Flex>
                 <Tree value={node} selectionMode="single" selectionKeys={selectedKey}
                     onSelectionChange={(e) => { documentMenuClick(e); }}
-                    className="w-full md:w-20rem" style={{backgroundColor:'#024f7c'}} />
+                    className="w-full md:w-20rem" style={{ backgroundColor: '#024f7c' }} />
             </Flex>
         </aside>
     )
