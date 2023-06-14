@@ -14,6 +14,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from 'primereact/dialog';
 import Moment from "moment";
+import { dateFormat } from "../../../helpers/utilities";
 
 export default function AdvancedDemos() {
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -218,15 +219,10 @@ export default function AdvancedDemos() {
     const convertDate = (file) => {
         return Moment(file.create_date).format('MM/DD/YY hh:mm');
     }
-    // convert local time to another timezone
-    function convertLocalToTimezone(localDt, localDtFormat, timezone) {
-        return Moment(localDt, localDtFormat).tz(timezone).format('DD-MMM-YY hh:mm');
-    }
 
     const convertDated = (date) => {
-        return Moment(date).format('DD-MMM-YY hh:mm');
-        // Local date "2020-05-20 10:12:44 PM" to "America/Los_Angeles" timezone date:
-        // convertLocalToTimezone(date, null, 'America/Los_Angeles'); // Output: 2020-05-20 09:42:44 AM
+        // return Moment(date).format('DD-MMM-YY hh:mm');
+        return dateFormat(date);
     }
 
     const generateID = (tagId, index) => {
