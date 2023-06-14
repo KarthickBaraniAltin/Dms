@@ -213,7 +213,7 @@ export default function AdvancedDemos() {
                         <BreadCrumb model={items} home={home} className={'justify-content-start border-round border-none'} style={{ fontSize: '12px', height: '14px', backgroundColor: '#F7F8FA', display: 'contents' }} />
                     </h6>
                     <div className={'my-4 h-auto bg-white justify-content-start '}
-                        style={{ shadowColor: 'black', elevation: 20,height:'73%',borderRadius:'10px',fontSize:'14px',overflow:'auto', }}>
+                        style={{ shadowColor: 'black', elevation: 20,height:'73%',borderRadius:'10px',fontSize:'13px',overflow:'auto', }}>
                         <div className={'pl-3 pt-2 pr-3 pb-8'}>
                             <h4 className={'mt-0'}></h4>
                             <div className={'flex py-2'} style={{ backgroundColor: '#CCD6DE', fontFamily: 'WorkSans-Medium', fontWeight: 'bold',fontWeight: '600',
