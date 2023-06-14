@@ -377,6 +377,8 @@ pre::-webkit-scrollbar-thumb {
   background: #eaf5fa !important;
   color: #104063 !important;
   transition: box-shadow 0.2s;
+  font-size: 12px !important;
+  font-family: 'WorkSans-Medium'!important ;
 }
 
 
@@ -445,7 +447,7 @@ color: white;
 }
 .p-fileupload .p-fileupload-buttonbar .p-button {
   margin-right: 0.5rem;
-   display: none !important;  
+    display: none !important;   
 }
 .p-button.p-fileupload-choose {
   position: relative;
@@ -494,9 +496,9 @@ lds-ellipsis {
 }
 .lds-ellipsis div {
   position: absolute;
-  margin-left: 77%;
-  width: 8px;
-  height: 8px;
+  margin-left: 76%;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #89979f;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);

@@ -369,7 +369,7 @@ export default function Home() {
   const viewAction = (file) => {
     return (
       <>
-        <Image src={Bin} style={{ cursor: 'pointer', marginleft: '16px', marginRight: '1px' }} onClick={() => {
+         <Image src={Bin}  style={{ cursor: 'pointer',marginLeft:'20px' }} onClick={() => {
           // (file)
           toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
         }
@@ -740,17 +740,16 @@ export default function Home() {
 
                   </div>
                 </Card>
-
-                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px', borderRadius: '16px', marginLeft: '10px', color: '#104063' }}>
-
-                  <span className='pi pi-refresh px-4 pb-2' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto' }} onClick={() => getFiles()} autoFocus />
+                  
+                <Card className="card" title="Document Details"   style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px' ,borderRadius:'16px',marginLeft:'10px',color:'#104063'}}>
+                <span className='pi pi-refresh px-3 pb-6' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto',marginTop:'-46px' }} onClick={() => getFiles()} autoFocus />
                   {filesList != undefined && filesList != null && filesList.length > 0 ?
 
                     <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
-                      tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C' }}
+                      tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C',fontSize: '14px' }}
                       selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => setSelectedProduct(e.value)} dataKey="id"
                       metaKeySelection={metaKey}>
-                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '25px', }}></Column>
+                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '60px', }}></Column>
                       <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
                       <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
                       <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
