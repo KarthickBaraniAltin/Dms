@@ -17,6 +17,8 @@ import Moment from "moment";
 import { dateFormat } from "../../../helpers/utilities";
 
 export default function AdvancedDemos() {
+    let baseApi = process.env.NEXT_PUBLIC_DMSBASEAPI;
+    // console.log('baseApi :- ', baseApi);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [metaKey, setMetaKey] = useState(true);
 
@@ -28,6 +30,7 @@ export default function AdvancedDemos() {
     const [pageTitle, setPageTitle] = useState('');
     const [showDepartment, setShowDepartment] = useState(false);
     const [showDocument, setShowDocument] = useState(false);
+    const [showModel, setShowModel] = useState(false);
 
     const router = useRouter();
     const [tagId, setTagId] = useState(router.query.tagId);
@@ -37,9 +40,10 @@ export default function AdvancedDemos() {
     const [items, setItems] = useState([{ label: 'Academic Affair' }, { label: 'ID' }]);
     // items.push({label: 'Driving License'});
     // setItems(items);
-    const home = { icon: () => { return (<span style={{ fontSize: '12px', height: '14px', color: '#495057', alignItems: 'center' }}><i className='pi pi-home'>&nbsp;<span style={{ fontSize: '12px', height: '14px' }}>CSN</span></i></span>) }, label: 'CSN' }
+    const home = { icon: () => { return (<span style={{ fontSize: '12px', height: '14px', color: '#495057', alignItems: 'center' }}><i className='pi pi-home'>&nbsp;</i><span style={{ fontSize: '12px', height: '14px', fontfamily: 'WorkSans-Medium' }}>Nevada University</span></span>) }, label: 'Nevada University' }
 
     const [link1, setLink1] = useState(null);
+    const [linkweb, setLinkWeb] = useState(null);
     const [showPreview, setShowPreview] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
@@ -61,11 +65,11 @@ export default function AdvancedDemos() {
     const getBasics = (tagsId) => {
         console.log('Tag_Id : ', tagsId);
         if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff-0") {
-            setPageTitle("CSN");
+            setPageTitle("Nevada University");
             setItems([]);
             setShowDepartment(true);
             setShowDocument(true);
-            // setItems([{ icon: () => { return (<i className='pi pi-home'>&nbsp;CSN</i>) }, label: 'CSN' }]);
+            // setItems([{ icon: () => { return (<i className='pi pi-home'>&nbsp;Nevada University</i>) }, label: 'Nevada University' }]);
             // items.push({label: 'Academic Affairs'});
             // setItems(items);
         } else if (tagsId == "5628c245-8622-4842-9785-347c3bcd81ff-1") {
@@ -116,7 +120,8 @@ export default function AdvancedDemos() {
             qTagId = tagId;
         }
 
-        fetch(`http://localhost:8101/docs-web/api/file/taglist?tagId=` + qTagId,
+        // fetch(`http://localhost:8101/docs-web/api/file/taglist?tagId=` + qTagId,
+        fetch(baseApi + `file/taglist?tagId=` + qTagId,
             // orders/${orderId}/uploadInvoiceFile
             {
                 method: 'GET',
@@ -160,65 +165,25 @@ export default function AdvancedDemos() {
         </div>
     );
 
-    const subStringId = (file, index) => {
-        let rowNum = index.rowIndex + 1;
-        return rowNum;
-    };
-
-    const fileNameAction = (file) => {
-
-        let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-        console.log('F_ID : ' + file.id);
-        // const objURL = URL.createObjectURL(file);
+    const DialogOpen = () => {
+        // console.log(linkurl);
         return (
-            <>
-                <div>
-                    <a onClick={() => rowColumnClick(file)}>{file.name}</a>
-                    {/* <p className='text-whit' onClick={() => setTableData(true)}>{file.name}</p> */}
-                    {/* <Dialog header="Header" visible={file.showModel} style={{ width: '80vw' }} onHide={() => file.showModel = false}> */}
-                    <Dialog header="Header" visible={file.showModel && showModel} style={{ width: '80vw' }} onHide={() => setShowModel(false)}>
-                        <embed type="" key={link}
-                            src={link}
-                            width="1250"
-                            height="1500" />
-
-                    </Dialog>
-                </div>
-            </>
+            <Dialog header="View Document" visible={showModel} style={{ width: '80vw' }} onHide={() => {
+                // file.showModel = false;
+                setShowModel(false);
+            }
+            }>
+                {
+                    showModel &&
+                    <embed type=""
+                        src={link1}
+                        width="100%"
+                        height="550" />
+                }
+            </Dialog>
         )
-    };
-
-    const rowColumnClick = (file) => {
-        console.log(file)
-        // setTableData(true);
-        let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-        setLinkurl(link);
-        file.showModel = true;
-        setShowModel(true);
-    };
-
-    const sizeConstructor = (file) => {
-        let bytes = file.size;
-        var marker = 1024; // Change to 1000 if required
-        var decimal = 0; // Change as required
-        var kiloBytes = marker; // One Kilobyte is 1024 bytes
-        var megaBytes = marker * marker; // One MB is 1024 KB
-        var gigaBytes = marker * marker * marker; // One GB is 1024 MB
-        var teraBytes = marker * marker * marker * marker; // One TB is 1024 GB
-
-        // return bytes if less than a KB
-        if (bytes < kiloBytes) return bytes + " Bytes";
-        // return KB if less than a MB
-        else if (bytes < megaBytes) return (bytes / kiloBytes).toFixed(decimal) + " KB";
-        // return MB if less than a GB
-        else if (bytes < gigaBytes) return (bytes / megaBytes).toFixed(decimal) + " MB";
-        // return GB if less than a TB
-        else return (bytes / gigaBytes).toFixed(decimal) + " GB";
     }
 
-    const convertDate = (file) => {
-        return Moment(file.create_date).format('MM/DD/YY hh:mm');
-    }
 
     const convertDated = (date) => {
         // return Moment(date).format('DD-MMM-YY hh:mm');
@@ -227,11 +192,11 @@ export default function AdvancedDemos() {
 
     const generateID = (tagId, index) => {
         if (tagId != null && tagId == '68769c9e-c9df-4a47-a0b7-606ce9ce8445') {
-            return 'DL - ' + index + 1;
+            return 'DL - 101';
         } else if (tagId != null && tagId == 'd7044ae4-5cf4-43fc-8699-2bdd31f2de0c') {
-            return 'PP - ' + index + 1;
+            return 'PP - 110';
         } else if (tagId != null && tagId == '4504d06b-2358-41cf-a642-9a1928f1497b') {
-            return 'SC - ' + index + 1;
+            return 'SC - 120';
         }
     }
 
@@ -264,9 +229,13 @@ export default function AdvancedDemos() {
                                 filesList.map((file, index) => {
                                     return (
                                         <div className={'flex py-2'} onClick={() => {
-                                            let link1 = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+                                            // let link1 = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+                                            let link1 = baseApi + `file/` + file.id + `/data`;
                                             console.log('Link1 : ' + link1);
                                             setLink1(link1);
+                                            // let link_Web = `http://localhost:8101/docs-web/api/file/` + file.id + `/data?size=web`;
+                                            let link_Web = baseApi + `file/` + file.id + `/data?size=web`;
+                                            setLinkWeb(link_Web);
                                             // setLink1(fetch(link1, { headers: { method: 'GET', headers: { 'Cookie': 'auth_token=' + localStorage.getItem('authTok') }, credentials: 'include' } }));
                                             setShowPreview(true);
                                             setSelectedRow(index);
@@ -307,18 +276,27 @@ export default function AdvancedDemos() {
                         height: '73%', marginRight: '16px',
                         borderRadius: '10px'
                     }}>
-                        <h4 className={'mt-4 pt-2 ml-3'}>Document Preview</h4>
-                        <div className={'px-3 py-2'}>
+                        <h4 className={'mt-4 pt-2 ml-3'}>Document Preview
+                            {/* <i className="pi pi-eye ml-3" style={{ cursor: 'pointer', marginleft: '16px', marginRight: '1px' }} onClick={() => {
+                                setShowModel(true);
+                            }} autoFocus /> */}
+                        </h4>
+                        <div className={'px-3 py-2'} >
                             {showPreview &&
-                                <embed type="" key={link1}
-                                    src={link1}
-                                    width="100%"
-                                    height="550" />
+                                <object height="100%" width="100%" type="image/jpeg" data={linkweb} onClick={() => {
+                                    console.log('Clicked');
+                                    setShowModel(true);
+                                }} />
+                                // <embed type="" key={link1}
+                                //     src={link1}
+                                //     width="100%"
+                                //     height="550" />
                             }
                         </div>
                     </div>
                 </div>
             </div>
+            <DialogOpen />
             {/* <Flex direction={'column'} className={'my-4 h-full w-full bg-white justify-content-start border-round'} >
                 <Flex direction={'column'} className={'justify-content-between align-items-center h-30rem '} >
 

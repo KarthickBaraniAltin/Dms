@@ -15,6 +15,8 @@ import Moment from "moment";
 
 
 export default function AdvancedDemo() {
+    let baseApi = process.env.NEXT_PUBLIC_DMSBASEAPI;
+    // console.log('baseApi : ', baseApi);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [metaKey, setMetaKey] = useState(true);
 
@@ -32,7 +34,8 @@ export default function AdvancedDemo() {
 
         document.cookie = "auth_token=" + authToken;
 
-        fetch(`http://localhost:8101/docs-web/api/file/taglist?tagId=` + null,
+        // fetch(`http://localhost:8101/docs-web/api/file/taglist?tagId=` + null,
+        fetch(baseApi + `file/taglist?tagId=` + null,
             // orders/${orderId}/uploadInvoiceFile
             {
                 method: 'GET',
@@ -80,7 +83,8 @@ export default function AdvancedDemo() {
 
     const fileNameAction = (file) => {
 
-        let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+        // let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+        let link = baseApi + `file/` + file.id + `/data`;
         console.log('F_ID : ' + file.id);
         // const objURL = URL.createObjectURL(file);
         return (
@@ -104,7 +108,8 @@ export default function AdvancedDemo() {
     const rowColumnClick = (file) => {
         console.log(file)
         // setTableData(true);
-        let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+        // let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+        let link = baseApi + `file/` + file.id + `/data`;
         setLinkurl(link);
         file.showModel = true;
         setShowModel(true);

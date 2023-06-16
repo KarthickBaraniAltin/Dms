@@ -268,20 +268,20 @@ export default function SideNavbar({ toggleSideNav }) {
                                             // '/document/search'
                                         });
                                     }
-                                },
-                                {
-                                    key: "0-0-2",
-                                    label: `${toggleSideNav ? 'Social Security Card' : ''}`,
-                                    icon: "pi pi-fw pi-file",
-                                    data: "Security Document",
-                                    command: () => {
-                                        router.push({
-                                            pathname: '/document/search',
-                                            query: { data: '4504d06b-2358-41cf-a642-9a1928f1497b' }
-                                            // '/document/search'
-                                        });
-                                    }
                                 }
+                                // ,{
+                                //     key: "0-0-2",
+                                //     label: `${toggleSideNav ? 'Social Security Card' : ''}`,
+                                //     icon: "pi pi-fw pi-file",
+                                //     data: "Security Document",
+                                //     command: () => {
+                                //         router.push({
+                                //             pathname: '/document/search',
+                                //             query: { data: '4504d06b-2358-41cf-a642-9a1928f1497b' }
+                                //             // '/document/search'
+                                //         });
+                                //     }
+                                // }
                             ]
                         },
                     ]
@@ -376,7 +376,7 @@ export default function SideNavbar({ toggleSideNav }) {
                 </Flex>
                 <Tree value={node} selectionMode="single" selectionKeys={selectedKey}
                     onSelectionChange={(e) => { documentMenuClick(e); }}
-                    className="w-full md:w-20rem" style={{ backgroundColor: '#024f7c' }} />
+                    className="w-full md:w-20rem" style={{ backgroundColor: '#024f7c', paddingRight: '0', paddingLeft: '0' }} />
             </Flex>
         </aside>
     )

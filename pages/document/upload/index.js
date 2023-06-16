@@ -22,6 +22,8 @@ import { dateFormat } from "../../../helpers/utilities";
 
 
 export default function Home() {
+  let baseApi = process.env.NEXT_PUBLIC_DMSBASEAPI;
+  // console.log('baseApi :: ', baseApi);
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const toast = useRef(null);
@@ -31,22 +33,25 @@ export default function Home() {
   const [parentTagList, setParentTagList] = useState([]);
   const [childTagList, setChildTagList] = useState([]);
 
-  const [nsheID, setNsheID] = useState(null);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [middleName, setMiddleName] = useState(null);
-  const [stateName, setStateName] = useState(null);
+  const [nsheID, setNsheID] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [stateName, setStateName] = useState('');
   const [src, setSrc] = useState(null);
+  const [fileId, setFileID] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState();
   const [preview, setPreview] = useState(false);
   const [showModel, setShowModel] = useState(false);
   const [showSave, setShowSave] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   let fileSelected;
+  let previewTag;
 
   const onFileSelect = (e) => {
     console.log('EF Name : ' + e.files[0].name);
-
+    setLoading(true);
     if (parentTag != null && parentTag != undefined && parentTag.name != null) {
       if (childTag != null && childTag != undefined && childTag.name != null) {
 
@@ -54,16 +59,19 @@ export default function Home() {
         fileSelected = e.files[0];
         setSrc(URL.createObjectURL(e.files[0]));
         uploadInvoice(e.files[0]);
+        // setLoading(false);
 
       } else {
         toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please Choose Document and then try adding files.' });
         fileUploadRef?.current?.clear();
+        setLoading(false);
       }
     } else {
       toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please Choose Document Type and then try adding files.' });
       fileUploadRef?.current?.clear();
-    }
+      setLoading(false);
 
+    }
     // console.log('FileRef : ' + fileUploadRef.current.files);
   }
 
@@ -108,7 +116,7 @@ export default function Home() {
 
     // {uploadButton}
     return (
-      <div className={className} style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+      <div className={className} style={{ backgroundColor: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'end', paddingRight: '0' }}>
         {chooseButton}
         {/* {cancelButton} */}
 
@@ -210,6 +218,7 @@ export default function Home() {
   [selectedKey, setSelectedKey] = useState({});
   const [state, setState] = useState(false)
   const [linkurl, setLinkurl] = useState(null)
+  const [linkweb, setLinkWeb] = useState(null);
 
   useEffect(() => {
     setNsheID('');
@@ -221,7 +230,8 @@ export default function Home() {
     urlencoded.append("username", "admin");
     urlencoded.append("password", "admin");
 
-    fetch('http://localhost:8101/docs-web/api/user/login', {
+    // fetch('http://localhost:8101/docs-web/api/user/login', {
+    fetch(baseApi + 'user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -241,6 +251,8 @@ export default function Home() {
         }, 30000);
       });
     });
+
+    previewTag = document.querySelector('#preview');
   }, []);
 
   const getFiles = () => {
@@ -250,7 +262,8 @@ export default function Home() {
     document.cookie = "auth_token=" + authToken;
 
     let docId = localStorage.getItem('docID');
-    fetch(`http://localhost:8101/docs-web/api/file/filelist`,
+    // fetch(`http://localhost:8101/docs-web/api/file/filelist`,
+    fetch(baseApi + `file/filelist`,
       {
         method: 'GET',
         headers: myHeaders,
@@ -266,7 +279,6 @@ export default function Home() {
         lists.files?.forEach((res) => res['showModel'] = false)
         setFilesList(lists.files);
         fileUploadRef?.current?.clear();
-
       });
     });
   };
@@ -276,24 +288,10 @@ export default function Home() {
     return rowNum;
   };
 
-  const fileNameAction = (file) => {
-
-    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
-    // console.log('F_ID : ' + file.id);
-    // const objURL = URL.createObjectURL(file);
-    return (
-      <>
-        <div>
-          <a>{file.name}</a>
-        </div>
-      </>
-    )
-  };
-
   const DialogOpen = () => {
     // console.log(linkurl);
     return (
-      <Dialog header="Header" visible={showModel} style={{ width: '80vw' }} onHide={() => {
+      <Dialog header="View Document" visible={showModel} style={{ width: '80vw' }} onHide={() => {
         // file.showModel = false;
         setShowModel(false);
       }
@@ -303,7 +301,7 @@ export default function Home() {
           <embed type=""
             src={linkurl}
             width="100%"
-            height="650" />
+            height="550" />
         }
       </Dialog>
     )
@@ -312,7 +310,8 @@ export default function Home() {
   const rowColumnClick = (file) => {
     console.log(file)
     // setTableData(true);
-    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    // let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    let link = baseApi + `file/` + file.id + `/data`;
     setLinkurl(link);
     // file.showModel = true;
     setPreview(true);
@@ -354,55 +353,150 @@ export default function Home() {
       <>
         <Image src={Bin} style={{ cursor: 'pointer', marginLeft: '20px' }} onClick={() => {
           // (file)
-          toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
+          deleteClick(file);
         }
         } autoFocus />
       </>
     )
   };
 
+  const deleteClick = (file) => {
+
+    if (fileId != null && fileId != undefined && fileId != '') {
+      let authToken = localStorage.getItem('authTok');
+      // let myHeaders = { 'Cookie': 'auth_token=' + authToken }
+      let myHeaders1 = {
+        'Cookie': 'auth_token=' + authToken,
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/x-www-form-urlencoded;'
+      }
+      document.cookie = "auth_token=" + authToken;
+
+      // let docURL = 'http://localhost:8101/docs-web/api/file/' + fileId;
+      let docURL = baseApi + 'file/' + fileId;
+
+      fetch(docURL,
+        {
+          method: 'DELETE',
+          headers: myHeaders1,
+          credentials: 'include'
+        },
+      ).then((response_1) => {
+        // console.log('Delete_Res : ' + response_1);
+        response_1.json().then((resp) => {
+          console.log('Delete_ID : ' + resp);
+          toast.current.show({ severity: 'error', summary: 'Info', detail: 'Document Deleted Successfully.!' });
+          setTitle('');
+          setValue('');
+          setNsheID('');
+          setFirstName('');
+          setLastName('');
+          setMiddleName('');
+          setStateName('');
+          setShowModel(false);
+          setShowSave(false);
+          setPreview(false);
+          getFiles();
+        })
+      })
+
+    } else {
+      toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please select a Document to Delete.' });
+    }
+  }
+
   const saveInvoice = () => {
-    toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document Updated Successfully.!' });
-    setFilesList([]);
-    setTitle('');
-    setValue('');
-    setNsheID('');
-    setFirstName('');
-    setLastName('');
-    setMiddleName('');
-    setShowModel(false);
+
+    if (fileId != null && fileId != undefined && fileId != '') {
+      if (nsheID != null && nsheID != undefined && nsheID != '' && firstName != null && firstName != undefined && firstName != '' &&
+        middleName != null && middleName != undefined && middleName != '' && lastName != null && lastName != undefined && lastName != '' &&
+        stateName != null && stateName != undefined && stateName != '') {
+
+        // setFileItem(e.files[0]);
+        // fileSelected = e.files[0];
+        // setSrc(URL.createObjectURL(e.files[0]));
+        // uploadInvoice(e.files[0]);
+        let authToken = localStorage.getItem('authTok');
+        // let myHeaders = { 'Cookie': 'auth_token=' + authToken }
+        let myHeaders1 = {
+          'Cookie': 'auth_token=' + authToken,
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/x-www-form-urlencoded;'
+        }
+        document.cookie = "auth_token=" + authToken;
+
+        // let docURL = 'http://localhost:8101/docs-web/api/file/' + fileId + '/persist';
+        let docURL = baseApi + 'file/' + fileId + '/persist';
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("saved", true);
+        urlencoded.append("firstName", firstName);
+        urlencoded.append("middleName", middleName);
+        urlencoded.append("lastName", lastName);
+        urlencoded.append("idNumber", nsheID);
+        urlencoded.append("idRegion", stateName);
+
+        // let formData = new FormData();
+        // formData.append('saved', true);
+        // formData.append('firstName', firstName);
+        // formData.append('middleName', middleName);
+        // formData.append('lastName', lastName);
+        // formData.append('idNumber', nsheID);
+        // formData.append('idRegion', stateName);
+        fetch(docURL,
+          {
+            method: 'POST',
+            headers: myHeaders1,
+            body: urlencoded,
+            credentials: 'include'
+          },
+        ).then((response_1) => {
+          console.log('Response_Save : ' + response_1);
+          response_1.json().then((resp) => {
+            console.log('Save_ID : ' + resp);
+            toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document Tags Saved Successfully.!' });
+            // setFilesList([]);
+            setTitle('');
+            setValue('');
+            setNsheID('');
+            setFirstName('');
+            setLastName('');
+            setMiddleName('');
+            setStateName('');
+            setShowModel(false);
+            setShowSave(false);
+            setPreview(false);
+            getFiles();
+          })
+        })
+
+      } else {
+        toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please make sure all the tag fields are filled.' });
+      }
+    } else {
+      toast.current.show({ severity: 'info', summary: 'Warning', detail: 'Please select a Document to Save.' });
+    }
+
   }
 
   const viewTagsName = (file) => {
 
     console.log('ID: ', file.idNumber);
+    setFileID(file.id);
+    console.log('ID : ', file.id);
     setNsheID(file.idNumber);
     setFirstName(file.firstName);
     setLastName(file.lastName);
     setMiddleName(file.middleName);
     setStateName(file.idRegion);
     setShowSave(true);
-    let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    // let link = `http://localhost:8101/docs-web/api/file/` + file.id + `/data`;
+    // let link_Web = `http://localhost:8101/docs-web/api/file/` + file.id + `/data?size=web`;
+    let link = baseApi + `file/` + file.id + `/data`;
+    let link_Web = baseApi + `file/` + file.id + `/data?size=web`;
     setLinkurl(link);
+    setLinkWeb(link_Web);
     setPreview(true);
-    setCurrentFile(file);
-
-    // if (file.name == 'Request to Change Personal Info.pdf') {
-    //   setFirstName('Cristan');
-    //   setLastName('CamPas');
-    //   setMiddleName('');
-    // } else if (file.name == 'Substitution Request Form.pdf') {
-    //   setNsheID('5005869448');
-    //   setFirstName('CHRISTIAN');
-    //   setLastName('IPANAQUE OLIVOS');
-    //   setMiddleName('');
-    // } else if (file.name == 'Advisor Report Update Form.pdf') {
-    //   setNsheID('5005869448');
-    //   setFirstName('CHRISTIAN');
-    //   setLastName('IPANAQUE OLIVOS');
-    //   setMiddleName('JOSE');
-    // }
-
 
   };
 
@@ -435,11 +529,12 @@ export default function Home() {
 
   const getTags = () => {
     let authToken = localStorage.getItem('authTok');
-    let myHeaders = { 'Cookie': 'auth_token=' + authToken }
+    let myHeaders = { 'Access-Control-Allow-Credentials': true, 'Cookie': 'auth_token=' + authToken }
 
     document.cookie = "auth_token=" + authToken;
 
-    fetch(`http://localhost:8101/docs-web/api/tag/list`,
+    // fetch(`http://localhost:8101/docs-web/api/tag/list`,
+    fetch(baseApi + `tag/list`,
       // orders/${orderId}/uploadInvoiceFile
       {
         method: 'GET',
@@ -458,8 +553,8 @@ export default function Home() {
 
         // console.log(token.tags.filter(val =>  val.find( item => item.parent != undefined && item.parent != null ))); 
         // console.log(token.tags.filter((e) => e.parent !== undefined && e.parent !== null));
-        setChildTagList(token.tags.filter((e) => e.parent !== undefined && e.parent !== null));
-        setParentTagList(token.tags.filter((e) => e.parent == undefined || e.parent == null));
+        setChildTagList(token?.tags?.filter((e) => e.parent !== undefined && e.parent !== null));
+        setParentTagList(token?.tags?.filter((e) => e.parent == undefined || e.parent == null));
         // const tagList = token.tags;
         // const filtered1 = tagList.filter(item =>
         //   item.filter(c => c.parent != undefined && c.parent != null)
@@ -504,7 +599,10 @@ export default function Home() {
     console.log('Title : ' + docTitle + ' : ' + title);
     // fileItem.name = docTitle;
 
-    let docURL = 'http://localhost:8101/docs-web/api/document?create_date=' + updatedTime + '&description=' + value + ''
+
+    // let docURL = 'http://localhost:8101/docs-web/api/document?create_date=' + updatedTime + '&description=' + value + ''
+    //   + '&language=eng&tags=' + childTag?.id + '&title=' + docTitle;
+    let docURL = baseApi + 'document?create_date=' + updatedTime + '&description=' + value + ''
       + '&language=eng&tags=' + childTag?.id + '&title=' + docTitle;
     fetch(docURL,
       {
@@ -524,7 +622,8 @@ export default function Home() {
         formData.append('id', resp.id);
         // console.log('FName : ' + file.name);
 
-        fetch(`http://localhost:8101/docs-web/api/file`,
+        // fetch(`http://localhost:8101/docs-web/api/file`,
+        fetch(baseApi + `file`,
           {
             method: 'PUT',
             body: formData,
@@ -537,6 +636,7 @@ export default function Home() {
           //   console.log('Name : ' + resp.name);
           //   setTitle(childTag.name + ' - ' + resp.name);
           // })
+          setLoading(false);
           toast.current.show({ severity: 'info', summary: 'Info', detail: 'Document ' + title + ' Saved Successfully.!' });
         })
       });
@@ -580,7 +680,7 @@ export default function Home() {
               </span>
             </div>
           </div> */}
-          <div style={{ backgroundColor: "#f6f7f9", marginTop: '20px', overflow: 'auto' }}>
+          <div style={{ backgroundColor: "#f6f7f9", marginTop: '8px', overflow: 'auto', marginLeft: '-7px', width: '101%' }}>
             <p className="m-0">
               <div style={{ display: 'flex', padding: '0px' }}>
 
@@ -597,44 +697,44 @@ export default function Home() {
               </div>
             </p>
             <div className="grid justify-content-center">
-              <div className={""} style={{ display: 'flex', gap: '20px', marginLeft: '2px', marginTop: '8px', width: '20%' }}>
+              <div className={""} style={{ display: 'flex', gap: '20px', marginLeft: '-10px', marginTop: '8px', width: '20%' }}>
 
                 <Card className={'card justify-content-center'} title="" style={{ backgroundColor: '#eff2f6', alignItems: 'center' }}>
 
-                  <div classname={'card pt-0'}>
-                    <div classname={'field pt-0'} style={{ marginBottom: '24px', paddingLeft: '12px' }}>
+                  <div className={'card pt-0'}>
+                    <div className={'field pt-0'} style={{ marginBottom: '24px', paddingLeft: '4px' }}>
                       <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '3px', color: '#104063', fontSize: '14px' }}>Department</p>
-                      <p style={{ marginTop: '0px', fontSize: '0.9em', color: '#09547f ' }}>
+                      <p style={{ marginTop: '0px', fontSize: '0.9em', color: '#09547f ', paddingLeft: '2px' }}>
                         <InputText value="Academic Affairs" placeholder="" readOnly />
                       </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Document Type </p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '0.8em' }}>
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Document Type </p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '0.8em' }}>
                         <Dropdown value={parentTag} onChange={(e) => setParentTag(e.value)} options={parentTagList} optionLabel="name"
                           placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center' }} /></p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Document</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '0.8em' }}>
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Document</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '0.8em' }}>
                         {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
                           placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center', width: '210px' }} /> </p> */}
                         < Dropdown value={childTag} onChange={(e) => { setChildTag(e.value); console.log('child : ' + e.value.id) }} options={childTagList} optionLabel="name"
                           placeholder="" className="w-full md:w-14rem" style={{ height: '35px', alignItems: 'center', justifyContent: 'center' }} /> </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Document Title</p>
-                      <p style={{ marginTop: '0px', width: '20px', paddingLeft: '12px', fontSize: '0.9em' }}>
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Document Title</p>
+                      <p style={{ marginTop: '0px', width: '20px', paddingLeft: '4px', fontSize: '0.9em' }}>
                         <InputText value={title} tooltip="string" placeholder="" onChange={(e) => setTitle(e.target.value)} />
                       </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Document Description</p>
-                      <p style={{ marginTop: '0px', width: '20px', paddingLeft: '12px', fontSize: '0.9em' }}>
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Document Description</p>
+                      <p style={{ marginTop: '0px', width: '20px', paddingLeft: '4px', fontSize: '0.9em' }}>
                         <InputTextarea value={value} onChange={(e) => setValue(e.target.value)} rows={3} cols={30} />
                       </p>
                     </div>
@@ -644,42 +744,43 @@ export default function Home() {
                     <h3>Tags</h3>
                     {/* <Button label='Reset' icon='pi pi-pencil' onClick={() => handleReset()} autoFocus /> */}
                     {/* <Button visible={!showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '140px', borderColor: 'none', marginTop: '10px', position: 'absolute' }} label='Upload' onClick={() => uploadInvoice()} autoFocus /> */}
-                    <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '150px', borderColor: 'none', marginTop: '10px', position: 'absolute' }} label='Save' onClick={() => saveInvoice()} autoFocus />
+                    <Button visible={showSave} style={{ height: 'fit-content', backgroundColor: '#024F7C', marginLeft: '150px', borderColor: 'none', marginTop: '10px', position: 'absolute' }}
+                      label='Save' onClick={() => saveInvoice()} autoFocus />
                   </div>
 
-                  <div classname={'card'}>
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}> Document ID</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '14px' }}>
-                        <InputText value={nsheID} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }}
+                  <div className={'card'}>
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}> Document ID</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '14px' }}>
+                        <InputText value={nsheID} className={fileId != null && fileId != undefined && fileId != '' && nsheID == '' ? "tagInputError" : "tagInput"} placeholder=""
                           onChange={(e) => setNsheID(e.target.value)} /></p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>First Name</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '14px' }}>
-                        <InputText value={firstName} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }}
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>First Name</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '14px' }}>
+                        <InputText value={firstName} className={fileId != null && fileId != undefined && fileId != '' && firstName == '' ? "tagInputError" : "tagInput"} placeholder=""
                           onChange={(e) => setFirstName(e.target.value)} /> </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Last Name</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '0.9em' }}>
-                        <InputText value={lastName} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }}
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Last Name</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '0.9em' }}>
+                        <InputText value={lastName} className={fileId != null && fileId != undefined && fileId != '' && lastName == '' ? "tagInputError" : "tagInput"} placeholder=""
                           onChange={(e) => setLastName(e.target.value)} /> </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '14px' }}>Middle Name</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '0.9em' }}>
-                        <InputText value={middleName} className="text-success" placeholder="" style={{ color: 'limegreen', height: '40px' }}
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>Middle Name</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '0.9em' }}>
+                        <InputText value={middleName} className={fileId != null && fileId != undefined && fileId != '' && middleName == '' ? "tagInputError" : "tagInput"} placeholder=""
                           onChange={(e) => setMiddleName(e.target.value)} />  </p>
                     </div>
 
-                    <div classname={'field'}>
-                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '12px', color: '#104063', fontSize: '1em' }}>State</p>
-                      <p style={{ marginTop: '0px', paddingLeft: '12px', fontSize: '0.9em' }}>
-                        <InputText value={stateName} placeholder="" className="text-success" style={{ color: 'limegreen', height: '40px' }}
+                    <div className={'field'}>
+                      <p style={{ fontWeight: 600, marginBottom: '2px', paddingLeft: '4px', color: '#104063', fontSize: '14px' }}>State</p>
+                      <p style={{ marginTop: '0px', paddingLeft: '4px', fontSize: '0.9em' }}>
+                        <InputText value={stateName} className={fileId != null && fileId != undefined && fileId != '' && stateName == '' ? "tagInputError" : "tagInput"} placeholder=""
                           onChange={(e) => setStateName(e.target.value)} /> </p>
                     </div>
                   </div>
@@ -687,12 +788,12 @@ export default function Home() {
 
 
               </div>
-              <div className='mr-3' style={{ display: 'flex', flexDirection: 'column', columnGap: '20px', width: '44%', marginLeft: '10px' }}>
+              <div className='ml-1' style={{ display: 'flex', flexDirection: 'column', columnGap: '20px', width: '45%' }}>
                 {/* <Card className="card" title=" Document view" style={{ backgroundColor: '#f7f5ed',width:'75%'}}>
    
 </Card> */}
 
-                <Card className="card pt-0 pb-5" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '50px', borderRadius: '16px', marginLeft: '10px', boxshadow: 'none' }}>
+                <Card className="card pt-0" style={{ backgroundColor: '#E5F8FF', width: '100%', marginTop: '32px', borderRadius: '16px', marginLeft: '-14px', boxshadow: 'none', height: '38%' }}>
                   <div className='pt-0' style={{ margintop: ' 50px', marginleft: '10px', borderradius: '16px', color: '#104063' }}>
                     <h3 className='pt-0 mt-0'>Upload from Computer</h3>
                     <Toast ref={toast}></Toast>
@@ -711,12 +812,15 @@ export default function Home() {
 
 
 
-                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdirectory maxFileSize={1000000} itemTemplate={getUploadFiles}
+                    <FileUpload name="demo[]" ref={fileUploadRef} webkitdiretory="true" maxFileSize={1000000} itemTemplate={getUploadFiles}
                       headerTemplate={headerTemplate} chooseOptions={chooseOptions}
                       cancelOptions={cancelOptions} emptyTemplate={emptyTemplate} customUpload={true}
                       onSelect={onFileSelect} onUpload={onTemplateUpload} uploadOptions={uploadOptions}
                       onError={onTemplateClear} onClear={onTemplateClear}
                     />
+                    {loading &&
+                      <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    }
                     {/* uploadHandler={invoiceUploadHandler}  */}
                     {/* <Button label="Add Files" style={{ marginLeft: '0px', marginTop: '15px', backgroundColor: '#024F7C', position: 'relative', float: 'right' }} /> */}
                     {/* <Toast ref={toast}></Toast>
@@ -725,57 +829,70 @@ export default function Home() {
 
                   </div>
                 </Card>
+                {/* selector: "id",
+  sortable: true,
+  headerStyle: (selector, id) => {
+    return { width: "80px", textAlign: "center" };
+  }, */}
 
-                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '20px', borderRadius: '16px', marginLeft: '10px', color: '#104063' }}>
+                <Card className="card" title="Document Details" style={{ width: '100%', marginBottom: '25px', height: '440px', marginTop: '23px', borderRadius: '16px', marginLeft: '-14px', color: '#104063' }}>
                   {/* <span className='pi pi-refresh px-3 pb-6' style={{ display: 'table', cursor: 'pointer', marginLeft: 'auto',marginTop:'-46px' }} onClick={() => getFiles()} autoFocus /> */}
                   {filesList != undefined && filesList != null && filesList.length > 0 ?
 
                     <DataTable value={filesList} scrollable scrollHeight="300px" size="small" stripedRows
-                      tableStyle={{ overflow: 'scroll', minWidth: "30rem", backgroundColor: '#024F7C', fontSize: '14px' }}
+                      tableStyle={{ overflow: 'scroll', minWidth: '40rem', backgroundColor: '#024F7C', fontSize: '14px' }}
                       selectionMode="single" selection={selectedProduct} onSelectionChange={(e) => { setSelectedProduct(e.value); viewTagsName(e.value) }} dataKey="id"
                       metaKeySelection={metaKey}>
-                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '70px', }}></Column>
-                      <Column body={fileNameAction} header="File Name" style={{ border: 'none', width: '160px' }}></Column>
-                      <Column field="mimetype" header="File Type" style={{ border: 'none', width: '100px' }}></Column>
-                      <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '60px' }}></Column>
-                      <Column body={convertDate} header="Scan Date " style={{ border: 'none', width: '120px' }}></Column>
-                      <Column body={(e) => e.processing ? <div class="lds-dual-ring"></div> : 'Indexed'} header="Status" style={{ border: 'none' }}></Column>
-                      <Column body={viewAction} header="" style={{ border: 'none', width: '80px' }}></Column>
+                      <Column body={viewIndex} header=" File ID" style={{ border: 'none', width: '8%' }}></Column>
+                      <Column field="name" header="File Name" style={{ border: 'none', width: '25%' }} ></Column>
+                      <Column field="mimetype" header="File Type" style={{ border: 'none', width: '10%' }}></Column>
+                      <Column body={sizeConstructor} header="Size " style={{ border: 'none', width: '10%' }}></Column>
+                      <Column body={convertDate} header="Scan Date " headerStyle={{ width: '27%' }} style={{ border: 'none' }}></Column>
+                      <Column body={(e) => e.processing ? <div class="lds-dual-ring"></div> : 'Indexed'} header="Status" style={{ border: 'none', width: '10%' }}></Column>
+                      <Column body={viewAction} header="" style={{ border: 'none', width: '10%' }}></Column>
                       {/* <Column field="inventoryStatus"     header="Status"  style={{border:'none'}}></Column> */}
 
                       {/* {gridColumns.map((col, i) => {
           <Column key={col.field} field={col.field} header={col.header} />
-      })} */}
-                    </DataTable > : <p>No Data</p>
+                })} */}
+                    </DataTable > : <span>No Data</span>
                   }
                 </Card >
 
 
 
               </div >
-              <div className={'mb-4 bg-white justify-content-start '} style={{ borderRadius: '16px', marginTop: '51px', marginRight: '14px', marginLeft: '14px', color: '#104063', width: '30%' }}>
-                <h3 className={'mt-4 pt-2 ml-3'} >Document Preview
-                  <i className="pi pi-eye ml-3" style={{ cursor: 'pointer', marginleft: '16px', marginRight: '1px' }} onClick={() => {
-                    // setPreview(true);
-                    // file.showModel = true;
+              <div className={'mb-4 bg-white justify-content-start '} style={{ borderRadius: '16px', marginTop: '32px', marginRight: '10px', marginLeft: '4px', color: '#104063', width: '32%' }}>
+                <h3 className={'ml-3'} >Document Preview
+                  {/* <i className="pi pi-eye ml-3" style={{ cursor: 'pointer', marginleft: '16px', marginRight: '1px' }} onClick={() => {
                     setShowModel(true);
-                    // dialogOpen();
-                  }} autoFocus />
+                  }} autoFocus /> */}
                 </h3>
 
-                <div className={'px-3 py-2'} onClick={() => {
-                  // setShowPopup(true);
-                  setShowModel(true);
-                  // dialogOpen();
-                }}>
-                  {
-                    preview &&
-                    <embed type=""
-                      src={linkurl}
-                      width="100%"
-                      height="550" />
-                  }
+                {/* <object height="100%" width="100%" type="application/pdf" data="yii.pdf#toolbar=1&amp;navpanes=0&amp;scrollbar=1&amp;page=1&amp;view=FitH"> */}
+                <div className={'px-3 py-2'}>
+
+                  {preview ? <>
+                    <div >
+                      <object height="100%" width="100%" type="image/jpeg" data={linkweb} onClick={() => {
+                        console.log('Clicked');
+                        setShowModel(true);
+                      }} />
+                      {/* <embed type=""
+                        id="preview" onClick={(e) => {
+                          previewTag?.onClick(() => {
+                            console.log('Clicked'); setShowModel(true);
+                          }, true)
+                        }}
+                        src={linkurl}
+                        width="100%"
+                        height="550" /> */}
+                    </div>
+                  </> :
+                    <></>}
+                  {/* preview && */}
                 </div>
+
               </div>
             </div >
           </div >
